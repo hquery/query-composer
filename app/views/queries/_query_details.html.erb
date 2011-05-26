@@ -1,7 +1,9 @@
+<table>
 <%= simple_form_for @query do |f| %>
-  <%= f.input :title, :label => 'Title', :disabled => @disabled %>
-  <%= f.input :description, :label => 'Description', :disabled => @disabled %>
-  <%= f.input :map, :label => 'Map Function', :disabled => @disabled %>
-  <%= f.input :reduce, :label => 'Reduce Function', :disabled => @disabled %>
-  <%= f.button :submit if !@disabled %>
+  <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
+  <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
+  <tr><td valign='top'>Map Function</td><td><%= f.input_field :map, :as => :text, :disabled => @disabled %></td></tr>
+  <tr><td valign='top'>Reduce Function</td><td><%= f.input_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
+  <tr><td></td><td><%= f.button :submit if !@disabled %></td></tr>
 <% end %>
+</table>

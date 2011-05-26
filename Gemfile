@@ -5,6 +5,7 @@ gem 'rake', '~> 0.8.7'
 gem 'bson_ext', :platforms => :mri
 gem "mongoid", "~> 2.0"
 gem 'simple_form'
+gem 'multipart-post'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

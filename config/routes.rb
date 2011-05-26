@@ -1,6 +1,10 @@
 QueryComposer::Application.routes.draw do
 
-  resources :queries
+  resources :queries do
+    member do
+      post 'execute'
+    end
+  end
   
   root :to => 'queries#index'
   

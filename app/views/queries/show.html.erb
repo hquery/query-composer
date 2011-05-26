@@ -1,4 +1,37 @@
 <h1>Query Status</h1>
-<% @disabled = true %>
-<%= render :partial=>"query_details" %>
-<p><%= link_to 'Edit', edit_query_path(@query.id) %>
+<table>
+  <tr><th align='left'>Title</th><td><%= @query.title %></td></tr>
+  <tr><th align='left'>Description</th><td><%= @query.description %></td></tr>
+  <tr><th  align='left' valign='top'>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
+  <tr><th  align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
+  <tr>
+    <th  align='left' valign='top'>Endpoints</th>
+    <td>
+      <table>
+        <tr>
+          <th align='left'>URL</th>
+          <th align='left'>Status</th>
+          <th align='left'>Next Poll</th>
+        </tr>
+        <% @query.endpoints.each do |endpoint| %>
+          <tr>
+            <td><%= endpoint.submit_url %></td>
+            <td><%= endpoint.status %></td>
+            <td><%= Time.at(endpoint.next_poll).to_s if endpoint.next_poll %></td>
+          </tr>
+        <% end %>
+      </table>
+    </td>
+  </tr
+  <tr>
+    <td></td>
+    <td>
+      <table>
+        <tr>
+          <td><%= button_to 'Edit', {:action=>'edit', :id=>@query.id}, :method=>:get %></td>
+          <td><%= button_to 'Execute', {:action=>'execute', :id=>@query.id} %></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

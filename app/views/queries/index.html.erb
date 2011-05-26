@@ -10,7 +10,7 @@
 <% end %>
 <% @queries.each do |query| %>
   <tr>
-    <td><%= query.title %></td>
+    <td><%= link_to query.title, query_path(query.id) %></td>
     <td><%= query.description %></td>
     <td><%= query.status %></td>
   </tr>
