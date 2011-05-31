@@ -6,6 +6,8 @@ gem 'bson_ext', :platforms => :mri
 gem "mongoid", "~> 2.0"
 gem 'simple_form'
 gem 'multipart-post'
+gem 'delayed_job'
+gem 'delayed_job_mongoid'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

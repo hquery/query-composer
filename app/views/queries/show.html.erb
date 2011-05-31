@@ -9,15 +9,19 @@
     <td>
       <table>
         <tr>
-          <th align='left'>URL</th>
+          <th align='left'>Query URL</th>
           <th align='left'>Status</th>
           <th align='left'>Next Poll</th>
+          <th align='left'>Poll URL</th>
+          <th align='left'>Result</th>
         </tr>
         <% @query.endpoints.each do |endpoint| %>
           <tr>
             <td><%= endpoint.submit_url %></td>
             <td><%= endpoint.status %></td>
-            <td><%= Time.at(endpoint.next_poll).to_s if endpoint.next_poll %></td>
+            <td><%= endpoint.next_poll %></td>
+            <td><%= endpoint.result_url %></td>
+            <td><%= endpoint.result %></td>
           </tr>
         <% end %>
       </table>

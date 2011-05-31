@@ -1,5 +1,6 @@
 require 'stringio'
 require 'net/http/post/multipart'
+require 'poll_job'
 
 class QueriesController < ApplicationController
 
@@ -41,22 +42,13 @@ class QueriesController < ApplicationController
     reduce = UploadIO.new(StringIO.new(@query.reduce), 'application/javascript')
     
     @query.endpoints.each do |endpoint|
+      endpoint.result = nil
       url = URI.parse endpoint.submit_url
       request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce})
-      begin
-        result = Net::HTTP.start(url.host, url.port) do |http|
-          http.request(request)
-        end
-        endpoint.status = result.message
-        endpoint.result_url = result['location']
-        endpoint.next_poll = Time.now.to_i+(result['retry-after'] || 10)
-      rescue Exception => ex
-        endpoint.status = ex.to_s
-      end
+      PollJob.submit(request, url, @query, endpoint)
     end
-    @query.save!
     
-    render :action => 'show'
+    redirect_to :action => 'show'
   end
 
 end
