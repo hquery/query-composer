@@ -15,7 +15,7 @@ class QueriesController < ApplicationController
   def create
     @query = Query.new(params[:query])
     endpoint = Endpoint.new
-    endpoint.submit_url = 'http://localhost:3001/queue'
+    endpoint.submit_url = 'http://localhost:3001/queues'
     @query.endpoints << endpoint
     @query.save!
     redirect_to :action => 'show', :id=>@query.id
