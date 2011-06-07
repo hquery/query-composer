@@ -15,6 +15,7 @@ class QueriesController < ApplicationController
   def create
     @query = Query.new(params[:query])
     endpoint = Endpoint.new
+    endpoint.name = 'Default Local Queue'
     endpoint.submit_url = 'http://localhost:3001/queue'
     @query.endpoints << endpoint
     @query.save!
@@ -33,6 +34,24 @@ class QueriesController < ApplicationController
     @query = Query.find(params[:id])
     @query.update_attributes!(params[:query])
     render :action => 'show'
+  end
+  
+  def update_endpoint
+    @query = Query.find(params[:id])
+    endpoint = @query.endpoints.find(params[:endpoint][:id])
+    endpoint.update_attributes!(params[:endpoint])
+    @query.save!
+    render :action => 'edit'
+  end
+  
+  def add_endpoint
+    @query = Query.find(params[:id])
+    endpoint = Endpoint.new
+    endpoint.name = 'Default Local Queue'
+    endpoint.submit_url = 'http://localhost:3001/queue'
+    @query.endpoints << endpoint
+    @query.save!
+    render :action => 'edit'
   end
   
   def execute

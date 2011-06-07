@@ -12,9 +12,11 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
   
   def self.submit(request, url, query, endpoint)
     begin
-      result = Net::HTTP.start(url.host, url.port) do |http|
-        http.request(request)
-      end
+      puts "Starting #{url}"
+      http = Net::HTTP.start(url.host, url.port)
+      puts "Requesting #{url}"
+      result = http.request(request)
+      puts "Finished #{url}"
       case result
       when Net::HTTPSuccess
         endpoint.status = 'Complete'
@@ -31,6 +33,7 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
       else
         endpoint.status = 'Failed'
       end
+      http.finish
     rescue Exception => ex
       endpoint.status = ex.to_s
     end

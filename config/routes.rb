@@ -3,6 +3,8 @@ QueryComposer::Application.routes.draw do
   resources :queries do
     member do
       post 'execute'
+      put 'update_endpoint'
+      post 'add_endpoint'
     end
   end
   
