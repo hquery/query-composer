@@ -12,24 +12,27 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
   
   def self.submit(request, url, query, endpoint)
     begin
-      result = Net::HTTP.start(url.host, url.port) do |http|
-        http.request(request)
-      end
-      case result
-      when Net::HTTPSuccess
-        endpoint.status = 'Complete'
-        endpoint.result = result.body
-        endpoint.next_poll = nil
-        endpoint.result_url = nil
-        
-      when Net::HTTPRedirection
-        endpoint.status = 'Queued'
-        endpoint.result_url = result['location']
-        endpoint.next_poll = result['retry_after'] ? result['retry_after'].to_i : 10
-        Delayed::Job.enqueue(PollJob.new(query.id.to_s, endpoint.id.to_s), :run_at=>endpoint.next_poll.seconds.from_now)
-        
-      else
-        endpoint.status = 'Failed'
+      puts "Starting #{url}"
+      Net::HTTP.start(url.host, url.port) do |http|
+        puts "Requesting #{url}"
+        result = http.request(request)
+        puts "Finished #{url}"
+        case result
+        when Net::HTTPSuccess
+          endpoint.status = 'Complete'
+          endpoint.result = result.body
+          endpoint.next_poll = nil
+          endpoint.result_url = nil
+          
+        when Net::HTTPRedirection
+          endpoint.status = 'Queued'
+          endpoint.result_url = result['location']
+          endpoint.next_poll = result['retry_after'] ? result['retry_after'].to_i : 10
+          Delayed::Job.enqueue(PollJob.new(query.id.to_s, endpoint.id.to_s), :run_at=>endpoint.next_poll.seconds.from_now)
+          
+        else
+          endpoint.status = result.message #'Failed'
+        end
       end
     rescue Exception => ex
       endpoint.status = ex.to_s

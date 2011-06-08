@@ -4,6 +4,8 @@ QueryComposer::Application.routes.draw do
     member do
       post 'execute'
       delete 'destroy'
+      put 'update_endpoint'
+      post 'add_endpoint'
     end
   end
   

@@ -15,6 +15,7 @@ class QueriesController < ApplicationController
   def create
     @query = Query.new(params[:query])
     endpoint = Endpoint.new
+    endpoint.name = 'Default Local Queue'
     endpoint.submit_url = 'http://localhost:3001/queues'
     @query.endpoints << endpoint
     @query.save!
@@ -43,17 +44,35 @@ class QueriesController < ApplicationController
     render :action => 'show'
   end
   
+  def update_endpoint
+    @query = Query.find(params[:id])
+    endpoint = @query.endpoints.find(params[:endpoint][:id])
+    endpoint.update_attributes!(params[:endpoint])
+    @query.save!
+    render :action => 'edit'
+  end
+  
+  def add_endpoint
+    @query = Query.find(params[:id])
+    endpoint = Endpoint.new
+    endpoint.name = 'Default Local Queue'
+    endpoint.submit_url = 'http://localhost:3001/queues'
+    @query.endpoints << endpoint
+    @query.save!
+    render :action => 'edit'
+  end
+  
   def execute
     @query = Query.find(params[:id])
     
-    map = UploadIO.new(StringIO.new(@query.map), 'application/javascript')
-    reduce = UploadIO.new(StringIO.new(@query.reduce), 'application/javascript')
-    
     @query.endpoints.each do |endpoint|
+      map = UploadIO.new(StringIO.new(@query.map), 'application/javascript')
+      reduce = UploadIO.new(StringIO.new(@query.reduce), 'application/javascript')
+    
       endpoint.result = nil
       url = URI.parse endpoint.submit_url
-      request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce})
-      PollJob.submit(request, url, @query, endpoint)
+      multipart_request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce})
+      PollJob.submit(multipart_request, url, @query, endpoint)
     end
     
     redirect_to :action => 'show'
