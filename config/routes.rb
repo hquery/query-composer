@@ -3,6 +3,7 @@ QueryComposer::Application.routes.draw do
   resources :queries do
     member do
       post 'execute'
+      delete 'destroy'
     end
   end
   

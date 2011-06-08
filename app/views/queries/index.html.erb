@@ -13,6 +13,8 @@
     <td><%= link_to query.title, query_path(query.id) %></td>
     <td><%= query.description %></td>
     <td><%= query.status %></td>
+    <!--td>[<%= link_to 'x', query, :confirm => 'Are you sure you want to delete this query?', :method => :delete %>]</td-->
+    <td><%= button_to 'X', {:action=>'destroy', :id=>query.id}, :method=>:delete, :confirm=>'are you sure?' %></td>
   </tr>
 <% end %>
 </table>

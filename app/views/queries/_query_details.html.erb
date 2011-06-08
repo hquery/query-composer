@@ -4,6 +4,8 @@
   <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
   <tr><td valign='top'>Map Function</td><td><%= f.input_field :map, :as => :text, :disabled => @disabled %></td></tr>
   <tr><td valign='top'>Reduce Function</td><td><%= f.input_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
-  <tr><td></td><td><%= f.button :submit if !@disabled %></td></tr>
+  <tr><td></td><td><%= f.button :submit if !@disabled %>
+  <% if (not @query.id.nil?) %><%= link_to 'cancel', @query %><% else %><%= link_to 'cancel', queries_path %><% end %>
+  </td></tr>
 <% end %>
 </table>

@@ -29,6 +29,14 @@ class QueriesController < ApplicationController
     @query = Query.find(params[:id])
   end
   
+  def destroy
+    @query = Query.find(params[:id])
+    @query.destroy
+
+    redirect_to(queries_url)
+  end
+  
+  
   def update
     @query = Query.find(params[:id])
     @query.update_attributes!(params[:query])
