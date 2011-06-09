@@ -66,12 +66,13 @@ class QueriesController < ApplicationController
     @query = Query.find(params[:id])
     
     @query.endpoints.each do |endpoint|
+      filter = UploadIO.new(StringIO.new(@query.filter), 'application/json')
       map = UploadIO.new(StringIO.new(@query.map), 'application/javascript')
       reduce = UploadIO.new(StringIO.new(@query.reduce), 'application/javascript')
     
       endpoint.result = nil
       url = URI.parse endpoint.submit_url
-      multipart_request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce})
+      multipart_request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce, 'filter'=>filter})
       PollJob.submit(multipart_request, url, @query, endpoint)
     end
     
