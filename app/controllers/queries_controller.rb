@@ -62,6 +62,13 @@ class QueriesController < ApplicationController
     render :action => 'edit'
   end
   
+  def destroy_endpoint
+    @query = Query.find(params[:id])
+    endpoint = @query.endpoints.find(params[:endpoint][:id])
+    endpoint.destroy
+    render :action => 'edit'
+  end
+  
   def execute
     @query = Query.find(params[:id])
     

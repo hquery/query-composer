@@ -1,12 +1,12 @@
 <table>
   <tr align='left'><th>Name</th><th>Endpoint URL</th><th></th></tr>
   <% @query.endpoints.each do |endpoint| %>
-    <%= simple_form_for endpoint, :url => update_endpoint_query_path do |f| %>
       <tr>
-        <td><%= f.input_field :name %></td>
-        <td><%= f.input_field :submit_url %><%= f.hidden_field :id %></td>
-        <td><%= f.button :submit %></td>
-      </tr>
-    <% end %>
+	    <%= simple_form_for endpoint, :url => update_endpoint_query_path do |f| %>
+          <td><%= f.input_field :name %></td>
+          <td><%= f.input_field :submit_url %><%= f.hidden_field :id %></td>
+          <td><%= f.button :submit %></td>
+	    <% end %>
+	      <td><%= button_to 'X', {:action=>'destroy_endpoint', :id=>@query.id, "endpoint[id]"=>endpoint.id}, :method=>:delete, :confirm=>'are you sure?' %></td></tr>
   <% end %>
 </table>
