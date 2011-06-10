@@ -8,7 +8,7 @@ gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
 gem 'delayed_job_mongoid'
-gem 'pry'
+#gem 'pry'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
