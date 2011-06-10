@@ -1,21 +1,21 @@
 {
-  "expected_count": 20,
+  "expected_count": 0,
   "description" : "Count of patients by age range",
   "endpoints" : [ 
     { 
       "name" : "Endpoint1",
       "next_poll" : null,
-      "result" : { "count" : 10 },
+      "result" : null,
       "result_url" : null,
-      "status" : "Complete",
+      "status" : "Not Complete",
       "submit_url" : "http://127.0.0.1:3002/queues" 
     }, 
     { 
       "name" : "Endpoint2",
       "next_poll" : null,
-      "result" : { "count" : 10 },
+      "result" : null,
       "result_url" : null,
-      "status" : "Complete",
+      "status" : "Not Complete",
       "submit_url" : "http://127.0.0.1:3001/queues" 
     }
   ],

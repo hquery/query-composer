@@ -8,11 +8,16 @@ class VendorTest < ActiveSupport::TestCase
 
   test "Aggregation" do
     queries = Query.all.to_a
-    assert queries.size==1
-    query = queries[0]
-    PollJob.aggregate query
-    assert query.aggregate_result != nil
-    assert query.aggregate_result['count'] == 20
+    assert queries.size==3
+    queries.each do |query|
+      PollJob.aggregate query
+      if query['expected_count']!=0
+        assert query.aggregate_result != nil
+        assert query.aggregate_result['count'] == query['expected_count']
+      else
+        assert query.aggregate_result == nil
+      end
+    end
   end
 
 end
