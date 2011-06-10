@@ -1,0 +1,25 @@
+{
+  "description" : "Count of patients by age range",
+  "endpoints" : [ 
+    { 
+      "name" : "Endpoint1",
+      "next_poll" : null,
+      "result" : { "count" : 10 },
+      "result_url" : null,
+      "status" : "Complete",
+      "submit_url" : "http://127.0.0.1:3002/queues" 
+    }, 
+    { 
+      "name" : "Endpoint2",
+      "next_poll" : null,
+      "result" : { "count" : 10 },
+      "result_url" : null,
+      "status" : "Complete",
+      "submit_url" : "http://127.0.0.1:3001/queues" 
+    }
+  ],
+  "filter" : "",
+  "map" : "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}",
+  "reduce" : "function(key, values) {\r\n  var total = {\"count\": 0};\r\n  var length = values ? values.length : 0;\r\n  for (var i=0;i<length;i++) {\r\n    total.count+=values[i].count;\r\n  }\r\n  return total;\r\n}",
+  "title" : "Patients by Age" 
+}
