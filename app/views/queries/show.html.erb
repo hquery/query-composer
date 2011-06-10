@@ -2,9 +2,9 @@
 <table>
   <tr><th align='left'>Title</th><td><%= @query.title %></td></tr>
   <tr><th align='left'>Description</th><td><%= @query.description %></td></tr>
-  <tr><th  align='left'>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
-  <tr><th  align='left' valign='top'>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
-  <tr><th  align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
+  <tr><th align='left'>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
+  <tr><th align='left' valign='top'>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
+  <tr><th align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
   <tr>
     <th  align='left' valign='top'>Endpoints</th>
     <td>
@@ -17,17 +17,20 @@
           <th align='left'>Result</th>
         </tr>
         <% @query.endpoints.each do |endpoint| %>
-          <tr>
+          <tr valign='top'>
             <td><%= endpoint.submit_url %></td>
             <td><%= endpoint.status %></td>
             <td><%= endpoint.next_poll %></td>
             <td><%= endpoint.result_url %></td>
-            <td><%= endpoint.result %></td>
+            <td><pre><%= JSON.pretty_generate(endpoint.result) if endpoint.result %></pre></td>
           </tr>
         <% end %>
       </table>
     </td>
-  </tr
+  </tr>
+  <% if @query.aggregate_result %>
+  <tr><th align='left' valign='top'>Aggregate Result</th><td><pre><%= JSON.pretty_generate(@query.aggregate_result) %></pre></td></tr>
+  <% end %>
   <tr>
     <td></td>
     <td>
@@ -35,6 +38,7 @@
         <tr>
           <td><%= button_to 'Edit', {:action=>'edit', :id=>@query.id}, :method=>:get %></td>
           <td><%= button_to 'Execute', {:action=>'execute', :id=>@query.id} %></td>
+          <td><%= button_to 'Aggregate', {:action=>'aggregate', :id=>@query.id} %></td>
         </tr>
       </table>
     </td>

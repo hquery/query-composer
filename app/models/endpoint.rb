@@ -7,5 +7,5 @@ class Endpoint
   field :submit_url, type: String
   field :result_url, type: String
   field :next_poll, type: Integer
-  field :result, type: String
+  field :result, type: Hash
 end

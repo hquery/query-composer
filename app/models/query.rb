@@ -8,4 +8,5 @@ class Query
   field :map, type: String
   field :reduce, type: String
   field :status, type: String
+  field :aggregate_result, type: Hash
 end

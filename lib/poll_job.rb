@@ -20,7 +20,7 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
         case result
         when Net::HTTPSuccess
           endpoint.status = 'Complete'
-          endpoint.result = result.body
+          endpoint.result = JSON.parse(result.body)
           endpoint.next_poll = nil
           endpoint.result_url = nil
           
