@@ -63,6 +63,7 @@ class QueriesController < ApplicationController
   end
   
   def destroy_endpoint
+    # remove the endpoint
     @query = Query.find(params[:id])
     endpoint = @query.endpoints.find(params[:endpoint][:id])
     endpoint.destroy
