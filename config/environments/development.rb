@@ -30,6 +30,6 @@ QueryComposer::Application.configure do
 #      IRB = Pry
 #    rescue LoadError
 #    end
-  end
+#  end
 end
 
