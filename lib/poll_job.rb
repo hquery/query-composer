@@ -70,12 +70,11 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
       :out => {:inline => true}, :query => {:_id => query.id})
     results = response['results']
     if results
-      result = results[0]
-      if result
-        value = result['value']
-        query.aggregate_result = value
-        query.save!
+      query.aggregate_result = {}
+      results.each do |result|
+        query.aggregate_result[result['_id']] = result['value']
       end
+      query.save!
     end
   end
   
@@ -83,10 +82,14 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
     <<END_OF_FN
     function() {
       var query = this;
-      for(var i=0;i<query.endpoints.length;i++) {
+      for(var i in query.endpoints) {
         var endpoint = query.endpoints[i];
         if (endpoint.status=="Complete") {
-          emit(null, endpoint.result);
+          for(var key in endpoint.result) {
+            if (key != "_id") {
+              emit(key, endpoint.result[key]);
+            }
+          }
         }
       }
     }
