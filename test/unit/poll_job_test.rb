@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class VendorTest < ActiveSupport::TestCase
+class PollJobTest < ActiveSupport::TestCase
 
   setup do
     collection_fixtures('queries')

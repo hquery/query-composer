@@ -5,11 +5,34 @@ The query composer is a web based application that provides the front end for cr
 Those queries are executed against the query gateway which exposes a query API, accepts queries, runs those queries against the patient data,
 and returns the results of the query back to the query composer.
 
-Common setup requirements
+Summary of Steps OSX and LINUX
+	1. Install Ruby
+	2. Update Gems
+	3. Install Git
+	4. Install Mongo
+	5. Create clone of repositories
+	6. Populate Data
+	7. Start Application
+
+Summary of Steps for Windows
+	1w. Download and install Railsinstaller
+	2. Update Gems
+	3. Install Git (this step is not necessary if Railsinstaller used)
+	4. Install Mongo
+	5w. Create Clone of repositories
+	6. Populate Data
+	7w. Start Application
+	
+****************************************************
+
+Common setup requirements for OSX and LINUX
   install ruby 1.9.2 or later
   install bundler 1.0.14 or later
+  
+****************************************************
 
-Ruby installation process
+1.	Ruby installation process for OSX and LINUX
+  
   Ruby should be installed via RVM (Ruby Version Manager) when available. Details on rvm can be found at https://rvm.beginrescueend.com/ including
   installation instructions.  The basic install procedure for RVM is as follows:
      
@@ -21,8 +44,6 @@ Ruby installation process
         rvm install 1.9.2
         rvm use 1.9.2
 
-    WINDOWS
-	See "getting ruby directly" below
     LINUX
        open a terminal and run
          apt-get install ruby rubygems
@@ -38,47 +59,130 @@ Getting Ruby Directly
     http://www.ruby-lang.org/en/downloads/
 
     The rails installer may be helpful under windows.
+ 
+****************************************************
+
+1w. WINDOWS - Download and install Railsinstaller
+    
+    a)	From cmd prompt issue following command
+    set HTTP_proxy=http://gatekeeper.mitre.org:80
+    
+    b) download and install railsinstaller
     
     http://railsinstaller.org/
-
-    It looks like the rails installer will install rails 3.0.7 (hopefully this will be resolved when bundle install is run below)
+	 Packages included in version 1.1.1 are: 
+		Ruby 1.8.7-p334
+		Rails 3.0.7
+		Git 1.7.3.1
+		Sqlite 3.7.3
+		TinyTDS 0.4.5
+		SQL Server support 3.0.14
+		DevKit
+	Follow the included directions and these packages should be successfully installed.
+	
+    c) download rubyinstaller-1.9.2-p180 to update the version of ruby
+        available: http://rubyinstaller.org/downloads/
+       1. install the ruby 1.9.2 installer
+       2. after install is complete open the windows control panel, and open system, then select the "Advanced" tab
+       3. click the environment variables button
+       4. under system variables, find PATH.  Click edit, and add C:\Ruby192\bin; (make sure you have the trailing ';') to the BEGINNING of the path value
+       5. restart your command prompt and type ruby -v to verify the version reports 1.9.2p180
+       6. note, you will likely need to run set HTTP_proxy=http://gatekeeper.mitre.org:80 in the new prompt unless it's been set system wide
+    d) install the ruby dev kit, also avaialble at
+        http://rubyinstaller.org/downloads/
+       The dev kit will allow building native gems.
+       1. near the bottom of the page you should see a link for the dev kit
+         DevKit-tdm-32-4.5.1-20101214-1400-sfx.exe
+       2. If you don't have MinGW installed, install it to c:/MinGW
+          available: http://sourceforge.net/projects/mingw/files/Automated%20MinGW%20Installer/mingw-get-inst/
+          install all components when prompted
+       3. Running this exe will extract the contents.  You should extract the contents to c:\DevKit
+       4. open a command prompt to the DevKit directory and run "ruby dk.rb init"
+       5. Veryify the new file config.yml contains a reference to Ruby192
+       6. run "ruby dk.rb install"
+       7.Next you will want to run pi.bat in the postinstall directory 
     
+****************************************************
 
   ** MAYBE SOMETHING ABOUT JRUBY? **
 
+****************************************************
+2.  Gem Update
+
 Bundler install process
+   Install ruby gems from:
+     http://rubygems.org/pages/download
+       1. download zip file
+       2. unzip zip file
+       3. in unzipped rubygems directory, run "ruby setup.rb"
+
+
    Bundler (http://gembundler.com/) is a Ruby Gem (http://en.wikipedia.org/wiki/RubyGems) that is used to manager the dependencies of a ruby application.  
 
    The bundler gem can be installed by running the following command in the terminal once ruby has been installed.
-     gem install bundler
+   
+   $  gem install bundler
+
+*****************************************************
 
 Getting the latest released version
 
    ** POINTER TO WHERE WE'RE GOING TO PUT RELEASED ARCHIVES **
 
 Getting the latest source code (skip to "Installing Mongo" if you are using the latest stable release)
+	
 
-Installing GIT
-   In order to get access to the source code, you will require git.  If you do not already have git, it can be installed by following the directions at:
-     http://git-scm.com/download
+****************************************************
+
+3.	Installing GIT
+
+	NOTE FOR WINDOWS:  If you installed from the railsinstaller git will be installed so this step will not be needed
+
+	In order to get access to the source code, you will require git.  If you do not already have git, it can be installed by following the directions at:
+
+	http://git-scm.com/download
 
    ** MAYBE GITHUB SPECIFIC INSTRUCTIONS ONCE IT'S THERE **
-
-Getting the Code
    
-   ** MAYBE GITHUB SPECIFIC INSTRUCTIONS ONCE IT'S THERE **
 
-Installing MongoDB
+******************************************************
+
+4.	Installing MongoDB
+
    The reference implementation uses a database called MongoDB (http://www.mongodb.org/).  
    In order to run the reference implementation, MongoDB must be installed.
    MongoDB installers for most operating systems can be found at:
      http://www.mongodb.org/downloads
 
-Populating example data
+******************************************************
+
+5.	Getting the Code
+   
+   ** MAYBE GITHUB SPECIFIC INSTRUCTIONS ONCE IT'S THERE **
+
+******************************************************
+5w.	WINDOWS - Getting the Code 
+
+Register with Gitorious
+Request to be added to project
+
+From GitBash
+
+$ git clone <repository> <cloned repository name>
+
+for example:  git clone ..................
+
+
+******************************************************
+
+6.	Populating example data
    
    ** Need example data and probably a script to populate it **
+   
 
-Starting the Application
+******************************************************
+
+7.	Starting the Application
 
    In a terminal, change directory to the query-composer directory
    run:
@@ -90,6 +194,30 @@ Starting the Application
    run:
      bundle install
      bundle exec delayed_job start
+     bundle exec rails server -p 3001
+     
+In a browser open the URL: http://localhost:3000/queries/
+
+******************************************************
+
+7w.	WINDOWS - Starting the Application
+
+verify gemfile has the following line:
+gem "bson_ext", "~> 1.3", :platforms => :mri
+
+verify bson_ext and mongo gems have same version.
+
+   In a terminal, change directory to the query-composer directory
+   run:
+     gem install bson_ext
+     bundle install
+     bundle exec ruby script/delayed_job run
+     bundle exec rails server
+
+   In a second terminam, change directory to the query-gateway directory
+   run:
+     bundle install
+     bundle exec ruby script/delayed_job run
      bundle exec rails server -p 3001
      
 In a browser open the URL: http://localhost:3000/queries/
