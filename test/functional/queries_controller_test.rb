@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class QueriesControllerTest < ActionController::TestCase
+  
+  setup do
+    @ids = collection_fixtures('queries')
+  end
+  
   test "should get index" do
     get :index
     assert_response :success
@@ -8,6 +13,97 @@ class QueriesControllerTest < ActionController::TestCase
 
   test "should get new" do
     get :new
+    assert_response :success
+  end
+
+  test "should create query" do
+    post :create, query: { title: 'Some title', description: "Some description"}
+    query = assigns(:query)
+    assert_not_nil query
+    query_from_db = Query.find(query.id)
+    assert_not_nil query_from_db
+    assert_equal query.title, 'Some title'
+    assert_equal query.title, query_from_db.title
+    assert_not_nil query_from_db.endpoints
+    assert_equal 1, query_from_db.endpoints.length
+    assert_redirected_to(query_path(query.id))
+  end
+
+  test "should update query" do
+    query_from_db = Query.find(@ids[0])
+    assert_not_equal query_from_db.title, 'Some title'
+    post :update, id: @ids[0], query: { title: 'Some title', description: "Some description"}
+    query = assigns(:query)
+    assert_not_nil query
+    query_from_db = Query.find(query.id)
+    assert_not_nil query_from_db
+    assert_equal query_from_db.title, 'Some title'
+    assert_equal query.title, 'Some title'
+    assert_response :success
+  end
+
+  test "should get show" do
+    get :show, id: @ids[0]
+    query = assigns(:query)
+    assert_equal @ids[0], query.id
+    assert_response :success
+  end
+
+  test "should get edit" do
+    get :edit, id: @ids[0]
+    query = assigns(:query)
+    assert_equal @ids[0], query.id
+    assert_response :success
+  end
+
+  test "should destroy query" do
+    delete :destroy, id: @ids[0]
+    query = assigns(:query)
+    assert_equal @ids[0], query.id
+    assert (not Query.exists? :conditions => {id: @ids[0]})
+    assert_redirected_to(queries_url)
+  end
+
+  test "should destroy endpoint" do
+    query_from_db = Query.find(@ids[1])
+    num_endpoints = query_from_db.endpoints.length
+    id_to_delete = query_from_db.endpoints[0].id
+    delete :destroy_endpoint, id: query_from_db.id, endpoint: {id: id_to_delete}
+    query = assigns(:query)
+    assert_equal @ids[1], query.id
+    query_from_db = Query.find(@ids[1])
+    assert (query_from_db.endpoints.select {|endpoint| endpoint.id == id_to_delete}).empty?
+    assert_equal num_endpoints-1, query_from_db.endpoints.length
+    assert_response :success
+  end
+
+  test "should update endpoint" do
+    query_from_db = Query.find(@ids[1])
+    endpoint = query_from_db.endpoints[0]
+    assert_not_equal 'modified url', endpoint.submit_url
+    put :update_endpoint, id: query_from_db.id, endpoint: {id: endpoint.id, submit_url: 'modified url'}
+    query = assigns(:query)
+    assert_equal @ids[1], query.id
+    query_from_db = Query.find(@ids[1])
+    updated_endpoint = (query_from_db.endpoints.select {|e| e.id == endpoint.id})[0]
+    assert_equal 'modified url', updated_endpoint.submit_url
+    assert_response :success
+  end
+
+  test "should add endpoint" do
+    query_from_db = Query.find(@ids[1])
+    existing_ids = query_from_db.endpoints.collect {|endpoint| endpoint.id}
+    post :add_endpoint, id: query_from_db.id
+    query = assigns(:query)
+    assert_equal @ids[1], query.id
+    query_from_db = Query.find(@ids[1])
+    assert_equal existing_ids.length + 1, query_from_db.endpoints.length
+    new_endpoint = (query_from_db.endpoints.select {|endpoint| (not existing_ids.include? endpoint.id) })[0]
+    assert_equal 'Default Local Queue', new_endpoint.name
+    assert_equal 'http://localhost:3001/queues', new_endpoint.submit_url
+    assert_nil new_endpoint.result_url
+    assert_nil new_endpoint.next_poll
+    assert_nil new_endpoint.result
     assert_response :success
   end
 
