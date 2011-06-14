@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
-gem 'rake', '~> 0.8.7'
+gem 'rails', '3.1.0.rc1'
+#gem 'rake', '~> 0.8.7'
 gem 'bson_ext', :platforms => :mri
 gem "mongoid", "~> 2.0"
 gem 'simple_form'
@@ -12,7 +12,6 @@ gem 'delayed_job_mongoid'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -29,6 +28,12 @@ gem 'delayed_job_mongoid'
 # gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
+
+group :test do
+  # Pretty printed test output
+  gem 'turn', :require => false
+  gem 'cover_me', '>= 1.0.0.rc6'
+end
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
