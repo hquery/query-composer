@@ -7,6 +7,7 @@ QueryComposer::Application.routes.draw do
       put 'update_endpoint'
       post 'add_endpoint'
       delete 'destroy_endpoint'
+      get 'log'
     end
   end
   

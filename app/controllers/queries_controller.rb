@@ -8,6 +8,10 @@ class QueriesController < ApplicationController
     @queries = Query.all
   end
 
+  def log
+    @events = Event.all(:conditions => {:query => params[:id]})
+  end
+  
   def new
     @query = Query.new
   end
@@ -36,7 +40,6 @@ class QueriesController < ApplicationController
 
     redirect_to(queries_url)
   end
-  
   
   def update
     @query = Query.find(params[:id])

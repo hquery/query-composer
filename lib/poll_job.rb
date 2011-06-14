@@ -1,6 +1,13 @@
 require 'net/http'
+require 'query_logger'
 
 class PollJob < Struct.new(:query_id, :endpoint_id)
+  
+  @@logger = nil
+  
+  def self.logger
+    @@logger ||= QueryLogger.new
+  end
   
   # Called by the Delayed Job worker, poll the specified endpoint and process
   # the response
@@ -18,15 +25,14 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
   # triggers aggregation.
   def self.submit(request, url, query, endpoint)
     begin
-      puts "Starting #{url}"
+      logger.add(query, "Starting #{request.method} #{url}")
       Net::HTTP.start(url.host, url.port) do |http|
-        puts "Requesting #{url}"
         result = http.request(request)
-        puts "Finished #{url}"
         case result
         when Net::HTTPSuccess
           endpoint.status = 'Complete'
           endpoint.result = JSON.parse(result.body)
+          logger.add(query, "Complete", {:result => endpoint.result})
           endpoint.next_poll = nil
           endpoint.result_url = nil
           
@@ -34,15 +40,23 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
           endpoint.status = 'Queued'
           endpoint.result_url = result['location']
           endpoint.next_poll = result['retry_after'] ? result['retry_after'].to_i : 5
+          logger.add(query, "Queued", {:next_poll => endpoint.next_poll, :poll_url => endpoint.result_url})
           Delayed::Job.enqueue(PollJob.new(query.id.to_s, endpoint.id.to_s), 
             :run_at=>endpoint.next_poll.seconds.from_now)
           
         else
-          endpoint.status = result.message #'Failed'
+          logger.add(query, "Failed", {:error => "#{result.message}"})
+          endpoint.status = result.message
+          endpoint.result_url = nil
+          endpoint.next_poll = nil
+          
         end
       end
     rescue Exception => ex
+      logger.add(query, "Failed", {:error => "#{ex.to_s}"})
       endpoint.status = ex.to_s
+      endpoint.result_url = nil
+      endpoint.next_poll = nil
     end
 
     endpoint.save!
