@@ -177,7 +177,7 @@ for example:  git clone ..................
 
 6.	Populating example data
    
-   ** Need example data and probably a script to populate it **
+   Sample patient is added to the query gateway database in step 7
    
 
 ******************************************************
@@ -190,9 +190,10 @@ for example:  git clone ..................
      bundle exec delayed_job start
      bundle exec rails server
 
-   In a second terminam, change directory to the query-gateway directory
+   In a second terminal, change directory to the query-gateway directory
    run:
      bundle install
+     bundle exec rake db:seed
      bundle exec delayed_job start
      bundle exec rails server -p 3001
      
@@ -217,6 +218,7 @@ verify bson_ext and mongo gems have same version.
    In a second terminam, change directory to the query-gateway directory
    run:
      bundle install
+     bundle exec delayed_job start
      bundle exec ruby script/delayed_job run
      bundle exec rails server -p 3001
      
