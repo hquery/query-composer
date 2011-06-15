@@ -22,14 +22,39 @@
             <td><%= endpoint.status %></td>
             <td><%= endpoint.next_poll %></td>
             <td><%= endpoint.result_url %></td>
-            <td><pre><%= JSON.pretty_generate(endpoint.result) if endpoint.result %></pre></td>
+            <td>
+            <% if endpoint.result %>
+              <table>
+                <% endpoint.result.each do |key, value| %>
+                <% next if key=='_id' %>
+                <tr>
+                  <td><code><%= key %>:</code></td>
+                  <td><code><%= jsonify(value) %></code></td>
+                </tr>
+                <% end %>
+              </table>
+            <% end %>
+            </td>
           </tr>
         <% end %>
       </table>
     </td>
   </tr>
   <% if @query.aggregate_result %>
-  <tr><th align='left' valign='top'>Aggregate Result</th><td><pre><%= JSON.pretty_generate(@query.aggregate_result) %></pre></td></tr>
+  <tr>
+    <th align='left' valign='top'>Aggregate Result</th>
+    <td>
+      <table>
+        <% @query.aggregate_result.each do |key, value| %>
+        <% next if key=='_id' %>
+        <tr>
+          <td><code><%= key %>:</code></td>
+          <td><code><%= jsonify(value) %></code></td>
+        </tr>
+        <% end %>
+      </table>
+    </td>
+  </tr>
   <% end %>
   <tr>
     <td></td>
