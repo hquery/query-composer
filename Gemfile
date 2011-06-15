@@ -14,4 +14,5 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
   gem 'cover_me', '>= 1.0.0.rc6'
+  gem 'fakeweb'
 end

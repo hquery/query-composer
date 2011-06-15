@@ -80,15 +80,8 @@ class QueriesController < ApplicationController
     end
     @query.save!
     
-    @query.endpoints.each do |endpoint|
-      filter = UploadIO.new(StringIO.new(@query.filter), 'application/json')
-      map = UploadIO.new(StringIO.new(@query.map), 'application/javascript')
-      reduce = UploadIO.new(StringIO.new(@query.reduce), 'application/javascript')    
-      url = URI.parse endpoint.submit_url
-      multipart_request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce, 'filter'=>filter})
-      PollJob.submit(multipart_request, url, @query, endpoint)
-    end
-    
+    PollJob.submit_all(@query)
+        
     redirect_to :action => 'show'
   end
   

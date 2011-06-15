@@ -20,11 +20,30 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
     PollJob.submit(request, url, query, endpoint)
   end
   
+  # Loop through all the endpoints and submit each one in turn
+  def self.submit_all(query)
+
+    # build the multi-part elements for the request
+    filter = UploadIO.new(StringIO.new(query.filter), 'application/json')
+    map = UploadIO.new(StringIO.new(query.map), 'application/javascript')
+    reduce = UploadIO.new(StringIO.new(query.reduce), 'application/javascript')
+    
+    query.endpoints.each do |endpoint|
+      # get the endpoint url and build the request
+      url = URI.parse endpoint.submit_url
+      request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce, 'filter'=>filter})
+      
+      submit(request, url, query, endpoint)
+    end    
+  end
+  
   # Submit a HTTP request and process the results according to the
   # hQuery protocol. Redirects cause a new poll to be scheduled, success
   # triggers aggregation.
   def self.submit(request, url, query, endpoint)
+    
     begin
+      
       logger.add(query, "Starting #{request.method} #{url}")
       Net::HTTP.start(url.host, url.port) do |http|
         result = http.request(request)
@@ -39,10 +58,9 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
         when Net::HTTPRedirection
           endpoint.status = 'Queued'
           endpoint.result_url = result['location']
-          endpoint.next_poll = result['retry_after'] ? result['retry_after'].to_i : 5
+          endpoint.next_poll = result['retry-after'] ? result['retry-after'].to_i : 5
           logger.add(query, "Queued", {:next_poll => endpoint.next_poll, :poll_url => endpoint.result_url})
-          Delayed::Job.enqueue(PollJob.new(query.id.to_s, endpoint.id.to_s), 
-            :run_at=>endpoint.next_poll.seconds.from_now)
+          Delayed::Job.enqueue(PollJob.new(query.id.to_s, endpoint.id.to_s), :run_at=>endpoint.next_poll.seconds.from_now)
           
         else
           logger.add(query, "Failed", {:error => "#{result.message}"})

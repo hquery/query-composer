@@ -106,5 +106,45 @@ class QueriesControllerTest < ActionController::TestCase
     assert_nil new_endpoint.result
     assert_response :success
   end
+  
+  test "should execute query" do
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "FORCE ERROR")
+    query_from_db = Query.find(@ids[2])
+    post :execute, id: @ids[2]
+    query = assigns(:query)
+    assert_not_nil query
+    query_from_db = Query.find(@ids[2])
+    
+    # make sure results got cleared out
+    assert_nil query_from_db.aggregate_result
+    query_from_db.endpoints.each do |endpoint|
+      assert_nil endpoint.result
+    end
+    
+    assert_equal "POST", FakeWeb.last_request.method
+    assert_equal "multipart/form-data", FakeWeb.last_request.content_type
+    
+    multipart_data = FakeWeb.last_request.body_stream.read
+    
+    assert_equal 1, (multipart_data.scan /name="map"/).length
+    assert_equal 1, (multipart_data.scan /name="reduce"/).length
+    assert_equal 1, (multipart_data.scan /name="filter"/).length
+    
+    assert_redirected_to(query_path(query.id))
+    
+  end
+  
+  test "log displays query log" do
+    query_from_db = Query.find(@ids[1])
+    query_logger = QueryLogger.new
+    query_logger.add query_from_db, "test message"
+    
+    get :log, id: @ids[1]
+    
+    events = assigns[:events]
+    assert_not_nil events
+    assert "test message", events.last[:message]
+  end
+  
 
 end
