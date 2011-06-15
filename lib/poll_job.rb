@@ -23,12 +23,13 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
   # Loop through all the endpoints and submit each one in turn
   def self.submit_all(query)
 
-    # build the multi-part elements for the request
-    filter = UploadIO.new(StringIO.new(query.filter), 'application/json')
-    map = UploadIO.new(StringIO.new(query.map), 'application/javascript')
-    reduce = UploadIO.new(StringIO.new(query.reduce), 'application/javascript')
-    
     query.endpoints.each do |endpoint|
+      # build the multi-part elements for the request
+      # need to do this inside the loop since UploadIO is single-use
+      filter = UploadIO.new(StringIO.new(query.filter), 'application/json')
+      map = UploadIO.new(StringIO.new(query.map), 'application/javascript')
+      reduce = UploadIO.new(StringIO.new(query.reduce), 'application/javascript')
+    
       # get the endpoint url and build the request
       url = URI.parse endpoint.submit_url
       request = Net::HTTP::Post::Multipart.new(url.path, {'map'=>map, 'reduce'=>reduce, 'filter'=>filter})
