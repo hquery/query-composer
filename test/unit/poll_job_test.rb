@@ -11,11 +11,11 @@ class PollJobTest < ActiveSupport::TestCase
     assert queries.size==3
     queries.each do |query|
       PollJob.aggregate query
-      if query['expected_count']!=0
+      if query['exected_count'] && query['expected_count']!=0
         assert query.aggregate_result != nil
-        assert query.aggregate_result['count'] == query['expected_count']
+        assert query.aggregate_result["null"]['count'] == query['expected_count']
       elsif query['expected_count'] == 0
-        assert query.aggregate_result == nil
+        assert query.aggregate_result.size == 0
       end
     end
   end

@@ -116,7 +116,7 @@ class QueriesControllerTest < ActionController::TestCase
     query_from_db = Query.find(@ids[2])
     
     # make sure results got cleared out
-    assert_nil query_from_db.aggregate_result
+    assert_equal ({}), query_from_db.aggregate_result
     query_from_db.endpoints.each do |endpoint|
       assert_nil endpoint.result
     end

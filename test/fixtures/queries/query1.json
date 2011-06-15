@@ -5,7 +5,7 @@
     { 
       "name" : "Endpoint1",
       "next_poll" : null,
-      "result" : { "count" : 10 },
+      "result" : {"null": {"count" : 10}},
       "result_url" : null,
       "status" : "Complete",
       "submit_url" : "http://127.0.0.1:3002/queues" 
@@ -13,7 +13,7 @@
     { 
       "name" : "Endpoint2",
       "next_poll" : null,
-      "result" : { "count" : 10 },
+      "result" : {"null": { "count" : 10}},
       "result_url" : null,
       "status" : "Complete",
       "submit_url" : "http://127.0.0.1:3001/queues" 
