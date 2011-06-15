@@ -2,6 +2,7 @@ require 'cover_me'
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'fakeweb'
 
 class ActiveSupport::TestCase
   def collection_fixtures(collection)
