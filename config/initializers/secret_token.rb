@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-QueryComposer::Application.config.secret_token = '6233995480025457914a037966e3d4485e48629c6724198b528fa2c8256a8efc8dc1be29a11be27b634d38dd61a230ee0ad51eee06a828992f6594061540adb6'
+QueryComposer::Application.config.secret_token = 'c2d1008133dc4679bcdefd83049d5f60e81a44293f0a16475d8da937c9479fc83620adf5ff9d8f5f7bbe52e832077ed7e86b4924a82083cbe475255124adc5c3'
