@@ -1,3 +1,9 @@
+GIT
+  remote: git://barrel.mitre.org/hquery/hquery-patientapi.git
+  revision: df5a5956f6da1f6f43b23de207bcfcba57e86761
+  specs:
+    hquery-patient-api (0.1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -139,6 +145,7 @@ DEPENDENCIES
   delayed_job
   delayed_job_mongoid
   fakeweb
+  hquery-patient-api!
   jquery-rails
   mongoid (~> 2.0)
   multipart-post

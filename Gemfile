@@ -18,6 +18,8 @@ gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
 gem 'delayed_job_mongoid'
+
+gem "hquery-patient-api", :git=>'git://barrel.mitre.org/hquery/hquery-patientapi.git'
 #gem 'pry'
 
 # To use debugger
