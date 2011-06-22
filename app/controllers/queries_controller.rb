@@ -3,6 +3,7 @@ require 'net/http/post/multipart'
 require 'poll_job'
 
 class QueriesController < ApplicationController
+  before_filter :authenticate_user!
 
   def index
     @queries = Query.all
@@ -84,5 +85,7 @@ class QueriesController < ApplicationController
         
     redirect_to :action => 'show'
   end
+  
+  private
   
 end

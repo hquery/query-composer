@@ -18,6 +18,7 @@ gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
 gem 'delayed_job_mongoid'
+gem 'devise'
 #gem 'pry'
 
 # To use debugger
@@ -29,4 +30,5 @@ group :test do
   gem 'cover_me', '>= 1.0.0.rc6'
   gem 'fakeweb'
   gem 'therubyracer'
+  gem 'factory_girl'
 end

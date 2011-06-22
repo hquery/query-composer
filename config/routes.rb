@@ -1,5 +1,7 @@
 QueryComposer::Application.routes.draw do
 
+  devise_for :users
+
   resources :queries do
     member do
       post 'execute'

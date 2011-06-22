@@ -8,11 +8,7 @@
 </head>
 <body>
 	
-welcome, <%=current_user.first_name if current_user %>
-
 <%= yield %>
-
-<%= link_to "logout", destroy_user_session_path %>
 
 </body>
 </html>

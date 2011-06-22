@@ -1,9 +1,20 @@
 require 'test_helper'
+include Devise::TestHelpers
 
 class QueriesControllerTest < ActionController::TestCase
   
   setup do
     @ids = collection_fixtures('queries')
+    
+    begin
+      user = Factory(:user) unless user
+    end
+    sign_in user
+  end
+  
+  teardown do
+      user = User.where({email: 'testuser@test.com'})[0]
+      user.destroy
   end
   
   test "should get index" do
