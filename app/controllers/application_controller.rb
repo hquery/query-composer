@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  load_and_authorize_resource
   
   layout :layout_by_resource
 
@@ -10,4 +11,9 @@ class ApplicationController < ActionController::Base
       "application"
     end
   end
+  
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
+  
 end

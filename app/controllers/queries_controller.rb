@@ -6,11 +6,12 @@ class QueriesController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @queries = Query.all
+    @queries = current_user.queries
+    #@queries = Query.all
   end
 
   def log
-    @events = Event.all(:conditions => {:query => params[:id]})
+    @events = Event.all(:conditions => {:query_id => params[:id]})
   end
   
   def new
@@ -23,6 +24,7 @@ class QueriesController < ApplicationController
     endpoint.name = 'Default Local Queue'
     endpoint.submit_url = 'http://localhost:3001/queues'
     @query.endpoints << endpoint
+    @query.user = current_user
     @query.save!
     redirect_to :action => 'show', :id=>@query.id
   end

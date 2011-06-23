@@ -3,7 +3,7 @@ require 'test_helper'
 class QueryLoggerTest < ActiveSupport::TestCase
 
   setup do
-    @ids = collection_fixtures('queries')
+    @ids = collection_fixtures('queries', nil)
   end
 
   test "Query Logger" do
@@ -14,7 +14,7 @@ class QueryLoggerTest < ActiveSupport::TestCase
     
     query_log = query_logger.log(query_from_db.id)
     assert_equal 1, query_log.length
-    assert_equal query_from_db.id, query_log[0]['query']
+    assert_equal query_from_db.id, query_log[0]['query_id']
     assert_equal 'test message', query_log[0]['message']
     assert_not_nil query_log[0]['time']
     

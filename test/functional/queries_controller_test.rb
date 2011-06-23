@@ -3,13 +3,11 @@ include Devise::TestHelpers
 
 class QueriesControllerTest < ActionController::TestCase
   
-  setup do
-    @ids = collection_fixtures('queries')
-    
-    begin
-      user = Factory(:user) unless user
-    end
-    sign_in user
+  setup  do 
+    @user_ids = setup_users()
+    @user = User.find(@user_ids[0])
+    sign_in @user
+    @ids = collection_fixtures('queries', @user)
   end
   
   teardown do

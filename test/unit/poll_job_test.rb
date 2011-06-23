@@ -3,7 +3,7 @@ require 'test_helper'
 class PollJobTest < ActiveSupport::TestCase
 
   setup do
-    @ids = collection_fixtures('queries')
+    @ids = collection_fixtures('queries', nil)
   end
 
   test "Aggregation" do
