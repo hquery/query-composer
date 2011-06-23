@@ -16,6 +16,9 @@
           <th align='left'>Poll URL</th>
           <th align='left'>Result</th>
         </tr>
+        <% 
+          #TODO: need to add AJAX refresh 
+        %>
         <% @query.endpoints.each do |endpoint| %>
           <tr valign='top'>
             <td><%= endpoint.submit_url %></td>

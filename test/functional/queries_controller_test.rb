@@ -11,6 +11,8 @@ class QueriesControllerTest < ActionController::TestCase
     @user_ids = [] << @user.id
     @ids = @user.queries.map {|q| q.id}
     
+    @new_endpoint = Factory(:endpoint)
+    
     sign_in @user
   end
   
@@ -21,6 +23,8 @@ class QueriesControllerTest < ActionController::TestCase
 
   test "should get new" do
     get :new
+    assert_not_nil assigns[:query]
+    assert_not_nil assigns[:endpoints]
     assert_response :success
   end
 
@@ -60,6 +64,7 @@ class QueriesControllerTest < ActionController::TestCase
     get :edit, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
+    assert_not_nil assigns[:endpoints]
     assert_response :success
   end
 
@@ -71,46 +76,30 @@ class QueriesControllerTest < ActionController::TestCase
     assert_redirected_to(queries_url)
   end
 
-  test "should destroy endpoint" do
-    query_from_db = Query.find(@ids[1])
-    num_endpoints = query_from_db.endpoints.length
-    id_to_delete = query_from_db.endpoints[0].id
-    delete :destroy_endpoint, id: query_from_db.id, endpoint: {id: id_to_delete}
+  test "should remove endpoint" do
+    query_from_db = Query.find(@ids[0])
+    assert_not_equal query_from_db.title, 'Some title'
+    assert_equal 2, query_from_db.endpoints.length
+    post :update, id: @ids[0], query: { title: 'Some title', description: "Some description", endpoint_ids: [query_from_db.endpoints[0].id] }
     query = assigns(:query)
-    assert_equal @ids[1], query.id
-    query_from_db = Query.find(@ids[1])
-    assert (query_from_db.endpoints.select {|endpoint| endpoint.id == id_to_delete}).empty?
-    assert_equal num_endpoints-1, query_from_db.endpoints.length
+    assert_not_nil query
+    query_from_db = Query.find(query.id)
+    assert_not_nil query_from_db
+    assert_equal 1, query_from_db.endpoints.length
     assert_response :success
-  end
-
-  test "should update endpoint" do
-    query_from_db = Query.find(@ids[1])
-    endpoint = query_from_db.endpoints[0]
-    assert_not_equal 'modified url', endpoint.submit_url
-    put :update_endpoint, id: query_from_db.id, endpoint: {id: endpoint.id, submit_url: 'modified url'}
-    query = assigns(:query)
-    assert_equal @ids[1], query.id
-    query_from_db = Query.find(@ids[1])
-    updated_endpoint = (query_from_db.endpoints.select {|e| e.id == endpoint.id})[0]
-    assert_equal 'modified url', updated_endpoint.submit_url
-    assert_response :success
+    
   end
 
   test "should add endpoint" do
-    query_from_db = Query.find(@ids[1])
-    existing_ids = query_from_db.endpoints.collect {|endpoint| endpoint.id}
-    post :add_endpoint, id: query_from_db.id
+    query_from_db = Query.find(@ids[0])
+    assert_not_equal query_from_db.title, 'Some title'
+    assert_equal 2, query_from_db.endpoints.length
+    post :update, id: @ids[0], query: { title: 'Some title', description: "Some description", endpoint_ids: [query_from_db.endpoints[0].id, query_from_db.endpoints[1].id, @new_endpoint.id] }
     query = assigns(:query)
-    assert_equal @ids[1], query.id
-    query_from_db = Query.find(@ids[1])
-    assert_equal existing_ids.length + 1, query_from_db.endpoints.length
-    new_endpoint = (query_from_db.endpoints.select {|endpoint| (not existing_ids.include? endpoint.id) })[0]
-    assert_equal 'Default Local Queue', new_endpoint.name
-    assert_equal 'http://localhost:3001/queues', new_endpoint.submit_url
-    assert_nil new_endpoint.result_url
-    assert_nil new_endpoint.next_poll
-    assert_nil new_endpoint.result
+    assert_not_nil query
+    query_from_db = Query.find(query.id)
+    assert_not_nil query_from_db
+    assert_equal 3, query_from_db.endpoints.length
     assert_response :success
   end
   

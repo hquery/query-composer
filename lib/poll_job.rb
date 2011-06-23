@@ -13,7 +13,7 @@ class PollJob < Struct.new(:query_id, :endpoint_id)
   # the response
   def perform()
     query = Query.find(BSON::ObjectId.from_string(query_id))
-    endpoint = query.endpoints.find(BSON::ObjectId.from_string(endpoint_id))
+    endpoint = Endpoint.find(BSON::ObjectId.from_string(endpoint_id))
 
     url = URI.parse endpoint.result_url
     request = Net::HTTP::Get.new(url.path)
