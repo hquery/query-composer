@@ -1,0 +1,24 @@
+<%= simple_form_for(@endpoint) do |f| %>
+  <%= f.error_notification %>
+
+  <%= f.hidden_field :id %>
+
+  <div class="inputs">
+
+    <table>
+	  <tr>
+		<td>name</td>
+		<td><%= f.input_field :name %></td>
+	  </tr>
+	  <tr>
+		<td>url</td>
+		<td><%= f.input_field :submit_url %></td>
+	  </tr>
+	</table>
+
+  </div>
+
+  <div class="actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

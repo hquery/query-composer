@@ -25,7 +25,14 @@ class Ability
     #
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
     
-    can :manage, Query, :user_id => user.id
-    can :manage, Event, :query => {:user_id => user.id}
+    user ||= User.new
+
+    if user.admin?
+      can :manage, :all
+    elsif user.id
+      can :manage, Query, :user_id => user.id
+      can :manage, Event, :query => {:user_id => user.id}
+    end
+
   end
 end

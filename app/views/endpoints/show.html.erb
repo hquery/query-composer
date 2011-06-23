@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <tr>
+	<td><b>name</b></td>
+	<td><%= @endpoint.name %></td>
+  </tr>
+  <tr>
+	<td><b>url</b></td>
+	<td><%= @endpoint.submit_url %></td>
+  </tr>
+</table>
+
+<%= link_to 'Edit', edit_endpoint_path(@endpoint) %> |
+<%= link_to 'Back', endpoints_path %>

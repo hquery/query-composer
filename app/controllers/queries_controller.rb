@@ -3,8 +3,10 @@ require 'net/http/post/multipart'
 require 'poll_job'
 
 class QueriesController < ApplicationController
-  before_filter :authenticate_user!
 
+  load_and_authorize_resource
+  before_filter :authenticate_user!
+  
   def index
     @queries = current_user.queries
     #@queries = Query.all

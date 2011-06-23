@@ -4,15 +4,14 @@ include Devise::TestHelpers
 class QueriesControllerTest < ActionController::TestCase
   
   setup  do 
-    @user_ids = setup_users()
-    @user = User.find(@user_ids[0])
+    
+    dump_database
+    
+    @user = Factory(:user_with_queries)
+    @user_ids = [] << @user.id
+    @ids = @user.queries.map {|q| q.id}
+    
     sign_in @user
-    @ids = collection_fixtures('queries', @user)
-  end
-  
-  teardown do
-      user = User.where({email: 'testuser@test.com'})[0]
-      user.destroy
   end
   
   test "should get index" do
@@ -34,7 +33,6 @@ class QueriesControllerTest < ActionController::TestCase
     assert_equal query.title, 'Some title'
     assert_equal query.title, query_from_db.title
     assert_not_nil query_from_db.endpoints
-    assert_equal 1, query_from_db.endpoints.length
     assert_redirected_to(query_path(query.id))
   end
 

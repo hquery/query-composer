@@ -1,15 +1,18 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   
   setup do
-    @user_ids = setup_users()
-    @user = User.find(@user_ids[0])
-    @ids = collection_fixtures('queries', @user)
-    @ids_not_owned = collection_fixtures('queries', nil, false)
+    
+    dump_database
+    
+    user = Factory(:user_with_queries)
+    @user_ids = [] << user.id
+    @ids = user.queries.map {|q| q.id}
+
+    @ids_not_owned = [] << Factory(:query).id
+    @ids_not_owned << Factory(:query).id
+    @ids_not_owned << Factory(:query).id
   end
   
   test "user queries returned" do

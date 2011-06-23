@@ -6,6 +6,7 @@ class User
 
   field :first_name, type: String
   field :last_name, type: String
+  field :admin?, type: Boolean
 
   has_many :queries
 

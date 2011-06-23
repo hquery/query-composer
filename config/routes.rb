@@ -1,5 +1,7 @@
 QueryComposer::Application.routes.draw do
 
+  resources :endpoints
+
   devise_for :users
 
   resources :queries do

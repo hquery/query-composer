@@ -1,9 +1,9 @@
 class Query
   include Mongoid::Document
-  embeds_many :endpoints, class_name: 'Endpoint', inverse_of: :query
   
   belongs_to :user
   has_many :events
+  has_and_belongs_to_many :endpoints
   
   field :title, type: String
   field :description, type: String

@@ -23,10 +23,15 @@ class ActiveSupport::TestCase
     ids
   end
   
-  def setup_users() 
-    MONGO_DB['users'].drop
-    @user = Factory(:user)
-    ids = []
-    ids.push @user.id
+  def dump_database
+    User.all.each {|x| x.destroy}
+    Query.all.each {|x| x.destroy}
+    Endpoint.all.each {|x| x.destroy}
+    Event.all.each {|x| x.destroy}
   end
+
+  def dump_jobs
+    Delayed::Job.destroy_all
+  end
+
 end

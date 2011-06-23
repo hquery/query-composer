@@ -1,6 +1,7 @@
 class Endpoint
   include Mongoid::Document
-  embedded_in :query, class_name: "Query", inverse_of: :endpoints
+
+  has_and_belongs_to_many :queries
   
   field :name, type: String
   field :status, type: String

@@ -3,12 +3,20 @@ require 'test_helper'
 class PollJobTest < ActiveSupport::TestCase
 
   setup do
-    @ids = collection_fixtures('queries', nil)
+    
+    dump_database
+    dump_jobs
+    
+    @user = Factory(:user_with_queries)
+    @ids = @user.queries.map {|q| q.id}
+    
+    @query_w_result = Factory(:query_with_result)
+    
   end
 
   test "Aggregation" do
     queries = Query.all.to_a
-    assert queries.size==3
+    assert queries.size==4
     queries.each do |query|
       PollJob.aggregate query
       if query['exected_count'] && query['expected_count']!=0
@@ -22,11 +30,11 @@ class PollJobTest < ActiveSupport::TestCase
 
   test "submit poll job and deal with success properly" do
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "{\"foo\" : \"bar\"}")
-    query_from_db = Query.find(@ids[2])
+    query_from_db = Query.find(@query_w_result.id)
 
     PollJob.submit_all(query_from_db)
 
-    query_from_db = Query.find(@ids[2])
+    query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.endpoints.each do |endpoint|
       assert_equal 'Complete', endpoint.status
@@ -41,7 +49,7 @@ class PollJobTest < ActiveSupport::TestCase
   end
 
   test "submit poll job and deal with redirect properly" do
-    query_from_db = Query.find(@ids[2])
+    query_from_db = Query.find(@query_w_result.id)
     FakeWeb.register_uri(:post, query_from_db.endpoints[0].submit_url, :status => ["302", "Found"], location: 'http://result_url/', "retry-after" => 15)
 
     Delayed::Job.destroy_all
@@ -49,7 +57,7 @@ class PollJobTest < ActiveSupport::TestCase
 
     PollJob.submit_all(query_from_db)
 
-    query_from_db = Query.find(@ids[2])
+    query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.endpoints.each do |endpoint|
       assert_equal 'Queued', endpoint.status
@@ -59,17 +67,18 @@ class PollJobTest < ActiveSupport::TestCase
       query_log = query_logger.log(query_from_db.id)
       assert_equal "Queued", query_log.last["message"]
     end
+    
     assert Delayed::Job.all.count == 1
 
   end 
 
   test "submit poll job and deal with error properly" do
-    query_from_db = Query.find(@ids[2])
+    query_from_db = Query.find(@query_w_result.id)
     FakeWeb.register_uri(:post, query_from_db.endpoints[0].submit_url, :status => ["500", "Internal Server Error"])
 
     PollJob.submit_all(query_from_db)
 
-    query_from_db = Query.find(@ids[2])
+    query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.endpoints.each do |endpoint|
       assert_equal "Internal Server Error", endpoint.status
@@ -86,16 +95,12 @@ class PollJobTest < ActiveSupport::TestCase
 
   test "Poll job run should poll properly when run" do
     FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queues", :body => "{\"foo\" : \"bar\"}")
-    query_from_db = Query.find(@ids[2])
-
-    # set the result url properly for poll
-    query_from_db.endpoints[0].result_url = 'http://127.0.0.1:3001/queues'
-    query_from_db.save!
+    query_from_db = Query.find(@query_w_result.id)
 
     poll_job = PollJob.new query_from_db.id.to_s, query_from_db.endpoints[0].id.to_s
     poll_job.perform
 
-    query_from_db = Query.find(@ids[2])
+    query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.endpoints.each do |endpoint|
       assert_equal 'Complete', endpoint.status
