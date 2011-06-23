@@ -3,7 +3,11 @@ require 'test_helper'
 class QueryLoggerTest < ActiveSupport::TestCase
 
   setup do
-    @ids = collection_fixtures('queries', nil)
+    dump_database
+    
+    @user = Factory(:user_with_queries)
+    @ids = @user.queries.map {|q| q.id}
+    
   end
 
   test "Query Logger" do
