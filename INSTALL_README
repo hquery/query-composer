@@ -65,7 +65,7 @@ Getting Ruby Directly
 1w. WINDOWS - Download and install Railsinstaller
     
     a)	From cmd prompt issue following command
-    set HTTP_proxy=http://gatekeeper.mitre.org:80
+    set HTTP_PROXY=http://gatekeeper.mitre.org:80
     
     b) download and install railsinstaller
     
