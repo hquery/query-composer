@@ -4,6 +4,9 @@ Factory.define :user do |u|
   u.sequence(:email) { |n| "testuser#{n}@test.com"} 
   u.password 'password' 
   u.password_confirmation 'password'
+  u.first_name 'first'
+  u.last_name 'last'
+  u.username 'testuser#{n}'
   u.admin? false 
 end
 
