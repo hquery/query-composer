@@ -87,7 +87,11 @@
           <% end -%>
         </td>
         <td>
+          <% if user.approved? -%>
           true
+          <% else -%>
+          <span class="approve" data-username="<%= user.username %>">approve</span>
+          <% end -%>
         </td>
         <td>
           <span class="remove" data-username="<%= user.username %>">remove</span>

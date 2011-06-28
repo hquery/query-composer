@@ -33,6 +33,8 @@ class EndpointsControllerTest < ActionController::TestCase
     assert_redirected_to endpoint_path(assigns(:endpoint))
   end
 
+
+
   test "should show endpoint" do
     get :show, id: @endpoint.to_param
     assert_response :success
@@ -55,4 +57,5 @@ class EndpointsControllerTest < ActionController::TestCase
 
     assert_redirected_to endpoints_path
   end
+  
 end
