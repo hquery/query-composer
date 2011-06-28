@@ -1,12 +1,32 @@
-<h2>Forgot your password?</h2>
-
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
 
-  <p><%= f.label :email %><br />
-  <%= f.email_field :email %></p>
+<div id="login">
+  <div id="cap-top"></div>
+  <div id="cap-body">
+    <div id="branding">
+	  <%= image_tag "logo_rough.jpg", :alt => "hQuery logo"%>
+    </div>
+    <div id="panelReset" class="panel">
 
-  <p><%= f.submit "Send me reset password instructions" %></p>
+      <h1>That's okay. Everyone forgets.</h1>
+      <p>Just tell us the email address you used to create your hQuery account, and we'll send you a link to reset your password!</p>
+      <br>
+      <div>
+        <label>Your Email Address</label>
+        <%= f.email_field :email %>
+      </div>
+
+      <div class="accountError">
+		  <%= devise_error_messages! %>
+      </div>
+
+      <div class="actions">
+        <a class="whitebutton" href="<%= new_session_path(resource_name) %>"><span>Cancel</span></a>
+        <a class="bluebutton" href="#" onclick="submitResetPasswordinform();" ><span>Continue</span></a>
+      </div>
+    </div>
+  </div>  
+  <div id="cap-bottom"></div>
+</div>
+
 <% end %>
-
-<%= render :partial => "devise/shared/links" %>

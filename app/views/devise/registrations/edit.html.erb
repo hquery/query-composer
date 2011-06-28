@@ -1,31 +1,65 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
+	<div id="login">
+	  <div id="cap-top"></div>
+	  <div id="cap-body">
+	    <div id="branding">
+		  <%= image_tag "logo_rough.jpg", :alt => "hQuery logo"%>
+	    </div>
+	    <div class="panel">
+	      <div class="accountError">
+			  <%= devise_error_messages! %>
+	      </div>
+	      <ul class="register">
+	        <li>
+	            <label for="first_name">Your First Name:</label>
+	            <%= f.text_field :first_name %>
+	        </li>
+	        <li>
+	            <label for="last_name">Your Last Name:</label>
+	            <%= f.text_field :last_name %>
+	        </li>
+	        <li>
+	            <label for="username">hQuery User Name:</label>
+	            <%= f.text_field :username %>
+	            <p>Must be at least 5 characters long.</p>
+	        </li>
+	        <li>
+	          <label for="email">Your Email Address:</label>
+	          <%= f.email_field :email %>
+	        </li>
+	        <li>
+	          <label for="password_confirmation">Current Password:</label>
+	          <%= f.password_field :current_password %>
+	        </li>
+	        <li></li>
+	        <li>
+	            <label for="password">New Password:</label>
+	            <%= f.password_field :password %>
+	            <p>Must be at least 5 characters long.</p>
+	        </li>
+	        <li>
+	          <label for="password_confirmation">Confirm New Password:</label>
+	          <%= f.password_field :password_confirmation %>
+	        </li>
+	        <li>
+	            <label for="company">Your Organization:</label>
+	            <%= f.text_field :company %>
+	        </li>
+	        <li>
+	            <label for="company_url">Your Organization URL:</label>
+	            <%= f.text_field :company_url %>
+	        </li>
+	
+	
+	      </ul>
 
-  <p><%= f.label :first_name %><br />
-  <%= f.email_field :first_name %></p>
-
-  <p><%= f.label :last_name %><br />
-  <%= f.email_field :last_name %></p>
-
-  <p><%= f.label :email %><br />
-  <%= f.email_field :email %></p>
-
-  <p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-  <%= f.password_field :password %></p>
-
-  <p><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></p>
-
-  <p><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-  <%= f.password_field :current_password %></p>
-
-  <p><%= f.submit "Update" %></p>
+	      <div class="actions">
+              <%= link_to(:back, class: "whitebutton") do %><span>Cancel</span><% end %>
+	          <a class="bluebutton" href="#" onclick="submitRegisterform();"><span>Update</span></a>
+	      </div>
+	    </div><!-- end div.panel -->
+	    </div><!-- end #cap-body -->
+	  <div id="cap-bottom"></div>
+	</div><!-- END #login -->
 <% end %>
 
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
-
-<%= link_to "Back", :back %>

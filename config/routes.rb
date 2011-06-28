@@ -1,8 +1,14 @@
 QueryComposer::Application.routes.draw do
 
-  resources :endpoints
-
   devise_for :users
+
+  get "admin/users"
+  post "admin/promote"
+  post "admin/demote"
+  post "admin/approve"
+  post "admin/destroy"
+
+  resources :endpoints
 
   resources :queries do
     member do

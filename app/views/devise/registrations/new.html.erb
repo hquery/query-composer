@@ -1,24 +1,67 @@
-<h2>Sign up</h2>
-
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
 
-  <p><%= f.label :first_name %><br />
-  <%= f.email_field :first_name %></p>
+<div id="login">
+  <div id="cap-top"></div>
+  <div id="cap-body">
+    <div id="branding">
+	  <%= image_tag "logo_rough.jpg", :alt => "hQuery logo"%>
+    </div>
+    <div class="panel">
+      <div class="accountError">
+		  <%= devise_error_messages! %>
+      </div>
+      <ul class="register">
+        <li>
+            <label for="first_name">Your First Name:</label>
+            <%= f.text_field :first_name %>
+        </li>
+        <li>
+            <label for="last_name">Your Last Name:</label>
+            <%= f.text_field :last_name %>
+        </li>
+        <li>
+            <label for="username">hQuery User Name:</label>
+            <%= f.text_field :username %>
+            <p>Must be at least 5 characters long.</p>
+        </li>
+        <li>
+          <label for="email">Your Email Address:</label>
+          <%= f.email_field :email %>
+        </li>
+        <li>
+            <label for="password">hQuery Password:</label>
+            <%= f.password_field :password %>
+            <p>Must be at least 5 characters long.</p>
+        </li>
+        <li>
+          <label for="password_confirmation">Confirm Password:</label>
+          <%= f.password_field :password_confirmation %>
+        </li>
+        <li>
+            <label for="company">Your Organization:</label>
+            <%= f.text_field :company %>
+        </li>
+        <li>
+            <label for="company_url">Your Organization URL:</label>
+            <%= f.text_field :company_url %>
+        </li>
+      </ul>
 
-  <p><%= f.label :last_name %><br />
-  <%= f.email_field :last_name %></p>
+      <p>legal license information...</p>
 
-  <p><%= f.label :email %><br />
-  <%= f.email_field :email %></p>
+      <div id="regcheckbox">
+          <%= f.check_box :agree_license %>
+          <label for="agree_license">I agree to the above Terms and Conditions of use</label>
+      </div>
+      
+      <div class="actions">
+          <a class="whitebutton" href="<%= new_session_path(resource_name) %>"><span>Cancel</span></a>
+          <a class="bluebutton" href="#" onclick="submitRegisterform();"><span>Create</span></a>
+      </div>
+    </div><!-- end div.panel -->
+    </div><!-- end #cap-body -->
+  <div id="cap-bottom"></div>
+</div><!-- END #login -->
 
-  <p><%= f.label :password %><br />
-  <%= f.password_field :password %></p>
-
-  <p><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></p>
-
-  <p><%= f.submit "Sign up" %></p>
 <% end %>
 
-<%= render :partial => "devise/shared/links" %>

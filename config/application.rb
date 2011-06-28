@@ -45,5 +45,8 @@ module QueryComposer
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    
+    # add devise views
+    paths.app.views << "app/views/devise"
   end
 end

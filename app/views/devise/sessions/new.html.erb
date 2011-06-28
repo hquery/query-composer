@@ -1,17 +1,43 @@
-<h2>Sign in</h2>
-
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <p><%= f.label :email %><br />
-  <%= f.email_field :email %></p>
+<div id="login">
+  <div id="cap-top"></div>
+  <div id="cap-body">
+    <div id="branding">
+	  <%= image_tag "logo_rough.jpg", :alt => "hQuery logo"%>
+    </div>
+    <div id="panelLogin" class="panel">
+      <div class="accountError">
+		  <%= devise_error_messages! %>
+      </div>
+	  <%= f.label :username %>
+	  <%= f.text_field :username %>
+	  <%= f.label :password %>
+	  <%= f.password_field :password, onkeypress: "return submitKeyPress(event);" %>
 
-  <p><%= f.label :password %><br />
-  <%= f.password_field :password %></p>
+	  <% if devise_mapping.rememberable? -%>
+      <div id="remembercheckbox">
+	    <%= f.check_box :remember_me %> <%= f.label :remember_me %>
+      </div>
+	  <% end -%>
 
-  <% if devise_mapping.rememberable? -%>
-    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
-  <% end -%>
+      <div class="actions">
+        <a class="bluebutton" href="#" onclick="submitLoginform();"><span>Login</span></a>
+      </div>
 
-  <p><%= f.submit "Sign in" %></p>
+      <div class="links">
+        <%= render :partial => "devise/shared/links" %>
+      </div>
+
+      <div class="links info">
+          hQuery v0.1<br>
+          <a href="http://www.hhs.gov/healthit/">Office of the National Coordinator for Health Information Technology</a> |
+          <a href="http://www.mitre.org" target="_blank">MITRE</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="cap-bottom"></div>
+</div><!-- END #login -->
+
 <% end %>
 
-<%= render :partial => "devise/shared/links" %>
