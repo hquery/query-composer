@@ -47,6 +47,6 @@ module QueryComposer
     config.assets.enabled = true
     
     # add devise views
-    paths.app.views << "app/views/devise"
+    config.paths["app/views/devise"] 
   end
 end
