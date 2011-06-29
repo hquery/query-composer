@@ -215,10 +215,15 @@ verify bson_ext and mongo gems have same version.
      bundle exec ruby script/delayed_job run
      bundle exec rails server
 
-   In a second terminam, change directory to the query-gateway directory
+   In a second terminal, change directory to the query-gateway directory
    run:
      bundle install
-     bundle exec delayed_job start
+   The gem nokogiri is set at version 1.4.4 but has an error on Windows.
+   To get around this, update to 1.4.4.1 and remove 1.4.4:
+     gem install nokogiri -v=1.4.4.1
+	 gem uninstall nokogiri -v=1.4.4
+	 
+   Finish starting the application by running:
      bundle exec ruby script/delayed_job run
      bundle exec rails server -p 3001
      
