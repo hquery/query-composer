@@ -13,6 +13,7 @@ class UserTest < ActiveSupport::TestCase
     @ids_not_owned = [] << Factory(:query).id
     @ids_not_owned << Factory(:query).id
     @ids_not_owned << Factory(:query).id
+    
   end
   
   test "user queries returned" do
@@ -29,4 +30,5 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 6, Query.all.length
     
   end
+  
 end

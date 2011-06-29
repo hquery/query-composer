@@ -13,15 +13,33 @@ class QueriesControllerTest < ActionController::TestCase
     
     @new_endpoint = Factory(:endpoint)
     
-    sign_in @user
+    @unattached_query = Factory(:query)
+    
+    @admin = Factory(:admin)
+    
+    @unapproved_user = Factory(:unapproved_user)
+    
   end
   
   test "should get index" do
+    sign_in @user
     get :index
+    queries = assigns[:queries]
+    assert_equal @user.queries, queries
     assert_response :success
   end
 
+  test "should get index as admin" do
+    sign_in @admin
+    get :index
+    queries = assigns[:queries]
+    assert_equal Query.all, queries
+    assert_response :success
+  end
+
+
   test "should get new" do
+    sign_in @user
     get :new
     assert_not_nil assigns[:query]
     assert_not_nil assigns[:endpoints]
@@ -29,6 +47,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should create query" do
+    sign_in @user
     post :create, query: { title: 'Some title', description: "Some description"}
     query = assigns(:query)
     assert_not_nil query
@@ -41,6 +60,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should update query" do
+    sign_in @user
     query_from_db = Query.find(@ids[0])
     assert_not_equal query_from_db.title, 'Some title'
     post :update, id: @ids[0], query: { title: 'Some title', description: "Some description"}
@@ -54,6 +74,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should get show" do
+    sign_in @user
     get :show, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
@@ -61,6 +82,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
+    sign_in @user
     get :edit, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
@@ -69,6 +91,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should destroy query" do
+    sign_in @user
     delete :destroy, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
@@ -77,6 +100,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should remove endpoint" do
+    sign_in @user
     query_from_db = Query.find(@ids[0])
     assert_not_equal query_from_db.title, 'Some title'
     assert_equal 2, query_from_db.endpoints.length
@@ -91,6 +115,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should add endpoint" do
+    sign_in @user
     query_from_db = Query.find(@ids[0])
     assert_not_equal query_from_db.title, 'Some title'
     assert_equal 2, query_from_db.endpoints.length
@@ -104,6 +129,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
   
   test "should execute query" do
+    sign_in @user
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "FORCE ERROR")
     query_from_db = Query.find(@ids[2])
     post :execute, id: @ids[2]
@@ -131,6 +157,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
   
   test "log displays query log" do
+    sign_in @user
     query_from_db = Query.find(@ids[1])
     query_logger = QueryLogger.new
     query_logger.add query_from_db, "test message"
@@ -142,5 +169,4 @@ class QueriesControllerTest < ActionController::TestCase
     assert "test message", events.last[:message]
   end
   
-
 end

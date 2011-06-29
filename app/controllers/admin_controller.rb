@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
+  before_filter :validate_authorization!
   before_filter :authenticate_user!
-  before_filter :admin_user?
   
   def users
     @users = User.all
@@ -53,7 +53,7 @@ class AdminController < ApplicationController
     end
   end
   
-  def admin_user?
-    redirect_to '/' unless current_user.admin?
+  def validate_authorization!
+    authorize! :admin, :users
   end
 end

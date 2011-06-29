@@ -17,8 +17,8 @@ class User
 
   field :effective_date, type: Integer
   
-  field :admin?, type: Boolean
-#  field :approved, type: Boolean
+  field :admin, type: Boolean
+  field :approved, type: Boolean
 
   validates_presence_of :first_name, :last_name
   validates_uniqueness_of :username
@@ -34,19 +34,17 @@ class User
                     format: {with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
   validates :username, :presence => true, length: {minimum: 3, maximum: 254}
 
-# TODO: require approval
+  def active_for_authentication? 
+    super && approved?
+  end 
 
-#  def active_for_authentication? 
-#    super && approved? 
-#  end 
-
-#  def inactive_message 
-#    if !approved? 
-#      :not_approved 
-#    else 
-#      super # Use whatever other message 
-#    end 
-#  end
+  def inactive_message 
+    if !approved? 
+      :not_approved 
+    else 
+      super # Use whatever other message 
+    end 
+  end
 
 
 end
