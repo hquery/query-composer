@@ -1,5 +1,8 @@
 require 'factory_girl'
 
+# ==========
+# = USERS =
+# ==========
 Factory.define :user do |u| 
   u.sequence(:email) { |n| "testuser#{n}@test.com"} 
   u.password 'password' 
@@ -19,14 +22,15 @@ Factory.define :unapproved_user, :parent => :user do |u|
   u.approved false
 end
 
-Factory.define :endpoint do |e| 
-  e.sequence(:name) {|n| "Endpoint#{n}"}
-  e.next_poll nil
-  e.result ({"null" => {"count" => 10}})
-  e.result_url nil
-  e.status 'Complete'
-  e.submit_url 'http://127.0.0.1:3001/queues' 
+Factory.define :user_with_queries, :parent => :user do |user|
+  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
+  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
+  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
 end
+
+# ===========
+# = QUERIES =
+# ===========
 
 Factory.define :query do |q|
   q.sequence(:title) { |n| "title #{n}" }
@@ -36,12 +40,6 @@ Factory.define :query do |q|
   q.reduce "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
 end
 
-Factory.define :user_with_queries, :parent => :user do |user|
-  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
-  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
-  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
-end
-
 Factory.define :query_with_endpoints, :parent => :query do |query|
   query.after_create do |q|
     q.endpoints << Factory(:endpoint)
@@ -49,8 +47,55 @@ Factory.define :query_with_endpoints, :parent => :query do |query|
   end
 end
 
-Factory.define :query_with_result, :parent => :query do |query|
-  query.after_create do |q|
-    q.endpoints << Factory(:endpoint, result: ({"foo" => "bar"}), result_url: 'http://127.0.0.1:3001/queues')
+Factory.define :query_with_execution, :parent => :query_with_endpoints do |query|
+  query.executions { 
+    [] << Factory.build(:execution)
+  }
+  query.after_create do |q| 
+    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result, endpoint_id: endpoint.id)} }
   end
+end
+
+Factory.define :query_with_completed_results, :parent => :query_with_endpoints do |query|
+  query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
+  
+  query.executions { 
+    [] << Factory.build(:execution)
+  }
+  query.after_create do |q| 
+    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result_with_value, endpoint_id: endpoint.id)} }
+  end
+end
+
+
+# =============
+# = Endpoints =
+# =============
+Factory.define :endpoint do |e| 
+  e.sequence(:name) {|n| "Endpoint#{n}"}
+  e.submit_url 'http://127.0.0.1:3001/queues' 
+end
+
+# ==============
+# = Executions =
+# ==============
+
+Factory.define :execution do |e|
+  e.time Time.now.to_i
+end
+
+# ===========
+# = Results =
+# ===========
+
+Factory.define :result do |r|
+  r.next_poll nil
+  r.value nil
+  r.result_url nil
+  r.status nil
+end
+
+Factory.define :result_with_value, :parent => :result do |result| 
+  result.value ({"M" => 50, "F" => 30})
+  result.status 'Complete'
 end

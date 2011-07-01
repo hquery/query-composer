@@ -137,11 +137,11 @@ class QueriesControllerTest < ActionController::TestCase
     assert_not_nil query
     query_from_db = Query.find(@ids[2])
     
-    # make sure results got cleared out
-    assert_equal ({}), query_from_db.aggregate_result
-    query_from_db.endpoints.each do |endpoint|
-      assert_nil endpoint.result
-    end
+    # check that the query has an execution, and the execution has a result for each endpoint
+    assert_not_nil query.executions
+    assert_equal 1, query.executions.length
+    assert_equal query.endpoints.length, query.executions[0].results.length
+
     
     assert_equal "POST", FakeWeb.last_request.method
     assert_equal "multipart/form-data", FakeWeb.last_request.content_type

@@ -19,36 +19,40 @@
         <% 
           #TODO: need to add AJAX refresh 
         %>
-        <% @query.endpoints.each do |endpoint| %>
+        <% 
+        if (@query.last_execution)
+	        results = @query.last_execution.results unless @query.last_execution
+	    else
+	        results = @query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
+		end
+		results.each do |result| %>
           <tr valign='top'>
-            <td><%= endpoint.submit_url %></td>
-            <td><%= endpoint.status %></td>
-            <td><%= endpoint.next_poll %></td>
-            <td><%= endpoint.result_url %></td>
+            <td><%= result.endpoint.submit_url %></td>
+            <td><%= result.status %></td>
+            <td><%= result.next_poll %></td>
+            <td><%= result.result_url %></td>
             <td>
-            <% if endpoint.result %>
               <table>
-                <% endpoint.result.each do |key, value| %>
+               <% result.value.each do |key, value| %>
                 <% next if key=='_id' %>
                 <tr>
                   <td><code><%= key %>:</code></td>
                   <td><code><%= jsonify(value) %></code></td>
                 </tr>
-                <% end %>
+                <% end if result.value %>
               </table>
-            <% end %>
             </td>
           </tr>
         <% end %>
       </table>
     </td>
   </tr>
-  <% if @query.aggregate_result %>
+  <% if @query.last_execution && @query.last_execution.aggregate_result %>
   <tr>
     <th align='left' valign='top'>Aggregate Result</th>
     <td>
       <table>
-        <% @query.aggregate_result.each do |key, value| %>
+        <% @query.last_execution.aggregate_result.each do |key, value| %>
         <% next if key=='_id' %>
         <tr>
           <td><code><%= key %>:</code></td>
