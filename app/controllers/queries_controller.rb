@@ -63,15 +63,18 @@ class QueriesController < ApplicationController
   end
   
   def update_query_info
-	@unfinished_query_count = 0
-	@query.endpoints.each do |endpoint|
-		if endpoint.status != 'Complete'
-			@unfinished_query_count += 1
-		end
-	end
-	respond_to do |format|
-		format.js { render :layout => false }
-	end
+	  @unfinished_query_count = 0
+	  if (@query.last_execution)
+	    @query.last_execution.results.each do |result|
+		    if result.status != 'Complete'
+			    @unfinished_query_count += 1
+		    end
+		  end
+	  end
+	
+	  respond_to do |format|
+		  format.js { render :layout => false }
+	  end
   end
 
   private
