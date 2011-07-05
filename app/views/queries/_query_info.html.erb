@@ -1,0 +1,30 @@
+<table id='query_info'>
+        <tr>
+          <th align='left'>Query URL</th>
+          <th align='left'>Status</th>
+          <th align='left'>Next Poll</th>
+          <th align='left'>Poll URL</th>
+          <th align='left'>Result</th>
+        </tr>
+<% @query.endpoints.each do |endpoint| %>
+	<tr valign='top'>
+		<td><%= endpoint.submit_url %></td>
+		<td><%= endpoint.status %></td>
+		<td><%= endpoint.next_poll %></td>
+		<td><%= endpoint.result_url %></td>
+		<td>
+			<% if endpoint.result %>
+				<table>
+				<% endpoint.result.each do |key, value| %>
+				<% next if key=='_id' %>
+					<tr>
+						<td><code><%= key %>:</code></td>
+						<td><code><%= jsonify(value) %></code></td>
+					</tr>
+				<% end %>
+				</table>
+			<% end %>
+		</td>
+	</tr>
+<% end %>
+</table>

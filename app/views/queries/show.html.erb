@@ -1,3 +1,23 @@
+<% content_for :head do -%>
+  <script type="text/javascript">
+	var refreshFailCount = 0;
+	var queryInfoRefreshInterval = setInterval(function() {
+			$.ajax({
+				type: "GET",
+				url: "/queries/<%= @query.id %>/update_query_info",
+				datatype: "script",
+				error: function(jqXHR, exception) {
+					refreshFailCount++;
+					if (refreshFailCount >= 10) {
+						clearInterval(queryInfoRefreshInterval);
+						alert("Too many failed queries to the gateway. Canceling the refresh. This should be handled prettily in the future.");
+					}
+				}
+			})
+		}, 5000);
+  </script>
+<% end -%>
+
 <h1>Query Status</h1>
 <table>
   <tr><th align='left'>Title</th><td><%= @query.title %></td></tr>
@@ -6,42 +26,8 @@
   <tr><th align='left' valign='top'>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
   <tr><th align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
   <tr>
-    <th  align='left' valign='top'>Endpoints</th>
-    <td>
-      <table>
-        <tr>
-          <th align='left'>Query URL</th>
-          <th align='left'>Status</th>
-          <th align='left'>Next Poll</th>
-          <th align='left'>Poll URL</th>
-          <th align='left'>Result</th>
-        </tr>
-        <% 
-          #TODO: need to add AJAX refresh 
-        %>
-        <% @query.endpoints.each do |endpoint| %>
-          <tr valign='top'>
-            <td><%= endpoint.submit_url %></td>
-            <td><%= endpoint.status %></td>
-            <td><%= endpoint.next_poll %></td>
-            <td><%= endpoint.result_url %></td>
-            <td>
-            <% if endpoint.result %>
-              <table>
-                <% endpoint.result.each do |key, value| %>
-                <% next if key=='_id' %>
-                <tr>
-                  <td><code><%= key %>:</code></td>
-                  <td><code><%= jsonify(value) %></code></td>
-                </tr>
-                <% end %>
-              </table>
-            <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </table>
-    </td>
+    <th align='left' valign='top'>Endpoints</th>
+    <td><%= render :partial => 'query_info', :locals => { :endpoints => @query.endpoints } %></td>
   </tr>
   <% if @query.aggregate_result %>
   <tr>
@@ -64,8 +50,9 @@
     <td>
       <table>
         <tr>
-          <td><%= button_to 'Edit', {:action=>'edit', :id=>@query.id}, :method=>:get %></td>
-          <td><%= button_to 'Execute', {:action=>'execute', :id=>@query.id} %></td>
+          <td><%= button_to 'Edit', { :action => 'edit', :id => @query.id }, :method => :get %></td>
+          <td><%= button_to 'Execute', { :action => 'execute', :id => @query.id } %></td>
+		  <td><%= link_to 'Refresh', { :action => 'update_query_info' }, { :remote => :true, :method => :get, :id => 'refresh' } %></td>
         </tr>
       </table>
     </td>
