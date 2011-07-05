@@ -28,13 +28,50 @@
   <tr>
     <th align='left' valign='top'>Endpoints</th>
     <td><%= render :partial => 'query_info', :locals => { :endpoints => @query.endpoints } %></td>
+    <th  align='left' valign='top'>Endpoints</th>
+    <td>
+      <table>
+        <tr>
+          <th align='left'>Query URL</th>
+          <th align='left'>Status</th>
+          <th align='left'>Next Poll</th>
+          <th align='left'>Poll URL</th>
+          <th align='left'>Result</th>
+        </tr>
+        <% 
+        if (@query.last_execution)
+	        results = @query.last_execution.results unless @query.last_execution
+	    else
+	        results = @query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
+		end
+		results.each do |result| %>
+          <tr valign='top'>
+            <td><%= result.endpoint.submit_url %></td>
+            <td><%= result.status %></td>
+            <td><%= result.next_poll %></td>
+            <td><%= result.result_url %></td>
+            <td>
+              <table>
+               <% result.value.each do |key, value| %>
+                <% next if key=='_id' %>
+                <tr>
+                  <td><code><%= key %>:</code></td>
+                  <td><code><%= jsonify(value) %></code></td>
+                </tr>
+                <% end if result.value %>
+              </table>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </td>
   </tr>
-  <% if @query.aggregate_result %>
+  <% if @query.last_execution && @query.last_execution.aggregate_result %>
   <tr>
     <th align='left' valign='top'>Aggregate Result</th>
     <td>
       <table>
-        <% @query.aggregate_result.each do |key, value| %>
+        <% @query.last_execution.aggregate_result.each do |key, value| %>
         <% next if key=='_id' %>
         <tr>
           <td><code><%= key %>:</code></td>

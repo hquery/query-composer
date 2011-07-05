@@ -50,12 +50,14 @@ class QueriesController < ApplicationController
 
   def execute
     @query.aggregate_result = nil
+    execution = Execution.new(time: Time.now.to_i)
     @query.endpoints.each do |endpoint|
-      endpoint.result = nil
+      execution.results << Result.new(endpoint: endpoint)
     end
+    @query.executions << execution
     @query.save!
     
-    PollJob.submit_all(@query)
+    PollJob.submit_all(execution)
         
     redirect_to :action => 'show'
   end
