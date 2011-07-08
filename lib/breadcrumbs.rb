@@ -4,11 +4,11 @@ module Breadcrumbs
   end
 
   module ClassMethods
-    def add_breadcrumb name, url, *args
+    def add_breadcrumb title, url, *args
       options = args.extract_options!
       before_filter options do |controller|
         url = controller.send(url) if url.class == Symbol
-        controller.send(:add_breadcrumb, name, url)
+        controller.send(:add_breadcrumb, title, url)
       end
     end
     def add_breadcrumb_for_resource resource, title, *args
@@ -30,9 +30,16 @@ module Breadcrumbs
     end
     
   end
-  def add_breadcrumb name, url = ''
+  def add_breadcrumb title, url = ''
     @breadcrumbs ||= []
-    url = eval(url) if url =~ /_path|_url|@/
-    @breadcrumbs << [name, url]
+    @breadcrumbs << Crumb.new(title,url)
+  end
+  
+  class Crumb
+    attr_accessor :title, :url
+    def initialize(title, url)
+      @title = title
+      @url = url
+    end
   end
 end
