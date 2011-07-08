@@ -10,10 +10,14 @@
 
 </head>
 <body>
-	
-<%= yield %>
 
-<%= link_to "logout", destroy_user_session_path %>
+  <div id="container">
+    <%= render :partial => 'shared/header', :locals => {:definition => @definition} %>
+    <div id="pageContent">
+      <%= yield %>
+
+    </div><!-- end #pageContent -->
+  </div>
 
 </body>
 </html>

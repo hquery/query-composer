@@ -1,12 +1,12 @@
 <% content_for :head do -%>
   <script type="text/javascript">
     var hQuery = hQuery || {};
-    
+
     hQuery.gotoDashboard = function() {
-	   var tab = $(this).data("tab");
-	   window.location.href = "/"+tab
+      var tab = $(this).data("tab");
+      window.location.href = "/"+tab
     };
-    
+
     $(document).ready(function() {
       $('.dashboardTab').click(hQuery.gotoDashboard);
     });

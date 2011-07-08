@@ -4,10 +4,10 @@
   <div id="pageContent">
     <div id="patientMetrics">
       <div class="patientGroupType">
-		<ul>
-			<li class="dashboardTab" data-tab="queries"> <label>Queries</label> </li>
-			<li class="dashboardTab selected" data-tab="endpoints"> <label>Endpoints</label> </li>
-		</ul>
+        <ul>
+          <li class="dashboardTab" data-tab="queries"> <label>Queries</label> </li>
+          <li class="dashboardTab selected" data-tab="endpoints"> <label>Endpoints</label> </li>
+        </ul>
         <br style="clear:both"/>
       </div>
     </div><!-- end #patientMetrics -->
@@ -15,27 +15,27 @@
 
       <br style="clear:left"/>
       <div id="simpleTableContainer">
-		<table id="simpleTable"> 
-			<% if @endpoints.size %>
-			  <tr>
-			    <th>name</th>
-			    <th></th>
-			    <th></th>
-			    <th></th>
-			  </tr>
-			<% end %>
-			<% @endpoints.each do |endpoint| %>
-			  <tr>
-			    <td><%= endpoint.name %></td>
-			    <td><%= link_to 'Show', endpoint %></td>
-			    <td><%= link_to 'Edit', edit_endpoint_path(endpoint)  if current_user.admin? %></td>
-			    <td><%= button_to 'X', endpoint, confirm: 'Are you sure?', method: :delete if current_user.admin?%></td>
-			  </tr>
-			<% end %>
-		</table>
-		
-		<%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Endpoint</span><% end if current_user.admin?%>
-		
+        <table id="simpleTable"> 
+          <% if @endpoints.size %>
+          <tr>
+            <th>name</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          <% end %>
+          <% @endpoints.each do |endpoint| %>
+          <tr>
+            <td><%= endpoint.name %></td>
+            <td><%= link_to 'Show', endpoint %></td>
+            <td><%= link_to 'Edit', edit_endpoint_path(endpoint)  if current_user.admin? %></td>
+            <td><%= button_to 'X', endpoint, confirm: 'Are you sure?', method: :delete if current_user.admin?%></td>
+          </tr>
+          <% end %>
+        </table>
+
+        <%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Endpoint</span><% end if current_user.admin?%>
+
       </div><!-- end patientTableContainer -->
     </div>
   </div><!-- end #pageContent -->

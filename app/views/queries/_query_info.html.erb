@@ -1,34 +1,34 @@
 <table id='query_info'>
-	<tr>
-		<th align='left'>Query URL</th>
-		<th align='left'>Status</th>
-		<th align='left'>Next Poll</th>
-		<th align='left'>Poll URL</th>
-		<th align='left'>Result</th>
-	</tr>
-	<% 
-	if (@query.last_execution)
-		results = @query.last_execution.results
-	else
-		results = @query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
-	end
-	results.each do |result| %>
-	<tr valign='top'>
-		<td><%= result.endpoint.submit_url %></td>
-		<td><%= result.status %></td>
-		<td><%= result.next_poll %></td>
-		<td><%= result.result_url %></td>
-		<td>
-			<table>
-			<% result.value.each do |key, value| %>
-				<% next if key=='_id' %>
-				<tr>
-					<td><code><%= key %>:</code></td>
-					<td><code><%= jsonify(value) %></code></td>
-				</tr>
-				<% end if result.value %>
-			</table>
-		</td>
-	</tr>
-	<% end %>
+  <tr>
+    <th align='left'>Query URL</th>
+    <th align='left'>Status</th>
+    <th align='left'>Next Poll</th>
+    <th align='left'>Poll URL</th>
+    <th align='left'>Result</th>
+  </tr>
+  <% 
+  if (@query.last_execution)
+    results = @query.last_execution.results
+  else
+    results = @query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
+  end
+  results.each do |result| %>
+  <tr valign='top'>
+    <td><%= result.endpoint.submit_url %></td>
+    <td><%= result.status %></td>
+    <td><%= result.next_poll %></td>
+    <td><%= result.result_url %></td>
+    <td>
+      <table>
+        <% result.value.each do |key, value| %>
+        <% next if key=='_id' %>
+        <tr>
+          <td><code><%= key %>:</code></td>
+          <td><code><%= jsonify(value) %></code></td>
+        </tr>
+        <% end if result.value %>
+      </table>
+    </td>
+  </tr>
+  <% end %>
 </table>
