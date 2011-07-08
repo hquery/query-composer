@@ -11,12 +11,12 @@ module Breadcrumbs
         controller.send(:add_breadcrumb, name, url)
       end
     end
-    def add_breadcrumb_for_resource instance_variable, name_method, *args
+    def add_breadcrumb_for_resource resource, title, *args
       options = args.extract_options!
       before_filter options do |controller|
-        resource = controller.send(:instance_variable_get, "@#{instance_variable}")
+        resource = controller.send(:instance_variable_get, "@#{resource}")
         controller_path = controller.send(:controller_path)
-        name = resource.send(name_method)
+        name = resource.send(title)
         url = '/'+controller_path+"/"+resource.id.to_s
         controller.send(:add_breadcrumb, name, url)
       end
