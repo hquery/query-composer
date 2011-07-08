@@ -1,23 +1,27 @@
-<% content_for :head do -%>
-  <script type="text/javascript">
-    var hQuery = hQuery || {};
+<script type="text/javascript">
+  var hQuery = hQuery || {};
 
-    hQuery.gotoDashboard = function() {
-      var tab = $(this).data("tab");
-      window.location.href = "/"+tab
-    };
+  hQuery.gotoDashboard = function() {
+    var tab = $(this).data("tab");
+    window.location.href = "/"+tab
+  };
 
-    $(document).ready(function() {
-      $('.dashboardTab').click(hQuery.gotoDashboard);
-    });
-  </script>
-<% end -%>
+  $(document).ready(function() {
+    $('.dashboardTab').click(hQuery.gotoDashboard);
+  });
+</script>
 
 
 <div id="header">
   <div id="breadcrumbBox">
     <ul id="breadcrumbItems">
+      <% if @breadcrumbs %>
+        <% @breadcrumbs[0..-2].each do |txt, path| %>
+          <li><%= link_to(txt, path) %> <span class="sep">&raquo;</span></li>
+        <% end %>
+        <li><%= @breadcrumbs.last.first %></li>
+      <% end %>
     </ul>
-    <%= render :partial => 'layouts/top_nav' %>
+    <%= render :partial => 'shared/top_nav' %>
   </div><!-- end #breadcrumbBox -->
 </div><!-- end #header -->

@@ -4,9 +4,15 @@ require 'poll_job'
 
 class QueriesController < ApplicationController
 
+  # load resource must be before authorize resource
   load_resource exclude: %w{index log}
   authorize_resource
   before_filter :authenticate_user!
+  
+  # add breadcrumbs
+  add_breadcrumb 'Queries', :queries_url
+  add_breadcrumb_for_resource :query, :title, only: %w{edit show log}
+  add_breadcrumb_for_actions only: %w{edit new log}
 
   def index
     if (current_user.admin?) 
