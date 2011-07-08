@@ -27,7 +27,16 @@
 			  <tr>
 			    <td><%= link_to query.title, query_path(query.id) %></td>
 			    <td><%= query.description %></td>
-			    <td><%= query.status %></td>
+			    <td><%first = true; query.status.each_pair do |status, count| %>
+				       <%= ', ' if !first %>
+				       <%= status%>
+				       (<%= count.to_s + " of " + query.last_execution.results.length.to_s%>)
+				       <%first = false%>
+				    <%end%>
+				    <%if (first)%>
+				      no executions
+				    <%end%>
+				</td>
 			    <td><%= button_to 'X', {:action=>'destroy', :id=>query.id}, :method=>:delete, :confirm=>'are you sure?' %></td>
 			  </tr>
 			<% end %>
