@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.0.rc4'
-
+gem 'execjs', :git => 'https://github.com/sstephenson/execjs.git'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
@@ -18,7 +18,7 @@ gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
 gem 'delayed_job_mongoid'
-gem "hquery-patient-api", :git=>'git://barrel.mitre.org/hquery/hquery-patientapi.git'
+gem "hquery-patient-api", :git=>'file:///Users/bobd/projects/hquery-patientapi'
 gem 'devise'
 gem 'cancan'
 #gem 'pry'
@@ -31,6 +31,5 @@ group :test do
   gem 'turn', :require => false
   gem 'cover_me', '>= 1.0.0.rc6'
   gem 'fakeweb'
-  gem 'therubyracer'
   gem 'factory_girl'
 end
