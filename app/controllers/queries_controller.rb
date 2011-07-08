@@ -49,7 +49,6 @@ class QueriesController < ApplicationController
   end
 
   def execute
-    @query.aggregate_result = nil
     execution = Execution.new(time: Time.now.to_i)
     @query.endpoints.each do |endpoint|
       execution.results << Result.new(endpoint: endpoint)
