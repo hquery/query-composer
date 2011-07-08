@@ -3,8 +3,6 @@ include Devise::TestHelpers
 
 class UserAccessTest < ActionDispatch::IntegrationTest
 
-  include RR::Adapters::TestUnit
-
   setup do
     dump_database
 
