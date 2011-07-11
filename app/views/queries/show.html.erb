@@ -1,61 +1,46 @@
 <% content_for :head do -%>
   <script type="text/javascript">
-    var refreshFailCount = 0;
-    var queryInfoRefreshInterval = setInterval(function() {
-    $.ajax({
-      type: "GET",
-      url: "/queries/<%= @query.id %>/update_query_info",
-      datatype: "script",
-      error: function(jqXHR, exception) {
-        refreshFailCount++;
-        if (refreshFailCount >= 10) {
-          clearInterval(queryInfoRefreshInterval);
-          alert("Too many failed queries to the gateway. Canceling the refresh. This should be handled prettily in the future.");
-        }
-      }
-    })
-    }, 5000);
+	var refreshFailCount = 0;
+	var queryInfoRefreshInterval = setInterval(function() {
+			$.ajax({
+				type: "GET",
+				url: "/queries/<%= @query.id %>/refresh_execution_results",
+				datatype: "script",
+				error: function(jqXHR, exception) {
+					refreshFailCount++;
+					if (refreshFailCount >= 10) {
+						clearInterval(queryInfoRefreshInterval);
+						alert("Too many failed queries to the gateway. Canceling the refresh. This should be handled prettily in the future.");
+					}
+				}
+			})
+		}, 5000);
   </script>
 <% end -%>
 
-  <h1>Query Status</h1>
-  <table>
-    <tr><th align='left'>Title</th><td><%= @query.title %></td></tr>
-    <tr><th align='left'>Description</th><td><%= @query.description %></td></tr>
-    <tr><th align='left'>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
-    <tr><th align='left' valign='top'>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
-    <tr><th align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
-    <tr>
-      <th align='left' valign='top'>Endpoints</th>
-      <td><%= render :partial => 'query_info', :locals => { :query => @query } %></td>
-    </tr>
-    <% if @query.last_execution && @query.last_execution.aggregate_result %>
-    <tr>
-      <th align='left' valign='top'>Aggregate Result</th>
-      <td>
-        <table>
-          <% @query.last_execution.aggregate_result.each do |key, value| %>
-          <% next if key=='_id' %>
-          <tr>
-            <td><code><%= key %>:</code></td>
-            <td><code><%= jsonify(value) %></code></td>
-          </tr>
-          <% end %>
-        </table>
-      </td>
-    </tr>
-    <% end %>
-    <tr>
-      <td></td>
-      <td>
-        <table>
-          <tr>
-            <td><%= button_to 'Edit', { :action => 'edit', :id => @query.id }, :method => :get %></td>
-            <td><%= button_to 'Execute', { :action => 'execute', :id => @query.id } %></td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+<h1>Query Status</h1>
+<table>
+  <tr><th align='left'>Title</th><td><%= @query.title %></td></tr>
+  <tr><th align='left'>Description</th><td><%= @query.description %></td></tr>
+  <tr><th align='left'>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
+  <tr><th align='left' valign='top'>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
+  <tr><th align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
+  <tr>
+    <th align='left' valign='top'>Endpoints</th>
+    <td><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
+  </tr>
+  <%= render :partial => 'aggregate_results', :locals => { :query => @query } %></td>
+  <tr>
+    <td></td>
+    <td>
+      <table>
+        <tr>
+          <td><%= button_to 'Edit', { :action => 'edit', :id => @query.id }, :method => :get %></td>
+          <td><%= button_to 'Execute', { :action => 'execute', :id => @query.id } %></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 
   <p><%= link_to 'Query List', queries_path %> | <%= link_to 'Event Log', log_query_path %></p>

@@ -67,12 +67,13 @@ class QueriesController < ApplicationController
     redirect_to :action => 'show'
   end
   
-  def update_query_info
-	  @unfinished_query_count = 0
+  # This function is used to re-fetch the value of a query. Used to check the status of a query's execution results
+  def refresh_execution_results
+    @incomplete_results = 0
 	  if (@query.last_execution)
 	    @query.last_execution.results.each do |result|
 		    if result.status != 'Complete'
-			    @unfinished_query_count += 1
+			    @incomplete_results += 1
 		    end
 		  end
 	  end

@@ -26,6 +26,8 @@ Factory.define :user_with_queries, :parent => :user do |user|
   user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
   user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
   user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
+  user.after_create { |u| Factory(:query_with_execution, :user => u) }
+  user.after_create { |u| Factory(:query_with_completed_results, :user => u) }
 end
 
 # ===========
