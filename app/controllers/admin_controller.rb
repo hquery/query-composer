@@ -16,7 +16,7 @@ class AdminController < ApplicationController
   end
   
   def destroy
-    user = User.first(:conditions => {:username => params[:username]})
+    user = User.find_by_username(params[:username]);
     if user
       user.destroy
       render :text => "removed"
@@ -38,7 +38,7 @@ class AdminController < ApplicationController
   private
   
   def toggle_admin_privilidges(username, direction)
-    user = User.first(:conditions => {:username => username})
+    user = User.find_by_username username
     
     if user
       if direction == :promote

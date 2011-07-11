@@ -36,6 +36,34 @@ class User
 
   def active_for_authentication? 
     super && approved?
-  end 
+  end
+  
+  # ==========
+  # = FINDERS =
+  # ==========
+  
+  def self.find_by_username(username)
+    User.first(:conditions => {:username => username})
+  end
+  def self.find_by_email(email)
+    User.first(:conditions => {:email => email})
+  end
+  
+  # =============
+  # = Modifiers =
+  # =============
+  
+  def grant_admin
+    update_attributes(:admin => true)
+    update_attributes(:approved => true)
+  end
+
+  def approve
+    update_attributes(:approved => true)
+  end
+
+  def revoke_admin
+    update_attributes(:admin => false)
+  end
 
 end
