@@ -1,0 +1,18 @@
+<% content_for :head do -%>
+  <script type="text/javascript">
+    var hQuery = hQuery || {};
+    $(document).ready(function() {
+    });
+  </script>
+<% end -%>
+
+<h1>Execution History</h1>
+  <% @query.executions.each do |execution| -%>
+    <h2>Executed on: <%= Time.at(execution.time) %></h2>
+    status: <%= execution.status %> <br/>
+    result: <% execution.results.each do |result| %>
+      <%= jsonify(result.value) %>
+    <% end %>
+    <br/>
+    <br/>
+  <% end %>

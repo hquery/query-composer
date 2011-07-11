@@ -17,10 +17,4 @@ class Query
     executions.desc(:time).first
   end
   
-  def status
-    result_statuses = {}
-    last_execution.results.each{|result| result_statuses[result.status] ||= 0; result_statuses[result.status]+=1;} if last_execution && last_execution.results
-    result_statuses
-  end
-  
 end

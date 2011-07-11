@@ -6,4 +6,10 @@ class Execution
   field :time, type: Integer
   field :aggregate_result, type: Hash
   
+  def status
+    result_statuses = {}
+    results.each{|result| result_statuses[result.status] ||= 0; result_statuses[result.status]+=1;}
+    result_statuses
+  end
+  
 end
