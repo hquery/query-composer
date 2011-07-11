@@ -4,6 +4,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'fakeweb'
 require 'factory_girl'
+require 'ruby-debug'
 
 Factory.find_definitions
 
