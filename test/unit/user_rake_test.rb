@@ -52,7 +52,11 @@ class UserRakeTest < ActiveSupport::TestCase
     # 
     # assert @unapproved_user.approved?
     # assert @unapproved_user.admin?
-    
+    puts "EMAIL: " + @unapproved_user.email
+    ENV['EMAIL'] = @unapproved_user.email
+#    capture_stdout do
+      @@rake["hquery:users:grant_admin"].invoke
+#    end
     puts "########################################################################"
     puts "TEST DOES NOTHING: FAILING ON CI ENVIRONMENT.  NEEDS TO BE TURNED BACK ON!"
     puts "########################################################################"
