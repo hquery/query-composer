@@ -63,10 +63,9 @@ namespace :hquery do
           when env.key?('USERNAME')
             user = User.find_by_username env['USERNAME']
           when env.key?('EMAIL')
-            puts "finding by email: " + env['EMAIL']
             user = User.find_by_email env['EMAIL']
         end
-        #raise 'There is no such user.' unless user
+        raise 'There is no such user.' unless user
         user
       end
     end
