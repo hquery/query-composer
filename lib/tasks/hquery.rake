@@ -58,7 +58,7 @@ namespace :hquery do
       private 
 
       def self.find_user(env)
-        raise 'must pass USERNAME or EMAIL' unless ENV['USERNAME'] || ENV['EMAIL']
+        raise 'must pass USERNAME or EMAIL' unless env['USERNAME'] || env['EMAIL']
         case
           when env.key?('USERNAME')
             user = User.find_by_username env['USERNAME']

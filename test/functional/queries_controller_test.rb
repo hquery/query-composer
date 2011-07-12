@@ -193,4 +193,14 @@ class QueriesControllerTest < ActionController::TestCase
     get :refresh_execution_results, id: query.id
     assert_equal 2, assigns(:incomplete_results)
   end
+  
+  test "should get execution history" do
+    sign_in @user
+    query = Query.find(@ids[4])
+    get :execution_history, id: query.id
+    assigned_query = assigns(:query);
+    assert_not_nil assigned_query
+    assert_response :success
+  end
+  
 end
