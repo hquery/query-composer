@@ -19,15 +19,7 @@
 		<td><%= result.next_poll %></td>
 		<td><%= result.result_url %></td>
 		<td>
-			<table>
-			<% result.value.each do |key, value| %>
-				<% next if key=='_id' %>
-				<tr>
-					<td><code><%= key %>:</code></td>
-					<td><code><%= jsonify(value) %></code></td>
-				</tr>
-				<% end if result.value %>
-			</table>
+		  <%= render :partial => 'result', :locals => { :result => result } %>
 		</td>
 	</tr>
 	<% end %>
