@@ -23,11 +23,15 @@ class UserRakeTest < ActiveSupport::TestCase
     
   end
   
+  teardown do
+    
+  end
+  
   test "approve rake task approves user" do
     assert !@unapproved_user.approved?
     assert !@unapproved_user.admin?
 
-    ENV['USERNAME'] = @unapproved_user.username
+    ENV['USER_ID'] = @unapproved_user.username
     capture_stdout do
       @@rake["hquery:users:approve"].invoke
     end
@@ -40,28 +44,25 @@ class UserRakeTest < ActiveSupport::TestCase
   end
 
   test "admin rake task approves and grants admin using email" do
-    # assert !@unapproved_user.approved?
-    # assert !@unapproved_user.admin?
-    # 
-    # ENV['EMAIL'] = @unapproved_user.email
-    # capture_stdout do
-    #   @@rake["hquery:users:grant_admin"].invoke
-    # end
-    # 
-    # @unapproved_user.reload
-    # 
-    # assert @unapproved_user.approved?
-    # assert @unapproved_user.admin?
-    puts "########################################################################"
-    puts "TEST DOES NOTHING: FAILING ON CI ENVIRONMENT.  NEEDS TO BE TURNED BACK ON!"
-    puts "########################################################################"
+    assert !@unapproved_user.approved?
+    assert !@unapproved_user.admin?
+    
+    ENV['EMAIL'] = @unapproved_user.email
+    capture_stdout do
+      @@rake["hquery:users:grant_admin"].invoke
+    end
+    
+    @unapproved_user.reload
+    
+    assert @unapproved_user.approved?
+    assert @unapproved_user.admin?
     
   end
 
   test "admin rake task makes a non-admin user an admin" do
     assert !@user.admin?
 
-    ENV['USERNAME'] = @user.username
+    ENV['USER_ID'] = @user.username
     capture_stdout do
       @@rake["hquery:users:grant_admin"].invoke
     end
@@ -76,7 +77,7 @@ class UserRakeTest < ActiveSupport::TestCase
   test "revoke rake task makes a admin user a non-admin" do
     assert @admin.admin?
 
-    ENV['USERNAME'] = @admin.username
+    ENV['USER_ID'] = @admin.username
 
     capture_stdout do
       @@rake["hquery:users:revoke_admin"].invoke

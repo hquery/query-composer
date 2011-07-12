@@ -3,9 +3,9 @@ namespace :hquery do
 
     desc %{Grant an existing hQuery user administrator privileges.
 
-    You must identify the user by USERNAME or EMAIL:
+    You must identify the user by USER_ID or EMAIL:
 
-    $ rake hquery:users:grant_admin USERNAME=###
+    $ rake hquery:users:grant_admin USER_ID=###
     or
     $ rake hquery:users:grant_admin EMAIL=xxx}
     task :grant_admin => :environment do
@@ -14,9 +14,9 @@ namespace :hquery do
 
     desc %{Remove the administrator role from an existing hQuery user.
 
-    You must identify the user by USERNAME or EMAIL:
+    You must identify the user by USER_ID or EMAIL:
 
-    $ rake hquery:users:revoke_admin USERNAME=###
+    $ rake hquery:users:revoke_admin USER_ID=###
     or
     $ rake hquery:users:revoke_admin EMAIL=xxx}
     task :revoke_admin => :environment do
@@ -25,9 +25,9 @@ namespace :hquery do
     
     desc %{Approve an existing hQuery user.
 
-    You must identify the user by USERNAME or EMAIL:
+    You must identify the user by USER_ID or EMAIL:
 
-    $ rake hquery:users:approve USERNAME=###
+    $ rake hquery:users:approve USER_ID=###
     or
     $ rake hquery:users:approve EMAIL=xxx}
     task :approve => :environment do
@@ -58,14 +58,15 @@ namespace :hquery do
       private 
 
       def self.find_user(env)
-        raise 'must pass USERNAME or EMAIL' unless env['USERNAME'] || env['EMAIL']
+        raise 'must pass USER_ID or EMAIL' unless env['USER_ID'] || env['EMAIL']
         case
-          when env.key?('USERNAME')
-            user = User.find_by_username env['USERNAME']
+          when env.key?('USER_ID')
+            user = User.find_by_username env['USER_ID']
+            raise 'There is no such user with username: ' + env['USER_ID'] unless user
           when env.key?('EMAIL')
             user = User.find_by_email env['EMAIL']
+            raise 'There is no such user with email: ' + env['EMAIL'] unless user
         end
-        raise 'There is no such user.' unless user
         user
       end
     end
