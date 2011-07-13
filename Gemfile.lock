@@ -58,7 +58,7 @@ GEM
     coffee-script-source (1.1.1)
     configatron (2.8.2)
       yamler (>= 0.1.0)
-    cover_me (1.1.0)
+    cover_me (1.1.1)
       configatron
       hashie
     daemons (1.1.4)

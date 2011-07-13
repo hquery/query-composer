@@ -17,6 +17,7 @@
  <table>
   <tr><td></td><td valign='top'>
   <%= f.button :submit if !@disabled %>
+
   <% if (not @query.id.nil?) %>
     <%= link_to 'cancel', @query %>
   <% else %>
@@ -24,5 +25,6 @@
   <% end %>
   <input id="debug" type="button" value="Debug" disabled="disabled"><input id="records" type="button" value="Records">
   </td></tr>
+
 <% end %>
 

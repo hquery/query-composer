@@ -2,10 +2,10 @@
   <tr align='left'><th></th><th>Name</th><th>Endpoint URL</th></tr>
 
   <% for endpoint in @endpoints %>
-      <tr>
-		  <td><%= check_box_tag "query[endpoint_ids][]", endpoint.id, @query.endpoints.include?(endpoint) %></td>
-		  <td><%= endpoint.name %></td>
-		  <td><%= endpoint.submit_url %></td>
-      </tr>
+  <tr>
+    <td><%= check_box_tag "query[endpoint_ids][]", endpoint.id, @query.endpoints.include?(endpoint) %></td>
+    <td><%= endpoint.name %></td>
+    <td><%= endpoint.submit_url %></td>
+  </tr> 
   <% end %>
 </table>

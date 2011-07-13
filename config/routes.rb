@@ -15,7 +15,7 @@ QueryComposer::Application.routes.draw do
       post 'execute'
       delete 'destroy'
       get 'log'
-	    get 'update_query_info'
+	    get 'refresh_execution_results'
     end
   end
   

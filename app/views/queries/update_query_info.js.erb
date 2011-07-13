@@ -1,4 +1,4 @@
 <% if @unfinished_query_count < 1 %>
-	clearInterval(queryInfoRefreshInterval);
+  clearInterval(queryInfoRefreshInterval);
 <% end %>
 $("#query_info").html("<%= escape_javascript(render :partial => 'query_info') %>");

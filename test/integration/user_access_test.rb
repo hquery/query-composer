@@ -33,7 +33,7 @@ class UserAccessTest < ActionDispatch::IntegrationTest
     
   end
 
-  test "non-admin user should not be able to access the admin pages" do
+  test "non admin user should not be able to access the admin pages" do
     login @user
 
     get "/admin/users"

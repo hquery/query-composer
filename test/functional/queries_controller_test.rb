@@ -8,8 +8,8 @@ class QueriesControllerTest < ActionController::TestCase
     dump_database
     
     @user = Factory(:user_with_queries)
-    @user_ids = [] << @user.id
     @ids = @user.queries.map {|q| q.id}
+    @user_ids = [] << @user.id
     
     @new_endpoint = Factory(:endpoint)
     
@@ -169,4 +169,28 @@ class QueriesControllerTest < ActionController::TestCase
     assert "test message", events.last[:message]
   end
   
+  test "should check all queries completed" do
+    sign_in @user
+    get :show, id: @ids[0]
+    query = assigns(:query)
+    
+    assert_equal @ids[0], query.id
+    assert_response :success
+  end
+  
+  test "should refresh execution with 0 pending" do
+    sign_in @user
+    # With no running queries, update_query_info should successfully return unfinished_query_count == 0
+    query = Query.find(@ids[0])
+    get :refresh_execution_results, id: query.id
+    assert_equal 0, assigns(:incomplete_results)
+  end
+  
+  test "should refresh execution with 1 pending" do
+    sign_in @user
+    # Result is not "Complete", so we should find that unfinished_query_count == 1
+    query = Query.find(@ids[3])
+    get :refresh_execution_results, id: query.id
+    assert_equal 2, assigns(:incomplete_results)
+  end
 end

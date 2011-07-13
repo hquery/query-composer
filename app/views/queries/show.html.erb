@@ -4,7 +4,7 @@
 	var queryInfoRefreshInterval = setInterval(function() {
 			$.ajax({
 				type: "GET",
-				url: "/queries/<%= @query.id %>/update_query_info",
+				url: "/queries/<%= @query.id %>/refresh_execution_results",
 				datatype: "script",
 				error: function(jqXHR, exception) {
 					refreshFailCount++;
@@ -27,24 +27,9 @@
   <tr><th align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
   <tr>
     <th align='left' valign='top'>Endpoints</th>
-    <td><%= render :partial => 'query_info', :locals => { :query => @query } %></td>
+    <td><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
   </tr>
-  <% if @query.last_execution && @query.last_execution.aggregate_result %>
-  <tr>
-    <th align='left' valign='top'>Aggregate Result</th>
-    <td>
-      <table>
-        <% @query.last_execution.aggregate_result.each do |key, value| %>
-        <% next if key=='_id' %>
-        <tr>
-          <td><code><%= key %>:</code></td>
-          <td><code><%= jsonify(value) %></code></td>
-        </tr>
-        <% end %>
-      </table>
-    </td>
-  </tr>
-  <% end %>
+  <%= render :partial => 'aggregate_results', :locals => { :query => @query } %></td>
   <tr>
     <td></td>
     <td>
@@ -58,4 +43,4 @@
   </tr>
 </table>
 
-<p><%= link_to 'Query List', queries_path %> | <%= link_to 'Event Log', log_query_path %></p>
+  <p><%= link_to 'Query List', queries_path %> | <%= link_to 'Event Log', log_query_path %></p>

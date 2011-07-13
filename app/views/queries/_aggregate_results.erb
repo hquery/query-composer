@@ -1,0 +1,16 @@
+<% if @query.last_execution && @query.last_execution.aggregate_result %>
+	<tr id="aggregate_results">
+    	<th align='left' valign='top'>Aggregate Result</th>
+    	<td>
+			<table>
+				<% @query.last_execution.aggregate_result.each do |key, value| %>
+    			<% next if key=='_id' %>
+    			<tr>
+      				<td><code><%= key %>:</code></td>
+      				<td><code><%= jsonify(value) %></code></td>
+    			</tr>
+    			<% end %>
+			</table>
+		</td>
+	</tr>
+<% end %>

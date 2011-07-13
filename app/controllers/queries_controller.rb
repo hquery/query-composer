@@ -4,9 +4,15 @@ require 'poll_job'
 
 class QueriesController < ApplicationController
 
+  # load resource must be before authorize resource
   load_resource exclude: %w{index log}
   authorize_resource
   before_filter :authenticate_user!
+  
+  # add breadcrumbs
+  add_breadcrumb 'Queries', :queries_url
+  add_breadcrumb_for_resource :query, :title, only: %w{edit show log}
+  add_breadcrumb_for_actions only: %w{edit new log}
 
   def index
     if (current_user.admin?) 
@@ -49,7 +55,6 @@ class QueriesController < ApplicationController
   end
 
   def execute
-    @query.aggregate_result = nil
     execution = Execution.new(time: Time.now.to_i)
     @query.endpoints.each do |endpoint|
       execution.results << Result.new(endpoint: endpoint)
@@ -62,12 +67,13 @@ class QueriesController < ApplicationController
     redirect_to :action => 'show'
   end
   
-  def update_query_info
-	  @unfinished_query_count = 0
+  # This function is used to re-fetch the value of a query. Used to check the status of a query's execution results
+  def refresh_execution_results
+    @incomplete_results = 0
 	  if (@query.last_execution)
 	    @query.last_execution.results.each do |result|
 		    if result.status != 'Complete'
-			    @unfinished_query_count += 1
+			    @incomplete_results += 1
 		    end
 		  end
 	  end
