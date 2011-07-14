@@ -7,10 +7,10 @@
 		<th align='left'>Result</th>
 	</tr>
 	<% 
-	if (@query.last_execution)
-		results = @query.last_execution.results
+	if (query.last_execution)
+		results = query.last_execution.results
 	else
-		results = @query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
+		results = query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
 	end
 	results.each do |result| %>
 	<tr valign='top'>
@@ -19,7 +19,8 @@
 		<td><%= result.next_poll %></td>
 		<td><%= result.result_url %></td>
 		<td>
-		  <%= render :partial => 'result', :locals => { :result => result } %>
+		  <% # This call uses /queries because this whole partial is called from an ActionMailer and it needs absolute paths%>
+		  <%= render :partial => '/queries/result', :locals => { :result => result } %>
 		</td>
 	</tr>
 	<% end %>
