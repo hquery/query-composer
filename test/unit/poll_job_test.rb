@@ -27,11 +27,14 @@ class PollJobTest < ActiveSupport::TestCase
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "{\"foo\" : \"bar\"}")
     query_from_db = Query.find(@query_w_result.id)
 
+    query_from_db.executions[0].notification = true
+    query_from_db.user_id = @user.id
     PollJob.submit_all(query_from_db.executions[0])
 
     query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.executions[0].results.each do |result| 
+      result.execution.notification = true
       assert_equal 'Complete', result.status
       assert_equal ({"foo" => 'bar'}), result.value
       assert_nil result.next_poll
@@ -41,6 +44,9 @@ class PollJobTest < ActiveSupport::TestCase
       query_log = query_logger.log(query_from_db.id)
       assert_equal "Complete", query_log.last["message"]
     end
+    
+    mail = ActionMailer::Base.deliveries.last
+    assert_equal "[hQuery] Results for #{query_from_db.title}", mail.subject
   end
 
   test "submit poll job and deal with redirect properly" do

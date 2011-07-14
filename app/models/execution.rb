@@ -5,6 +5,7 @@ class Execution
   
   field :time, type: Integer
   field :aggregate_result, type: Hash
+  field :notification, type: Boolean
   
   def status
     result_statuses = {}
