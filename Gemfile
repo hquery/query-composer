@@ -22,6 +22,7 @@ gem "hquery-patient-api", :git=>'git://barrel.mitre.org/hquery/hquery-patientapi
 gem 'devise'
 gem 'cancan'
 #gem 'pry'
+#gem 'ruby-debug19'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'

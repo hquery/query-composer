@@ -1,6 +1,6 @@
 GIT
-  remote: file:///Users/bobd/projects/hquery-patientapi
-  revision: ba34a65ce869e43bd5ee3609c1e360aac4fad069
+  remote: git://barrel.mitre.org/hquery/hquery-patientapi.git
+  revision: f112a75300ebd3f2f59662670719d964cb9e86bd
   specs:
     hquery-patient-api (0.1.0)
 
@@ -58,7 +58,7 @@ GEM
     coffee-script-source (1.1.1)
     configatron (2.8.2)
       yamler (>= 0.1.0)
-    cover_me (1.1.1)
+    cover_me (1.1.0)
       configatron
       hashie
     daemons (1.1.4)

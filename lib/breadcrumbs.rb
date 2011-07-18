@@ -25,7 +25,7 @@ module Breadcrumbs
       options = args.extract_options!
       before_filter options do |controller|
         current_action = controller.send(:params)['action']
-        controller.send(:add_breadcrumb, current_action, '')
+        controller.send(:add_breadcrumb, ActiveSupport::Inflector.humanize(current_action), '')
       end
     end
     

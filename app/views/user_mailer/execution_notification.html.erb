@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>Hi <%= @user.first_name %>,</p>
+    <p>
+      Your query called "<%= @execution.query.title %>" just finished up.
+      Here's a quick look at the results:
+    </p>
+    <span style="width: 100%; text-align: center;">
+      <table>
+        <%= render :partial => "/queries/aggregate_results", :locals => { :query => @execution.query } %>
+      </table>
+    </span>
+    <p>
+      A more complete report can be viewed <%= link_to 'here', query_url(:id => @execution.query.id) %> at anytime.
+    </p>
+    <p>
+      Thanks!<br />
+      The hQuery Team
+    </p>
+  </body>
+</html>

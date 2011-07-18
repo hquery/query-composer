@@ -1,3 +1,8 @@
+<% content_for :head do -%>
+  <script type="text/javascript">
+  
+  </script>
+<% end %>
 
 <div id="patientMetrics">
   <div class="patientGroupType">
@@ -7,32 +12,13 @@
     </ul>
     <br style="clear:both"/>
   </div>
-</div><!-- end #patientMetrics -->
-<div id="dashboardPeriod" >
-
-  <br style="clear:left"/>
-  <div id="simpleTableContainer">
-    <table id="simpleTable"> 
-      <% if @endpoints.size %>
-      <tr>
-        <th>name</th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-      <% end %>
-      <% @endpoints.each do |endpoint| %>
-      <tr>
-        <td><%= endpoint.name %></td>
-        <td><%= link_to 'Show', endpoint %></td>
-        <td><%= link_to 'Edit', edit_endpoint_path(endpoint)  if current_user.admin? %></td>
-        <td><%= button_to 'X', endpoint, confirm: 'Are you sure?', method: :delete if current_user.admin?%></td>
-      </tr>
-      <% end %>
-    </table>
-
-    <%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Endpoint</span><% end if current_user.admin?%>
-
-  </div><!-- end patientTableContainer -->
 </div>
-
+<div id="dashboardPeriod" >
+  <br style="clear:left"/>
+  <div class="simpleTableContainer">
+    <%= render :partial => 'endpoint_statuses' %>
+  </div>
+  
+  <%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Endpoint</span><% end if current_user.admin? %>
+  <%= link_to({ :controller => 'endpoints', :action => 'refresh_endpoint_statuses' }, :class => "bluebutton", :remote => true) do %><span>Refresh Endpoints</span><% end %>
+</div>

@@ -12,6 +12,9 @@ class EndpointsControllerTest < ActionController::TestCase
     
     sign_in @admin
     
+    @user = Factory(:user_with_queries)
+    @ids = @user.queries.map {|q| q.id}
+    
   end
 
   test "should get index" do
@@ -55,8 +58,6 @@ class EndpointsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-
-
   test "should show endpoint" do
     get :show, id: @endpoint.to_param
     assert_response :success
@@ -83,8 +84,6 @@ class EndpointsControllerTest < ActionController::TestCase
     assert_response :success
 
   end
-  
-  
 
   test "should destroy endpoint" do
     assert_difference('Endpoint.count', -1) do
@@ -92,6 +91,22 @@ class EndpointsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to endpoints_path
+  end
+  
+  test "should refresh endpoint statuses" do
+    get :refresh_endpoint_statuses
+    assert_equal 11, assigns[:endpoint_server_statuses].size
+    assert_equal 'good', assigns[:endpoint_server_statuses][Endpoint.all[0].id][:backend_status]
+  end
+  
+  test "should gracefully refresh downed endpoint status" do
+    Endpoint.all.each do |endpoint|
+      endpoint.submit_url = "http://something.totally.invalid:9999"
+      endpoint.save!
+    end
+    get :refresh_endpoint_statuses
+    assert_equal 11, assigns[:endpoint_server_statuses].size
+    assert_equal 'unreachable', assigns[:endpoint_server_statuses][Endpoint.all[0].id][:backend_status]
   end
   
 end

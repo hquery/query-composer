@@ -128,20 +128,20 @@ class QueriesControllerTest < ActionController::TestCase
     assert_response :success
   end
   
-  test "should execute query" do
+  test "should execute query with notification" do
     sign_in @user
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "FORCE ERROR")
     query_from_db = Query.find(@ids[2])
-    post :execute, id: @ids[2]
+    post :execute, id: @ids[2], notification: false
     query = assigns(:query)
     assert_not_nil query
+    assert !query.last_execution.notification
     query_from_db = Query.find(@ids[2])
     
     # check that the query has an execution, and the execution has a result for each endpoint
     assert_not_nil query.executions
     assert_equal 1, query.executions.length
     assert_equal query.endpoints.length, query.executions[0].results.length
-
     
     assert_equal "POST", FakeWeb.last_request.method
     assert_equal "multipart/form-data", FakeWeb.last_request.content_type
@@ -153,7 +153,33 @@ class QueriesControllerTest < ActionController::TestCase
     assert_equal 1, (multipart_data.scan /name="filter"/).length
     
     assert_redirected_to(query_path(query.id))
+  end
+  
+  test "should execute query without notification" do
+    sign_in @user
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "FORCE ERROR")
+    query_from_db = Query.find(@ids[2])
+    post :execute, id: @ids[2], notification: true
+    query = assigns(:query)
+    assert_not_nil query
+    assert query.last_execution.notification
+    query_from_db = Query.find(@ids[2])
     
+    # check that the query has an execution, and the execution has a result for each endpoint
+    assert_not_nil query.executions
+    assert_equal 1, query.executions.length
+    assert_equal query.endpoints.length, query.executions[0].results.length
+    
+    assert_equal "POST", FakeWeb.last_request.method
+    assert_equal "multipart/form-data", FakeWeb.last_request.content_type
+    
+    multipart_data = FakeWeb.last_request.body_stream.read
+    
+    assert_equal 1, (multipart_data.scan /name="map"/).length
+    assert_equal 1, (multipart_data.scan /name="reduce"/).length
+    assert_equal 1, (multipart_data.scan /name="filter"/).length
+    
+    assert_redirected_to(query_path(query.id))
   end
   
   test "log displays query log" do
@@ -188,9 +214,21 @@ class QueriesControllerTest < ActionController::TestCase
   
   test "should refresh execution with 1 pending" do
     sign_in @user
-    # Result is not "Complete", so we should find that unfinished_query_count == 1
+    # One result's status will be 'Queued', so we should find that unfinished_query_count == 1
     query = Query.find(@ids[3])
+    query.last_execution.results[0].status = 'Queued'
+    query.save!
     get :refresh_execution_results, id: query.id
-    assert_equal 2, assigns(:incomplete_results)
+    assert_equal 1, assigns(:incomplete_results)
   end
+  
+  test "should get execution history" do
+    sign_in @user
+    query = Query.find(@ids[4])
+    get :execution_history, id: query.id
+    assigned_query = assigns(:query);
+    assert_not_nil assigned_query
+    assert_response :success
+  end
+  
 end

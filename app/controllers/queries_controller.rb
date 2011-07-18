@@ -11,8 +11,8 @@ class QueriesController < ApplicationController
   
   # add breadcrumbs
   add_breadcrumb 'Queries', :queries_url
-  add_breadcrumb_for_resource :query, :title, only: %w{edit show log}
-  add_breadcrumb_for_actions only: %w{edit new log}
+  add_breadcrumb_for_resource :query, :title, only: %w{edit show log execution_history}
+  add_breadcrumb_for_actions only: %w{edit new log execution_history}
 
   def index
     if (current_user.admin?) 
@@ -56,6 +56,14 @@ class QueriesController < ApplicationController
 
   def execute
     execution = Execution.new(time: Time.now.to_i)
+
+    # If the user wants to be notified when execution completes, make a note.
+    if (params[:notification])
+      execution.notification = true
+    else
+      execution.notification = false
+    end
+
     @query.endpoints.each do |endpoint|
       execution.results << Result.new(endpoint: endpoint)
     end
@@ -72,7 +80,7 @@ class QueriesController < ApplicationController
     @incomplete_results = 0
 	  if (@query.last_execution)
 	    @query.last_execution.results.each do |result|
-		    if result.status != 'Complete'
+		    if result.status == 'Queued'
 			    @incomplete_results += 1
 		    end
 		  end

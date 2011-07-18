@@ -1,0 +1,29 @@
+<h1>Execution History</h1>
+
+<table class="simpleTable">
+  <tr>
+    <th>Executed On</th>
+    <th>Status</th>
+    <th>Result</th>
+  </tr>
+  
+  <% @query.executions.each_with_index do |execution, index| -%>
+  <tr style="<% if index.modulo(2) == 0 %>background: #EEE<% end %>">
+    <td style="vertical-align: top"><%= Time.at(execution.time).strftime("%m/%d/%Y %I:%M%p") %></td>
+    <td style="vertical-align: top">
+      <% execution.status.each_pair do |key, value| %>
+        <%= key %>: <%= value %> of <%= execution.results.length %><br/>
+      <% end %>
+    </td>
+    <td>
+      <% execution.results.each do |result| %>
+        <%= result.endpoint.name %>
+        <%= render :partial => 'result', :locals => { :result => result } %>
+        <% if (!result.value)%><table><tr><td><code>no result<code><td><tr></table><%end%>
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+

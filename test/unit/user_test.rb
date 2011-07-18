@@ -31,4 +31,17 @@ class UserTest < ActiveSupport::TestCase
     
   end
   
+  test "user should be found by username" do
+    user = User.find(@user_ids[0])
+    found_user = User.find_by_username user.username
+    assert_equal user, found_user
+  end
+  
+  test "user should be found by email" do
+    user = User.find(@user_ids[0])
+    found_user = User.find_by_email user.email
+    assert_equal user, found_user
+  end
+  
+  
 end
