@@ -95,18 +95,18 @@ div.field_with_errors {
   min-width: 720px;
 }
 
-#simpleTableContainer {  }
-#simpleTable {
+.simpleTableContainer {  }
+.simpleTable {
   margin: 20px 20px 20px 50px;
   width: 100%;
 }
-#simpleTable th {
+.simpleTable th {
   padding: 2px 5px;
   color: #888888;
   margin-bottom: 20px;
   text-transform: uppercase;
 }
-#simpleTable td { padding: 2px 15px 2px 5px; }
+.simpleTable td { padding: 2px 15px 2px 5px; }
 
 
 #patientMetrics {
