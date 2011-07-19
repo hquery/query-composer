@@ -64,9 +64,9 @@ a {
   display: table;
 }
 #breadcrumbBox {
-  padding: 1px 0 2px;
+  padding: 4px 0 2px;
   border-bottom: 1px solid #cccccc;
-  background: transparent url(hQuery_logo_small.png) 0 10% no-repeat;
+  background: transparent url(hQueryLogo-small.png) 5px 3px no-repeat;
 }
 #logOut {
   padding: 5px 20px 4px 0;
