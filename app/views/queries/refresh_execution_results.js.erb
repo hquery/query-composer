@@ -1,5 +1,5 @@
 <% if @incomplete_results < 1 %>
 	clearInterval(queryInfoRefreshInterval);
 <% end %>
-$("#execution_results").html("<%= escape_javascript(render :partial => 'execution_results') %>");
-$("#aggregate_results").html("<%= escape_javascript(render :partial => 'aggregate_results') %>");
+$("#execution_results").html("<%= escape_javascript(render :partial => 'execution_results', :locals => { :query => @query }) %>");
+$("#aggregate_results").html("<%= escape_javascript(render :partial => 'aggregate_results', :locals => { :query => @query }) %>");

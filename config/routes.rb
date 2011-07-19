@@ -7,6 +7,8 @@ QueryComposer::Application.routes.draw do
   post "admin/demote"
   post "admin/approve"
   post "admin/destroy"
+  
+  get "endpoints/refresh_endpoint_statuses"
 
   resources :endpoints
 

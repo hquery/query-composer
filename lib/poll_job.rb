@@ -42,9 +42,8 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
   # hQuery protocol. Redirects cause a new poll to be scheduled, success
   # triggers aggregation.
   def self.submit(request, url, query, result)
-    
+    successful_response = false
     begin
-
       logger.add(query, "Starting #{request.method} #{url}")
       Net::HTTP.start(url.host, url.port) do |http|
         response = http.request(request)
@@ -55,6 +54,7 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
           logger.add(query, "Complete", {:result => result.value})
           result.next_poll = nil
           result.result_url = nil
+          successful_response = true
           
         when Net::HTTPRedirection
           result.status = 'Queued'
@@ -68,7 +68,6 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
           result.status = response.message
           result.result_url = nil
           result.next_poll = nil
-          
         end
       end
     rescue Exception => ex
@@ -80,6 +79,18 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
 
     result.save!
     aggregate result.execution
+    
+    # Check to see if this result is the last of the execution to complete
+    if (successful_response && result.execution.notification)
+      last_to_complete = true
+      result.execution.results.each do |result|
+        last_to_complete = false unless result.status != 'Queued'
+      end
+      # If it is, and the user specified that they want notification, send them an e-mail
+      if last_to_complete
+        UserMailer.execution_notification(result.execution).deliver
+      end
+    end
   end
   
   # Aggregate all of the current results
