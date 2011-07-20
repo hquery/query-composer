@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.0.rc4'
-gem 'execjs', :git => 'https://github.com/sstephenson/execjs.git'
+
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
@@ -32,5 +32,6 @@ group :test do
   gem 'turn', :require => false
   gem 'cover_me', '>= 1.0.0.rc6'
   gem 'fakeweb'
+  gem 'therubyracer'
   gem 'factory_girl'
 end

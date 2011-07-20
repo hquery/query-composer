@@ -75,6 +75,28 @@ class QueriesController < ApplicationController
     redirect_to :action => 'show'
   end
   
+  
+  def cancel
+    execution = @query.executions.find(params[:execution_id])
+    result = execution.results.find(params[:result_id]) 
+      if result.status.nil? || result.status == "Queued"
+        result.status = :canceled
+        result.save
+      end
+    redirect_to :action => 'show'
+  end
+  
+  def cancel_execution
+    execution = @query.executions.find(params[:execution_id])
+    result = execution.results.each do |result|
+      if result.status.nil? || result.status == "Queued"
+        result.status = :canceled
+        result.save
+      end
+    end
+    redirect_to :action => 'show'
+  end
+  
   # This function is used to re-fetch the value of a query. Used to check the status of a query's execution results
   def refresh_execution_results
     @incomplete_results = 0
@@ -84,6 +106,7 @@ class QueriesController < ApplicationController
 			    @incomplete_results += 1
 		    end
 		  end
+		  
 	  end
 	
 	  respond_to do |format|

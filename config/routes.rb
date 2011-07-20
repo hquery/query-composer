@@ -31,6 +31,7 @@ resources :endpoints
       get 'log'
 	    get 'refresh_execution_results'
 	    get 'execution_history'
+	    get 'cancel'
     end
   end
   

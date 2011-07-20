@@ -1,4 +1,7 @@
 class Result
+  COMPLETE = "Complete"
+  FAILED = "Failed"
+  QUEUED =  "Queued"
   include Mongoid::Document
   embedded_in :execution, class_name: "Execution", inverse_of: :results
 
