@@ -10,7 +10,19 @@ QueryComposer::Application.routes.draw do
   
   get "endpoints/refresh_endpoint_statuses"
 
-  resources :endpoints
+########## Admin routes ##################
+match 'qryadmin', :to => 'qryadmin#index', :via => "get"
+match 'qryadmin/adminnew', :to => 'qryadmin#adminnew', :via => "get"
+match 'qryadmin/adminnew', :to => 'qryadmin#adminnew', :via => "post"
+match 'qryadmin/:id/clone', :to => 'qryadmin#clone', :via => "post"
+match 'qryadmin/:id/modify', :to => 'qryadmin#modify', :via => "get"
+match 'qryadmin/:id/modify', :to => 'qryadmin#modify', :via => "post"
+match 'qryadmin/:id/modup', :to => 'qryadmin#modup', :via => "put", :as => "modup"
+match 'qryadmin/admincreate', :to => 'qryadmin#admincreate', :via => "post", :as => "admincreate"
+match 'qryadmin/destroy', :to => 'qryadmin#destroy', :via => "delete"
+
+
+resources :endpoints
 
   resources :queries do
     member do
