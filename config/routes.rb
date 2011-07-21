@@ -13,6 +13,16 @@ QueryComposer::Application.routes.draw do
   resources :endpoints
   resources :library_functions
 
+  match 'qryadmin', :to => 'qryadmin#index', :via => "get"
+  match 'qryadmin/adminnew', :to => 'qryadmin#adminnew', :via => "get"
+  match 'qryadmin/adminnew', :to => 'qryadmin#adminnew', :via => "post"
+  match 'qryadmin/:id/clone', :to => 'qryadmin#clone', :via => "post"
+  match 'qryadmin/:id/modify', :to => 'qryadmin#modify', :via => "get"
+  match 'qryadmin/:id/modify', :to => 'qryadmin#modify', :via => "post"
+  match 'qryadmin/:id/modup', :to => 'qryadmin#modup', :via => "put", :as => "modup"
+  match 'qryadmin/admincreate', :to => 'qryadmin#admincreate', :via => "post", :as => "admincreate"
+  match 'qryadmin/destroy', :to => 'qryadmin#destroy', :via => "delete"
+
   resources :queries do
     member do
       post 'execute'
@@ -20,6 +30,7 @@ QueryComposer::Application.routes.draw do
       get 'log'
 	    get 'refresh_execution_results'
 	    get 'execution_history'
+	    get 'cancel'
     end
   end
   

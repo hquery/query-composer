@@ -1,0 +1,14 @@
+.err{
+	display: inline-block;	
+	height: 380px;
+	width: 380px;
+	overflow: auto;
+	vertical-align: top;
+	font-family: sans-serif;
+}
+.err > p{
+	padding: 5px;
+	margin: 0px 10px 5px 10px;
+	background-color: #FFAAAA;
+	word-wrap:break-word;
+}

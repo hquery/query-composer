@@ -53,6 +53,14 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
     successful_response = false
     begin
       logger.add(query, "Starting #{request.method} #{url}")
+      
+      if result.status == :canceled
+        Net::HTTP.start(url.host, url.port) do |http|
+          response = http.delete(url.path)
+        end
+        return  
+      end
+      
       Net::HTTP.start(url.host, url.port) do |http|
         response = http.request(request)
         case response
