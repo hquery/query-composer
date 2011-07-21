@@ -11,6 +11,7 @@ QueryComposer::Application.routes.draw do
   get "endpoints/refresh_endpoint_statuses"
 
   resources :endpoints
+  resources :library_functions
 
   resources :queries do
     member do

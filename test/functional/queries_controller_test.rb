@@ -216,7 +216,7 @@ class QueriesControllerTest < ActionController::TestCase
     sign_in @user
     # One result's status will be 'Queued', so we should find that unfinished_query_count == 1
     query = Query.find(@ids[3])
-    query.last_execution.results[0].status = 'Queued'
+    query.last_execution.results[0].status = Result::QUEUED
     query.save!
     get :refresh_execution_results, id: query.id
     assert_equal 1, assigns(:incomplete_results)

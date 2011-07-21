@@ -1,5 +1,10 @@
 class Result
   include Mongoid::Document
+  
+  QUEUED = 'Queued'
+  FAILED = 'Failed'
+  COMPLETE = 'Complete'
+  
   embedded_in :execution, class_name: "Execution", inverse_of: :results
 
   belongs_to :endpoint
@@ -9,5 +14,6 @@ class Result
   field :next_poll, type: Integer
   field :value, type: Hash
   field :time, type: String
+  field :error_msg, type: String
   
 end

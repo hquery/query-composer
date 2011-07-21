@@ -33,7 +33,7 @@ class QueriesController < ApplicationController
   def create
     endpoint = Endpoint.new
     endpoint.name = 'Default Local Queue'
-    endpoint.submit_url = 'http://localhost:3001/queues'
+    endpoint.base_url = 'http://localhost:3001'
     @query.endpoints << endpoint
     @query.user = current_user
     @query.save!
@@ -58,11 +58,7 @@ class QueriesController < ApplicationController
     execution = Execution.new(time: Time.now.to_i)
 
     # If the user wants to be notified when execution completes, make a note.
-    if (params[:notification])
-      execution.notification = true
-    else
-      execution.notification = false
-    end
+    execution.notification = params[:notification]
 
     @query.endpoints.each do |endpoint|
       execution.results << Result.new(endpoint: endpoint)
@@ -78,14 +74,7 @@ class QueriesController < ApplicationController
   # This function is used to re-fetch the value of a query. Used to check the status of a query's execution results
   def refresh_execution_results
     @incomplete_results = 0
-	  if (@query.last_execution)
-	    @query.last_execution.results.each do |result|
-		    if result.status == 'Queued'
-			    @incomplete_results += 1
-		    end
-		  end
-	  end
-	
+    @incomplete_results = @query.last_execution.unfinished_results.count if (@query.last_execution)
 	  respond_to do |format|
 		  format.js { render :layout => false }
 	  end

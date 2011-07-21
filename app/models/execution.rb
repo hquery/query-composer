@@ -13,4 +13,12 @@ class Execution
     result_statuses
   end
   
+  def finished?
+    unfinished_results.count == 0
+  end
+  
+  def unfinished_results
+    results.select {|result| result.status == Result::QUEUED}
+  end
+
 end

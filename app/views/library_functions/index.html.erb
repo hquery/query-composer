@@ -1,0 +1,21 @@
+<h1>Your User Functions</h1>
+
+<table>
+  <tr>
+    <th>name</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @library_functions.each do |library_function| %>
+  <tr>
+    <td><%= link_to library_function.name, library_function %></td>
+    <td><%= link_to 'Edit', edit_library_function_path(library_function) %>&nbsp;&nbsp;</td>
+    <td><%= link_to 'Destroy', library_function, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Library function', new_library_function_path %>

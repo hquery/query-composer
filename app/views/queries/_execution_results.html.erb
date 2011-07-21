@@ -14,8 +14,8 @@
 	end
 	results.each do |result| %>
 	<tr valign='top'>
-		<td><%= result.endpoint.submit_url %></td>
-		<td><%= result.status %></td>
+		<td><%= result.endpoint.base_url %></td>
+		<td><%= result.status %><%= result.error_msg if result.status == Result::FAILED %></td>
 		<td><%= result.next_poll %></td>
 		<td><%= result.result_url %></td>
 		<td>
