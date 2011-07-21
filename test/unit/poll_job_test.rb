@@ -66,7 +66,7 @@ class PollJobTest < ActiveSupport::TestCase
     query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.executions[0].results.each do |result|
-      assert_equal 'Queued', result.status
+      assert_equal Result::QUEUED, result.status
       assert_equal 'http://result_url/', result.result_url
       assert_equal 15, result.next_poll
       query_logger = QueryLogger.new

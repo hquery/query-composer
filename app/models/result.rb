@@ -1,7 +1,4 @@
 class Result
-  COMPLETE = "Complete"
-  FAILED = "Failed"
-  QUEUED =  "Queued"
   include Mongoid::Document
   
   QUEUED = 'Queued'
