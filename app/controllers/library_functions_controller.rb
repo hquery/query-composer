@@ -9,15 +9,9 @@ class LibraryFunctionsController < ApplicationController
   add_breadcrumb_for_actions only: %w{edit new}
 
   def index
-    if (current_user.admin?) 
-      @library_functions = LibraryFunction.all
-    else 
-      @library_functions = current_user.library_functions
-    end
+      @library_functions = (current_user.admin?) ? LibraryFunction.all : current_user.library_functions
   end
 
-
-  # GET /library_functions/new
   def new
     @library_function.definition = <<END_OF_FN
     #{current_user.username}.example = function() {
@@ -27,7 +21,6 @@ END_OF_FN
 
   end
 
-  # POST /library_functions
   def create
     @library_function.user = current_user
 
@@ -38,7 +31,6 @@ END_OF_FN
     end
   end
 
-  # PUT /library_functions/1
   def update
     if @library_function.update_attributes(params[:library_function])
       redirect_to @library_function, notice: 'Library function was successfully updated.'
@@ -47,7 +39,6 @@ END_OF_FN
     end
   end
 
-  # DELETE /library_functions/1
   def destroy
     @library_function.destroy
     redirect_to library_functions_url

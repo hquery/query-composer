@@ -15,11 +15,7 @@ class QueriesController < ApplicationController
   add_breadcrumb_for_actions only: %w{edit new log execution_history}
 
   def index
-    if (current_user.admin?) 
-      @queries = Query.all
-    else 
-      @queries = current_user.queries
-    end
+    @queries = (current_user.admin?) ? Query.all : current_user.queries
   end
 
   def log
@@ -31,10 +27,6 @@ class QueriesController < ApplicationController
   end
 
   def create
-    endpoint = Endpoint.new
-    endpoint.name = 'Default Local Queue'
-    endpoint.base_url = 'http://localhost:3001'
-    @query.endpoints << endpoint
     @query.user = current_user
     @query.save!
     redirect_to :action => 'show', :id=>@query.id
@@ -55,48 +47,27 @@ class QueriesController < ApplicationController
   end
 
   def execute
-    execution = Execution.new(time: Time.now.to_i)
-
-    # If the user wants to be notified when execution completes, make a note.
-    execution.notification = params[:notification]
-
-    @query.endpoints.each do |endpoint|
-      execution.results << Result.new(endpoint: endpoint)
-    end
-    @query.executions << execution
-    @query.save!
     
-    PollJob.submit_all(execution)
+    # execute the query, and pass in if the user should be notified by email when execution completes
+    @query.execute(params[:notification])
         
     redirect_to :action => 'show'
   end
   
-  
   def cancel
     execution = @query.executions.find(params[:execution_id])
-    result = execution.results.find(params[:result_id]) 
-      if result.status.nil? || result.status == "Queued"
-        result.status = :canceled
-        result.save
-      end
+    execution.results.find(params[:result_id]).cancel
     redirect_to :action => 'show'
   end
   
   def cancel_execution
-    execution = @query.executions.find(params[:execution_id])
-    result = execution.results.each do |result|
-      if result.status.nil? || result.status == "Queued"
-        result.status = :canceled
-        result.save
-      end
-    end
+    @query.executions.find(params[:execution_id]).cancel
     redirect_to :action => 'show'
   end
   
   # This function is used to re-fetch the value of a query. Used to check the status of a query's execution results
   def refresh_execution_results
-    @incomplete_results = 0
-    @incomplete_results = @query.last_execution.unfinished_results.count if (@query.last_execution)
+    @incomplete_results = (@query.last_execution) ? @query.last_execution.unfinished_results.count : 0
 	  respond_to do |format|
 		  format.js { render :layout => false }
 	  end

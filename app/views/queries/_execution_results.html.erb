@@ -23,7 +23,7 @@
 		  <% # This call uses /queries because this whole partial is called from an ActionMailer and it needs absolute paths%>
 		  <%= render :partial => '/queries/result', :locals => { :result => result } %>
 		</td>
-		<td> <% if result.status == "Queued" %> <%= link_to "Cancel", {:action=>:cancel,:id=>query, :result_id=>result.id, :execution_id=>result.execution.id}%> <% end %></td>
+		<td> <% if result.status == Result::QUEUED %> <%= link_to "Cancel", {:action=>:cancel,:id=>query, :result_id=>result.id, :execution_id=>result.execution.id}%> <% end %></td>
 	</tr>
 	<% end %>
 </table>

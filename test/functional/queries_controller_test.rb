@@ -252,8 +252,10 @@ class QueriesControllerTest < ActionController::TestCase
     assert_equal query.endpoints.length, query.executions[0].results.length
     res_id = query.last_execution.results[0].id
     delete :cancel, id: @ids[2], execution_id: query.last_execution.id, result_id:res_id
-    assert_equal "canceled", query.reload().last_execution.results.find(res_id).status
+    assert_equal Result::CANCELED, query.reload().last_execution.results.find(res_id).status
     assert_redirected_to(query_path(query.id))
 
   end
+  
+  
 end
