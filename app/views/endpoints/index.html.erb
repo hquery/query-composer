@@ -1,19 +1,5 @@
-<% content_for :head do -%>
-  <script type="text/javascript">
-  
-  </script>
-<% end %>
+<%= render partial: 'shared/tab_menu', locals: { selected: {endpoints: true}}%>
 
-<div id="patientMetrics">
-  <div class="patientGroupType">
-    <ul>
-      <li class="dashboardTab" data-tab="queries"> <label>Queries</label> </li>
-      <li class="dashboardTab selected" data-tab="endpoints"> <label>Endpoints</label> </li>
-      <li class="dashboardTab" data-tab="qryadmin"> <label>QryAdmin</label> </li>
-    </ul>
-    <br style="clear:both"/>
-  </div>
-</div>
 <div id="dashboardPeriod" >
   <br style="clear:left"/>
   <div class="simpleTableContainer">

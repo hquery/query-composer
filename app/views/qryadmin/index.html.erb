@@ -1,13 +1,5 @@
-<div id="patientMetrics">
-  <div class="patientGroupType">
-    <ul>
-      <li class="dashboardTab selected" data-tab="queries"> <label>Queries</label> </li>
-      <li class="dashboardTab" data-tab="endpoints"> <label>Endpoints</label> </li>
-      <li class="dashboardTab" data-tab="qryadmin"> <label>QryAdmin</label> </li>
-    </ul>
-    <br style="clear:both"/>
-  </div>
-</div><!-- end #patientMetrics -->
+<%= render partial: 'shared/tab_menu', locals: { selected: {qry_admin: true}}%>
+
 <div id="dashboardPeriod" >
 
 <h1><b>Query Administration</b></h1>
