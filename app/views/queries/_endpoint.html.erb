@@ -5,7 +5,7 @@
   <tr>
     <td><%= check_box_tag "query[endpoint_ids][]", endpoint.id, @query.endpoints.include?(endpoint) %></td>
     <td><%= endpoint.name %></td>
-    <td><%= endpoint.submit_url %></td>
+    <td><%= endpoint.base_url %></td>
   </tr> 
   <% end %>
 </table>

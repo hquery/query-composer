@@ -8,10 +8,15 @@ class PollJobTest < ActiveSupport::TestCase
     dump_jobs
     
     @user = Factory(:user_with_queries)
+    @user_with_functions = Factory(:user_with_queries_and_library_functions)
     @ids = @user.queries.map {|q| q.id}
     
-    @query_w_result = Factory(:query_with_execution)
-    @query_to_aggregate = Factory(:query_with_completed_results)
+    @query_w_result = @user.queries[3]
+    @query_to_aggregate = @user.queries[4]
+    
+    library_function = @user_with_functions.library_functions[0]
+    library_function.definition = library_function.definition.gsub(/username/,@user_with_functions.username)
+    library_function.save
     
   end
 
@@ -61,7 +66,7 @@ class PollJobTest < ActiveSupport::TestCase
     query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.executions[0].results.each do |result|
-      assert_equal 'Queued', result.status
+      assert_equal Result::QUEUED, result.status
       assert_equal 'http://result_url/', result.result_url
       assert_equal 15, result.next_poll
       query_logger = QueryLogger.new
@@ -81,7 +86,8 @@ class PollJobTest < ActiveSupport::TestCase
     query_from_db = Query.find(@query_w_result.id)
 
     query_from_db.executions[0].results.each do |result|
-      assert_equal "Internal Server Error", result.status
+      assert_equal Result::FAILED, result.status
+      assert_equal "Internal Server Error", result.error_msg
       assert_nil result.result_url
       assert_nil result.next_poll
 
@@ -119,7 +125,40 @@ class PollJobTest < ActiveSupport::TestCase
       assert_equal "Complete", query_log.last["message"]
     end
 
-
   end
+  
+  test "poll job should submit properly with library functions" do
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "complete")
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "{\"foo\" : \"bar\"}")
+    query_from_db = Query.find(@user_with_functions.queries[3].id)
+
+    PollJob.submit_all(query_from_db.executions[0])
+
+    db = Mongoid::Config.master
+    assert_equal @user_with_functions.username, db['system.js'].find({}).first['_id']
+    assert_not_nil db['system.js'].find({}).first['value']['sum']
+  end
+  
+  test "poll job with library functions should log communication error saving functions" do
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :status => ["500", "Internal Server Error"])
+    query_from_db = Query.find(@user_with_functions.queries[3].id)
+
+    PollJob.submit_all(query_from_db.executions[0])
+    
+    assert_equal "library functions failed", Event.all[0].message
+    
+  end
+
+  test "poll job with library functions should log exception saving functions" do
+    query_from_db = Query.find(@user_with_functions.queries[3].id)
+    query_from_db.endpoints.each { | endpoint | endpoint.base_url = "http://crapbadurl.mitre.org/"; endpoint.save; }
+    query_from_db.reload
+
+    PollJob.submit_all(query_from_db.executions[0])
+    
+    assert_equal "library functions exception", Event.all[0].message
+    
+  end
+  
 
 end

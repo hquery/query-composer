@@ -1,0 +1,20 @@
+<%= simple_form_for(@library_function) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="inputs">
+    <table>
+      <tr>
+        <td>name</td>
+        <td><%= f.input_field :name %></td>
+      </tr>
+      <tr>
+        <td>definition</td>
+        <td<%= f.input_field :definition, :as => :text %></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

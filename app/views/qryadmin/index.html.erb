@@ -1,0 +1,26 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {qry_admin: true}}%>
+
+<div id="dashboardPeriod" >
+
+<h1><b>Query Administration</b></h1>
+
+<table>
+<tr><td></td></tr>
+<% if @queries.size %>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Status</th>
+  </tr>
+<% end %>
+<% @queries.each do |query| %>
+<tr><td></td></tr>
+  <tr>
+    <td><%= query.title%></td>
+    <td><%= query.description %></td>
+    <td><%= button_to 'Select', {:action=>'modify', :id=>query.id}, :method=>:get %></td>
+  </tr>
+<% end %>
+</table>
+
+<p><%= button_to 'Add New', {:action=>'adminnew'}, :method=>:get %></p>

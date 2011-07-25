@@ -5,6 +5,7 @@ class User
   devise :database_authenticatable, :registerable,:recoverable, :rememberable, :trackable, :validatable,:authentication_keys => [:username]
 
   has_many :queries
+  has_many :library_functions
 
   field :first_name, type: String
   field :last_name, type: String
@@ -66,4 +67,10 @@ class User
     update_attributes(:admin => false)
   end
 
+  # =============
+  # = utilities =
+  # =============
+  def library_function_definitions
+    (library_functions.map {|function| function.definition}).join("\r\n")
+  end
 end
