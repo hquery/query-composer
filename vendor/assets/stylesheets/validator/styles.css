@@ -17,7 +17,11 @@
 	.querywindow .querywindow-query {
 		width: 70%;
 	}
-	.querywindow .querywindow-record {
+	.querywindow .querywindow-record td {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.querywindow .querywindow-recordstatus {
 		font-weight: bold;
 		font-style: italic;
 	}

@@ -59,6 +59,7 @@ var hDebugger = {
 										.attr("id", "recordquery"),
 									$(document.createElement("input"))
 										.attr("type", "button")
+										.attr("id", "querybutton")
 										.val("Query")
 										.click(
 											function(){
@@ -72,7 +73,7 @@ var hDebugger = {
 													}
 													//console.log($("#recordquery").val() + " => " + eval($("#recordquery").val()));													
 													//debugger;
-													if (eval($("#recordquery").val())) hDebugger.rset[hDebugger.rset.length] = hDebugger.patients[i];
+													if ($("#recordquery").val() == "" || eval($("#recordquery").val())) hDebugger.rset[hDebugger.rset.length] = hDebugger.patients[i];
 												}
 												$("#recordlist").empty();
 												$("#recordlist").append(
@@ -80,12 +81,12 @@ var hDebugger = {
 														.append(
 															$(document.createElement("td"))
 																.attr("colspan", 0)
-																.addClass("querywindow-record")
+																.addClass("querywindow-recordstatus")
 																.text("Matched " + hDebugger.rset.length + " records")
 														)
 												);
 												for (var i in hDebugger.rset){
-													var e = $(document.createElement("tr"));
+													var e = $(document.createElement("tr")).addClass("querywindow-record");
 													$("#recordlist").append(e);
 													for (var j in hDebugger.rset[i].json){
 														$(e).append(
@@ -114,7 +115,7 @@ var hDebugger = {
 								)
 						)
 				);
-				for(var i in hDebugger.rset){
+				/*for(var i in hDebugger.rset){
 					var e = $(document.createElement("tr"));
 					$("#recordlist").append(e);
 					for (var j in hDebugger.rset[i].json){
@@ -122,7 +123,8 @@ var hDebugger = {
 							$(document.createElement("td")).text(hDebugger.rset[i].json[j])
 						);
 					}
-				}
+				}*/
+				$("#querybutton").click();
 			}
 		);
 		
