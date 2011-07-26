@@ -30,6 +30,14 @@ Factory.define :user_with_queries, :parent => :user do |user|
   user.after_create { |u| Factory(:query_with_completed_results, :user => u) }
 end
 
+Factory.define :user_with_library_functions, :parent => :user do |user|
+  user.after_create {|u| Factory(:library_function, :user => u)}
+end
+
+Factory.define :user_with_queries_and_library_functions, :parent => :user_with_queries do |user|
+  user.after_create {|u| Factory(:library_function, :user => u)}
+end
+
 # ===========
 # = QUERIES =
 # ===========
@@ -75,7 +83,7 @@ end
 # =============
 Factory.define :endpoint do |e| 
   e.sequence(:name) {|n| "Endpoint#{n}"}
-  e.submit_url 'http://127.0.0.1:3001/queues' 
+  e.base_url 'http://127.0.0.1:3001' 
 end
 
 # ==============
@@ -100,4 +108,13 @@ end
 Factory.define :result_with_value, :parent => :result do |result| 
   result.value ({"M" => 50, "F" => 30})
   result.status 'Complete'
+end
+
+# =====================
+# = Library Functions =
+# =====================
+
+Factory.define :library_function do |f|
+  f.sequence(:name) { |n| "sum#{n}()" }
+  f.definition "username.sum = function(values) {\r\n        result = 0;\r\n          values.forEach(function(value) {\r\n            result += value;\r\n          });\r\n          return result;\r\n        }\r\n"
 end

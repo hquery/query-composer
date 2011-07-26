@@ -37,24 +37,24 @@ class EndpointsControllerTest < ActionController::TestCase
   end
 
   test "should not create endpoint without required fields" do
-    # make sure that submit_url is required
+    # make sure that base_url is required
     post :create, endpoint: {name: "blah"}
     invalid_endpoint = assigns[:endpoint]
     assert_not_nil invalid_endpoint
     assert !invalid_endpoint.valid?
     assert invalid_endpoint.errors[:name].empty?
-    assert !invalid_endpoint.errors[:submit_url].empty?
+    assert !invalid_endpoint.errors[:base_url].empty?
     assert_response :success
     
   end
   
   test "endpoint name should be required" do
     #make sure that name is also required
-    post :create, endpoint: {submit_url: "blah"}
+    post :create, endpoint: {base_url: "blah"}
     invalid_endpoint = assigns[:endpoint]
     assert !invalid_endpoint.valid?
     assert !invalid_endpoint.errors[:name].empty?
-    assert invalid_endpoint.errors[:submit_url].empty?
+    assert invalid_endpoint.errors[:base_url].empty?
     assert_response :success
   end
 
@@ -75,12 +75,12 @@ class EndpointsControllerTest < ActionController::TestCase
 
   test "should not update endpoint if invalid" do
     # make sure we can't update to be invalid
-    put :update, id: @endpoint.to_param, endpoint: {submit_url: nil}
+    put :update, id: @endpoint.to_param, endpoint: {base_url: nil}
     invalid_endpoint = assigns[:endpoint]
     assert_not_nil invalid_endpoint
     assert !invalid_endpoint.valid?
     assert invalid_endpoint.errors[:name].empty?
-    assert !invalid_endpoint.errors[:submit_url].empty?
+    assert !invalid_endpoint.errors[:base_url].empty?
     assert_response :success
 
   end
@@ -105,7 +105,7 @@ class EndpointsControllerTest < ActionController::TestCase
   
   test "should gracefully refresh downed endpoint status" do
     Endpoint.all.each do |endpoint|
-      endpoint.submit_url = "http://something.totally.invalid:9999"
+      endpoint.base_url = "http://something.totally.invalid:9999"
       endpoint.save!
     end
     get :refresh_endpoint_statuses

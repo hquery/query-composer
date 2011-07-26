@@ -15,6 +15,9 @@ class ActiveSupport::TestCase
     Query.all.each {|x| x.destroy}
     Endpoint.all.each {|x| x.destroy}
     Event.all.each {|x| x.destroy}
+    LibraryFunction.all.each {|x| x.destroy}
+    db = Mongoid::Config.master
+    db['system.js'].remove({})
   end
 
   def dump_jobs

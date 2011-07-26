@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'poll_job'
 include Devise::TestHelpers
 
 class QueriesControllerTest < ActionController::TestCase
@@ -216,7 +217,7 @@ class QueriesControllerTest < ActionController::TestCase
     sign_in @user
     # One result's status will be 'Queued', so we should find that unfinished_query_count == 1
     query = Query.find(@ids[3])
-    query.last_execution.results[0].status = 'Queued'
+    query.last_execution.results[0].status = Result::QUEUED
     query.save!
     get :refresh_execution_results, id: query.id
     assert_equal 1, assigns(:incomplete_results)
@@ -230,5 +231,31 @@ class QueriesControllerTest < ActionController::TestCase
     assert_not_nil assigned_query
     assert_response :success
   end
+  
+  
+  test "should cancel endpoint results" do
+    sign_in @user
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "{}", :status => ["304"], :location=>"http://localhost:3001/queues")
+    query_from_db = Query.find(@ids[2])
+    
+    # why is all of this here you ask, well becuse calling the method to post the execution actaully 
+    # trys to call all of the endpoints which results in 
+    post :execute, id: @ids[2], notification: true
+    query = assigns(:query)
+    assert_not_nil query
+    assert query.last_execution.notification
+    query_from_db = Query.find(@ids[2])
+    
+    # check that the query has an execution, and the execution has a result for each endpoint
+    assert_not_nil query.executions
+    assert_equal 1, query.executions.length
+    assert_equal query.endpoints.length, query.executions[0].results.length
+    res_id = query.last_execution.results[0].id
+    delete :cancel, id: @ids[2], execution_id: query.last_execution.id, result_id:res_id
+    assert_equal Result::CANCELED, query.reload().last_execution.results.find(res_id).status
+    assert_redirected_to(query_path(query.id))
+
+  end
+  
   
 end

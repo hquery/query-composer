@@ -14,6 +14,14 @@
     hQuery.demoteUser = function() {
       var username = $(this).data("username");
       var parentTd = $(this).parent();
+
+      if (username == '<%= current_user.username %>') {
+        var response = confirm('You are about to remove admin rights from the currently logged in user' 
+                              +', this will cause you to immediately lose access to all admin functionality including this page.  ' 
+                              +'You will need to use another admin account to restore admin rights.  Are you sure you want to continue?');
+        if (!response) return;
+      }
+
       $.post('<%= admin_demote_path %>', {'username': username}, function(data) {
         parentTd.html(data);
         parentTd.find('.promote').click(hQuery.promoteUser);
@@ -28,11 +36,28 @@
       });
     };
     
-    hQuery.removeUser = function() {
+    hQuery.disableUser = function() {
       var username = $(this).data("username");
       var parentTd = $(this).parent();
-      $.post('<%= admin_destroy_path %>', {'username': username}, function(data) {
+      
+      if (username == '<%= current_user.username %>') {
+        var response = confirm('You are about to disable the currently logged in user' 
+                              +', this will cause you to immediately lose access and be logged out.  Are you sure you want to continue?');
+        if (!response) return;
+      }
+      
+      hQuery.disableEnableUser(1, username, parentTd)
+    };
+    hQuery.enableUser = function() {
+      var username = $(this).data("username");
+      var parentTd = $(this).parent();
+      hQuery.disableEnableUser(0, username, parentTd)
+    };
+    hQuery.disableEnableUser = function(disabled, username, parentTd) {
+      $.post('<%= admin_disable_path %>', {'username': username, 'disabled': disabled}, function(data) {
         parentTd.html(data);
+        if (disabled == 1) parentTd.find('.disable').click(hQuery.enableUser);
+        else parentTd.find('.enable').click(hQuery.disableUser);
       });
     };
     
@@ -40,7 +65,8 @@
       $('.promote').click(hQuery.promoteUser);
       $('.demote').click(hQuery.demoteUser);
       $('.approve').click(hQuery.approveUser);
-      $('.remove').click(hQuery.removeUser);
+      $('.enable').click(hQuery.disableUser);
+      $('.disable').click(hQuery.enableUser);
       $(document).idleTimeout({
         inactivity: 300000,
         noconfirm: 10000,
@@ -83,7 +109,7 @@
       <% end -%>
     </td>
     <td>
-      <span class="remove" data-username="<%= user.username %>">remove</span>
+      <span class="<%= (user.disabled?) ? 'disable' : 'enable'%>" data-username="<%= user.username %>"><%= (user.disabled?) ? 'disabled' : 'enabled'%></span>
     </td>
   </tr>
   <% end -%>

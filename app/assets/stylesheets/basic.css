@@ -152,3 +152,6 @@ div.field_with_errors {
   cursor: pointer;
 }
 
+#execution_results td ,th {
+  padding: 2px;
+}

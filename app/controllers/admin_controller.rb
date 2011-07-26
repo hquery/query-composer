@@ -15,11 +15,16 @@ class AdminController < ApplicationController
     toggle_admin_privilidges(params[:username], :demote)
   end
   
-  def destroy
+  def disable
     user = User.find_by_username(params[:username]);
+    disabled = params[:disabled].to_i == 1
     if user
-      user.destroy
-      render :text => "removed"
+      user.update_attribute(:disabled, disabled)
+      if (disabled)
+        render :text => "<span class=\"disable\" data-username=\"#{user.username}\">disabled</span>"
+      else
+        render :text => "<span class=\"enable\" data-username=\"#{user.username}\">enabled</span>"
+      end
     else
       render :text => "User not found"
     end

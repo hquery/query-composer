@@ -54,6 +54,29 @@ class UserAccessTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  test "unapproved user should not be able to access anything" do
+    
+    @user.approved = false;
+    @user.save!
+    
+    login @user
+
+    get "/queries"
+    assert_redirected_to user_session_path
+  end
+
+  test "disabled user should not be able to access anything" do
+    
+    @user.disabled = true;
+    @user.save!
+    
+    login @user
+
+    get "/queries"
+    assert_redirected_to user_session_path
+  end
+
+
   test "admin should be able to access queries they do not own" do
     login @admin
 
@@ -63,7 +86,7 @@ class UserAccessTest < ActionDispatch::IntegrationTest
 
   test "users should not be able to edit endpoints" do
     login @user
-    put "/endpoints/#{@new_endpoint.id}", 'endpoint[name]' => 'new name', 'endpoint[submit_url]' => 'http://example.com/'
+    put "/endpoints/#{@new_endpoint.id}", 'endpoint[name]' => 'new name', 'endpoint[base_url]' => 'http://example.com/'
     assert_response :redirect
     endpoint_updated = Endpoint.find(@new_endpoint.id);
     assert_equal @new_endpoint.id, endpoint_updated.id
@@ -73,12 +96,12 @@ class UserAccessTest < ActionDispatch::IntegrationTest
 
   test "admin should be able to edit endpoints" do
     login @admin
-    put "/endpoints/#{@new_endpoint.id}", 'endpoint[name]' => 'new name', 'endpoint[submit_url]' => 'http://example.com/'
+    put "/endpoints/#{@new_endpoint.id}", 'endpoint[name]' => 'new name', 'endpoint[base_url]' => 'http://example.com/'
     assert_response :redirect
     endpoint_updated = Endpoint.find(@new_endpoint.id);
     assert_equal @new_endpoint.id, endpoint_updated.id
     assert_equal 'new name', endpoint_updated.name
-    assert_equal 'http://example.com/', endpoint_updated.submit_url
+    assert_equal 'http://example.com/queues', endpoint_updated.submit_url
   end
 
   def login(user)
