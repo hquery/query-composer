@@ -20,6 +20,7 @@ class User
   
   field :admin, type: Boolean
   field :approved, type: Boolean
+  field :disabled, type: Boolean
 
   validates_presence_of :first_name, :last_name
   validates_uniqueness_of :username
@@ -36,7 +37,7 @@ class User
   validates :username, :presence => true, length: {minimum: 3, maximum: 254}
 
   def active_for_authentication? 
-    super && approved?
+    super && approved? && !disabled?
   end
   
   # ==========
