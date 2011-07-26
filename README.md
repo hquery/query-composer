@@ -267,6 +267,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 Project Practices
-=================
+-----------------
 
 Please try to follow our [Coding Style Guides](http://github.com/eedrummer/styleguide). Additionally, we will be using git in a pattern similar to [Vincent Driessen's workflow](http://nvie.com/posts/a-successful-git-branching-model/). While feature branches are encouraged, they are not required to work on the project.
