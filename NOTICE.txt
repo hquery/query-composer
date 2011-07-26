@@ -1,0 +1,9 @@
+hQuery
+Copyright 2011 The MITRE Corporation
+
+This product includes software developed at
+Project PopHealth (http://projectpophealth.org/).
+
+This software contains code derived from the open source PopHealth
+software project, including various modifications by the MITRE 
+Corporation http://www.mitre.org
