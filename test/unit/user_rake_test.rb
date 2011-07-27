@@ -16,7 +16,7 @@ class UserRakeTest < ActiveSupport::TestCase
     if (!@@rake)
       @@rake = Rake.application
       Rake.application = @@rake
-      Rake.application.rake_require "../../lib/tasks/hquery"
+      Rake.application.rake_require "../../lib/tasks/hquery_users"
       Rake::Task.define_task(:environment)
     end
     Rake.application.tasks.each {|t| t.instance_eval{@already_invoked = false}}
