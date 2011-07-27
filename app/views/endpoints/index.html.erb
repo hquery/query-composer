@@ -5,7 +5,7 @@
   <div class="simpleTableContainer">
     <%= render :partial => 'endpoint_statuses' %>
   </div>
-  
+
   <%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Endpoint</span><% end if current_user.admin? %>
   <%= link_to({ :controller => 'endpoints', :action => 'refresh_endpoint_statuses' }, :class => "bluebutton", :remote => true) do %><span>Refresh Endpoints</span><% end %>
 </div>

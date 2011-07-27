@@ -9,6 +9,6 @@ namespace :doc do
     File.open('./doc/readme.html','w') do |file|
       file << doc.to_html
     end
-  
+
   end
 end
