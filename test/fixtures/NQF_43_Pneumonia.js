@@ -12,7 +12,7 @@ function map(patient) {
     "ICD-9-CM": [
       "V70.0", "V70.3", "V70.5", "V70.6", "V70.8", "V70.9"
     ]
-  }
+  };
   
   var pneumococcalMedicationCodes = {
     "RxNorm": [
@@ -21,7 +21,7 @@ function map(patient) {
       "854963", "854965", "854967", "854969", "854971", "854973", "854975", "854977",
       "854981"
     ]
-  }
+  };
   
   var pneumococcalProcedureCodes = {
     "CVX": [
@@ -30,7 +30,7 @@ function map(patient) {
     "CPT": [
       "90669", "90670", "90732"
     ]
-  }
+  };
   
   var start = new Date(2010,1,1);
   var end = new Date(2010,12,31);
@@ -40,16 +40,16 @@ function map(patient) {
   }
   
   function denominator(patient) {
-    var encounters = patient.countMatchingWithinPeriod(
-      patient.encounters(), outpatientEncounterCodes, start, end);
+    var encounters = patient.encounters().match(
+      outpatientEncounterCodes, start, end);
     return (encounters>0);
   }
   
   function numerator(patient) {
-    medication = patient.countMatchingWithinPeriod(
-      patient.medications(), pneumococcalMedicationCodes, null, end);
-    procedure = patient.countMatchingWithinPeriod(
-      patient.procedures(), pneumococcalProcedureCodes, null, end);
+    var medication = patient.medications().match(
+      pneumococcalMedicationCodes, null, end);
+    var procedure = patient.procedures().match(
+      pneumococcalProcedureCodes, null, end);
     return medication || procedure;
   }
   
@@ -72,8 +72,9 @@ function map(patient) {
   }
 }
 
-function(criteria, counts) {
+function reduce(criteria, counts) {
   var sum = 0;
-  for(var i in counts) sum += counts[i];
+  for(var i in counts)
+    sum += counts[i];
   return sum;
 };
