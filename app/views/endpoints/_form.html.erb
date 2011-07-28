@@ -3,20 +3,18 @@
 
   <%= f.hidden_field :id %>
 
-  <div class="inputs">
 
-    <table>
+    <table class="simpleTable">
       <tr>
-        <td>name</td>
+        <th>Name</th>
         <td><%= f.input_field :name %></td>
       </tr>
       <tr>
-        <td>url</td>
+        <th>URL</th>
         <td><%= f.input_field :base_url %></td>
       </tr>
     </table>
 
-  </div>
 
   <div class="actions">
     <%= f.button :submit %>

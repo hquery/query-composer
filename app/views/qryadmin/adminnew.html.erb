@@ -1,20 +1,22 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {qry_admin: true}}%>
 
 <div id="mainPanel">
-  <div class="simpleTableContainer">
-    <h1>Query Admin - Create Query</h1>
-    <%= form_for (@query), :url => {:action => 'admincreate', :method => :post}  do |f| %>
-      <table class="simpleTable">
-        <tr></tr>
-        <tr><th>Title</th><td><%= f.text_field :title, :disabled => @disabled %></td></tr>
-        <tr><th>Description</th><td><%= f.text_field :description, :disabled => @disabled %></td></tr>
-        <tr><th>Filter</th><td><%= f.text_field :filter, :disabled => @disabled %></td></tr>
-        <tr><th>Map Function</th><td><%= f.text_area :map, :as => :text, :disabled => @disabled %></td></tr>
-        <tr><th>Reduce Function</th><td><%= f.text_area :reduce, :as => :text, :disabled => @disabled %></td></tr>
-      </table>
+  <h1>Query Admin - Create Query</h1>
+  <%= form_for (@query), :url => {:action => 'admincreate', :method => :post}  do |f| %>
+    <table class="simpleTable">
+      <tr></tr>
+      <tr><th>Title</th><td><%= f.text_field :title, :disabled => @disabled %></td></tr>
+      <tr><th>Description</th><td><%= f.text_field :description, :disabled => @disabled %></td></tr>
+      <tr><th>Filter</th><td><%= f.text_field :filter, :disabled => @disabled %></td></tr>
+      <tr><th>Map Function</th><td><%= f.text_area :map, :as => :text, :disabled => @disabled %></td></tr>
+      <tr><th>Reduce Function</th><td><%= f.text_area :reduce, :as => :text, :disabled => @disabled %></td></tr>
+    </table>
+    
+    <div class="ctrl">
       <%= f.submit 'Save Query' ,  {:controller => 'qryadmin', :action => 'admincreate', :method => :post}%>
-    <% end %>
-  </div>
+      <%= link_to "Cancel", qryadmin_path %>
+    </div>
+  <% end %>
 </div>
 
 

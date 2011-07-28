@@ -1,18 +1,22 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
 
 <div id="mainPanel">
-<div class="simpleTableContainer">
 
-<h1>Query Status</h1>
-<table class="simpleTable">
-<% @events.each do |event| %>
-  <tr>
-    <td><%= event.time %></td>
-    <td><%= event.message %></td>
+  <h1>Query Event Log</h1>
+  <h2>Query: <%= link_to @query.title, query_path %></h2>
+
+  <table class="simpleTable">
+    <tr>
+    <th>Time</th>
+    <th>Message</th>
   </tr>
-<% end %>
-</table>
-
-<p><%= link_to 'Back to Query', query_path %></p>
-</div>
+  <% @events.each do |event| %>
+    <tr>
+      <td><%= event.time %></td>
+      <td><%= event.message %></td>
+    </tr>
+  <% end %>
+  </table>
+  
+  <p><%= link_to 'Back to Query', query_path %></p>
 </div>

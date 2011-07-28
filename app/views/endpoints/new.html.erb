@@ -1,5 +1,9 @@
-<h1>New endpoint</h1>
+<%= render partial: 'shared/tab_menu', locals: { selected: {endpoints: true}}%>
 
-<%= render 'form' %>
+<div id="mainPanel">
+  <h1>Create New Endpoint</h1>
 
-<%= link_to 'Back', endpoints_path %>
+  <%= render 'form' %>
+  
+  <%= link_to 'Back', endpoints_path %>
+</div>

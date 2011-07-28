@@ -11,7 +11,7 @@ class QryadminController < ApplicationController
 
   # add breadcrumbs
   #akling - need to ask what this is
-  add_breadcrumb 'Qryadmin', :qryadmin_url
+  add_breadcrumb 'Query Admin', :qryadmin_url
   #add_breadcrumb_for_resource :qryadmin, :title, only: %w{edit show log execution_history}
   #add_breadcrumb_for_actions only: %w{edit new log execution_history}
 

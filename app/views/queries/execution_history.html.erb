@@ -1,31 +1,36 @@
-<h1>Execution History</h1>
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
 
-<table class="simpleTable">
-  <tr>
-    <th>Executed On</th>
-    <th>Status</th>
-    <th>Result</th>
-  </tr>
-
-  <% @query.executions.each_with_index do |execution, index| -%>
-    <tr style="<% if index.modulo(2) == 0 %>background: #EEE<% end %>">
-      <td style="vertical-align: top"><%= Time.at(execution.time).strftime("%m/%d/%Y %I:%M%p") %></td>
-      <td style="vertical-align: top">
-        <% execution.status.each_pair do |key, value| %>
-          <%= key %>: <%= value %> of <%= execution.results.length %><br/>
-        <% end %>
-      </td>
-      <td>
-        <% execution.results.each do |result| %>
-          <%= result.endpoint.name %>
-          <%= render :partial => 'result', :locals => { :result => result } %>
-          <% if (!result.value) %>
-            <table><tr><td><code>no result<code><td><tr></table>
-          <% end %>
-        <% end %>
-      </td>
+<div id="mainPanel">
+  <h1>Execution History</h1>
+  <h2>Query: <%= link_to @query.title, query_path %></h2>
+  <table class="simpleTable" id="queryExecutionHistory">
+    <tr>
+      <th colspan="2">Executed On</th>
+      <th>Status</th>
+      <th>Result</th>
     </tr>
-  <% end %>
-</table>
-
+  
+    <% @query.executions.each_with_index do |execution, index| -%>
+      <tr>
+        <td><%= Time.at(execution.time).strftime("%m/%d/%Y") %></td>
+        <td><%= Time.at(execution.time).strftime("%I:%M%p") %></td>
+        <td>
+          <% execution.status.each_pair do |key, value| %>
+            <%= key %>: <%= value %> of <%= execution.results.length %><br/>
+          <% end %>
+        </td>
+        <td>
+          <% execution.results.each do |result| %>
+            <%= result.endpoint.name %>
+            <%= render :partial => 'result', :locals => { :result => result } %>
+            <% if (!result.value) %>
+              <code class="no_result">no result<code>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <%= link_to 'Back', query_path %>
+</div>
 

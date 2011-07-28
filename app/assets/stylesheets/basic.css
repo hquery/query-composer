@@ -66,7 +66,7 @@ a {
 #breadcrumbBox {
   padding: 4px 0 2px;
   border-bottom: 1px solid #cccccc;
-  background: transparent url(hQuery_logo_small2.png) 5px 3px no-repeat;
+  background: transparent url(hQuery_logo_small.png) 5px 3px no-repeat;
 }
 #logOut {
   padding: 5px 20px 4px 0;
@@ -89,6 +89,8 @@ div.field_with_errors {
 
 }
 
+p#notice {margin-bottom:20px}
+
 #mainPanel {
   float: left;
   padding: 10px;
@@ -98,8 +100,7 @@ div.field_with_errors {
 #mainPanel h1 {font-size:1.5em}
 #mainPanel h2 {font-size:1.3em}
 
-.simpleTableContainer { }
-.simpleTableContainer td, .simpleTableContainer th {
+.simpleTable td, .simpleTable th {
   padding:3px 15px 3px 0px;
   vertical-align:top;
 }
@@ -117,12 +118,15 @@ td.subTable {padding:0 10px 0 0}
 .simpleTable td a {color:#56a6c4;}
 .simpleTable td a:hover {  color: #368f98;}
 .simpleTable pre {font-family:Consolas,Monaco,"Courier New";}
+.simpleTable td.good_status {color:green}
+.simpleTable td.fail_status {color:red}
 
 #sidebarNavigation {
   display: block;
   display: table-cell;
   vertical-align: top;
-  width: 285px;
+  min-width:230px;
+  width: 230px;
   background-color: #f2f2f2;
   color: #000000;
   padding: 0;
@@ -130,31 +134,76 @@ td.subTable {padding:0 10px 0 0}
   height: 100%;
   border-right: 1px solid #cccccc;
 }
-#sidebarNavigation .sidebarGroup ul { float: right; }
+#sidebarNavigation .sidebarGroup ul { float: right;overflow:hidden; }
 #sidebarNavigation .sidebarGroup ul li {
-  height: 52px;
+  height: 48px;
   list-style: none;
+  font-size:1.2em;
+  color:#333;
+  
   margin: 15px 0;
-  width: 250px;
+  width: 200px;
   border: 1px #cccccc solid;
   border-right: none;
-  padding-right: 5px;
-  padding-left: 15px;
+  padding:0 5px 0 15px;
   text-align: right;
+  border-radius: 10px 0 0 10px;
+  -webkit-border-radius: 10px 0 0 10px;
+  
+  
+  background: rgb(224,224,224); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(224,224,224,1) 0%, rgba(204,204,204,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(224,224,224,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(224,224,224,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-linear-gradient(top, rgba(224,224,224,1) 0%,rgba(204,204,204,1) 100%); /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+  background: linear-gradient(top, rgba(224,224,224,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
+
+
+  text-shadow: 1px 1px 1px #ffffff;
+  filter: dropshadow(color=#ffffff, offx=1, offy=1); 
+  -webkit-transition: background 300ms linear;
+  -moz-transition: background 300ms linear;
+  -o-transition: background 300ms linear;
+  transition: background 300ms linear;
+  
 }
-#sidebarNavigation .sidebarGroup ul li.selected {
-  background-color: #AAAAAA;
+#sidebarNavigation .sidebarGroup ul li:hover {
+  background: rgb(242,245,246); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(242,245,246,1) 0%, rgba(227,234,237,1) 37%, rgba(200,215,220,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,245,246,1)), color-stop(37%,rgba(227,234,237,1)), color-stop(100%,rgba(200,215,220,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f5f6', endColorstr='#c8d7dc',GradientType=0 ); /* IE6-9 */
+  background: linear-gradient(top, rgba(242,245,246,1) 0%,rgba(227,234,237,1) 37%,rgba(200,215,220,1) 100%); /* W3C */
 }
 
+#sidebarNavigation .sidebarGroup ul li.selected {
+  color:white;
+  text-shadow: -1px -1px 1px #000000;
+  filter: dropshadow(color=#000000, offx=1, offy=1); 
+  background-color: #AAAAAA;
+  
+  background: rgb(184,198,223); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(184,198,223,1) 0%, rgba(109,136,183,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(184,198,223,1)), color-stop(100%,rgba(109,136,183,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(184,198,223,1) 0%,rgba(109,136,183,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -ms-linear-gradient(top, rgba(184,198,223,1) 0%,rgba(109,136,183,1) 100%); /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b8c6df', endColorstr='#6d88b7',GradientType=0 ); /* IE6-9 */
+  background: linear-gradient(top, rgba(184,198,223,1) 0%,rgba(109,136,183,1) 100%); /* W3C */
+
+}
+#sidebarNavigation .sidebarGroup ul li.selected a {color:#fff}
 #sidebarNavigation .sidebarGroup ul li span {
   display: table-cell;
   text-align: left;
   vertical-align: middle;
   height: 52px;
 }
-#sidebarNavigation .sidebarGroup ul li label {
+#sidebarNavigation .sidebarGroup ul li a {
   width: 150px;
   display: table-cell;
+  color:#000;
   text-align: left;
   vertical-align: middle;
   height: 52px;
@@ -164,5 +213,6 @@ td.subTable {padding:0 10px 0 0}
 #execution_results td ,th {
   padding: 2px;
 }
+#queryExecutionHistory tr td:first-child {padding-right:5px;}
 div.ctrl input[type=button],div.ctrl input[type=submit] {margin-right:15px}
 span.ctrl {margin-left:50px}  

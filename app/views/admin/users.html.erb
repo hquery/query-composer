@@ -9,6 +9,7 @@
       parentTd.html(data);
       parentTd.find('.demote').click(hQuery.demoteUser);
     });
+    return false;
   };
 
   hQuery.demoteUser = function() {
@@ -26,6 +27,7 @@
       parentTd.html(data);
       parentTd.find('.promote').click(hQuery.promoteUser);
     });
+    return false;
   };
 
   hQuery.approveUser = function() {
@@ -79,15 +81,17 @@
 </script>
 <% end -%>
 
-<h1>Users</h1>
-<table id="simpleTable">
+<div id="mainPanel">
+
+<h1>Administer Users</h1>
+<table class="simpleTable">
   <tr>
     <th>First Name</th>
     <th>Last Name</th>
     <th>Username</th>
     <th>Admin</th>
     <th>Approved</th>
-    <th></th>
+    <th>Status</th>
   </tr>
   <% @users.each do |user| -%>
   <tr>
@@ -96,21 +100,23 @@
     <td><%= user.username %></td>
     <td>
       <% if user.admin? -%>
-      Yes - <span class="demote" data-username="<%= user.username %>">remove admin rights</span>
+      Yes - <a href="#" class="demote" data-username="<%= user.username %>">remove admin rights</a>
       <% else -%>
-      No - <span class="promote" data-username="<%= user.username %>">grant admin rights</span>
+      No - <a href="#" class="promote" data-username="<%= user.username %>">grant admin rights</a>
       <% end -%>
     </td>
     <td>
       <% if user.approved? -%>
       true
       <% else -%>
-      <span class="approve" data-username="<%= user.username %>">approve</span>
+      <a href="#" class="approve" data-username="<%= user.username %>">approve</a>
       <% end -%>
     </td>
     <td>
-      <span class="<%= (user.disabled?) ? 'disable' : 'enable'%>" data-username="<%= user.username %>"><%= (user.disabled?) ? 'disabled' : 'enabled'%></span>
+      <a href="#" class="<%= (user.disabled?) ? 'disable' : 'enable'%>" data-username="<%= user.username %>"><%= (user.disabled?) ? 'disabled' : 'enabled'%></a>
     </td>
   </tr>
   <% end -%>
 </table>
+
+</div>
