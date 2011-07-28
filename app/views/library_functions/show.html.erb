@@ -1,16 +1,24 @@
-<p id="notice"><%= notice %></p>
+<%= render partial: 'shared/tab_menu', locals: { selected: {library_functions: true}} %>
 
-<table>
-  <tr>
-    <td><b>name</b></td>
-    <td><%= @library_function.name %></td>
-  </tr>
-  <tr>
-    <td><b>definition</b>&nbsp;&nbsp;</td>
-    <td><code><%= @library_function.definition %></code></td>
-  </tr>
-</table>
+<div id="mainPanel">
+  <h1>Library Function Definition</h1>
+  <p id="notice"><%= notice %></p>
 
+  <div class="simpleTableContainer">
+  
+    <table class="simpleTable">
+      <tr>
+        <th>Name</th>
+        <td><%= @library_function.name %></td>
+      </tr>
+      <tr>
+        <th>Definition</th>
+        <td><pre><%= @library_function.definition %></pre></td>
+      </tr>
+    </table>
+  </div>
+  
 
-<%= link_to 'Edit', edit_library_function_path(@library_function) %> |
+<%= link_to 'Edit', edit_library_function_path(@library_function) %> <span class="sep">|</span>
 <%= link_to 'Back', library_functions_path %>
+</div>

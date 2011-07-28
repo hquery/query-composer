@@ -17,22 +17,26 @@
 		}, 5000);
   </script>
 <% end -%>
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
 
-<h1>Query Status</h1>
-<table>
-  <tr><th align='left'>Title</th><td><%= @query.title %></td></tr>
-  <tr><th align='left'>Description</th><td><%= @query.description %></td></tr>
-  <tr><th align='left'>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
-  <tr><th align='left' valign='top'>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
-  <tr><th align='left' valign='top'>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
+<div id="mainPanel">
+<div class="simpleTableContainer">
+
+<h1>Query Definition</h1>
+<table class="simpleTable">
+  <tr><th>Title</th><td><%= @query.title %></td></tr>
+  <tr><th>Description</th><td><%= @query.description %></td></tr>
+  <tr><th>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
+  <tr><th>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
+  <tr><th>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
   <tr>
-    <th align='left' valign='top'>Endpoints</th>
-    <td><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
+    <th>Endpoints</th>
+    <td class="subTable"><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
   </tr>
   <%= render :partial => 'aggregate_results', :locals => { :query => @query } %></td>
   <tr>
     <td></td>
-    <td>
+    <td class="subTable">
       <table>
         <tr>
           <td><%= button_to 'Edit', { :action => 'edit', :id => @query.id }, :method => :get %></td>
@@ -44,4 +48,6 @@
   </tr>
 </table>
 
-  <p><%= link_to 'Query List', queries_path %> | <%= link_to 'Event Log', log_query_path %> | <%= link_to 'Execution History', execution_history_query_path %></p>
+  <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Event Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
+</div>
+</div>

@@ -1,4 +1,10 @@
-<table>
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+
+<div id="mainPanel">
+<div class="simpleTableContainer">
+
+<h1>Query Status</h1>
+<table class="simpleTable">
 <% @events.each do |event| %>
   <tr>
     <td><%= event.time %></td>
@@ -8,3 +14,5 @@
 </table>
 
 <p><%= link_to 'Back to Query', query_path %></p>
+</div>
+</div>

@@ -37,19 +37,19 @@ body {
   height: 100%;
 }
 a {
-  color: black;
+  color: #56a6c4;
   text-decoration: none;
 }
 #header {
   background: #f4f4f4;
-  background: -moz-linear-gradient(top, #f8f8f8, #f0f0f0);
+  background: -moz-linear-gradient(top, #f8f8f8, #eaeaea);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f8f8f8), color-stop(100%, #f0f0f0));
   width: 100%;
 }
 #header a:hover { text-decoration: underline; }
 #header ul {
   list-style: none;
-  margin-left: 325px;
+  margin-left: 135px;
   font-size: 0.9em;
 }
 #header ul li {
@@ -57,7 +57,7 @@ a {
   margin-top: 5px;
   color: #333333;
 }
-#header ul li a { color: #44b3be; }
+#header ul li a { color: #56a6c4; }
 #header ul li .sep { margin: 0 5px; }
 #pageContent {
   height: 100%;
@@ -66,19 +66,19 @@ a {
 #breadcrumbBox {
   padding: 4px 0 2px;
   border-bottom: 1px solid #cccccc;
-  background: transparent url(hQueryLogo-small.png) 5px 3px no-repeat;
+  background: transparent url(hQuery_logo_small2.png) 5px 3px no-repeat;
 }
 #logOut {
   padding: 5px 20px 4px 0;
   text-align: right;
   font-size: 1em;
 }
-#logOut .sep {
+.sep {
   margin: 0 7px 0 5px;
   color: #cccccc;
   text-align: center;
 }
-#logOut a { color: #44b3be; }
+#logOut a { color: #56a6c4 }
 #logOut a:hover {
   text-decoration: none;
   color: #368f98;
@@ -89,27 +89,36 @@ div.field_with_errors {
 
 }
 
-#dashboardPeriod {
+#mainPanel {
   float: left;
-  padding-top: 10px;
+  padding: 10px;
   min-width: 720px;
 }
 
-.simpleTableContainer {  }
+#mainPanel h1 {font-size:1.5em}
+#mainPanel h2 {font-size:1.3em}
+
+.simpleTableContainer { }
+.simpleTableContainer td, .simpleTableContainer th {
+  padding:3px 15px 3px 0px;
+  vertical-align:top;
+}
 .simpleTable {
-  margin: 20px 20px 20px 50px;
-  width: 100%;
+  xwidth: 100%;
+  margin-bottom:20px;
 }
+
+td.subTable {padding:0 10px 0 0}
+
 .simpleTable th {
-  padding: 2px 5px;
   color: #888888;
-  margin-bottom: 20px;
-  text-transform: uppercase;
+  xtext-transform: uppercase;
 }
-.simpleTable td { padding: 2px 15px 2px 5px; }
+.simpleTable td a {color:#56a6c4;}
+.simpleTable td a:hover {  color: #368f98;}
+.simpleTable pre {font-family:Consolas,Monaco,"Courier New";}
 
-
-#patientMetrics {
+#sidebarNavigation {
   display: block;
   display: table-cell;
   vertical-align: top;
@@ -121,8 +130,8 @@ div.field_with_errors {
   height: 100%;
   border-right: 1px solid #cccccc;
 }
-#patientMetrics .patientGroupType ul { float: right; }
-#patientMetrics .patientGroupType ul li {
+#sidebarNavigation .sidebarGroup ul { float: right; }
+#sidebarNavigation .sidebarGroup ul li {
   height: 52px;
   list-style: none;
   margin: 15px 0;
@@ -133,17 +142,17 @@ div.field_with_errors {
   padding-left: 15px;
   text-align: right;
 }
-#patientMetrics .patientGroupType ul li.selected {
+#sidebarNavigation .sidebarGroup ul li.selected {
   background-color: #AAAAAA;
 }
 
-#patientMetrics .patientGroupType ul li span {
+#sidebarNavigation .sidebarGroup ul li span {
   display: table-cell;
   text-align: left;
   vertical-align: middle;
   height: 52px;
 }
-#patientMetrics .patientGroupType ul li label {
+#sidebarNavigation .sidebarGroup ul li label {
   width: 150px;
   display: table-cell;
   text-align: left;
@@ -155,3 +164,5 @@ div.field_with_errors {
 #execution_results td ,th {
   padding: 2px;
 }
+div.ctrl input[type=button],div.ctrl input[type=submit] {margin-right:15px}
+span.ctrl {margin-left:50px}  

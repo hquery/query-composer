@@ -1,14 +1,21 @@
-<h1><b>Query Admin - Create Query</b></h1>
-<table>
-<%= form_for (@query), :url => {:action => 'admincreate', :method => :post}  do |f| %>
-  <table>
-    <tr></tr>
-    <tr><td>Title</td><td><%= f.text_field :title, :disabled => @disabled %></td></tr>
-    <tr><td>Description</td><td><%= f.text_field :description, :disabled => @disabled %></td></tr>
-    <tr><td valign='top'>Filter</td><td><%= f.text_field :filter, :disabled => @disabled %></td></tr>
-    <tr><td valign='top'>Map Function</td><td><%= f.text_field :map, :as => :text, :disabled => @disabled %></td></tr>
-    <tr><td valign='top'>Reduce Function</td><td><%= f.text_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
-    <tr><td> <%= f.submit 'Save Query' ,  {:controller => 'qryadmin', :action => 'admincreate', :method => :post}%> </td></tr>
-  </table>
+<%= render partial: 'shared/tab_menu', locals: { selected: {qry_admin: true}}%>
 
-<% end %>
+<div id="mainPanel">
+  <div class="simpleTableContainer">
+    <h1>Query Admin - Create Query</h1>
+    <%= form_for (@query), :url => {:action => 'admincreate', :method => :post}  do |f| %>
+      <table class="simpleTable">
+        <tr></tr>
+        <tr><th>Title</th><td><%= f.text_field :title, :disabled => @disabled %></td></tr>
+        <tr><th>Description</th><td><%= f.text_field :description, :disabled => @disabled %></td></tr>
+        <tr><th>Filter</th><td><%= f.text_field :filter, :disabled => @disabled %></td></tr>
+        <tr><th>Map Function</th><td><%= f.text_area :map, :as => :text, :disabled => @disabled %></td></tr>
+        <tr><th>Reduce Function</th><td><%= f.text_area :reduce, :as => :text, :disabled => @disabled %></td></tr>
+      </table>
+      <%= f.submit 'Save Query' ,  {:controller => 'qryadmin', :action => 'admincreate', :method => :post}%>
+    <% end %>
+  </div>
+</div>
+
+
+

@@ -1,2 +1,8 @@
-<h1>Create New Query</h1>
-<%= render :partial=>"query_details" %>
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+
+<div id="mainPanel">
+  <div class="simpleTableContainer">
+    <h1>Create New Query</h1>
+    <%= render :partial=>"query_details" %>
+  </div>
+</div>

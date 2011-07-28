@@ -1,7 +1,7 @@
 <% if query.last_execution && query.last_execution.aggregate_result %>
 	<tr id="aggregate_results">
-    	<th align='left' valign='top'>Aggregate Result</th>
-    	<td>
+    	<th>Aggregate Result</th>
+    	<td class="subTable">
 			<table>
 				<% query.last_execution.aggregate_result.each do |key, value| %>
     			<% next if key=='_id' %>
