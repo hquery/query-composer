@@ -8,43 +8,43 @@ class QryadminController < ApplicationController
   #load_resource exclude: %w{index log}
   #authorize_resource
   #before_filter :authenticate_user!
-  
+
   # add breadcrumbs
   #akling - need to ask what this is
   add_breadcrumb 'Qryadmin', :qryadmin_url
   #add_breadcrumb_for_resource :qryadmin, :title, only: %w{edit show log execution_history}
   #add_breadcrumb_for_actions only: %w{edit new log execution_history}
 
-### from qry admin
+  ### from qry admin
   def index
     #if (current_user.admin?) 
-      @queries = Query.all
+    @queries = Query.all
     #else 
-      #@queries = current_user.queries
+    #@queries = current_user.queries
     #end
   end
 
-def admin
-	@queries = Query.all
+  def admin
+    @queries = Query.all
   end
-  
- def modify
+
+  def modify
     @querynew = Query.find(params[:id])
     @query = @querynew
   end
 
-def modup
-   @query = Query.find(params[:id])  
+  def modup
+    @query = Query.find(params[:id])  
     @query.update_attributes!(params[:query])
 
     redirect_to :action => 'index'
   end
-  
+
   def adminnew
-   @query = Query.new
- #  redirect_to :action => 'admin'
+    @query = Query.new
+    #  redirect_to :action => 'admin'
   end
-  
+
   def admincreate
     @query = Query.new(params[:query])
     endpoint = Endpoint.new
@@ -54,8 +54,8 @@ def modup
     @query.save!
     redirect_to :action => 'index'
   end
-  
-def clone
+
+  def clone
     @query = Query.find(params[:id])
     @querynew = Query.new(params[:query])
     @querynew.title = @query.title + " cloned"
@@ -63,7 +63,7 @@ def clone
     @querynew.map = @query.map
     @querynew.reduce = @query.reduce
     #@querynew.status = @query.status
-    
+
     endpoint = Endpoint.new
     endpoint.name = 'Default Local Queue'
     endpoint.submit_url = 'http://localhost:3001/queues'
@@ -71,10 +71,10 @@ def clone
     @querynew.save!
     redirect_to :action => 'index'
   end
-  
+
   def destroy
-   @query = Query.find(params[:id])
-   # Query.delete(params[:id])
+    @query = Query.find(params[:id])
+    # Query.delete(params[:id])
     @query.destroy
     redirect_to :action => 'index'
   end

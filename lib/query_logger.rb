@@ -4,11 +4,11 @@ class QueryLogger
   def initialize(options = {})
     @mongo_db = options[:mongo] || MONGO_DB
   end
-  
+
   def add(query, message, extra={})
     @mongo_db[LOG_COLLECTION].insert(extra.merge({"query_id"=>query.id, "message"=>message, :time=>Time.new}))
   end
-  
+
   def log(query_id)
     entries =  @mongo_db[LOG_COLLECTION].find({:query_id=>query_id}).to_a
   end

@@ -17,7 +17,7 @@ class Ability
     #   can :update, Article, :published => true
     #
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
-    
+
     user ||= User.new
 
     if user.admin?

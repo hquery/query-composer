@@ -28,13 +28,13 @@ module Breadcrumbs
         controller.send(:add_breadcrumb, ActiveSupport::Inflector.humanize(current_action), '')
       end
     end
-    
+
   end
   def add_breadcrumb title, url = ''
     @breadcrumbs ||= []
     @breadcrumbs << Crumb.new(title,url)
   end
-  
+
   class Crumb
     attr_accessor :title, :url
     def initialize(title, url)

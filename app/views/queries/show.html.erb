@@ -1,20 +1,20 @@
 <% content_for :head do -%>
   <script type="text/javascript">
-	var refreshFailCount = 0;
-	var queryInfoRefreshInterval = setInterval(function() {
-			$.ajax({
-				type: "GET",
-				url: "/queries/<%= @query.id %>/refresh_execution_results",
-				datatype: "script",
-				error: function(jqXHR, exception) {
-					refreshFailCount++;
-					if (refreshFailCount >= 10) {
-						clearInterval(queryInfoRefreshInterval);
-						alert("Too many failed queries to the gateway. Canceling the refresh. This should be handled prettily in the future.");
-					}
-				}
-			})
-		}, 5000);
+    var refreshFailCount = 0;
+    var queryInfoRefreshInterval = setInterval(function() {
+      $.ajax({
+        type: "GET",
+        url: "/queries/<%= @query.id %>/refresh_execution_results",
+        datatype: "script",
+        error: function(jqXHR, exception) {
+          refreshFailCount++;
+          if (refreshFailCount >= 10) {
+            clearInterval(queryInfoRefreshInterval);
+            alert("Too many failed queries to the gateway. Canceling the refresh. This should be handled prettily in the future.");
+          }
+        }
+      })
+      }, 5000);
   </script>
 <% end -%>
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
