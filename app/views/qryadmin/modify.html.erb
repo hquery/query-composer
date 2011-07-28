@@ -1,5 +1,5 @@
 <h1><b>Query Admin - Modify Query</b></h1>
-<table>
+
 <%= form_for (@query), :url => {:action => 'modup', :method => :put}  do |f| %>
   <table>
     <tr><td>Title</td><td><%= f.text_field :title, :disabled => @disabled %></td></tr>
@@ -12,13 +12,9 @@
 
 <% end %>
 
-</table>
 <table>
-<td><%= button_to 'Clone Query', {:action=>'clone', :id=>@query.id}, :method=>:post %></td>
-<td><%= button_to 'Delete Query', {:action=>'destroy', :id=>@query.id}, :method=>:delete %></td>
-</tr>
-
-
-
-
+  <tr>
+    <td><%= button_to 'Clone Query', {:action=>'clone', :id=>@query.id}, :method=>:post %></td>
+    <td><%= button_to 'Delete Query', {:action=>'destroy', :id=>@query.id}, :method=>:delete %></td>
+  </tr>
 </table>

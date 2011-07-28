@@ -23,6 +23,7 @@ gem 'devise'
 gem 'cancan'
 #gem 'pry'
 #gem 'ruby-debug19'
+gem 'bluecloth'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'

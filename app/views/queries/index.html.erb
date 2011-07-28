@@ -19,13 +19,13 @@
         <td><%= query.description %></td>
         <td>
           <% if (not query.last_execution) %>
-          no executions
+            no executions
           <% else %>
-            <%query.last_execution.status.each_pair do |status, count| %>
-              <%if (status != query.last_execution.status.keys.first)%>,<% end %>
-              <%= status%>
+            <% query.last_execution.status.each_pair do |status, count| %>
+              <% if (status != query.last_execution.status.keys.first) %>,<% end %>
+              <%= status %>
               (<%= count.to_s + " of " + query.last_execution.results.length.to_s%>)
-            <%end%>
+            <% end %>
           <% end %>
         </td>
         <td><%= button_to 'X', {:action=>'destroy', :id=>query.id}, :method=>:delete, :confirm=>'are you sure?' %></td>

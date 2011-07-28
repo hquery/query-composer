@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   layout :layout_by_resource
 
   add_breadcrumb 'Home', :root_url
-  
+
   def layout_by_resource
     if devise_controller?
       "users"
@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
       "application"
     end
   end
-  
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
-  
+
 end
