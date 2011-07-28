@@ -1,10 +1,10 @@
 <table>
-<% @events.each do |event| %>
-  <tr>
-    <td><%= event.time %></td>
-    <td><%= event.message %></td>
-  </tr>
-<% end %>
+  <% @events.each do |event| %>
+    <tr>
+      <td><%= event.time %></td>
+      <td><%= event.message %></td>
+    </tr>
+  <% end %>
 </table>
 
 <p><%= link_to 'Back to Query', query_path %></p>

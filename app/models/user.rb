@@ -17,9 +17,10 @@ class User
   field :agree_license, type: Boolean
 
   field :effective_date, type: Integer
-  
+
   field :admin, type: Boolean
   field :approved, type: Boolean
+  field :disabled, type: Boolean
 
   validates_presence_of :first_name, :last_name
   validates_uniqueness_of :username
@@ -27,33 +28,31 @@ class User
 
 
   validates_acceptance_of :agree_license, :accept => true
-  
 
 
-  validates :email, presence: true, 
-                    length: {minimum: 3, maximum: 254},
-                    format: {with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
+
+  validates :email, presence: true, length: {minimum: 3, maximum: 254}, format: {with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
   validates :username, :presence => true, length: {minimum: 3, maximum: 254}
 
   def active_for_authentication? 
-    super && approved?
+    super && approved? && !disabled?
   end
-  
+
   # ==========
   # = FINDERS =
   # ==========
-  
+
   def self.find_by_username(username)
     User.first(:conditions => {:username => username})
   end
   def self.find_by_email(email)
     User.first(:conditions => {:email => email})
   end
-  
+
   # =============
   # = Modifiers =
   # =============
-  
+
   def grant_admin
     update_attributes(:admin => true)
     update_attributes(:approved => true)

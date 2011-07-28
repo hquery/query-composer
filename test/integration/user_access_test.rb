@@ -54,6 +54,29 @@ class UserAccessTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  test "unapproved user should not be able to access anything" do
+    
+    @user.approved = false;
+    @user.save!
+    
+    login @user
+
+    get "/queries"
+    assert_redirected_to user_session_path
+  end
+
+  test "disabled user should not be able to access anything" do
+    
+    @user.disabled = true;
+    @user.save!
+    
+    login @user
+
+    get "/queries"
+    assert_redirected_to user_session_path
+  end
+
+
   test "admin should be able to access queries they do not own" do
     login @admin
 

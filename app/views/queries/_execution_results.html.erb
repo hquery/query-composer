@@ -1,29 +1,30 @@
 <table id='execution_results'>
-	<tr>
-		<th align='left'>Query URL</th>
-		<th align='left'>Status</th>
-		<th align='left'>Next Poll</th>
-		<th align='left'>Poll URL</th>
-		<th align='left'>Result</th>
-		<th></th>
-	</tr>
-	<% 
-	if (query.last_execution)
-		results = query.last_execution.results
-	else
-		results = query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
-	end
-	results.each do |result| %>
-	<tr valign='top'>
-		<td><%= result.endpoint.base_url %></td>
-		<td><%= result.status %><%= result.error_msg if result.status == Result::FAILED %></td>
-		<td><%= result.next_poll %></td>
-		<td><%= result.result_url %></td>
-		<td>
-		  <% # This call uses /queries because this whole partial is called from an ActionMailer and it needs absolute paths%>
-		  <%= render :partial => '/queries/result', :locals => { :result => result } %>
-		</td>
-		<td> <% if result.status == Result::QUEUED %> <%= link_to "Cancel", {:action=>:cancel,:id=>query, :result_id=>result.id, :execution_id=>result.execution.id}%> <% end %></td>
-	</tr>
-	<% end %>
+  <tr>
+    <th align='left'>Query URL</th>
+    <th align='left'>Status</th>
+    <th align='left'>Next Poll</th>
+    <th align='left'>Poll URL</th>
+    <th align='left'>Result</th>
+    <th></th>
+  </tr>
+  <% 
+    if (query.last_execution)
+      results = query.last_execution.results
+    else
+      results = query.endpoints.map{|endpoint| Result.new(endpoint: endpoint)}
+    end
+    results.each do |result| 
+  %>
+    <tr valign='top'>
+      <td><%= result.endpoint.base_url %></td>
+      <td><%= result.status %><%= result.error_msg if result.status == Result::FAILED %></td>
+      <td><%= result.next_poll %></td>
+      <td><%= result.result_url %></td>
+      <td>
+        <% # This call uses /queries because this whole partial is called from an ActionMailer and it needs absolute paths%>
+        <%= render :partial => '/queries/result', :locals => { :result => result } %>
+      </td>
+      <td> <% if result.status == Result::QUEUED %> <%= link_to "Cancel", {:action=>:cancel,:id=>query, :result_id=>result.id, :execution_id=>result.execution.id}%> <% end %></td>
+    </tr>
+  <% end %>
 </table>

@@ -70,17 +70,43 @@ class AdminControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
-  test "delete user should remove the user" do
+  test "disable user should mark the user disabled" do
     sign_in @admin
-    post :destroy, username: @user2.username
-    assert (not User.exists? :conditions => {id: @user2.id})
+    post :disable, username: @user2.username, disabled: 1
+    @user2.reload
+    assert @user2.disabled
+    assert_response :success
+  end
+
+  test "enable user should mark the user enabled" do
+    @user2.disabled = true
+    @user2.save!
+    assert @user2.disabled
+
+    sign_in @admin
+    post :disable, username: @user2.username, disabled: 0
+    @user2.reload
+    assert !@user2.disabled
     assert_response :success
   end
   
-  test "delete user should not remove the user if not admin" do
+  test "disable user should not disable the user if not admin" do
     sign_in @user
-    post :destroy, username: @user2.username
-    assert (User.exists? :conditions => {id: @user2.id})
+    post :disable, username: @user2.username, disabled: 1
+    @user2.reload
+    assert !@user2.disabled
+    assert_response :redirect
+  end
+
+  test "enable user should not enable the user if not admin" do
+    @user2.disabled = true
+    @user2.save!
+    assert @user2.disabled
+
+    sign_in @user
+    post :disable, username: @user2.username, disabled: 0
+    @user2.reload
+    assert @user2.disabled
     assert_response :redirect
   end
 
@@ -103,9 +129,9 @@ class AdminControllerTest < ActionController::TestCase
   end
 
 
-  test "delete invalid user should not freak out" do
+  test "disable invalid user should not freak out" do
     sign_in @admin
-    post :destroy, username: "crapusername"
+    post :disable, username: "crapusername"
     assert_response :success
   end
 

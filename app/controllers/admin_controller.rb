@@ -2,29 +2,34 @@ class AdminController < ApplicationController
   before_filter :validate_authorization!
   before_filter :authenticate_user!
   add_breadcrumb 'admin', :admin_users_path
-  
+
   def users
     @users = User.all
   end
-  
+
   def promote
     toggle_admin_privilidges(params[:username], :promote)
   end
-  
+
   def demote
     toggle_admin_privilidges(params[:username], :demote)
   end
-  
-  def destroy
+
+  def disable
     user = User.find_by_username(params[:username]);
+    disabled = params[:disabled].to_i == 1
     if user
-      user.destroy
-      render :text => "removed"
+      user.update_attribute(:disabled, disabled)
+      if (disabled)
+        render :text => "<span class=\"disable\" data-username=\"#{user.username}\">disabled</span>"
+      else
+        render :text => "<span class=\"enable\" data-username=\"#{user.username}\">enabled</span>"
+      end
     else
       render :text => "User not found"
     end
   end
-  
+
   def approve
     user = User.first(:conditions => {:username => params[:username]})
     if user
@@ -34,12 +39,12 @@ class AdminController < ApplicationController
       render :text => "User not found"
     end
   end
-  
+
   private
-  
+
   def toggle_admin_privilidges(username, direction)
     user = User.find_by_username username
-    
+
     if user
       if direction == :promote
         user.update_attribute(:admin, true)
@@ -53,7 +58,7 @@ class AdminController < ApplicationController
       render :text => "User not found"
     end
   end
-  
+
   def validate_authorization!
     authorize! :admin, :users
   end

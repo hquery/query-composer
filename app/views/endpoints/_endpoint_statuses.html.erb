@@ -9,18 +9,19 @@
   </tr>
   <% end %>
   <% @endpoints.each do |endpoint| %>
-    <% if @endpoint_server_statuses[endpoint.id]['backend_status'] == 'good'
-        status_color = 'green'
-      else
-        status_color = 'red'
-      end
-    %>
-    <tr>
-      <td><%= link_to endpoint.name, endpoint_path(endpoint.id) %></td>
-      <td><font color="<%= status_color %>"><%= @endpoint_server_statuses[endpoint.id]['backend_status'] %></font></td>
-      <td><%= @endpoint_server_statuses[endpoint.id]['running'] %> : <%= @endpoint_server_statuses[endpoint.id]['queued'] %></td>
-      <td><%= @endpoint_server_statuses[endpoint.id]['avg_runtime'] %></td>
-      <td><%= button_to 'X', endpoint, confirm: 'Are you sure?', method: :delete if current_user.admin?%></td>
-    </tr>
+  <% 
+    if @endpoint_server_statuses[endpoint.id]['backend_status'] == 'good'
+      status_color = 'green'
+    else
+      status_color = 'red'
+    end
+  %>
+  <tr>
+    <td><%= link_to endpoint.name, endpoint_path(endpoint.id) %></td>
+    <td><font color="<%= status_color %>"><%= @endpoint_server_statuses[endpoint.id]['backend_status'] %></font></td>
+    <td><%= @endpoint_server_statuses[endpoint.id]['running'] %> : <%= @endpoint_server_statuses[endpoint.id]['queued'] %></td>
+    <td><%= @endpoint_server_statuses[endpoint.id]['avg_runtime'] %></td>
+    <td><%= button_to 'X', endpoint, confirm: 'Are you sure?', method: :delete if current_user.admin?%></td>
+  </tr>
   <% end %>
 </table>

@@ -1,9 +1,9 @@
 <table>
-<% result.value.each do |key, value| %>
-	<% next if key=='_id' %>
-	<tr>
-		<td><code><%= key %>:</code></td>
-		<td><code><%= jsonify(value) %></code></td>
-	</tr>
-	<% end if result.value %>
+  <% result.value.each do |key, value| %>
+    <% next if key=='_id' %>
+    <tr>
+      <td><code><%= key %>:</code></td>
+      <td><code><%= jsonify(value) %></code></td>
+    </tr>
+  <% end if result.value %>
 </table>
