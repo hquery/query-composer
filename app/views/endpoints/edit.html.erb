@@ -1,6 +1,11 @@
-<h1>Editing endpoint</h1>
+<%= render partial: 'shared/tab_menu', locals: { selected: {endpoints: true}} %>
 
-<%= render 'form' %>
+<div id="mainPanel">
+  <h1>Edit Endpoint</h1>
 
-<%= link_to 'Show', @endpoint %> |
-<%= link_to 'Back', endpoints_path %>
+  <%= render 'form' %>
+  
+  <%= link_to 'Show', @endpoint %> <span class="sep">|</span>
+  <%= link_to 'Back', endpoints_path %>
+</div>
+

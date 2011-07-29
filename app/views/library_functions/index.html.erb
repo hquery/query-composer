@@ -1,33 +1,26 @@
 
 <%= render partial: 'shared/tab_menu', locals: { selected: {library_functions: true}}%>
 
-<div id="dashboardPeriod" >
-  <br style="clear:left"/>
-  <h1>Your User Functions</h1>
+<div id="mainPanel" >
+  <h1>User Defined Library Functions</h1>
 
-  <div class="simpleTableContainer">
-    <table class="simpleTable" >
+  <table class="simpleTable">
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+    </tr>
+
+    <% @library_functions.each do |library_function| %>
       <tr>
-        <th>name</th>
-        <th></th>
-        <th></th>
+        <td><%= link_to library_function.name, library_function %></td>
+        <td><%= link_to 'Edit', edit_library_function_path(library_function) %></td>
+        <td><%= link_to 'Destroy', library_function, confirm: 'Are you sure?', method: :delete %></td>
       </tr>
-
-      <% @library_functions.each do |library_function| %>
-        <tr>
-          <td><%= link_to library_function.name, library_function %></td>
-          <td><%= link_to 'Edit', edit_library_function_path(library_function) %>&nbsp;&nbsp;</td>
-          <td><%= link_to 'Destroy', library_function, confirm: 'Are you sure?', method: :delete %></td>
-        </tr>
-      <% end %>
+    <% end %>
     </table>
-  </div>
 
-  <br />
-
-  <%= link_to 'New Library function', new_library_function_path %>
-
-
+  <%= link_to  new_library_function_path, :class => "bluebutton" do %><span>New Library function</span><% end %>
 
 </div>
 

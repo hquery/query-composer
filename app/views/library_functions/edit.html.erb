@@ -1,6 +1,13 @@
-<h1>Editing library_function</h1>
+<%= render partial: 'shared/tab_menu', locals: { selected: {library_functions: true}} %>
 
-<%= render 'form' %>
+<div id="mainPanel">
+  <h1>Edit Library Function</h1>
 
-<%= link_to 'Show', @library_function %> |
-<%= link_to 'Back', library_functions_path %>
+  <%= render 'form' %>
+  
+  <%= link_to 'Show', @library_function %> <span class="sep">|</span>
+  <%= link_to 'List Library Functions', library_functions_path %>
+</div>
+
+
+

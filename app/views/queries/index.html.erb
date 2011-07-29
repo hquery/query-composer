@@ -1,40 +1,37 @@
 
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
 
-<div id="dashboardPeriod" >
-
-  <br style="clear:left"/>
-  <div class="simpleTableContainer">
-    <table class="simpleTable"> 
-      <% if @queries.size %>
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Status</th>
-      </tr>
-      <% end %>
-      <% @queries.each do |query| %>
-      <tr>
-        <td><%= link_to query.title, query_path(query.id) %></td>
-        <td><%= query.description %></td>
-        <td>
-          <% if (not query.last_execution) %>
-            no executions
-          <% else %>
-            <% query.last_execution.status.each_pair do |status, count| %>
-              <% if (status != query.last_execution.status.keys.first) %>,<% end %>
-              <%= status %>
-              (<%= count.to_s + " of " + query.last_execution.results.length.to_s%>)
-            <% end %>
+<div id="mainPanel" >
+  <h1>Queries</h1>
+  <table class="simpleTable"> 
+    <% if @queries.size %>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+    <% end %>
+    <% @queries.each do |query| %>
+    <tr>
+      <td><%= link_to query.title, query_path(query.id) %></td>
+      <td><%= query.description %></td>
+      <td>
+        <% if (not query.last_execution) %>
+          no executions
+        <% else %>
+          <% query.last_execution.status.each_pair do |status, count| %>
+            <% if (status != query.last_execution.status.keys.first) %>,<% end %>
+            <%= status %>
+            (<%= count.to_s + " of " + query.last_execution.results.length.to_s%>)
           <% end %>
-        </td>
-        <td><%= button_to 'X', {:action=>'destroy', :id=>query.id}, :method=>:delete, :confirm=>'are you sure?' %></td>
-      </tr>
-      <% end %>
-    </table>
+        <% end %>
+      </td>
+      <td><%= button_to 'X', {:action=>'destroy', :id=>query.id}, :method=>:delete, :confirm=>'are you sure?' %></td>
+    </tr>
+    <% end %>
+  </table>
 
-    <%= link_to(new_query_path, class: "bluebutton") do %><span>Add Query</span><% end %>
+  <%= link_to(new_query_path, class: "bluebutton") do %><span>Add Query</span><% end %>
 
-  </div><!-- end patientTableContainer -->
 </div>
 

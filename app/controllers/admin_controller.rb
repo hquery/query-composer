@@ -21,9 +21,9 @@ class AdminController < ApplicationController
     if user
       user.update_attribute(:disabled, disabled)
       if (disabled)
-        render :text => "<span class=\"disable\" data-username=\"#{user.username}\">disabled</span>"
+        render :text => "<a href=\"#\" class=\"disable\" data-username=\"#{user.username}\">disabled</span>"
       else
-        render :text => "<span class=\"enable\" data-username=\"#{user.username}\">enabled</span>"
+        render :text => "<a href=\"#\" class=\"enable\" data-username=\"#{user.username}\">enabled</span>"
       end
     else
       render :text => "User not found"
@@ -48,10 +48,10 @@ class AdminController < ApplicationController
     if user
       if direction == :promote
         user.update_attribute(:admin, true)
-        render :text => "Yes - <span class=\"demote\" data-username=\"#{username}\">remove admin rights</span>"
+        render :text => "Yes - <a href=\"#\" class=\"demote\" data-username=\"#{username}\">remove admin rights</a>"
       else
         user.update_attribute(:admin, false)
-        render :text => "No - <span class=\"promote\" data-username=\"#{username}\">grant admin rights</span>"
+        render :text => "No - <a href=\"#\" class=\"promote\" data-username=\"#{username}\">grant admin rights</a>"
       end
 
     else

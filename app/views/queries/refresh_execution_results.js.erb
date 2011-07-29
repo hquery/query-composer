@@ -2,4 +2,4 @@
   clearInterval(queryInfoRefreshInterval);
 <% end %>
 $("#execution_results").html("<%= escape_javascript(render :partial => 'execution_results', :locals => { :query => @query }) %>");
-$("#aggregate_results").html("<%= escape_javascript(render :partial => 'aggregate_results', :locals => { :query => @query }) %>");
+$("#aggregate_results").replaceWith("<%= escape_javascript(render :partial => 'aggregate_results', :locals => { :query => @query }) %>");

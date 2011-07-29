@@ -4,3 +4,5 @@ log/*.log
 tmp/
 coverage.data
 coverage/
+.sass-cache/
+public/assets
