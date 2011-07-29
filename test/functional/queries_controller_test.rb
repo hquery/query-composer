@@ -57,7 +57,7 @@ class QueriesControllerTest < ActionController::TestCase
     assert_equal query.title, 'Some title'
     assert_equal query.title, query_from_db.title
     assert_not_nil query_from_db.endpoints
-    assert_redirected_to(query_path(query.id))
+    assert_redirected_to(query_path(query))
   end
 
   test "should update query" do
@@ -71,7 +71,7 @@ class QueriesControllerTest < ActionController::TestCase
     assert_not_nil query_from_db
     assert_equal query_from_db.title, 'Some title'
     assert_equal query.title, 'Some title'
-    assert_response :success
+    assert_redirected_to query_path(query)
   end
 
   test "should get show" do
@@ -111,7 +111,7 @@ class QueriesControllerTest < ActionController::TestCase
     query_from_db = Query.find(query.id)
     assert_not_nil query_from_db
     assert_equal 1, query_from_db.endpoints.length
-    assert_response :success
+    assert_redirected_to query_path(query)
     
   end
 
@@ -126,7 +126,7 @@ class QueriesControllerTest < ActionController::TestCase
     query_from_db = Query.find(query.id)
     assert_not_nil query_from_db
     assert_equal 3, query_from_db.endpoints.length
-    assert_response :success
+    assert_redirected_to query_path(query)
   end
   
   test "should execute query with notification" do

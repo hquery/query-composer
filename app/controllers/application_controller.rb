@@ -1,7 +1,9 @@
 require 'breadcrumbs'
+require 'cud_actions'
 class ApplicationController < ActionController::Base
   protect_from_forgery
   include Breadcrumbs
+  include CudActions
   layout :layout_by_resource
 
   add_breadcrumb 'Home', :root_url

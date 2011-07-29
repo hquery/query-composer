@@ -3,7 +3,6 @@ require 'net/http/post/multipart'
 require 'poll_job'
 
 class QueriesController < ApplicationController
-
   # load resource must be before authorize resource
   load_resource exclude: %w{index log}
   authorize_resource
@@ -13,6 +12,8 @@ class QueriesController < ApplicationController
   add_breadcrumb 'Queries', :queries_url
   add_breadcrumb_for_resource :query, :title, only: %w{edit show log execution_history}
   add_breadcrumb_for_actions only: %w{edit new log execution_history}
+
+  creates_updates_destroys :query
 
   def index
     @queries = (current_user.admin?) ? Query.all : current_user.queries
@@ -26,24 +27,12 @@ class QueriesController < ApplicationController
     @endpoints = Endpoint.all
   end
 
-  def create
+  def before_create
     @query.user = current_user
-    @query.save!
-    redirect_to :action => 'show', :id=>@query.id
   end
 
   def edit
     @endpoints = Endpoint.all
-  end
-
-  def destroy
-    @query.destroy
-    redirect_to(queries_url)
-  end
-
-  def update
-    @query.update_attributes!(params[:query])
-    render :action => 'show'
   end
 
   def execute

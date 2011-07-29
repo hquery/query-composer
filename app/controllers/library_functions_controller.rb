@@ -8,6 +8,8 @@ class LibraryFunctionsController < ApplicationController
   add_breadcrumb_for_resource :library_function, :name, only: %w{edit show log execution_history}
   add_breadcrumb_for_actions only: %w{edit new}
 
+  creates_updates_destroys :library_function
+
   def index
     @library_functions = (current_user.admin?) ? LibraryFunction.all : current_user.library_functions
   end
@@ -19,29 +21,10 @@ class LibraryFunctionsController < ApplicationController
   }
 END_OF_FN
 
-end
-
-def create
-  @library_function.user = current_user
-
-  if @library_function.save
-    redirect_to @library_function, notice: 'Library function was successfully created.'
-  else
-    render action: "new" 
   end
-end
 
-def update
-  if @library_function.update_attributes(params[:library_function])
-    redirect_to @library_function, notice: 'Library function was successfully updated.'
-  else
-    render action: "edit"
+  def before_create
+    @library_function.user = current_user
   end
-end
-
-def destroy
-  @library_function.destroy
-  redirect_to library_functions_url
-end
 
 end
