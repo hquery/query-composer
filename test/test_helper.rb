@@ -7,7 +7,7 @@ require 'factory_girl'
 require 'mocha'
 #require 'ruby-debug'
 
-Factory.find_definitions
+FactoryGirl.find_definitions
 
 class ActiveSupport::TestCase
 
