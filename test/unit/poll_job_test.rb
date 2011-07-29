@@ -165,8 +165,6 @@ class PollJobTest < ActiveSupport::TestCase
     query_from_db.reload
 
     PollJob.submit_all(query_from_db.executions[0])
-    
-    assert_equal "library functions exception", Event.all[0].message
 
     # restore original method
     class Net::HTTP
@@ -174,6 +172,8 @@ class PollJobTest < ActiveSupport::TestCase
       alias start unmocked_start
     end
     end
+    
+    assert (Event.all.map{|x| x.message}).include? 'library functions exception'
     
   end
   
