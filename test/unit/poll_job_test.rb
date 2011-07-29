@@ -154,7 +154,7 @@ class PollJobTest < ActiveSupport::TestCase
     # alias the method so that we can restore it... mocha should do this but turn is causing issues currently
     class Net::HTTP
     class << self
-    alias unmocked_start start
+      alias unmocked_start start
     end
     end
     
@@ -168,12 +168,10 @@ class PollJobTest < ActiveSupport::TestCase
     
     assert_equal "library functions exception", Event.all[0].message
 
-    binding.pry
-
     # restore original method
     class Net::HTTP
     class << self
-    alias start unmocked_start
+      alias start unmocked_start
     end
     end
     
