@@ -1,5 +1,7 @@
 //= require patient
-
+String.prototype.toFunction = function(){
+	return eval("(function(){ return "+ this + ";})()");
+}
 var hDebugger = {
 	f: {},
 	kd: false,
@@ -32,23 +34,16 @@ var hDebugger = {
 			function(){
 				$(document.body).append(
 					$(document.createElement("div"))
-						.css("width", "800px")
-						.css("height", "650px")
-						.css("position", "absolute")
-						.css("top", "80px")
 						.css("left", $(document).width() / 2 - 400)
-						.css("background-color", "#EEEEFF")
-						.css("z-index", 50)
-						.css("padding", "20px")
-						.css("border", "#000000 ridge")
+						.addClass("querywindow")
 						.append(
 							$(document.createElement("div"))
-								.css("font-size", "24px")
+								.addClass("querywindow-header")
 								.append(
 									$(document.createElement("span"))
 										.text("Records"),
 									$(document.createElement("span"))
-										.css("float", "right")
+										.addClass("querywindow-header-exit")
 										.text("X")
 										.click(
 											function(){
@@ -60,10 +55,11 @@ var hDebugger = {
 								.append(
 									$(document.createTextNode("Query: ")),
 									$(document.createElement("input"))
-										.css("width", "70%")
+										.addClass("querywindow-query")
 										.attr("id", "recordquery"),
 									$(document.createElement("input"))
 										.attr("type", "button")
+										.attr("id", "querybutton")
 										.val("Query")
 										.click(
 											function(){
@@ -77,7 +73,7 @@ var hDebugger = {
 													}
 													//console.log($("#recordquery").val() + " => " + eval($("#recordquery").val()));													
 													//debugger;
-													if (eval($("#recordquery").val())) hDebugger.rset[hDebugger.rset.length] = hDebugger.patients[i];
+													if ($("#recordquery").val() == "" || eval($("#recordquery").val())) hDebugger.rset[hDebugger.rset.length] = hDebugger.patients[i];
 												}
 												$("#recordlist").empty();
 												$("#recordlist").append(
@@ -85,13 +81,12 @@ var hDebugger = {
 														.append(
 															$(document.createElement("td"))
 																.attr("colspan", 0)
-																.css("font-weight", "bold")
-																.css("font-style", "italic")
+																.addClass("querywindow-recordstatus")
 																.text("Matched " + hDebugger.rset.length + " records")
 														)
 												);
 												for (var i in hDebugger.rset){
-													var e = $(document.createElement("tr"));
+													var e = $(document.createElement("tr")).addClass("querywindow-record");
 													$("#recordlist").append(e);
 													for (var j in hDebugger.rset[i].json){
 														$(e).append(
@@ -112,8 +107,7 @@ var hDebugger = {
 										)
 								),
 							$(document.createElement("div"))
-								.css("height", "600px")
-								.css("overflow", "auto")
+								.addClass("querywindow-recordlist")
 								.append(
 									$(document.createElement("table"))
 										.attr("id", "recordlist")
@@ -121,7 +115,7 @@ var hDebugger = {
 								)
 						)
 				);
-				for(var i in hDebugger.rset){
+				/*for(var i in hDebugger.rset){
 					var e = $(document.createElement("tr"));
 					$("#recordlist").append(e);
 					for (var j in hDebugger.rset[i].json){
@@ -129,73 +123,49 @@ var hDebugger = {
 							$(document.createElement("td")).text(hDebugger.rset[i].json[j])
 						);
 					}
-				}
+				}*/
+				$("#querybutton").click();
 			}
 		);
 		
 		$("#query_map").parent().css("white-space", "nowrap");
 		$("#query_map").parent().append(
 			$(document.createElement("span"))
-				.css("overflow", "auto")
-				.css("width", 400)
-				.css("height", 350)
-				.css("display", "inline-block")
+				.addClass("debug")
 				.attr("id", "map_out")
-				.css("vertical-align", "top")
 		)
 		$("#query_reduce").parent().css("white-space", "nowrap");
 		$("#query_reduce").parent().append(
 			$(document.createElement("span"))
-				.css("overflow", "auto")
-				.css("display", "inline-block")
-				.css("width", 400)
-				.css("height", 350)
+				.addClass("debug")
 				.attr("id", "reduce_out")
-				.css("vertical-align", "top")
 		)
 
+		hDebugger.ace("query_map");
+		hDebugger.ace("query_reduce");
+	},
+	ace: function (eid){
 		var JavaScriptMode = require("ace/mode/javascript").Mode;
 		$(document.body).append(
 			$(document.createElement("div"))
-				.css("width", 343)
-				.css("height", 326)
-				.css("position", "absolute")
-				.css("top", $("#query_map").offset().top)
-				.css("left", $("#query_map").offset().left)
-				.attr("id", "e_map")
+				.css("top", $("#" + eid).offset().top)
+				.css("left", $("#" + eid).offset().left)
+				.css("width", $("#" + eid).width())
+				.css("height", $("#" + eid).height())
+				.addClass("rta")
+				.attr("id", "e_" + eid)
 				.keyup(
-					function(){
-						$("#query_map").val(meditor.getSession().getValue());
-						$("#query_map").keydown();
-						$("#query_map").keyup();
-					}
+					('function(){'+
+						'$("#' + eid + '").val(hDebugger.ace_' + eid + '.getSession().getValue());'+
+						'$("#' + eid + '").keydown();'+
+						'$("#' + eid + '").keyup();'+
+					'}').toFunction()
 				)
 		)
-		var meditor = ace.edit("e_map");
-		meditor.getSession().setMode(new JavaScriptMode());
-		$("#query_map").css("visibility", "hidden");
-		meditor.getSession().setValue($("#query_map").val());
-
-		$(document.body).append(
-			$(document.createElement("div"))
-				.css("width", 343)
-				.css("height", 326)
-				.css("position", "absolute")
-				.css("top", $("#query_reduce").offset().top)
-				.css("left", $("#query_reduce").offset().left)
-				.attr("id", "r_map")
-				.keyup(
-					function(){
-						$("#query_reduce").val(reditor.getSession().getValue());
-						$("#query_reduce").keydown();
-						$("#query_reduce").keyup();
-					}
-				)
-		)
-		var reditor = ace.edit("r_map");
-		reditor.getSession().setMode(new JavaScriptMode());
-		$("#query_reduce").css("visibility", "hidden");
-		reditor.getSession().setValue($("#query_reduce").val());
+		eval('hDebugger.ace_' + eid + ' = ace.edit("e_" + eid);');
+		eval('hDebugger.ace_' + eid + '.getSession().setMode(new JavaScriptMode());');
+		$("#" + eid).css("visibility", "hidden");
+		eval('hDebugger.ace_' + eid + '.getSession().setValue($("#' + eid + '").val());');
 	},
 	tab: function(e) {
 		var el = e.target ? e.target : e.srcElement;
@@ -241,13 +211,6 @@ var hDebugger = {
 			$(document.createElement("span"))
 				.addClass("err")
 				.attr("id", "f_" + g + "_d")
-				
-				.css("display", "inline-block")
-				.css("height", "380px")
-				.css("width", "380px")
-				.css("overflow", "auto")
-				.css("vertical-align", "top")
-				.css("font-family", "sans-serif")
 		);
 		this.debug(g);
 	},
@@ -257,11 +220,6 @@ var hDebugger = {
 	err: function(err, dest){
 		$(dest).append($(document.createElement("p"))
 			.text(err)
-			
-			.css("padding", "5px")
-			.css("margin", "0px 10px 5px 10px")
-			.css("background-color", "#FFAAAA")
-			.css("word-wrap", "break-word")
 		);
 	},
 	ok: function(){
@@ -365,9 +323,6 @@ var hDebugger = {
 	for (var i in this) c++;
 	return c;
 }*/
-String.prototype.toFunction = function(){
-	return eval("(function(){ return "+ this + ";})()");
-}
 
 $(document).ready(function(){
 	hDebugger.init();

@@ -1,2 +1,7 @@
-<h1>Editing Query</h1>
-<%= render :partial=>"query_details" %>
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+
+<div id="mainPanel">
+
+  <h1>Editing Query</h1>
+  <%= render :partial=>"query_details" %>
+</div>

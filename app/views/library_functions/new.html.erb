@@ -1,5 +1,9 @@
-<h1>New library_function</h1>
+<%= render partial: 'shared/tab_menu', locals: { selected: {library_functions: true}} %>
 
-<%= render 'form' %>
+<div id="mainPanel">
+  <h1>Create New Library Function</h1>
 
-<%= link_to 'Back', library_functions_path %>
+  <%= render 'form' %>
+  
+  <%= link_to 'Back', library_functions_path %>
+</div>

@@ -1,35 +1,35 @@
-
+<%= stylesheet_link_tag "validator/styles.css"%>
 <%= javascript_include_tag "validator/src/ace" %>
 <%= javascript_include_tag "validator/src/mode-javascript" %>
 <%= javascript_include_tag "validator/validator" %>
 <%= javascript_include_tag "validator/records" %>
-
 <%= simple_form_for @query do |f| %>
-  <table>
-    <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
-    <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
-    <tr><td valign='top'>Filter</td><td><%= f.input_field :filter, :disabled => @disabled %></td></tr>
-    <tr><td valign='top'>Map Function</td><td><%= f.input_field :map, :as => :text, :disabled => @disabled %></td></tr>
-    <tr><td valign='top'>Reduce Function</td><td><%= f.input_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
-  </table>
 
-  <h2>Endpoints</h2>
-  <%= render :partial=>"endpoint" %>
-  <table>
-    <tr>
-      <td></td>
-      <td valign='top'>
-        <%= f.button :submit if !@disabled %>
+<table class="simpleTable">
+  <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
+  <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
+  <tr><td>Filter</td><td><%= f.input_field :filter, :disabled => @disabled %></td></tr>
+  <tr><td>Map Function</td><td><%= f.input_field :map, :as => :text, :disabled => @disabled %></td></tr>
+  <tr><td>Reduce Function</td><td><%= f.input_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
+</table>
 
-        <% if (not @query.id.nil?) %>
-        <%= link_to 'cancel', @query %>
-        <% else %>
-        <%= link_to 'cancel', queries_path %>
-        <% end %>
-        <input id="debug" type="button" value="Debug" disabled="disabled"><input id="records" type="button" value="Records">
-      </td>
-    </tr>
-  </table>
 
+
+<h2>Endpoints</h2>
+<%= render :partial=>"endpoint" %>
+
+<div class="ctrl"> 
+  <%= f.button :submit if !@disabled %>
+
+  <% if (not @query.id.nil?) %>
+    <%= link_to 'cancel', @query %>
+  <% else %>
+  <%= link_to 'cancel', queries_path %>
+  <% end %> 
+  <span class="ctrl">  
+    <input id="debug" type="button" value="Debug" disabled="disabled"> <input id="records" type="button" value="Records">
+  </span>
+
+</div>
 <% end %>
 
