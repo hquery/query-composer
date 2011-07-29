@@ -35,4 +35,5 @@ group :test do
   gem 'fakeweb'
   gem 'therubyracer'
   gem 'factory_girl'
+  gem 'mocha', :require => false
 end

@@ -150,13 +150,32 @@ class PollJobTest < ActiveSupport::TestCase
   end
 
   test "poll job with library functions should log exception saving functions" do
+
+    # alias the method so that we can restore it... mocha should do this but turn is causing issues currently
+    class Net::HTTP
+    class << self
+    alias unmocked_start start
+    end
+    end
+    
+    Net::HTTP.expects(:start).raises(SocketError, 'getaddrinfo: nodename nor servname provided, or not known')
+    
     query_from_db = Query.find(@user_with_functions.queries[3].id)
-    query_from_db.endpoints.each { | endpoint | endpoint.base_url = "http://crapbadurl.mitre.org/"; endpoint.save; }
+    query_from_db.endpoints.each { | endpoint | endpoint.base_url = "http://localhost:3001/"; endpoint.save; }
     query_from_db.reload
 
     PollJob.submit_all(query_from_db.executions[0])
     
     assert_equal "library functions exception", Event.all[0].message
+
+    binding.pry
+
+    # restore original method
+    class Net::HTTP
+    class << self
+    alias start unmocked_start
+    end
+    end
     
   end
   
