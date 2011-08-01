@@ -56,6 +56,7 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
 
       if result.status == Result::CANCELED
         Net::HTTP.start(url.host, url.port) do |http|
+          logger.add(query, "Results canceled for result id #{result.id}")
           response = http.delete(url.path)
         end
         return  
