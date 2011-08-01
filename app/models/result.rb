@@ -8,7 +8,7 @@ class Result
 
   embedded_in :execution, class_name: "Execution", inverse_of: :results
 
-  belongs_to :endpoint
+  embeds_one :endpoint
 
   field :status, type: String
   field :result_url, type: String
