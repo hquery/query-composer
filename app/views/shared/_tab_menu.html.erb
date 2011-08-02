@@ -3,7 +3,7 @@
     <ul>
       <li class="<%=(selected[:queries]) ? ' selected' : ''%>" data-tab="queries"><%= link_to "Queries", queries_path %></li>
       <li class="<%=(selected[:endpoints]) ? ' selected' : ''%>" data-tab="endpoints"><%= link_to "Endpoints", endpoints_path %></li>
-      <li class="<%=(selected[:qry_admin]) ? ' selected' : ''%>" data-tab="qryadmin"><%= link_to "Query Admin", qryadmin_path %></li>
+      <li class="<%=(selected[:template_queries]) ? ' selected' : ''%>" data-tab="template_queries"><%= link_to "Template Queries", template_queries_path %></li>
       <li class="<%=(selected[:library_functions]) ? ' selected' : ''%>" data-tab="library_functions"><%= link_to "Library Functions", library_functions_path %></li>
     </ul>
     <br style="clear:both"/>

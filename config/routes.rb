@@ -12,6 +12,7 @@ QueryComposer::Application.routes.draw do
 
   resources :endpoints
   resources :library_functions
+  resources :template_queries
 
   match 'qryadmin', :to => 'qryadmin#index', :via => "get"
   match 'qryadmin/adminnew', :to => 'qryadmin#adminnew', :via => "get"

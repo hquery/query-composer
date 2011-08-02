@@ -1,6 +1,6 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {template_queries: true}}%>
+
 <h1>Editing template_query</h1>
 
-<%= render 'form' %>
+<%= render :partial=>"query_details" %>
 
-<%= link_to 'Show', @template_query %> |
-<%= link_to 'Back', template_queries_path %>
