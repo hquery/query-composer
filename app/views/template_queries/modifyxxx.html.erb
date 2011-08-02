@@ -1,0 +1,23 @@
+<h1><b>Query Admin - Modify Query</b></h1>
+<table>
+<%= simple_form_for (@template_query)  do |f| %>
+  <table>
+    <tr><td>Title</td><td><%= f.text_field :title, :disabled => @disabled %></td></tr>
+    <tr><td>Description</td><td><%= f.text_field :description, :disabled => @disabled %></td></tr>
+    <tr><td valign='top'>Filter</td><td><%= f.text_field :filter, :disabled => @disabled %></td></tr>
+    <tr><td valign='top'>Map Function</td><td><%= f.text_field :map, :as => :text, :disabled => @disabled %></td></tr>
+    <tr><td valign='top'>Reduce Function</td><td><%= f.text_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
+    <tr><td> <%= f.submit 'Update Query Template' ,  {:controller => 'template_queries', :action => 'modup', :method => :put}%> </td></tr>
+  </table>
+
+<% end %>
+
+</table>
+<table>
+<tr><td><%= button_to 'Delete Query Template', {:action=>'destroy', :id=>@template_query.id}, :method=>:delete %></td>
+</tr>
+
+
+
+
+</table>
