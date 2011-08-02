@@ -47,10 +47,11 @@ class QryadminController < ApplicationController
 
   def admincreate
     @query = Query.new(params[:query])
-    endpoint = Endpoint.new
-    endpoint.name = 'Default Local Queue'
-    endpoint.submit_url = 'http://localhost:3001/queues'
-    @query.endpoints << endpoint
+    #endpoint = Endpoint.new
+    #endpoint.name = 'Default Local Queue'
+    #endpoint.base_url ='base_url'
+    #endpoint.submit_url = 'http://localhost:3001/queues'
+    #@query.endpoints << endpoint
     @query.save!
     redirect_to :action => 'index'
   end
@@ -63,11 +64,13 @@ class QryadminController < ApplicationController
     @querynew.map = @query.map
     @querynew.reduce = @query.reduce
     #@querynew.status = @query.status
+    
+    #endpoint = Endpoint.new
+    #endpoint.name = 'Default Local Queue'
+    #endpoint.base_url = 'base_url'
+    #endpoint.submit_url = 'http://localhost:3001/queues'
+    #@querynew.endpoints << endpoint
 
-    endpoint = Endpoint.new
-    endpoint.name = 'Default Local Queue'
-    endpoint.submit_url = 'http://localhost:3001/queues'
-    @querynew.endpoints << endpoint
     @querynew.save!
     redirect_to :action => 'index'
   end
