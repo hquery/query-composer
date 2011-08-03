@@ -24,10 +24,6 @@ class TemplateQueriesControllerTest < ActionController::TestCase
     assert_redirected_to template_query_path(assigns(:template_query))
   end
 
-  test "should show template_query" do
-    get :show, id: @template_query.to_param
-    assert_response :success
-  end
 
   test "should get edit" do
     get :modify, id: @template_query.to_param
