@@ -31,6 +31,7 @@ QueryComposer::Application.routes.draw do
 	    get 'refresh_execution_results'
 	    get 'execution_history'
 	    get 'cancel'
+	    get 'cancel_execution'
     end
   end
   

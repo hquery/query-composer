@@ -62,7 +62,7 @@ Factory.define :query_with_execution, :parent => :query_with_endpoints do |query
     [] << Factory.build(:execution)
   }
   query.after_create do |q| 
-    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result, endpoint_id: endpoint.id)} }
+    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result, :endpoint => endpoint)} }
   end
 end
 
@@ -73,7 +73,7 @@ Factory.define :query_with_completed_results, :parent => :query_with_endpoints d
     [] << Factory.build(:execution)
   }
   query.after_create do |q| 
-    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result_with_value, endpoint_id: endpoint.id)} }
+    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result_with_value, :endpoint => endpoint)} }
   end
 end
 

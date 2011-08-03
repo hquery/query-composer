@@ -127,6 +127,37 @@ class PollJobTest < ActiveSupport::TestCase
 
   end
   
+  
+  
+  
+  
+  test "Poll job should cancel jobs" do
+    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queues", :body => "{\"foo\" : \"bar\"}")
+    FakeWeb.register_uri(:delete, "http://127.0.0.1:3001/queues", :body => "Job Canceled")
+    query_from_db = Query.find(@query_w_result.id)
+    
+    # set the result urls to the submit urls... this would typically happend as part of the poll job submit process
+    query_from_db.executions[0].results.each {|result| result.result_url = result.endpoint.submit_url}
+    query_from_db.save!
+    query_from_db.executions[0].cancel
+    query_from_db.executions[0].results.each do |result| 
+      poll_job = PollJob.new query_from_db.id.to_s, query_from_db.executions[0].id.to_s, result.id.to_s
+      poll_job.perform
+    end
+    
+    query_from_db = Query.find(@query_w_result.id)
+    
+    query_from_db.executions[0].results.each do |result|
+      query_logger = QueryLogger.new
+      query_log = query_logger.log(query_from_db.id)
+      found = query_log.find {|log| log["message"] <=> "Results canceled for result id #{result.id}"}
+      assert_not_nil found
+    end
+
+  end
+  
+  
+  
   test "poll job should submit properly with library functions" do
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "complete")
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "{\"foo\" : \"bar\"}")
