@@ -1,8 +1,13 @@
 require 'test_helper'
+include Devise::TestHelpers
 
 class TemplateQueriesControllerTest < ActionController::TestCase
   setup do
-    @template_query = template_queries(:one)
+    dump_database
+    @template_query = Factory(:template_query)
+    @unsaved_template_query = Factory.build(:template_query)
+    @admin = Factory(:admin)
+    sign_in @admin
   end
 
   test "should get index" do
@@ -18,10 +23,10 @@ class TemplateQueriesControllerTest < ActionController::TestCase
 
   test "should create template_query" do
     assert_difference('TemplateQuery.count') do
-      post :create, template_query: @template_query.attributes
+      post :create, template_query: @unsaved_template_query.attributes
     end
 
-    assert_redirected_to template_query_path(assigns(:template_query))
+    assert_redirected_to template_queries_url
   end
 
 
@@ -32,7 +37,7 @@ class TemplateQueriesControllerTest < ActionController::TestCase
 
   test "should update template_query" do
     put :modup, id: @template_query.to_param, template_query: @template_query.attributes
-    assert_redirected_to template_query_path(assigns(:template_query))
+    assert_redirected_to template_queries_url
   end
 
   test "should destroy template_query" do
