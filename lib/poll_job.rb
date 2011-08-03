@@ -181,7 +181,14 @@ END_OF_FN
     # javascript that takes the namespaced user functions and creates non-namespaced aliases in the current scope
     def self.get_denamespace_js(user)
       composer_id = COMPOSER_ID
-      "if (typeof hquery_user_functions != 'undefined' && null != hquery_user_functions['f#{composer_id}'] && null != hquery_user_functions['f#{composer_id}']['f#{user.id.to_s}']) { for(var key in hquery_user_functions.f#{composer_id}.f#{user.id.to_s}) { eval(key+'=hquery_user_functions.f#{composer_id}.f#{user.id.to_s}.'+key) } } \r\n"
+      "if (typeof hquery_user_functions != 'undefined' 
+           && null != hquery_user_functions['f#{composer_id}'] 
+           && null != hquery_user_functions['f#{composer_id}']['f#{user.id.to_s}']) { 
+             for(var key in hquery_user_functions.f#{composer_id}.f#{user.id.to_s}) { 
+               eval(key+'=hquery_user_functions.f#{composer_id}.f#{user.id.to_s}.'+key) 
+             } 
+             hquery_user_functions = {}; 
+       } \r\n"
     end
     
 
