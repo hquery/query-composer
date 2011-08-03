@@ -35,7 +35,7 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
       # build the multi-part elements for the request
       # need to do this inside the loop since UploadIO is single-use
       filter = UploadIO.new(StringIO.new(execution.query.filter), 'application/json')
-      map = UploadIO.new(StringIO.new(execution.query.map), 'application/javascript')
+      map = UploadIO.new(StringIO.new(get_denamespace_js(execution.query.user) + execution.query.map), 'application/javascript')
       reduce = UploadIO.new(StringIO.new(execution.query.reduce), 'application/javascript')
 
       # get the endpoint url and build the request
@@ -128,6 +128,7 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
 
     <<END_OF_FN
     function() {
+      #{get_denamespace_js(execution.query.user)}
       var query = this;
       var execution = null;
       var execution = null;
@@ -158,7 +159,7 @@ END_OF_FN
       functions = UploadIO.new(StringIO.new(query.user.library_function_definitions), 'application/javascript')
 
       url = URI.parse endpoint.functions_url
-      request = Net::HTTP::Post::Multipart.new(url.path, {'functions'=>functions, 'username'=>query.user.username})
+      request = Net::HTTP::Post::Multipart.new(url.path, {'functions'=>functions, 'user_id'=>query.user.id, 'composer_id'=>COMPOSER_ID})
 
       begin
         Net::HTTP.start(url.host, url.port) do |http|
@@ -175,14 +176,37 @@ END_OF_FN
       end
 
     end
+    
+    # javascript that takes the namespaced user functions and creates non-namespaced aliases in the current scope
+    def self.get_denamespace_js(user)
+      composer_id = COMPOSER_ID
+      "if (typeof hquery_user_functions != 'undefined' && null != hquery_user_functions['f#{composer_id}'] && null != hquery_user_functions['f#{composer_id}']['f#{user.id.to_s}']) { for(var key in hquery_user_functions.f#{composer_id}.f#{user.id.to_s}) { eval(key+'=hquery_user_functions.f#{composer_id}.f#{user.id.to_s}.'+key) } } \r\n"
+    end
+    
 
     def self.save_library_functions_locally(user)
+      
+      # update gateway
+      # add alias stuff to map function
+      
       db = Mongoid::Config.master
-      #user_namespace = "#{user.username} = #{user.username} || {};"
-      user_namespace = "#{user.username} = {};"
+      composer_id = COMPOSER_ID
+      # need to add this if it is not there
+      hquery = db['system.js'].find({_id: 'hquery_user_functions'});
+      if (hquery.count == 1) 
+        user_namespace = ''
+        if (hquery.first['value']['f'+composer_id.to_s].nil?) 
+          user_namespace += "hquery_user_functions['f#{composer_id}'] = {}; "
+        end
+      else
+        user_namespace = "hquery_user_functions = {}; hquery_user_functions['f#{composer_id}'] = {}; "
+      end
+      user_namespace = user_namespace + "f#{user.id.to_s} = new function(){#{user.library_function_definitions}}; "
+      user_namespace = user_namespace + "hquery_user_functions['f#{composer_id}']['f#{user.id.to_s}'] = f#{user.id.to_s}; "
       db.eval(user_namespace)
-      db.eval(user.library_function_definitions)
-      db.eval("db.system.js.save({_id:'"+user.username+"', value : "+user.username+" })")
+
+
+      db.eval("db.system.js.save({_id:'hquery_user_functions', value : hquery_user_functions })")
     end
 
 

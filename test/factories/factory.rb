@@ -116,5 +116,5 @@ end
 
 Factory.define :library_function do |f|
   f.sequence(:name) { |n| "sum#{n}()" }
-  f.definition "username.sum = function(values) {\r\n        result = 0;\r\n          values.forEach(function(value) {\r\n            result += value;\r\n          });\r\n          return result;\r\n        }\r\n"
+  f.definition "this.sum = function(values) {\r\n        result = 0;\r\n          values.forEach(function(value) {\r\n            result += value;\r\n          });\r\n          return result;\r\n        }\r\n"
 end

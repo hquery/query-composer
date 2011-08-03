@@ -16,7 +16,7 @@ class LibraryFunctionsController < ApplicationController
 
   def new
     @library_function.definition = <<END_OF_FN
-    #{current_user.username}.example = function() {
+    this.custom_function = function() {
 
   }
 END_OF_FN

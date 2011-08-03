@@ -135,8 +135,30 @@ class PollJobTest < ActiveSupport::TestCase
     PollJob.submit_all(query_from_db.executions[0])
 
     db = Mongoid::Config.master
-    assert_equal @user_with_functions.username, db['system.js'].find({}).first['_id']
-    assert_not_nil db['system.js'].find({}).first['value']['sum']
+    assert_equal 'hquery_user_functions', db['system.js'].find({}).first['_id']
+    assert_not_nil db['system.js'].find({}).first['value']['f'+COMPOSER_ID]['f'+@user_with_functions.id.to_s]['sum']
+  end
+
+  test "poll job should submit properly with exiting library functions defined" do
+    
+    # add some existing data at the composer level
+    db = Mongoid::Config.master
+    user_namespace = "hquery_user_functions = {}; hquery_user_functions['foobar'] = {};"
+    db.eval(user_namespace)
+    db.eval("db.system.js.save({_id:'hquery_user_functions', value : hquery_user_functions })")
+    
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "complete")
+    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queues", :body => "{\"foo\" : \"bar\"}")
+    query_from_db = Query.find(@user_with_functions.queries[3].id)
+
+    PollJob.submit_all(query_from_db.executions[0])
+
+    db = Mongoid::Config.master
+    assert_equal 'hquery_user_functions', db['system.js'].find({}).first['_id']
+    # make sure we have not blown away the existing data
+    assert_not_nil db['system.js'].find({}).first['value']['foobar']
+    # make sure the new stuff is there as well
+    assert_not_nil db['system.js'].find({}).first['value']['f'+COMPOSER_ID]['f'+@user_with_functions.id.to_s]['sum']
   end
   
   test "poll job with library functions should log communication error saving functions" do

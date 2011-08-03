@@ -1,0 +1,1 @@
+COMPOSER_ID = 'dummy_composer_id'
