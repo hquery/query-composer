@@ -30,12 +30,12 @@ class TemplateQueriesControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
-    get :edit, id: @template_query.to_param
+    get :modify, id: @template_query.to_param
     assert_response :success
   end
 
   test "should update template_query" do
-    put :update, id: @template_query.to_param, template_query: @template_query.attributes
+    put :modup, id: @template_query.to_param, template_query: @template_query.attributes
     assert_redirected_to template_query_path(assigns(:template_query))
   end
 
