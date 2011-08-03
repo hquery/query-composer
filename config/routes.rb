@@ -1,7 +1,5 @@
 QueryComposer::Application.routes.draw do
 
-
-
   devise_for :users
 
   get "admin/users"
@@ -18,13 +16,9 @@ QueryComposer::Application.routes.draw do
   resources :template_queries do
     member do
       post 'modify'
+      #post 'edit'
       get 'modify'
       put 'modup'
-      #delete 'destroy'
-      #get 'log'
-	#    get 'refresh_execution_results'
-	 #   get 'execution_history'
-	  #  get 'cancel'
     end
   end
 

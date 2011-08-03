@@ -1,0 +1,8 @@
+<h1><b>Query Template Admin - Modify Query</b></h1>
+<%= render :partial=>"query_details" %>
+
+</table>
+<table>
+<tr><td><%= button_to 'Delete Query Template', {:action=>'destroy', :id=>@template_query.id}, :method=>:delete %></td>
+</tr>
+</table>

@@ -1,0 +1,2 @@
+module TemplateQueriesHelper
+end
