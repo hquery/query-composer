@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TemplateQueriesControllerTest < ActionController::TestCase
   setup do
-    @template_query = template_queries(:one)
+    @template_query = TemplateQuery(:one)
   end
 
   test "should get index" do
