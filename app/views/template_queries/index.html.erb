@@ -20,7 +20,7 @@
   <tr>
     <td><%= query.title%></td>
     <td><%= query.description %></td>
-    <td><%= button_to 'Select', {:action=>'modify', :id=>query.id}%></td>
+    <td><%= button_to 'Select', {:action=>'edit', :id=>query.id}%></td>
   </tr>
 <% end %>
 </table>

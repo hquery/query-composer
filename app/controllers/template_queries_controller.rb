@@ -13,35 +13,12 @@ class TemplateQueriesController < ApplicationController
   add_breadcrumb_for_resource :template_query, :title, only: %w{edit show}
   add_breadcrumb_for_actions only: %w{edit new}
 
-  def modify
-    @querynew = TemplateQuery.find(params[:id])
-    @template_query = @querynew
-  end
+creates_updates_destroys :template_query
 
-def modup
-   @template_query = TemplateQuery.find(params[:id])  
-   @template_query.update_attributes!(params[:template_query])
-   redirect_to :action => 'index'
+def show
+	redirect_to :action => 'index'
+	#@template_queries = TemplateQuery.all
 end
 
-  # POST /template_queries
-  # POST /template_queries.json
-  def create
-    @template_query.save
-    redirect_to :action =>'index'
-  end
 
-# PUT /template_queries/1
-  # PUT /template_queries/1.json
-  def update
-    @template_query.update_attributes(params[:template_query])
-    redirect_to template_queries_url
-  end
-
-  # DELETE /template_queries/1
-  # DELETE /template_queries/1.json
-  def destroy
-    @template_query.destroy
-    redirect_to template_queries_url 
-  end
 end

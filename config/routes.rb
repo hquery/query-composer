@@ -15,10 +15,10 @@ QueryComposer::Application.routes.draw do
   
   resources :template_queries do
     member do
-      post 'modify'
-      #post 'edit'
+      #post 'modify'
+      post 'edit'
       get 'modify'
-      put 'modup'
+     # put 'modup'
     end
   end
 
