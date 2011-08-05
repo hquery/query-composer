@@ -213,6 +213,9 @@ In a browser open the URL: http://localhost:3000/queries/
 
 verify gemfile has the following line:
 gem "bson_ext", "~> 1.3", :platforms => :mri
+# gem 'therubyracer'
+
+(the # may have to be added to the beginning of the therubyracer line to comment it out)
 
 verify bson_ext and mongo gems have same version.
 
