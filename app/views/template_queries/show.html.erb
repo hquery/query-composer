@@ -1,0 +1,31 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {template_queries: true}}%>
+
+<div id="dashboardPeriod" >
+
+  <br style="clear:left"/>
+  <div class="simpleTableContainer">
+
+<h1><b>Query Template Administration</b></h1>
+
+<table class="simpleTable">
+<tr><td></td></tr>
+<% if @template_queries.size %>
+  <tr><b>
+    <th>Title</th>
+    <th>Description</th>
+  </b></tr>
+<% end %>
+<% @template_queries.each do |query| %>
+<tr><td></td></tr>
+  <tr>
+    <td><%= query.title%></td>
+    <td><%= query.description %></td>
+    <td><%= button_to 'Select', {:action=>'modify', :id=>query.id}%></td>
+  </tr>
+<% end %>
+</table>
+  <%= link_to(new_template_query_path, class: "bluebutton") do %><span>Add Template</span><% end %>
+</div>
+</div>
+
+
