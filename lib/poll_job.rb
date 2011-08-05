@@ -179,6 +179,7 @@ END_OF_FN
     end
     
     # javascript that takes the namespaced user functions and creates non-namespaced aliases in the current scope
+    # then redefines hquery_user_functions in the local scope so that users cannot access other users functions
     def self.get_denamespace_js(user)
       composer_id = COMPOSER_ID
       "if (typeof hquery_user_functions != 'undefined' 
