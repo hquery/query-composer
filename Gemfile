@@ -21,9 +21,10 @@ gem 'delayed_job_mongoid'
 gem "hquery-patient-api", :git=>'git://barrel.mitre.org/hquery/hquery-patientapi.git'
 gem 'devise'
 gem 'cancan'
-#gem 'pry'
+gem 'pry'
 #gem 'ruby-debug19'
 gem 'bluecloth'
+gem 'jasmine', :group => [:development, :test]
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'

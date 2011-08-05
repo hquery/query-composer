@@ -1,0 +1,22 @@
+<%
+  # This partial defines the map function of MapReduce jobs. It handles the logic of blank UI zones, generates functions that match the passed in query_structure,
+  # and emits requested information.
+%>
+
+function map(patient) {
+  <%= render :partial => "queries/builder/population_function", :locals => { :name => 'find', :prerequisites => [], :query_substructure => @query_structure['find'] } %>
+  <%= render :partial => "queries/builder/population_function", :locals => { :name => 'filter', :prerequisites => ['find'], :query_substructure => @query_structure['filter'] } %>
+  <%= render :partial => "queries/builder/population_function", :locals => { :name => 'extract', :prerequisites => ['find', 'filter'], :query_substructure => @query_structure['filter'] } %>
+
+  if (find(patient)) {
+		emit("find", 1);
+		if (filter(patient)) {
+			if (extract(patient)) {
+				emit("filter", 1);
+				emit("extract", 1);
+			} else {
+				emit("filter", 1);
+			}
+		}
+	}
+}

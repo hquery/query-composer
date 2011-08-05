@@ -61,6 +61,15 @@ class QueriesController < ApplicationController
       format.js { render :layout => false }
     end
   end
+  
+  # Called from queries/new and passed a list of operations and parameters dictated by the UI to define a MapReduce job
+  def generate_query
+    @query_structure = JSON.parse(params[:query_structure])
+        
+    respond_to do |format|
+      format.js { render :layout => false }
+    end
+  end
 
   private
 

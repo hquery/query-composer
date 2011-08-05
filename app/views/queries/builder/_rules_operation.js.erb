@@ -1,0 +1,34 @@
+<%
+  # This partial defines the behavior for rules. Any sort of input specified by the user from the UI, e.g. age >= 65, must translate into javascript.
+  # Given a list of rules we'll generate one big if statement. Because the UI presents the user with widgets that encapsulate many rules, this partial
+  # will always be called by an "and" operation. A single rule that doesn't match will result in returning false.
+  #
+  # Locals
+  # rule_list - The list of all the rules we're currently evaluating.
+%>
+
+function() {
+<% # As long as we have at least one rule in the list, walk through them all and add them to a giant if statement %>
+<% if rule_list.length > 0 %>
+  if (false
+  <% rule_list.each do |rule| %>
+    <% # Many rules can be expressed as a simply if (a != b) false statement. However, some cases are special, e.g. ranges for dates or values. %>
+    <% # If this element is marked as special, evaluate it in its unique way. %>
+    <% if (rule.include? 'special_rule') %>
+      <% # Range rules are defined by having a start and end value. %>
+      <% if (rule['special_rule'] == 'range') %>
+        || (Patient.<%= rule['name'] %>.start != <%= rule['start'] %> || Patient.<%= rule['name'] %>.end != <%= rule['end'] %>)
+      <% end %>
+    <% # Otherwise we do a straight forward comparison. %>
+    <% else %>
+      || (Patient.<%= rule['name'] %> != <%= rule['value'] %>)
+    <% end %>
+  <% end %>
+  ) {
+    return false;
+  }
+  else {
+    return true;
+  }
+<% end %>
+}

@@ -12,6 +12,7 @@ class Query
   field :filter, type: String
   field :map, type: String
   field :reduce, type: String
+  field :query_structure, type: Hash
   
   def last_execution
     executions.desc(:time).first

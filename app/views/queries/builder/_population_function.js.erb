@@ -1,0 +1,30 @@
+<%
+  # This partial is called to generate a function within mapFunction() that defines some population or subpopulation.
+
+  # Locals:
+  # name - The name of the function as the user will see it, e.g. 'findFunction'
+  # prerequisites - An array of functions that are conditions which must be met in order to be considered in this function
+  #   e.g., numerator() would have population() and denominator() in its prerequisite list.
+  # query_substructure - This is a fragment of the global queryStructure. The top level element will be some sort of logical operation
+  #   e.g., "and"/"or" with contained rules that will define our function here.
+%>
+
+function <%= name %>(patient) {
+  <% # Only patients who meet the prerequisites are going to be considered %>
+  <% if prerequisites.length > 0 %>
+    <% prerequisites.each do |prereq| %>
+      <% # Actually have the javascript execute each prerequisite function. Return false if any prereq returns false. %>
+      if (!<%= prereq %>()) {
+        return false;
+      }
+    <% end %>
+  <% end %>
+  
+  <%
+  # Parse our way through the query substructure's element list. Each element will be rules that define patients to be
+  # excluded and logical operations to unite those rules. Each logical operation may potentially call deeper operations ad nauseum.
+  %>
+  <% operation = get_builder_operation(query_substructure) %>
+  <%= operation %>_<%= query_substructure['id'] %> = <%= render :partial => "/queries/builder/#{operation}_operation", :locals => { :query_substructure => query_substructure[operation], :parent_id => query_substructure['id'] } %>;
+  return <%= operation %>_<%= query_substructure['id'] %>();
+}

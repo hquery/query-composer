@@ -1,0 +1,31 @@
+<%
+  # This partial is called from each of our logical operation partials. Each one requires a list to be built of all statements
+  # they are evaluating. The behavior is the same, so we perform it here, and the unique list evaluation happens is left to the operator.
+  #
+  # Locals
+  # parent_id - The stored ID of the query structure element that called this partial. Used to mark variables in our outputted javascript for slightly better readabillity.
+  # query_substructure - A fragment of the query structure whose top element is whatever operation called this partial. Our assertions come from the associated array.
+%>
+
+assertions_<%= parent_id %> = [];
+
+<% # Walk through all of the contained rules and logical operations in this "or"s list. %>
+<% # We'll maintain a list of rules so we can evaluate them all compactly in one function. Logical operations will be added to assertions immediately. %>
+<% rule_list = [] %>
+<% query_substructure.each do |rule| %>
+  <% operation = get_builder_operation(rule) %>
+  <% # The reference to find the next part of the substructure for the current rule is different depending on if we have a rule or an operator %>
+  <% if operation == 'rule' %>
+    <% rule_list << rule %>
+  <% else %>
+    <% # Render each subelement as a variable, execute it, and add that result to our list of assertions %>
+    <%= operation %>_<%= rule['id'] %> = <%= render :partial => "/queries/builder/#{operation}_operation", :locals => { :query_substructure => rule[operation], :parent_id => rule['id'] } %>
+    assertions_<%= parent_id %> << <%= operation %>_<%= rule['id'] %>();
+  <% end %>
+<% end %>
+
+<% # Now that we have all the rules collected, generate a function to evaluate them as long as we have a non-empty list %>
+<% if !rule_list.empty? %>
+  rules_<%= parent_id %> = <%= render :partial => "/queries/builder/rules_operation", :locals => { :rule_list => rule_list } %>
+  assertions << rules_<%= parent_id %>();
+<% end %>
