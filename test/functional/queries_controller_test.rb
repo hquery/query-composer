@@ -26,16 +26,25 @@ class QueriesControllerTest < ActionController::TestCase
     sign_in @user
     get :index
     queries = assigns[:queries]
-    assert_equal @user.queries, queries
     assert_response :success
+    
+    assert_equal @user.queries.length, queries.length
+    queries.each do |query|
+      assert @user.queries.include?(query)
+    end
   end
 
   test "should get index as admin" do
     sign_in @admin
     get :index
     queries = assigns[:queries]
-    assert_equal Query.all, queries
     assert_response :success
+    
+    all_queries = Query.all
+    assert_equals all_queries.length, queries
+    queries.each do |query|
+      assert all_queries.include?(query)
+    end
   end
 
 
