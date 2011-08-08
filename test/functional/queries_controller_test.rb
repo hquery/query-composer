@@ -41,7 +41,7 @@ class QueriesControllerTest < ActionController::TestCase
     assert_response :success
     
     all_queries = Query.all
-    assert_equals all_queries.length, queries
+    assert_equal all_queries.length, queries
     queries.each do |query|
       assert all_queries.include?(query)
     end
