@@ -5,6 +5,6 @@ class AddTypeToQuery < Mongoid::Migration
   end
   
   def self.down
-    collection('queries').update({'_type' => 'Query'}, { '$unset' => { '_type' => 'Query' } }, {multi: true})
+    collection('queries').update({}, { '$unset' => { '_type' => 1 } }, {multi: true})
   end
 end
