@@ -1,4 +1,4 @@
-class TemplateQuery<BaseQuery
+class TemplateQuery < BaseQuery
   include Mongoid::Document
   
     def to_query
