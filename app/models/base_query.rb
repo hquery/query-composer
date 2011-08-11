@@ -7,4 +7,7 @@ class BaseQuery
   field :filter, type: String
   field :map, type: String
   field :reduce, type: String
+  
+  validates_presence_of :title
+  
 end
