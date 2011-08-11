@@ -24,5 +24,12 @@ class ActiveSupport::TestCase
   def dump_jobs
     Delayed::Job.destroy_all
   end
+  
+  def assert_lists_equal(expected, actual) 
+    assert_equal expected.length, actual.length
+    expected.each do |item|
+      assert actual.include?(item)
+    end
+  end
 
 end

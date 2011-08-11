@@ -30,10 +30,8 @@ class QueriesControllerTest < ActionController::TestCase
     queries = assigns[:queries]
     assert_response :success
     
-    assert_equal @user.queries.length, queries.length
-    queries.each do |query|
-      assert @user.queries.include?(query)
-    end
+    assert_lists_equal @user.queries, queries
+    
   end
 
   test "should get index as admin" do
@@ -42,11 +40,7 @@ class QueriesControllerTest < ActionController::TestCase
     queries = assigns[:queries]
     assert_response :success
     
-    all_queries = Query.all
-    assert_equal all_queries.length, queries.length
-    queries.each do |query|
-      assert all_queries.include?(query)
-    end
+    assert_lists_equal Query.all, queries
   end
 
 
