@@ -11,8 +11,8 @@
 #   - dist/**/*.js
 #
 src_files:
-  - app/assets/javascripts/*.js
-  - app/assets/javascripts/**/*.js
+  - 'app/assets/javascripts/*.js'
+  - 'app/assets/javascripts/**/*.js'
 
 # stylesheets
 #
@@ -26,8 +26,8 @@ src_files:
 #   - stylesheets/*.css
 #
 stylesheets:
-  - app/assets/stylesheets/*.css
-  - app/assets/stylesheets/**/*.css
+  - 'app/assets/stylesheets/*.css'
+  - 'app/assets/stylesheets/**/*.css'
 
 # helpers
 #
@@ -40,8 +40,8 @@ stylesheets:
 #   - helpers/**/*.js
 #
 helpers:
-  - helpers/*.js
-  - helpers/**/*.js
+  - 'helpers/*.js'
+  - 'helpers/**/*.js'
 
 # spec_files
 #
@@ -77,4 +77,4 @@ src_dir:
 #
 # spec_dir: spec/javascripts
 #
-spec_dir: spec/javascripts
+spec_dir: 'spec/javascripts'
