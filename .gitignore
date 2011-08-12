@@ -6,3 +6,4 @@ coverage.data
 coverage/
 .sass-cache/
 public/assets
+spec/javascripts/generated/*
