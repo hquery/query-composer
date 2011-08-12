@@ -5,6 +5,9 @@ class ApplicationController < ActionController::Base
   include Breadcrumbs
   include CudActions
   layout :layout_by_resource
+  
+  # lock it down!
+  check_authorization :unless => :devise_controller?
 
   add_breadcrumb 'Home', :root_url
 
@@ -19,5 +22,5 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
-
+  
 end
