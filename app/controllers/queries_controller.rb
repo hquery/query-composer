@@ -69,6 +69,7 @@ class QueriesController < ApplicationController
     respond_to do |format|
       format.js { render :layout => false }
     end
+  end
 
   def clone_template
     @query = TemplateQuery.find(params[:template_id]).to_query
