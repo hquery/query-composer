@@ -42,6 +42,14 @@ end
 # = QUERIES =
 # ===========
 
+Factory.define :template_query do |q|
+  q.sequence(:title) { |n| "title #{n}" }
+  q.description "description"
+  q.filter ""
+  q.map "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
+  q.reduce "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
+end
+
 Factory.define :query do |q|
   q.sequence(:title) { |n| "title #{n}" }
   q.description "description"

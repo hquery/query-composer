@@ -1,0 +1,27 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {template_queries: true}}%>
+
+<div id="mainPanel">
+
+  <h1>Template Query Definition</h1>
+  <table class="simpleTable">
+    <tr><th>Title</th><td><%= @template_query.title %></td></tr>
+    <tr><th>Description</th><td><%= @template_query.description %></td></tr>
+    <tr><th>Filter</th><td><pre><%= @template_query.filter %></pre></td></tr>
+    <tr><th>Map Function</th><td><pre><%= @template_query.map %></pre></td></tr>
+    <tr><th>Reduce Function</th><td><pre><%= @template_query.reduce %></pre></td></tr>
+    <tr>
+      <td></td>
+      <td class="subTable">
+        <table>
+          <tr>
+            <td><%= button_to 'Edit', { :action => 'edit', :id => @template_query.id }, :method => :get  if current_user.admin? %></td>
+            <!-- This has to be a POST because of https://github.com/rails/rails/issues/2158 -->
+            <td><%= button_to('Clone', { controller: "queries", action: "clone_template", template_id: @template_query.id }, :method => :post) %></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <p><%= link_to 'Template Query List', template_queries_path %></p>
+</div>

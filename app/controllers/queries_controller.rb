@@ -4,7 +4,7 @@ require 'poll_job'
 
 class QueriesController < ApplicationController
   # load resource must be before authorize resource
-  load_resource exclude: %w{index log}
+  load_resource exclude: %w{index log clone_template}
   authorize_resource
   before_filter :authenticate_user!
 
@@ -69,6 +69,13 @@ class QueriesController < ApplicationController
     respond_to do |format|
       format.js { render :layout => false }
     end
+  end
+
+  def clone_template
+    @query = TemplateQuery.find(params[:template_id]).to_query
+    @query.title = "#{@query.title} (cloned)"
+    @endpoints = Endpoint.all
+    render :new
   end
 
   private

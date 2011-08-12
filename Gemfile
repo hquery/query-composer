@@ -14,6 +14,7 @@ gem 'jquery-rails'
 gem 'sprockets', '= 2.0.0.beta.10' 
 gem 'bson_ext', :platforms => :mri
 gem "mongoid", "~> 2.0"
+gem 'mongoid_rails_migrations'
 gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
@@ -34,7 +35,7 @@ group :test do
   gem 'turn', :require => false
   gem 'cover_me', '>= 1.0.0.rc6'
   gem 'fakeweb'
-  gem 'therubyracer'
+ # gem 'therubyracer'
   gem 'factory_girl'
   gem 'mocha', :require => false
 end
