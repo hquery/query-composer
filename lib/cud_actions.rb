@@ -53,7 +53,7 @@ module CudActions
       if (self.respond_to? :after_create) 
         after_create
       else 
-        redirect_to resource, notice: '#{resouce_name.to_s.humanize} was successfully created.'
+        redirect_to resource, notice: "#{resource_name.to_s.humanize} was successfully created."
       end
     else
       render action: "new"

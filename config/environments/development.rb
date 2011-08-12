@@ -25,13 +25,14 @@ QueryComposer::Application.configure do
   # Do not compress assets
   config.assets.compress = false
 
-  # add support for Pry debugging
-   silence_warnings do
-     begin
-       require 'pry'
-       IRB = Pry
-     rescue LoadError
-     end
-   end
+  #add support for Pry debugging
+  silence_warnings do
+    begin
+      require 'pry'
+      require 'ruby-debug'
+      IRB = Pry
+    rescue LoadError
+    end
+  end
 
 end

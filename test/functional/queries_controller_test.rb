@@ -20,22 +20,27 @@ class QueriesControllerTest < ActionController::TestCase
     
     @unapproved_user = Factory(:unapproved_user)
     
+    @template_query = Factory(:template_query)
+    
   end
   
   test "should get index" do
     sign_in @user
     get :index
     queries = assigns[:queries]
-    assert_equal @user.queries, queries
     assert_response :success
+    
+    assert_lists_equal @user.queries, queries
+    
   end
 
   test "should get index as admin" do
     sign_in @admin
     get :index
     queries = assigns[:queries]
-    assert_equal Query.all, queries
     assert_response :success
+    
+    assert_lists_equal Query.all, queries
   end
 
 
@@ -280,6 +285,19 @@ class QueriesControllerTest < ActionController::TestCase
     assert_equal Result::CANCELED, query.reload().last_execution.results.find(res_id).status
     assert_redirected_to(query_path(query.id))
 
+  end
+  
+  test "should clone template to query" do
+    sign_in @user
+    post :clone_template, template_id: @template_query.id
+    query = assigns(:query)
+    assert_not_nil query
+    assert_equal "#{@template_query.title} (cloned)", query.title
+    assert_equal @template_query.description, query.description
+    assert_equal @template_query.filter, query.filter
+    assert_equal @template_query.map, query.map
+    assert_equal @template_query.reduce, query.reduce
+    assert_response :success
   end
   
 end
