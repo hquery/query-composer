@@ -155,6 +155,7 @@ end
 
 class CudResourceController < ApplicationController
   include CudActions
+  skip_authorization_check
   creates_updates_destroys :cud_resource
   load_resource
   
