@@ -1,38 +1,54 @@
-class Container
+queryBuilder = {}
+
+class queryBuilder.Container
   constructor: (@parent) ->
     this.children = []
-  
-    
+
   add: (element) ->
     this.children.push(element)
-  
-    
+    return element;
+
   remove: ->
     this.parent.removeChild(this)
-  
-    
+
   removeChild: (victim) ->
     for i in children
       if children[i] == victim
         children.splice(i, 1)
-  
-    
+
   clear: ->
     children = []
-  
 
-
-class OrContainer extends Container
+class queryBuilder.Or extends queryBuilder.Container
   toJson: ->
     childJson = [];
     for child in this.children
       childJson.push(child.toJson())
     return { "or" : childJson }
   
-  test: ->
-   
+  test: (patient) -> 
+    for child in this.children
+      if (child.test(patient)) 
+        return true;
+    return false;
 
-class NotContainer extends Container
+
+class queryBuilder.And extends queryBuilder.Container
+  toJson: ->
+    childJson = [];
+    for child in this.children
+      childJson.push(child.toJson())
+    return { "and" : childJson }
+
+  test: ->
+    for child in this.children
+      if (!child.test(patient)) 
+        return false;
+    return true;
+
+
+
+class queryBuilder.Not extends queryBuilder.Container
   toJson: ->
     childJson = [];
     for child in this.children
@@ -42,8 +58,7 @@ class NotContainer extends Container
   test: ->
   
 
-
-class CountNContainer extends Container
+class queryBuilder.CountN extends queryBuilder.Container
   constructor: (@parent, @n) ->
     super
   
@@ -55,40 +70,23 @@ class CountNContainer extends Container
 
   test: ->
     
-  
 
-  
-class AndContainer extends Container
-  toJson: ->
-    childJson = [];
-    for child in this.children
-      childJson.push(child.toJson())
-    return { "and" : childJson }
-  
-  test: ->
-
-
-
-class Rule
-  constructor: -> (@category @title @name @value)
+class queryBuilder.Rule
+  constructor: (@category, @title, @field, @value) ->
 
   toJson: ->
     return { "category" : this.category, "title" : this.title, "name" : this.name, "value" : this.value }
   
 
 
-class RangeRule
-  constructor: -> (@category @title @name @start @end)
-
+class queryBuilder.Range
+  constructor: (@category, @title, @field, @start, @end) ->
   toJson: ->
 
 
-class ComparisonRule
-  constructor: -> (@category @title @name @value @comparator)
-
+class queryBuilder.Comparison
+  constructor: (@category, @title, @field, @value, @comparator) ->
   toJson: ->
+  test: (patient) -> 
+    return  patient[this.field]() == this.value
 
-
-container = new OrContainer(null)
-container.add(new AndContainer(null))
-container.add(new OrContainer(null))

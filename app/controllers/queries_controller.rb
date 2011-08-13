@@ -30,6 +30,11 @@ class QueriesController < ApplicationController
   def before_create
     @query.user = current_user
   end
+  
+  # TODO: remove this once this has stabilized
+  def show
+    @query.map = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare => true) + "\n" + @query.map
+  end
 
   def edit
     @endpoints = Endpoint.all
