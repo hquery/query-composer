@@ -16,12 +16,3 @@ passes_find: (patient) ->
 passes_filter: (patient) ->
   return filter.test(patient);    
 
-map: (patient) ->
-  if (passes_find(patient))
-    if (passes_filter(patient))
-      emit('target_pop', 1);
-    else
-      emit('filtered_pop', 1);
-  else
-    emit('unfound_pop', 1);
-  emit('total_pop', 1);

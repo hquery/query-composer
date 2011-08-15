@@ -8,6 +8,7 @@ HQUERY_VARIABLES = {
     :icon => 'demographics.png',
     :options => [
       {
+        :id => 'age',
         :long_name => 'Age',
         :short_name => 'Age',
         :title => 'Age is ',
@@ -18,6 +19,7 @@ HQUERY_VARIABLES = {
         }
       },
       {
+        :id => 'education',
         :long_name => 'Education',
         :short_name => 'Education',
         :title => "Highest level of education achieved is ",
@@ -34,6 +36,7 @@ HQUERY_VARIABLES = {
         }
       },
       {
+        :id => 'ethnicity',
         :long_name => 'Ethnicity',
         :short_name => 'Ethnicity',
         :title => "Ethnicity is ",
@@ -52,6 +55,7 @@ HQUERY_VARIABLES = {
         }
       },
       {
+        :id => 'language',
         :long_name => 'Language',
         :short_name => 'Language',
         :title => "Primarily language is ",
@@ -68,6 +72,7 @@ HQUERY_VARIABLES = {
         }
       },
       {
+        :id => 'disability',
         :long_name => 'Disability',
         :short_name => 'Disability',
         :title => "Disabilities: ",
@@ -83,6 +88,7 @@ HQUERY_VARIABLES = {
         }
       },
       {
+        :id => 'gender',
         :long_name => 'Gender',
         :short_name => 'Gender',
         :title => "",
@@ -97,6 +103,7 @@ HQUERY_VARIABLES = {
         }
       },
       {
+        :id => 'insurance',
         :long_name => 'Insurance',
         :short_name => 'Insurance',
         :title => "Insurance provider is ",
@@ -110,6 +117,7 @@ HQUERY_VARIABLES = {
         }
       },
       {
+        :id => 'marital_status',
         :long_name => 'Marital Status',
         :short_name => 'Marital Status',
         :title => "",

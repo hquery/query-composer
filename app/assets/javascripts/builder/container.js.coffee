@@ -1,4 +1,14 @@
-queryBuilder = {}
+@queryBuilder = @queryBuilder || {};
+
+class queryBuilder.Query
+  constructor: ->
+    this.find = new queryBuilder.Or()
+    this.filter = new queryBuilder.Or()
+    this.extract = new queryBuilder.Or()
+    this.analyze = new queryBuilder.Or()
+
+  toJson: -> 
+    return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'extract' : this.extract.toJson(), 'analyze' : this.analyze.toJson() }
 
 class queryBuilder.Container
   constructor: (@parent) ->
@@ -73,9 +83,8 @@ class queryBuilder.CountN extends queryBuilder.Container
 
 class queryBuilder.Rule
   constructor: (@category, @title, @field, @value) ->
-
   toJson: ->
-    return { "category" : this.category, "title" : this.title, "name" : this.name, "value" : this.value }
+    return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value }
   
 
 
@@ -87,6 +96,7 @@ class queryBuilder.Range
 class queryBuilder.Comparison
   constructor: (@category, @title, @field, @value, @comparator) ->
   toJson: ->
+    return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value, "comparator" : this.comparator }
   test: (patient) -> 
     return  patient[this.field]() == this.value
 
