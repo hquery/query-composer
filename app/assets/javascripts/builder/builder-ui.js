@@ -1,14 +1,13 @@
 var builderUI = builderUI || {};
 
 builderUI.generateJson = function() {
-  
   query = new queryStructure.Query();
   query.find = builderUI.buildWhere('find');
   query.filter = builderUI.buildWhere('filter');
   query.select = builderUI.buildSelect();
   query.group = builderUI.buildGroupBy();
   query.aggregate = builderUI.buildAggregate();
-  
+
   return JSON.stringify(query.toJson());
 };
 
@@ -23,23 +22,24 @@ builderUI.buildWhere = function(category) {
     
     demographics.push(demographic);
   });
-
-  or = new queryStructure.Or();
-  and = or.add(new queryStructure.And());
+  
+  var root = new queryStructure.And();
+  bottom = root.add(new queryStructure.Or());
+  bottom = bottom.add(new queryStructure.And())
 
   for (index in demographics) {
     var demographic = demographics[index];
-    and.add(new queryStructure.Comparison('demographics', demographic.id, demographic.id, demographic.value, demographic.comparison));
+    bottom.add(new queryStructure.Comparison('demographics', demographic.id, demographic.id, demographic.value, demographic.comparison));
   }
   
-  return or;
+  return root;
 };
 
 builderUI.buildSelect = function() {
-  fields = []
+  fields = [];
   $('#extract input:checked').each(function(index) {
     key = $(this).attr('key');
-    field = new queryStructure.Field(key, key)
+    field = new queryStructure.Field(key, key);
     
     fields.push(field);
   });
@@ -51,7 +51,7 @@ builderUI.buildGroupBy = function() {
   $('#extract select').each(function(index) {
     key = $(this).val();
     if (key != '--select--') {
-      field = new queryStructure.Field(key, key)
+      field = new queryStructure.Field(key, key);
       fields.push(field);
     }
   });
@@ -59,10 +59,10 @@ builderUI.buildGroupBy = function() {
 };
 
 builderUI.buildAggregate = function() {
-  fields = []
+  fields = [];
   $('#aggregate input:checked').each(function(index) {
     key = $(this).attr('key');
-    field = new queryStructure.Field(key, key)
+    field = new queryStructure.Field(key, key);
     fields.push(field);
   });
   return fields;

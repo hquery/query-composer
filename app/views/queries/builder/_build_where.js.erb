@@ -1,17 +1,27 @@
-<% operation = get_builder_operation(element) %>
-<% if operation == 'rule' %>
-  <% case rule %>
-  <% when element.include? 'end' %>
-    new queryBuilder.Range(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['start'] %>, <%= element['end'] %>)
-  <% when element['comparator'] %>
-    new queryBuilder.Comparison(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['value'] %>, <%= element['comparison'] %>)
-  <% else %>
-    new queryBuilder.Rule(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['value'] %>)
-  <% end %>
-<% else %>
-  new <%= operation %>([
-  <% element[operation].each do |subelement| %>
-    <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != element[operation].last %>,<% end %>
-  <% end %>
-  ])
+<% if element.include? 'and'
+  operation = 'And'
+elsif element.include? 'or'
+  operation = 'Or'
+elsif element.include? 'not'
+  operation = 'Not'
+elsif element.include? 'count_n'
+  operation = 'CountN'
+else
+  operation = 'rule'
+end %>
+
+<% if operation == 'rule'
+  if element.include? 'end'
+    tab_count.times { %>  <% } %> new queryStructure.Range("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['start'] %>", "<%= element['end'] %>")
+  <% elsif element['comparator']
+    tab_count.times { %>  <% } %> new queryStructure.Comparison("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>", "<%= element['comparator'] %>")
+  <% else
+    tab_count.times { %>  <% } %> new queryStructure.Rule("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>")
+  <% end
+else
+  tab_count.times { %>  <% } %> new queryStructure.<%= operation %>([
+  <% element[operation.downcase].each do |subelement| %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :tab_count => tab_count + 1, :element => subelement } %><% if subelement != element[operation.downcase].last %>,<% end %>
+  <% end
+  tab_count.times { %>  <% } %>])
 <% end %>

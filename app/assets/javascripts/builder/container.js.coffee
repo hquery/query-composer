@@ -2,8 +2,8 @@
 
 class queryStructure.Query
   constructor: ->
-    this.find = new queryStructure.Or()
-    this.filter = new queryStructure.Or()
+    this.find = new queryStructure.And(null, new queryStructure.Or())
+    this.filter = new queryStructure.And(null, new queryStructure.Or())
     this.select = []
     this.group = []
     this.aggregate = []
@@ -15,8 +15,11 @@ class queryStructure.Query
 # Containers 
 ##############
 class queryStructure.Container
-  constructor: (@parent) ->
-    this.children = []
+  constructor: (@parent, @children...) ->
+    if @children? && @children[0]?
+      this.children = @children
+    else
+      this.children = []
 
   add: (element) ->
     this.children.push(element)

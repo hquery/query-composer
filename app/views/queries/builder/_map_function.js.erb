@@ -7,17 +7,17 @@
 %>
 
 function find(patient) {
-  var root = new Or([
-  <% query_structure['find']['or'].each do |subelement| %>
-    <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
+  var root = new queryStructure.Or([
+  <% query_structure['find']['and'].each do |subelement| %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :tab_count => 0, :element => subelement } %><% if subelement != query_structure['find']['and'].last %>,<% end %>
   <% end %>
   ]);
 }
 
 function filter(patient) {
-  var root = new Or([
-  <% query_structure['find']['or'].each do |subelement| %>
-    <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
+  var root = new queryStructure.Or([
+  <% query_structure['filter']['and'].each do |subelement| %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :tab_count => 0, :element => subelement } %><% if subelement != query_structure['find']['and'].last %>,<% end %>
   <% end %>
   ]);
 }
