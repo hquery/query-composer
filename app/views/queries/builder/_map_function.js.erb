@@ -8,18 +8,18 @@
 
 function map(patient) {
   function find(patient) {
-    var root = new Or(
+    var root = new Or([
     <% query_structure['find']['or'].each do |subelement| %>
-      <%= render :partial => 'blah', :locals => { :tab_count = 0, :element => query_structure['find']['or'] } %>
+      <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
     <% end %>
-    );
+    ]);
   }
   
   function filter(patient) {
-    var root = new Or(
+    var root = new Or([
     <% query_structure['find']['or'].each do |subelement| %>
-      <%= render :partial => 'blah', :locals => { :tab_count = 0, :element => query_structure['filter']['or'] } %>
+      <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
     <% end %>
-    );
+    ]);
   }
 }

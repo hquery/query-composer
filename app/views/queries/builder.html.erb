@@ -8,6 +8,9 @@
         $('#query_query_structure').val(builder.generateJson());
         return true;
       });
+      
+      var queryStructure = <%= @query.query_structure %>;
+      alert(JSON.stringify(queryStructure));
   });
 </script>
 <% end -%>

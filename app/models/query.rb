@@ -7,6 +7,9 @@ class Query < BaseQuery
   has_many :events
   has_and_belongs_to_many :endpoints
   
+  before_update :create_map_reduce_if_generated
+  before_save :create_map_reduce_if_generated
+  
   def last_execution
     executions.desc(:time).first
   end
@@ -18,6 +21,16 @@ class Query < BaseQuery
     self.save!
 
     execution.execute()
+  end
+  
+  private
+  
+  def create_map_reduce_if_generated
+    map = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
+    map.render(:template => "queries/builder/_map_function.js.erb", locals: { :query_structure => self.query_structure })
+    
+    reduce = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
+    reduce.render(:template => "queries/builder/_reduce_function.js.erb", locals: { :query_structure => self.query_structure })
   end
 
 end
