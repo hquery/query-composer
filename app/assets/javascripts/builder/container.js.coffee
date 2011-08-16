@@ -15,8 +15,14 @@ class queryBuilder.Query
 # Containers 
 ##############
 class queryBuilder.Container
+  constructor: ->
+  
   constructor: (@parent) ->
     this.children = []
+  
+  constructor: (@parent, @child) ->
+    @child.parent = this
+    this.children = [ @child ]
 
   add: (element) ->
     this.children.push(element)
