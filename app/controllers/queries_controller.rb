@@ -38,7 +38,7 @@ class QueriesController < ApplicationController
   
   # TODO: remove this once this has stabilized
   def show
-    @query.map = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare => true) + "\n" + @query.map
+    #@query.map = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare => true) + "\n" + @query.map
   end
 
   def edit

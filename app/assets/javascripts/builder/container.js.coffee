@@ -4,12 +4,16 @@ class queryBuilder.Query
   constructor: ->
     this.find = new queryBuilder.Or()
     this.filter = new queryBuilder.Or()
-    this.extract = new queryBuilder.Or()
-    this.analyze = new queryBuilder.Or()
+    this.select = []
+    this.group = []
+    this.aggregate = []
 
   toJson: -> 
-    return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'extract' : this.extract.toJson(), 'analyze' : this.analyze.toJson() }
+    return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'select' : this.select, 'group' : this.group, 'aggregate' : this.aggregate }
 
+##############
+# Containers 
+##############
 class queryBuilder.Container
   constructor: (@parent) ->
     this.children = []
@@ -81,6 +85,9 @@ class queryBuilder.CountN extends queryBuilder.Container
   test: ->
     
 
+#########
+# Rules 
+#########
 class queryBuilder.Rule
   constructor: (@category, @title, @field, @value) ->
   toJson: ->
@@ -100,3 +107,13 @@ class queryBuilder.Comparison
   test: (patient) -> 
     return  patient[this.field]() == this.value
 
+#########
+# Fileds 
+#########
+class queryBuilder.Field
+  constructor: (@title, @callstack) ->
+  toJson: ->
+    return { "title" : this.title, "callstack" : this.callstack }
+  extract: (patient) -> 
+    # TODO: this needs to be a little more intelligent - AQ
+    return patient[callstack]();

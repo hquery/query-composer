@@ -9,7 +9,6 @@ class BaseQuery
   field :reduce, type: String
   field :query_structure, type: Hash
   
-  
   validates_presence_of :title
   
 end

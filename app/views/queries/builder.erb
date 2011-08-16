@@ -28,24 +28,87 @@
   
   <%= f.hidden_field :query_structure %>
 
-  <h2>Demographics</h2>
-  <div id="builder">
+  <h2>Find</h2>
+  <div id="find">
     <table>
       <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
         <tr>
           <td>
-            <input type="checkbox" class="demographics_toggle" id="<%= demographic[:id] %>"> <%= demographic[:long_name] %>
+            <input type="checkbox" id="find_<%= demographic[:id] %>" key="<%= demographic[:id]%>"> <%= demographic[:long_name] %>
           </td>
           <td>
-            <select id="<%= demographic[:id] %>_comparison"><option>=</option><option>&lt;</option><option>&gt;</option></select>
+            <select id="find_<%= demographic[:id] %>_comparison"><option>=</option><option>&lt;</option><option>&gt;</option></select>
           </td>
           <td>
-            <input id="<%= demographic[:id] %>_value" type="text"/>
+            <input id="find_<%= demographic[:id] %>_value" type="text"/>
           </td>
         </tr>
       <% end %>
     </table>
   </div>
+
+  <h2>Filter</h2>
+  <div id="filter">
+    <table>
+      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+        <tr>
+          <td>
+            <input type="checkbox" id="filter_<%= demographic[:id] %>" key="<%= demographic[:id] %>"> <%= demographic[:long_name] %>
+          </td>
+          <td>
+            <select id="filter_<%= demographic[:id] %>_comparison"><option>=</option><option>&lt;</option><option>&gt;</option></select>
+          </td>
+          <td>
+            <input id="filter_<%= demographic[:id] %>_value" type="text"/>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <h2>Extract</h2>
+  <div id="extract">
+    <table>
+      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+        <tr>
+          <td>
+            <input type="checkbox" id="extract_<%= demographic[:id] %>" key="<%= demographic[:id] %>"> <%= demographic[:long_name] %>
+          </td>
+        </tr>
+      <% end %>
+        <tr>
+          <td> group by </td>
+          <td> <select><option>--select--</option><option>location</option>
+            <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+                <option><%= demographic[:long_name] %></option>
+            <% end %>
+            
+            </select></td>
+            <td> <select><option>--select--</option><option>location</option>
+              <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+                  <option><%= demographic[:long_name] %></option>
+              <% end %>
+
+              </select></td>
+        </tr>
+    </table>
+  </div>
+
+  <h2>Analyze</h2>
+  <div id="aggregate">
+    <table>
+        <tr>
+          <td>
+            <input key="frequency" type="checkbox"> Frequency
+            <input key="sum" type="checkbox"> Summation
+            <input key="mean" type="checkbox"> Mean
+            <input key="median" type="checkbox"> Median
+            <input key="mode" type="checkbox"> Mode
+          </td>
+        </tr>
+    </table>
+  </div>
+
 
   <h2>Endpoints</h2>
   <%= render :partial=>"endpoint" %>
