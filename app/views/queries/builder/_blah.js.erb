@@ -1,7 +1,7 @@
 <% operation = get_builder_operation(element) %>
 <% case rule %>
 <% when element['element'] %>
-  <%= parent %>.add(new queryBuilder.Range(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['start'] %>, <%= element['end'] %>))
+  <%= parent %>.add(new queryStructure.Range(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['start'] %>, <%= element['end'] %>))
 <% element.each do |subelement| %>
   <%  %>
 <% end %>
@@ -10,11 +10,11 @@
 operation = get_operation(structure)
 if (operation == 'rule')
   switch rule
-    when element['end'] != undefined then parent.add(new queryBuilder.Range(element['category'], element['title'], element['field'], element['start'], element['end']))
-    when element['comparator'] != undefined then parent.add(new queryBuilder.Comparison(element['category'], element['title'], element['field'], element['value'], element['comparator']))
-  else parent.add(new queryBuilder.Rule(element['category'], element['title'], element['field'], element['value']))
+    when element['end'] != undefined then parent.add(new queryStructure.Range(element['category'], element['title'], element['field'], element['start'], element['end']))
+    when element['comparator'] != undefined then parent.add(new queryStructure.Comparison(element['category'], element['title'], element['field'], element['value'], element['comparator']))
+  else parent.add(new queryStructure.Rule(element['category'], element['title'], element['field'], element['value']))
 else
-  childOperation = new queryBuilder[operation]
+  childOperation = new queryStructure[operation]
   parent.add(childOperation)
   add_to_filter(childOperation, childElement) for childElement in element[operation]
   

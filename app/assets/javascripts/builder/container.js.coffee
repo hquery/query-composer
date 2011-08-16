@@ -1,9 +1,9 @@
-@queryBuilder = @queryBuilder || {};
+@queryStructure = @queryStructure || {};
 
-class queryBuilder.Query
+class queryStructure.Query
   constructor: ->
-    this.find = new queryBuilder.Or()
-    this.filter = new queryBuilder.Or()
+    this.find = new queryStructure.Or()
+    this.filter = new queryStructure.Or()
     this.select = []
     this.group = []
     this.aggregate = []
@@ -14,15 +14,9 @@ class queryBuilder.Query
 ##############
 # Containers 
 ##############
-class queryBuilder.Container
-  constructor: ->
-  
+class queryStructure.Container
   constructor: (@parent) ->
     this.children = []
-  
-  constructor: (@parent, @child) ->
-    @child.parent = this
-    this.children = [ @child ]
 
   add: (element) ->
     this.children.push(element)
@@ -39,7 +33,7 @@ class queryBuilder.Container
   clear: ->
     children = []
 
-class queryBuilder.Or extends queryBuilder.Container
+class queryStructure.Or extends queryStructure.Container
   toJson: ->
     childJson = [];
     for child in this.children
@@ -53,7 +47,7 @@ class queryBuilder.Or extends queryBuilder.Container
     return false;
 
 
-class queryBuilder.And extends queryBuilder.Container
+class queryStructure.And extends queryStructure.Container
   toJson: ->
     childJson = [];
     for child in this.children
@@ -68,7 +62,7 @@ class queryBuilder.And extends queryBuilder.Container
 
 
 
-class queryBuilder.Not extends queryBuilder.Container
+class queryStructure.Not extends queryStructure.Container
   toJson: ->
     childJson = [];
     for child in this.children
@@ -78,7 +72,7 @@ class queryBuilder.Not extends queryBuilder.Container
   test: ->
   
 
-class queryBuilder.CountN extends queryBuilder.Container
+class queryStructure.CountN extends queryStructure.Container
   constructor: (@parent, @n) ->
     super
   
@@ -94,19 +88,19 @@ class queryBuilder.CountN extends queryBuilder.Container
 #########
 # Rules 
 #########
-class queryBuilder.Rule
+class queryStructure.Rule
   constructor: (@category, @title, @field, @value) ->
   toJson: ->
     return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value }
   
 
 
-class queryBuilder.Range
+class queryStructure.Range
   constructor: (@category, @title, @field, @start, @end) ->
   toJson: ->
 
 
-class queryBuilder.Comparison
+class queryStructure.Comparison
   constructor: (@category, @title, @field, @value, @comparator) ->
   toJson: ->
     return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value, "comparator" : this.comparator }
@@ -116,7 +110,7 @@ class queryBuilder.Comparison
 #########
 # Fileds 
 #########
-class queryBuilder.Field
+class queryStructure.Field
   constructor: (@title, @callstack) ->
   toJson: ->
     return { "title" : this.title, "callstack" : this.callstack }

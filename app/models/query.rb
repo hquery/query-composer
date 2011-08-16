@@ -7,6 +7,8 @@ class Query < BaseQuery
   has_many :events
   has_and_belongs_to_many :endpoints
   
+  before_save :generate_map_reduce # noop unless generated?
+  
   def last_execution
     executions.desc(:time).first
   end
@@ -20,4 +22,13 @@ class Query < BaseQuery
     execution.execute()
   end
 
+  def generate_map_reduce
+    if (self.generated?)
+      base_map = CoffeeScript.compile(Rails.root.join(QueryComposer::Application.paths['app/assets'][0], 'javascripts','builder','base_map.js.coffee').read, :bare => true)
+      self.map = base_map
+      self.reduce = 'blah'
+    end
+  end
+  
 end
+

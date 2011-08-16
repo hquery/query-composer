@@ -1,19 +1,19 @@
-builder = builder || {};
+var builderUI = builderUI || {};
 
-builder.generateJson = function() {
+builderUI.generateJson = function() {
   
-  query = new queryBuilder.Query();
-  query.find = builder.buildWhere('find');
-  query.filter = builder.buildWhere('filter');
-  query.select = builder.buildSelect();
-  query.group = builder.buildGroupBy();
-  query.aggregate = builder.buildAggregate();
+  query = new queryStructure.Query();
+  query.find = builderUI.buildWhere('find');
+  query.filter = builderUI.buildWhere('filter');
+  query.select = builderUI.buildSelect();
+  query.group = builderUI.buildGroupBy();
+  query.aggregate = builderUI.buildAggregate();
   
   return JSON.stringify(query.toJson());
 };
 
 
-builder.buildWhere = function(category) {
+builderUI.buildWhere = function(category) {
   var demographics = []
   $('#'+category+' input:checked').each(function(index) {
     var demographic = {}
@@ -24,45 +24,45 @@ builder.buildWhere = function(category) {
     demographics.push(demographic);
   });
 
-  or = new queryBuilder.Or();
-  and = or.add(new queryBuilder.And());
+  or = new queryStructure.Or();
+  and = or.add(new queryStructure.And());
 
   for (index in demographics) {
     var demographic = demographics[index];
-    and.add(new queryBuilder.Comparison('demographics', demographic.id, demographic.id, demographic.value, demographic.comparison));
+    and.add(new queryStructure.Comparison('demographics', demographic.id, demographic.id, demographic.value, demographic.comparison));
   }
   
   return or;
 };
 
-builder.buildSelect = function() {
+builderUI.buildSelect = function() {
   fields = []
   $('#extract input:checked').each(function(index) {
     key = $(this).attr('key');
-    field = new queryBuilder.Field(key, key)
+    field = new queryStructure.Field(key, key)
     
     fields.push(field);
   });
   return fields;
 };
 
-builder.buildGroupBy = function() {
+builderUI.buildGroupBy = function() {
   fields = []
   $('#extract select').each(function(index) {
     key = $(this).val();
     if (key != '--select--') {
-      field = new queryBuilder.Field(key, key)
+      field = new queryStructure.Field(key, key)
       fields.push(field);
     }
   });
   return fields;
 };
 
-builder.buildAggregate = function() {
+builderUI.buildAggregate = function() {
   fields = []
   $('#aggregate input:checked').each(function(index) {
     key = $(this).attr('key');
-    field = new queryBuilder.Field(key, key)
+    field = new queryStructure.Field(key, key)
     fields.push(field);
   });
   return fields;

@@ -1,3 +1,6 @@
+find = {}
+filter = {}
+
 map: (patient) ->
   if (find(patient))
     if (filter(patient))
@@ -10,8 +13,10 @@ map: (patient) ->
   emit('total_pop', 1);
 
 find: (patient) ->
-  return true;
+  return find.test(patient);
 
 filter: (patient) ->
-  return filter.test(patient);    
+  return filter.test(patient);
 
+emit_patient: (patient) ->
+  emit(generate_key(patient), generate_values(patient));
