@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0.rc4'
+gem 'rails', '3.1.0.rc5'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -11,7 +11,6 @@ gem 'coffee-script'
 gem 'uglifier'
 
 gem 'jquery-rails'
-gem 'sprockets', '= 2.0.0.beta.10' 
 gem 'bson_ext', :platforms => :mri
 gem "mongoid", "~> 2.0"
 gem 'mongoid_rails_migrations'
