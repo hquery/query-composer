@@ -26,16 +26,11 @@ class Query < BaseQuery
 
   def generate_map_reduce
     if (self.generated?)
-
-      map = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
-      map.render(:template => "queries/builder/_map_function.js.erb", locals: { :query_structure => self.query_structure })
+      map_template = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
+      self.map = map_template.render(:template => "queries/builder/_map_function.js.erb", locals: { :query_structure => self.query_structure })
     
-      reduce = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
-      reduce.render(:template => "queries/builder/_reduce_function.js.erb", locals: { :query_structure => self.query_structure })
-
-      base_map = CoffeeScript.compile(Rails.root.join(QueryComposer::Application.paths['app/assets'][0], 'javascripts','builder','base_map.js.coffee').read, :bare => true)
-      self.map = base_map
-      self.reduce = 'blah'
+      reduce_template = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
+      self.reduce = reduce_template.render(:template => "queries/builder/_reduce_function.js.erb", locals: { :query_structure => self.query_structure })
     end
   end
   

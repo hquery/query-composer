@@ -6,20 +6,33 @@
   # query_structure - The JSON that represents the query for which we're writing the map function.
 %>
 
-function map(patient) {
-  function find(patient) {
-    var root = new Or([
-    <% query_structure['find']['or'].each do |subelement| %>
-      <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
-    <% end %>
-    ]);
+function find(patient) {
+  var root = new Or([
+  <% query_structure['find']['or'].each do |subelement| %>
+    <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
+  <% end %>
+  ]);
+}
+
+function filter(patient) {
+  var root = new Or([
+  <% query_structure['find']['or'].each do |subelement| %>
+    <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
+  <% end %>
+  ]);
+}
+
+function map(patient) {  
+  if (find(patient)) {
+    if (filter(patient))
+      emit('target_pop', 1);
+    else {
+      emit('filtered_pop', 1);
+      emit_patient(patient);
+    }
   }
-  
-  function filter(patient) {
-    var root = new Or([
-    <% query_structure['find']['or'].each do |subelement| %>
-      <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != query_structure['find']['or'].last %>,<% end %>
-    <% end %>
-    ]);
+  else {
+    emit('unfound_pop', 1);
   }
+  emit('total_pop', 1);
 }
