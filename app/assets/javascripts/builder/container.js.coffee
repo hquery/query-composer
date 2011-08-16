@@ -1,9 +1,33 @@
-class Container
-  constructor: (@parent) ->
-    this.children = []
+this.hQuery ||= {}
+
+console.log(this)
+hQuery.createContainer= (parent, json) ->
+  _ret = null
+  _children = []
+  if(json["and"])
+    _ret =  new hQuery.AndContainer(parent,json["and"])
+    _children = json["and"]
+  else if(json["or"])
+    _ret =   new hQuery.OrContainer(parent,json["or"])
+    _children = json["or"]
+  else if(json["not"])
+    _ret =   new hQuery.NotContainer(parent,json["not"])
+    _children = json["not"]
+
+  for item in _children
+     _ret.add(hQuery.createContainer(_ret,item))
   
+  _ret
+
+
+
+class hQuery.Container
+  constructor: (@parent, json) ->
+    this.children = []
+    
     
   add: (element) ->
+    element.parent = this
     this.children.push(element)
   
     
@@ -19,57 +43,63 @@ class Container
     
   clear: ->
     children = []
-  
-
-
-class OrContainer extends Container
-  toJson: ->
+ 
+ 
+  childrenAsJson: ->
     childJson = [];
     for child in this.children
       childJson.push(child.toJson())
-    return { "or" : childJson }
+    
+ 
+  
+
+
+class hQuery.OrContainer extends hQuery.Container
+  contructor: (@parent,json) ->
+    super
+    this.conjunction = "or"
+        
+  toJson: -> 
+    return {"or" : this.childrenAsJson() }    
   
   test: ->
    
 
-class NotContainer extends Container
+class hQuery.NotContainer extends hQuery.Container
+  contructor: (@parent,json) ->
+    super
+    
   toJson: ->
-    childJson = [];
-    for child in this.children
-      childJson.push(child.toJson())
-    return { "not" : childJson }
-
+    return { "not": this.childrenAsJson() }  
+ 
   test: ->
   
 
 
-class CountNContainer extends Container
+class hQuery.CountNContainer extends hQuery.Container
   constructor: (@parent, @n) ->
     super
   
   toJson: ->
-    childJson = [];
-    for child in this.children
-      childJson.push(child.toJson())
-    return { "n" : this.n, "count_n" : childJson }
+    return { "n" : this.n, "count_n" : this.childrenAsJson() }
 
   test: ->
     
   
 
   
-class AndContainer extends Container
+class hQuery.AndContainer extends hQuery.Container
+  contructor: (@parent,json) ->
+    super
+    
   toJson: ->
-    childJson = [];
-    for child in this.children
-      childJson.push(child.toJson())
-    return { "and" : childJson }
+    return { "and" : this.childrenAsJson() }
   
   test: ->
 
 
 
-class Rule
+class hQuery.Rule
   constructor: -> (@category @title @name @value)
 
   toJson: ->
@@ -77,18 +107,15 @@ class Rule
   
 
 
-class RangeRule
+class hQuery.RangeRule
   constructor: -> (@category @title @name @start @end)
 
   toJson: ->
 
 
-class ComparisonRule
+class hQuery.ComparisonRule
   constructor: -> (@category @title @name @value @comparator)
 
   toJson: ->
 
 
-container = new OrContainer(null)
-container.add(new AndContainer(null))
-container.add(new OrContainer(null))

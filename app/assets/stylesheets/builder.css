@@ -1,0 +1,20 @@
+.container {
+  display: table;
+  min-height: 20px;
+  min-width: 30px;
+  border-style: dotted;
+}
+
+.container_row {
+  display:table-row;
+  min-height: 20px;
+}
+
+.container_cell {
+  display: table-cell;
+}
+
+.bottom_hotzone {
+  height: 20px;
+}
+
