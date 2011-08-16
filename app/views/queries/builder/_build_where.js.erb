@@ -1,0 +1,17 @@
+<% operation = get_builder_operation(element) %>
+<% if operation == 'rule' %>
+  <% case rule %>
+  <% when element.include? 'end' %>
+    new queryBuilder.Range(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['start'] %>, <%= element['end'] %>)
+  <% when element['comparator'] %>
+    new queryBuilder.Comparison(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['value'] %>, <%= element['comparison'] %>)
+  <% else %>
+    new queryBuilder.Rule(<%= element['category'] %>, <%= element['title'] %>, <%= element['field'] %>, <%= element['value'] %>)
+  <% end %>
+<% else %>
+  new <%= operation %>([
+  <% element[operation].each do |subelement| %>
+    <%= render :partial => 'build_where', :locals => { :tab_count = 0, :element => subelement } %><% if subelement != element[operation].last %>,<% end %>
+  <% end %>
+  ])
+<% end %>
