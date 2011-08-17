@@ -25,6 +25,7 @@ QueryComposer::Application.routes.draw do
 	    get 'execution_history'
 	    get 'cancel'
 	    get 'cancel_execution'
+	    get 'builder'
     end
   end
   

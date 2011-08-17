@@ -29,9 +29,23 @@ class QueriesController < ApplicationController
 
   def before_create
     @query.user = current_user
+    convert_to_hash(:query_structure)
+  end
+  
+  def before_update
+    convert_to_hash(:query_structure)
+  end
+  
+  # TODO: remove this once this has stabilized
+  def show
+    #@query.map = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare => true) + "\n" + @query.map
   end
 
   def edit
+    @endpoints = Endpoint.all
+  end
+
+  def builder
     @endpoints = Endpoint.all
   end
 
@@ -79,5 +93,9 @@ class QueriesController < ApplicationController
   end
 
   private
+
+  def convert_to_hash(field)
+    params[:query][field] = JSON.parse(params[:query][field]) if params[:query][field]
+  end
 
 end

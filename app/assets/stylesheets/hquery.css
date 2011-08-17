@@ -200,7 +200,8 @@ div#workspace {
         margin: 138px 0 0 50px;
         height: relative;
         min-width: 500px;
-        max-width: 80%;
+        max-width:1000%;
+        /*max-width: 80%;*/
         text-decoration:none;
          font-style: normal;   
 }
@@ -369,5 +370,4 @@ div#workspace_bottom_border_lower {
       height: 0px;
       width: 100%;
 }
-
 

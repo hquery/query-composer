@@ -8,269 +8,106 @@
   
   
   <div id="icons">
-  	<div id="search_box">
-  		<input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
-  	</div>
+    <div id="search_box">
+      <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+    </div>
 
-  	<div id="variables">
-  		<div id="variables_border_color"></div>
-  		<div id="variables_border_edge"></div>
-  		<h1>variables</h1>
-  			<ul>
-  				<li>
-  				  <%= image_tag("icon_demographics.png",{class:"demo", id:"icon_demo"}) %> demographics
-  				</li>
-  				<li>
-  				  <%= image_tag("icon_history.png") %>health history
-  				</li>
-  				<li>
-  				 <%= image_tag("icon_conditions.png") %>conditions
-  				</li>
-  				<li>
-  				 <%= image_tag("icon_observations.png") %>observations
-  				</li>
-  				<li>
-  				 <%= image_tag("icon_treatments.png") %>treatments
-  				</li>
-  			</ul>
-  	</div>
+    <div id="variables">
+      <div id="variables_border_color"></div>
+      <div id="variables_border_edge"></div>
+      <h1>variables</h1>
+        <ul>
+          <li>
+            <%= image_tag("icon_demographics.png",{class:"demo", id:"icon_demo"}) %> demographics
+          </li>
+          <li>
+            <%= image_tag("icon_history.png") %>health history
+          </li>
+          <li>
+           <%= image_tag("icon_conditions.png") %>conditions
+          </li>
+          <li>
+           <%= image_tag("icon_observations.png") %>observations
+          </li>
+          <li>
+           <%= image_tag("icon_treatments.png") %>treatments
+          </li>
+        </ul>
+    </div>
 
-  	<div id="display">
-  		<div id="display_border_color"></div>
-  		<div id="display_border_edge"></div>
-  		<h1>display</h1>
-  			<ul>
-  				<li>
-  				   <%= image_tag("icon_freq.png") %>frequency
-  				</li>
-  				<li>
-  				 <%= image_tag("icon_location.png") %>location
-  				</li>
-  				<li>
-  				 <%= image_tag("icon_time.png") %>time
-  				</li>
-  			</ul>
-  	</div>
+    <div id="display">
+      <div id="display_border_color"></div>
+      <div id="display_border_edge"></div>
+      <h1>display</h1>
+        <ul>
+          <li>
+             <%= image_tag("icon_freq.png") %>frequency
+          </li>
+          <li>
+           <%= image_tag("icon_location.png") %>location
+          </li>
+          <li>
+           <%= image_tag("icon_time.png") %>time
+          </li>
+        </ul>
+    </div>
   </div>
 
 
   <div id="workspace">
-  	<div id="workspace_top_border">
-  		<div id="workspace_top_border_lower">
-  		</div>
-  	</div>
+    <div id="workspace_top_border">
+      <div id="workspace_top_border_lower">
+      </div>
+    </div>
 
-  	<div id="find"> 	
-  				<h1>find</h1>
-  					<canvas></canvas>
-  					<canvas></canvas>
-  				<div id="find_bottom_border_lower">
-  					<div id="find_bottom_border">
-  					</div>
-  				</div>
-  	</div>
+    <div id="find">   
+          <h1>find</h1>
+          <div id="find_bottom_border_lower">
+            <div id="find_bottom_border">
+            </div>
+          </div>
+    </div>
 
-  	<div id="filter">
-  				<h1>filter</h1>
-  				  <!-- start demo crap -->
-  					 <div class="container" >
+    <div id="filter">
+          <h1>filter</h1>
+ 
+          <div id="filter_bottom_border_lower">
+            <div id="filter_bottom_border">
+            </div>
+          </div>
+    </div>
 
-                <div class="row">
+    <div id="extract">
+          <h1>extract</h1>
+            
+          <div id="extract_bottom_border_lower">
+            <div id="extract_bottom_border">
+            </div>
+          </div>
+    </div>
 
-                  <div class="item">
-                     <img src="/assets/icon_observations.png" >
-                  </div>
+    <div id="analyze">
+        <h1>analyze</h1>
+        <div id="workspace_bottom_border_lower">
+          <div id="workspace_bottom_border">
+          </div>
+        </div> 
 
-                  <div class="item">
-                     <img src="/assets/icon_observations.png" >
-                  </div>
-
-                  <div class="item">
-                     <img src="/assets/icon_observations.png" >
-                  </div>
-
-                  <div class="item">
-                     <div class="container">
-                        <div class="row">
-                             <div class="item">
-                                 <img src="/assets/icon_observations.png" >
-                              </div>
-                          </div>
-
-                          <div class="row">
-                               <div class="item">
-                                   <img src="/assets/icon_observations.png" >
-                                </div>
-                            </div>
-
-
-                          <div class="row">
-
-                                <div class="item">
-                                   <div class="container">
-                                        <div class="row">
-
-                                          <div class="item">
-                                             <img src="/assets/icon_observations.png" >
-                                          </div>
-
-                                          <div class="item">
-                                             <img src="/assets/icon_observations.png" >
-                                          </div>
-
-                                          <div class="item">
-                                             <img src="/assets/icon_observations.png" >
-                                          </div>
-                                        </div> 
-                                    </div>  
-                                </div>
-
-                          </div> 
-                      </div>  
-                  </div>
-
-                </div>
-
-                <div class="row">
-                  <div class="item">
-                     <img src="/assets/icon_observations.png" >
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="item">
-                     <img src="/assets/icon_observations.png" >
-                  </div>
-                </div>
-
-              </div>
-            <!--  end of demo crap -->
-  				<div id="filter_bottom_border_lower">
-  					<div id="filter_bottom_border">
-  					</div>
-  				</div>
-  	</div>
-
-  	<div id="extract">
-  				<h1>extract</h1>
-  					
-  				<div id="extract_bottom_border_lower">
-  					<div id="extract_bottom_border">
-  					</div>
-  				</div>
-  	</div>
-
-  	<div id="analyze">
-  			<h1>analyze</h1>
-  				<canvas></canvas>
-  				<canvas></canvas>
-  			<div id="workspace_bottom_border_lower">
-  				<div id="workspace_bottom_border">
-  				</div>
-  			</div> 
-
-  	</div>
-  </div>
+    </div>
+</div>
 
   <div id="otherside">
-  	<div id="stats">
-  		<h1></h1>
-  	</div>
+    <div id="stats">
+      <h1></h1>
+    </div>
 
-  	<div id="trash">
-  	</div>
+    <div id="trash">
+    </div>
 
-  	<div id="connectors">
-  		<h1></h1>
-  	</div>
-  </div>
+    <div id="connectors">
+      <h1></h1>
+    </div>
+</div>
 
-<script>
-
-this.hQuery = this.hQuery ||  {}
-var icons = {
-  "condition" : "<%= image_path("icon_conditions.png") %>" ,
-  "treatment" : "<%= image_path("icon_treatments.png") %>",
-  "demographics" : "<%= image_path("icon_demographics.png") %>",
-  "history" : "<%= image_path("icon_history.png") %>", 
-  "observation" : "<%= image_path("icon_observations.png") %>", 
-}
-
-hQuery.filterGroup = function(elem, args){
-  
-  var that = this;
-  var $element = $(elem);
-  var qStructure = args.queryStructure;
-  var data = args.data;
-  var conjunction = data['and'] ? 'and' : 'or';
-  var items = data[conjunction];
-  var parent = args.parentGroup;
-  var id = data['id'];
-  this.parent = args.parent;
-  var table = $("<div>", {'class' : 'filterGroup'});
-  $element.append(table);
- 
-  var row = null;
-  if(conjunction == "or"){
-    row =$('<div>',{'class':'row'});
-    table.append(row);
-  }
-  $.each(items,function(i,node){
-    addItem(node);
-  });
-  
-  function addItem(item){
-    var _row = row;
-    if(conjunction == "and"){
-      _row = $('<div>',{'class':'row'})
-      table.append(_row);
-    }
-    
-    var conj = item['and'] || item["or"];
-    if(conj && item["name"] == null){
-      var _itemCell = $('<div>',{'class':'item'})
-      _row.append(_itemCell);
-       new hQuery.filterGroup(_itemCell,{'data':item, 'parent':this});
-    }else{
-      var icon = item["name"] || item["category"];
-      
-        var _itemCell = $('<div>',{'class':'item'})
-        _row.append(_itemCell);
-        var img = $("<img>", {'src':icons[icon]});
-        _itemCell.append(img);
-    }
-  }
-
-  function remove(){
-    this.qStructure.remove(this.id);
-    $element.remove(table);
-  }
-  
-  
-  function isGroup(x){
-    
-  }
-}
-
-hQuery.filterItem = function(elem,data){
-  
-  var that = this;
-  var $element = $(elem);
-  this.parent = args.parent;
-  this.item = args.item;
-  
-  
-  
-  function remove(){
-    
-  }
-  
-  
-  
-  
-  
-} 
-
-</script>
 
 

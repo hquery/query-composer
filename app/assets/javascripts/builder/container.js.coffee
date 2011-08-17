@@ -1,121 +1,146 @@
-this.hQuery ||= {}
+@queryBuilder = @queryBuilder || {};
 
-console.log(this)
-hQuery.createContainer= (parent, json) ->
+queryBuilder.createContainer= (parent, json) ->
   _ret = null
   _children = []
   if(json["and"])
-    _ret =  new hQuery.AndContainer(parent,json["and"])
+    _ret =  new queryBuilder.And(parent,json["and"])
     _children = json["and"]
   else if(json["or"])
-    _ret =   new hQuery.OrContainer(parent,json["or"])
+    _ret =   new queryBuilder.Or(parent,json["or"])
     _children = json["or"]
   else if(json["not"])
-    _ret =   new hQuery.NotContainer(parent,json["not"])
+    _ret =   new queryBuilder.Not(parent,json["not"])
     _children = json["not"]
 
   for item in _children
-     _ret.add(hQuery.createContainer(_ret,item))
+     _ret.add(queryBuilder.createContainer(_ret,item))
   
   _ret
 
 
+class queryBuilder.Query
+  constructor: ->
+    this.find = new queryBuilder.And()
+    this.filter = new queryBuilder.And()
+    this.select = []
+    this.group = []
+    this.aggregate = []
 
-class hQuery.Container
-  constructor: (@parent, json) ->
-    this.children = []
-    
-    
-  add: (element) ->
-    element.parent = this
-    this.children.push(element)
+  toJson: -> 
+    return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'select' : this.select, 'group' : this.group, 'aggregate' : this.aggregate }
+
+##############
+# Containers 
+##############
+class queryBuilder.Container
   
-    
+  constructor: (@parent) ->
+    this.children = []
+  
+
+  add: (element) ->
+    this.children.push(element)
+    return element;
+
   remove: ->
     this.parent.removeChild(this)
-  
-    
+
   removeChild: (victim) ->
     for i in children
       if children[i] == victim
         children.splice(i, 1)
-  
-    
+        
+  replaceChild: (child, newChild) ->
+    for i in children
+      if children[i] == child
+        children[i] = newChild
+        newChild.parent = this
+        
   clear: ->
     children = []
- 
- 
-  childrenAsJson: ->
+
+class queryBuilder.Or extends queryBuilder.Container
+  toJson: ->
     childJson = [];
     for child in this.children
       childJson.push(child.toJson())
-    
- 
+    return { "or" : childJson }
   
+  test: (patient) -> 
+    for child in this.children
+      if (child.test(patient)) 
+        return true;
+    return false;
 
 
-class hQuery.OrContainer extends hQuery.Container
-  contructor: (@parent,json) ->
-    super
-    this.conjunction = "or"
-        
-  toJson: -> 
-    return {"or" : this.childrenAsJson() }    
-  
-  test: ->
-   
-
-class hQuery.NotContainer extends hQuery.Container
-  contructor: (@parent,json) ->
-    super
-    
+class queryBuilder.And extends queryBuilder.Container
   toJson: ->
-    return { "not": this.childrenAsJson() }  
- 
+    childJson = [];
+    for child in this.children
+      childJson.push(child.toJson())
+    return { "and" : childJson }
+
+  test: ->
+    for child in this.children
+      if (!child.test(patient)) 
+        return false;
+    return true;
+
+
+
+class queryBuilder.Not extends queryBuilder.Container
+  toJson: ->
+    childJson = [];
+    for child in this.children
+      childJson.push(child.toJson())
+    return { "not" : childJson }
+
   test: ->
   
 
-
-class hQuery.CountNContainer extends hQuery.Container
+class queryBuilder.CountN extends queryBuilder.Container
   constructor: (@parent, @n) ->
     super
   
   toJson: ->
-    return { "n" : this.n, "count_n" : this.childrenAsJson() }
+    childJson = [];
+    for child in this.children
+      childJson.push(child.toJson())
+    return { "n" : this.n, "count_n" : childJson }
 
   test: ->
     
-  
 
-  
-class hQuery.AndContainer extends hQuery.Container
-  contructor: (@parent,json) ->
-    super
-    
+#########
+# Rules 
+#########
+class queryBuilder.Rule
+  constructor: (@category, @title, @field, @value) ->
   toJson: ->
-    return { "and" : this.childrenAsJson() }
-  
-  test: ->
-
-
-
-class hQuery.Rule
-  constructor: -> (@category @title @name @value)
-
-  toJson: ->
-    return { "category" : this.category, "title" : this.title, "name" : this.name, "value" : this.value }
+    return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value }
   
 
 
-class hQuery.RangeRule
-  constructor: -> (@category @title @name @start @end)
-
+class queryBuilder.Range
+  constructor: (@category, @title, @field, @start, @end) ->
   toJson: ->
 
 
-class hQuery.ComparisonRule
-  constructor: -> (@category @title @name @value @comparator)
-
+class queryBuilder.Comparison
+  constructor: (@category, @title, @field, @value, @comparator) ->
   toJson: ->
+    return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value, "comparator" : this.comparator }
+  test: (patient) -> 
+    return  patient[this.field]() == this.value
 
-
+#########
+# Fileds 
+#########
+class queryBuilder.Field
+  constructor: (@title, @callstack) ->
+  toJson: ->
+    return { "title" : this.title, "callstack" : this.callstack }
+  extract: (patient) -> 
+    # TODO: this needs to be a little more intelligent - AQ
+    return patient[callstack]();

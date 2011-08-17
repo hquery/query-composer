@@ -16,7 +16,6 @@ $.widget("ui.ContainerUI",{
 
   },
   _init:function(){
-    debugger;
     this.container = this.options.container;
     this.items = [];
     this.parent = this.options.parent;
@@ -33,6 +32,7 @@ $.widget("ui.ContainerUI",{
      return $("<div>")
   }   ,
 
+   
   childDrop :function(){
        alert("child Dropped");
      }
@@ -54,6 +54,7 @@ $.widget("ui.AndContainerUI",$.ui.ContainerUI, {
              div.append(self._createItemUI(i,item));
            };
       $.each(this.container.children,f);
+      div.droppable({drop:bind(this.drop,this),over:bind(this.over,this), out:bind(this.out,this), greedy:true});
      return div;
   },
   
@@ -65,7 +66,7 @@ $.widget("ui.AndContainerUI",$.ui.ContainerUI, {
       if(item && item.type != null){
          $(contentCell).ItemUI({parent: this, item:item  });
       }else{
-         if(item instanceof hQuery.AndContainer){
+         if(item instanceof queryBuilder.And){
            $(contentCell).AndContainerUI({parent:this, container:item});
          }else{
            $(contentCell).OrContainerUI({parent:this, container:item});
@@ -73,34 +74,47 @@ $.widget("ui.AndContainerUI",$.ui.ContainerUI, {
       }  
       return row;
    },
-   childDrop :function(element){
-       alert("child Dropped");
-     },  
-   
-    childOver: function(widget, direction){
-      if(direction == "bottom"){
-        widget.element.parents(".container_row:first").after(this.newItemDrop());
-        this.newItemDrop().show(.1);
-      }else{
-        
+   drop: function(){
+      alert("dropped");
+    },
+   over: function(){
+     if(this.parent){
+      if(this.dropTarget == null){
+         var cell = $("<div>", {"class":"container_cell"}); // table cell for or row
+         var table = $("<div>", {"class":"container"}); // style row for the cell item
+         cell.append(table);
+         var styleRow = $("<div>", {"class":"container_row"})
+         var contentCell = $("<div>", {"class":"container_row"}); // content row for the item -- do I need to add a cell to the row to wrap things in?
+
+         table.append(styleRow);
+         table.append(contentCell);
+         contentCell.append("Drop Zone")
+         this.dropTarget = cell;
       }
-    },
-
-    childOut :function(widget, direction){
-      this.newItemDrop().hide(.1);
-    },
-
-    newItemDrop:function(){
-      if(this.newDrop == null){
-        var row = $("<div>", {"class":"container_row"});  // row in the table 
-        var contentCell = $("<div>", {"class":"container_cell"})// second cell in the row ,  content cell
-        row.append(contentCell);
-
-        contentCell.append("DROP HERE");
-        this.newDrop = row;
+      this.element.parents(".container_cell:first").after(this.dropTarget);
+      this.element.css("background-color","red");
      }
-     return this.newDrop;
+   },
+   out: function(){
+     if(this.dropTarget){
+       this.dropTarget.remove();
+       this.element.css("background-color","");
+     }
+   },
+     
+   childDropped: function(widget,direction, data){
+     if(direction == "bottom"){
+       var item = this._createItemUI(-1,data);
+       widget.element.parents(".container_row:first").after(item);
+     }else{
+       var or = new queryBuilder.Or();
+       or.add(widget.item);
+       or.add(data);
+       var ui = this._createItemUI(-1,or);
+       widget.element.replaceWith(ui);
+     }
     }
+
 }
 );
 
@@ -111,7 +125,6 @@ $.widget("ui.OrContainerUI",$.ui.ContainerUI, {
 
   },
  
-  
   _createContainer:function(){
        var div = $("<div>", {"class":"container or"});
        var row = $("<div>", {"class":"container_row"}); 
@@ -121,6 +134,10 @@ $.widget("ui.OrContainerUI",$.ui.ContainerUI, {
                 row.append(self._createItemUI(i,item));
        };
        $.each(this.container.children,f);
+
+       row.droppable({drop:bind(this.drop,this),over:bind(this.over,this), out:bind(this.out,this), greedy:true});
+       this.div = div;
+       this.contentRow = row;
        return div;
    },
 
@@ -131,14 +148,14 @@ $.widget("ui.OrContainerUI",$.ui.ContainerUI, {
        cell.append(table);
        var styleRow = $("<div>", {"class":"container_row"})
        var contentCell = $("<div>", {"class":"container_row"}); // content row for the item -- do I need to add a cell to the row to wrap things in?
-
+       
        table.append(styleRow);
        table.append(contentCell);
-       
+      
        if(item && item.type != null){
           $(contentCell).ItemUI({parent: this, item:item  });
        }else{
-          if(item instanceof hQuery.AndContainer){
+          if(item instanceof queryBuilder.And){
             $(contentCell).AndContainerUI({parent:this, container:item});
           }else{
             $(contentCell).OrContainerUI({parent:this, container:item});
@@ -147,53 +164,40 @@ $.widget("ui.OrContainerUI",$.ui.ContainerUI, {
        return cell;
    },
 
-   acceptDrop: function(){
-
+   drop: function(){
+     alert("dropped");
+   },
+   over: function(){
+     if(this.parent){
+      if(this.dropTarget == null){
+        var row = $("<div>", {"class":"container_row"}); 
+        var cell = $("<div>DROPPPPPPP MEEEEE</div>");
+        row.append(cell);
+        this.dropTarget = row;
+      }
+      this.contentRow.after(this.dropTarget);
+      this.element.css("background-color","red");
+     }
+   },
+   out: function(){
+     if(this.dropTarget){
+       this.dropTarget.remove();
+        this.element.css("background-color","");
+     }
    },
    
    childDropped: function(widget,direction, data){
-     
-   },
-   
-   childOver: function(widget,direction){
-     if(direction == "right"){
-       widget.element.parents(".container_cell:first").after(this.newItemDrop());
-       this.newItemDrop().show(.1);
-     }else{
-       
-     }
-   },
-   
-   childOut :function(widget,direction){
-     if(direction == "bottom"){
-       this.currentNewDrop.replaceWith(widget.element);
-     }
-     this.currentDropDirection = null;
-     this.currentNewDrop.hide(.1);
-     this.currentNewDrop = null;
-   },
-   
-   newItemDrop:function(direction){
-     var newDrop = null;
-     if(direction = "right"){
-       if(this.newDropRight == null){
-        var cell = $("<div>", {"class":"container_cell"}); // table cell for or row
-        var table = $("<div>", {"class":"container"}); // style row for the cell item
-        cell.append(table);
-        var styleRow = $("<div>", {"class":"container_row"})
-        var contentCell = $("<div>", {"class":"container_row"});
-        table.append(styleRow);
-        table.append(contentCell);
-        contentCell.append("DROP HERE");
-        newDrop = cell;
+      if(direction == "right"){
+        var item = this._createItemUI(-1,data);
+        widget.element.parents(".container_cell:first").after(item);
+      }else{
+        var and = new queryBuilder.And();
+        and.add(widget.item);
+        and.add(data);
+        var ui = this._createItemUI(-1,and);
+        widget.element.replaceWith(ui);
       }
-    }
-    else{
-      
-    }
-    this.currentNewDrop = newDrop;
-    return this.currentNewDrop;
-   }
+     }
  }
   
 );
@@ -221,7 +225,8 @@ $.widget("ui.ItemUI",{
                                out:this._outRight,
                                accept:this._acceptRight,
                                hover:this._hoverRight,
-                               over:this._overRight});
+                               over:this._overRight,
+                               greedy:true});
                                
      this.bottomRow = $("<div>",{"class": "container_row bottom_hotzone"});
     
@@ -231,14 +236,15 @@ $.widget("ui.ItemUI",{
                                  out:this._outBottom,
                                  accept:this._acceptBottom,
                                  hover:this._hoverBottom,
-                                 over:this._overBottom});
+                                 over:this._overBottom,
+                                  greedy:true});
     
     this.bottomRow.data("widget",this);                             
     this.div.append(this.contentRow);
     this.div.append(this.bottomRow);
     
-    this.imageCell = $("<div>",{"class":"container_cell"});
-    this.textCell = $("<div>",{"class":"container_cell"});
+    this.imageCell = $("<div>",{"class":"container_cell builder_image"});
+    this.textCell = $("<div>",{"class":"container_cell description "});
     
     // add the appropriate image/component
     this.imageCell.append($("<img>", {"src":"/assets/icon_observations.png"}));
@@ -271,15 +277,15 @@ $.widget("ui.ItemUI",{
    // window.console.log("accept right");
     var widget = $(this).data("widget");
     return true;
-  }
+  },
   _outRight: function(event, ui){
-       var widget = $(this).data("widget");
-       widget.parent.childOut(widget, "right");
+      var widget = $(this).data("widget");
+      widget.textCell.next().remove();
      $(this).css("background-color","")
   },
   _outBottom: function(event, ui){
      var widget = $(this).data("widget");
-     widget.parent.childOut(widget, "bottom");
+     widget.bottomRow.next().remove();
      $(this).css("background-color","")
   },
   _activateRight: function(event, ui){
@@ -295,19 +301,34 @@ $.widget("ui.ItemUI",{
     window.console.log("deactivate bottom");
   },
   _dropRight: function(event, ui){
-      window.console.log("drop right");
+        var widget = $(this).data("widget");
+         widget.textCell.next().remove();
+        $(this).css("background-color","")
+        widget.parent.childDropped(widget,"right",{"type":"item", "description":"dropped"});
   },
   _dropBottom: function(event, ui){
-    window.console.log("drop bottom");
+    var widget = $(this).data("widget");
+    widget.bottomRow.next().remove();
+    $(this).css("background-color","")
+    widget.parent.childDropped(widget,"bottom",{"type":"item", "description":"dropped"});
   },
   _overRight: function(event, ui){
     var widget = $(this).data("widget");
-    widget.parent.childOver(widget, "right");
-      $(this).css("background-color","red");
+    //widget.parent.childOver(widget, "right");
+    var cell = $("<div>", {"class":"container_cell"}); // table cell for or row
+    cell.append("DROP HERE");
+    widget.textCell.after(cell);
+    $(this).css("background-color","red");
   },
   _overBottom: function(event, ui){
     var widget = $(this).data("widget");
-    widget.parent.childOver(widget, "bottom");
+    var row = $("<div>", {"class":"container_row"});  // row in the table 
+    var contentCell = $("<div>", {"class":"container_cell"})// second cell in the row ,  content cell
+    row.append(contentCell);
+    contentCell.append("DROP HERE");
+    
+    widget.div.append(row)
+   // widget.parent.childOver(widget, "bottom");
     $(this).css("background-color","red");
   }  
 });
