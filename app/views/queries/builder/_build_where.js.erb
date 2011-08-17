@@ -9,19 +9,21 @@ elsif element.include? 'count_n'
 else
   operation = 'rule'
 end %>
-
 <% if operation == 'rule'
-  if element.include? 'end'
-    tab_count.times { %>  <% } %> new queryStructure.Range("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['start'] %>", "<%= element['end'] %>")
-  <% elsif element['comparator']
-    tab_count.times { %>  <% } %> new queryStructure.Comparison("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>", "<%= element['comparator'] %>")
-  <% else
-    tab_count.times { %>  <% } %> new queryStructure.Rule("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>")
+  if element.include? 'end' %>
+    new queryStructure.Range("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['start'] %>", "<%= element['end'] %>")<%= comma_if_last %>
+  <% elsif element['comparator'] %>
+    new queryStructure.Comparison("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>", "<%= element['comparator'] %>")<%= comma_if_last %>
+  <% else %>
+    new queryStructure.Rule("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>")<%= comma_if_last %>
   <% end
-else
-  tab_count.times { %>  <% } %> new queryStructure.<%= operation %>([
-  <% element[operation.downcase].each do |subelement| %>
-    <%= render :partial => '/queries/builder/build_where', :locals => { :tab_count => tab_count + 1, :element => subelement } %><% if subelement != element[operation.downcase].last %>,<% end %>
-  <% end
-  tab_count.times { %>  <% } %>])
+else %>
+  new queryStructure.<%= operation %>([
+  <% element[operation.downcase].each do |subelement|
+    if subelement != element[operation.downcase].last
+      cil = ','
+    end %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :element => subelement, :comma_if_last => cil } %>
+  <% end %>
+  ])<%= comma_if_last %>
 <% end %>

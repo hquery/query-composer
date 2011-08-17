@@ -8,24 +8,33 @@
 
 function find(patient) {
   var root = new queryStructure.Or([
-  <% query_structure['find']['and'].each do |subelement| %>
-    <%= render :partial => '/queries/builder/build_where', :locals => { :tab_count => 0, :element => subelement } %><% if subelement != query_structure['find']['and'].last %>,<% end %>
+  <% query_structure['find']['and'].each do |subelement|
+    if subelement != query_structure['find']['and'].last
+      comma_if_last = ','
+    end %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :element => subelement, :comma_if_last => comma_if_last } %>
   <% end %>
   ]);
+  return root.test(patient);
 }
 
 function filter(patient) {
   var root = new queryStructure.Or([
-  <% query_structure['filter']['and'].each do |subelement| %>
-    <%= render :partial => '/queries/builder/build_where', :locals => { :tab_count => 0, :element => subelement } %><% if subelement != query_structure['find']['and'].last %>,<% end %>
+  <% query_structure['filter']['and'].each do |subelement|
+    if subelement != query_structure['filter']['and'].last
+      comma_if_last = ','
+    end %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :element => subelement, :comma_if_last => comma_if_last } %>
   <% end %>
   ]);
+  return root.test(patient);
 }
 
 function map(patient) {  
   if (find(patient)) {
-    if (filter(patient))
+    if (filter(patient)) {
       emit('target_pop', 1);
+    }
     else {
       emit('filtered_pop', 1);
       emit_patient(patient);

@@ -57,7 +57,7 @@ class queryStructure.And extends queryStructure.Container
       childJson.push(child.toJson())
     return { "and" : childJson }
 
-  test: ->
+  test: (patient) ->
     for child in this.children
       if (!child.test(patient)) 
         return false;
@@ -72,7 +72,11 @@ class queryStructure.Not extends queryStructure.Container
       childJson.push(child.toJson())
     return { "not" : childJson }
 
-  test: ->
+    test: (patient) -> 
+      for child in this.children
+        if (child.test(patient)) 
+          return true;
+      return false;
   
 
 class queryStructure.CountN extends queryStructure.Container
@@ -85,7 +89,11 @@ class queryStructure.CountN extends queryStructure.Container
       childJson.push(child.toJson())
     return { "n" : this.n, "count_n" : childJson }
 
-  test: ->
+    test: (patient) -> 
+      for child in this.children
+        if (child.test(patient)) 
+          return true;
+      return false;
     
 
 #########
