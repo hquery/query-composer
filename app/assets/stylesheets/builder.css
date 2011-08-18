@@ -3,6 +3,7 @@
   min-height: 20px;
   min-width: 30px;
   border-style: dotted;
+  border-width:1px;
 }
 
 .container_row {
@@ -22,6 +23,7 @@
 
 div.item {
   min-width:60px;
+  width: 100px;
 }
 
 div.item .description {
@@ -32,4 +34,12 @@ div.item .description {
 div.item .builder_image {
   width: 40px;
   height: 40px;
+}
+
+.and {
+  border-color:blue;
+}
+
+.or {
+  border-color:green;
 }

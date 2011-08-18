@@ -4,7 +4,15 @@
   <button onclick="fakeIt(); generateQuery();">Generate Query</button>
   
 
-  
+  <script>
+  $(document).ready(function(){
+    $("#icon_demo").draggable({helper:"clone",opacity:".5", refreshPostions:true , start:function(){$(this).data("type","demographics")}});
+    $("#icon_history").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("type","history")}});
+    $("#icon_conditions").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("type","conditions")}});
+    $("#icon_observations").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("type","observations")}});
+    $("#icon_treatments").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("type","treatments")}});
+  });
+  </script>
   
   
   <div id="icons">
@@ -21,16 +29,16 @@
             <%= image_tag("icon_demographics.png",{class:"demo", id:"icon_demo"}) %> demographics
           </li>
           <li>
-            <%= image_tag("icon_history.png") %>health history
+            <%= image_tag("icon_history.png",{class:"demo", id:"icon_history"}) %>health history
           </li>
           <li>
-           <%= image_tag("icon_conditions.png") %>conditions
+           <%= image_tag("icon_conditions.png",{class:"demo", id:"icon_conditions"}) %>conditions
           </li>
           <li>
-           <%= image_tag("icon_observations.png") %>observations
+           <%= image_tag("icon_observations.png",{class:"demo", id:"icon_observations"}) %>observations
           </li>
           <li>
-           <%= image_tag("icon_treatments.png") %>treatments
+           <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
           </li>
         </ul>
     </div>
