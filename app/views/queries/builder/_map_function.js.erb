@@ -7,7 +7,7 @@
 %>
 
 function find(patient) {
-  var root = new queryStructure.Or([
+  var root = new queryStructure.Or(null, [
   <% query_structure['find']['and'].each do |subelement|
     if subelement != query_structure['find']['and'].last
       comma_if_last = ','
@@ -19,7 +19,7 @@ function find(patient) {
 }
 
 function filter(patient) {
-  var root = new queryStructure.Or([
+  var root = new queryStructure.Or(null, [
   <% query_structure['filter']['and'].each do |subelement|
     if subelement != query_structure['filter']['and'].last
       comma_if_last = ','

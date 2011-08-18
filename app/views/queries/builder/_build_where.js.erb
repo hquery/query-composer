@@ -18,7 +18,7 @@ end %>
     new queryStructure.Rule("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>")<%= comma_if_last %>
   <% end
 else %>
-  new queryStructure.<%= operation %>([
+  new queryStructure.<%= operation %>(null, [
   <% element[operation.downcase].each do |subelement|
     if subelement != element[operation.downcase].last
       cil = ','
