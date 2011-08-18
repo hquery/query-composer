@@ -44,6 +44,8 @@ class queryStructure.Or extends queryStructure.Container
     return { "or" : childJson }
   
   test: (patient) -> 
+    if (this.children.length == 0)
+      return true;
     for child in this.children
       if (child.test(patient)) 
         return true;

@@ -22,6 +22,14 @@ class Query < BaseQuery
     execution.execute()
   end
   
+  def full_map
+    if (self.generated?)
+      Query.get_builder_js + self.map
+    else
+      PollJob.get_denamespace_js(self.user) + self.map
+    end
+  end
+  
   private
 
   def generate_map_reduce
@@ -60,4 +68,11 @@ class Query < BaseQuery
     
     return pretty_function
   end
+  
+  # get javascript for builder queries
+  def self.get_builder_js
+    container = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare=>true)
+    "var queryStructure = queryStructure || {}; \n" + container
+  end
+  
 end
