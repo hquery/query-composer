@@ -37,7 +37,6 @@ builderUI.repopulateUiZone = function(container, category) {
       for (var c in container.children) {
         var comparison = container.children[c];
         $('#' + category + '_' + comparison.title).prop('checked', true);
-        alert(JSON.stringify(comparison.toJson()))
         $('#' + category + '_' + comparison.title + '_comparison').val(comparison.comparator);
         $('#' + category + '_' + comparison.title + '_value').val(comparison.value);
       }
