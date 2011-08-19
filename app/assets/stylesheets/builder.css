@@ -1,14 +1,11 @@
 .container {
   display: table;
-  min-height: 20px;
-  min-width: 30px;
-  border-style: dotted;
-  border-width:1px;
+
 }
 
 .container_row {
   display:table-row;
-  min-height: 20px;
+
 }
 
 .container_cell {
@@ -16,30 +13,164 @@
 }
 
 .bottom_hotzone {
-  height: 20px;
+  height: 5px;
 }
 
+.drop_target {
+  background-color: #555555;
+}
 
+img {
+  padding: 1px;
+}
 
 div.item {
-  min-width:60px;
-  width: 100px;
+
+  min-width:100px;
+  line-height: 1.5px;
 }
 
-div.item .description {
-  width: 60px;
-  height: 40px;
+div.item > div.container_row {
+
+  min-width:100px;
+  line-height: 1.5px;
+}
+
+div.item > div.container_row > div.container_cell.description {
+  min-width:70px;
+  height: 37px;
 }
 
 div.item .builder_image {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 37px;
+  background-repeat:no-repeat;
 }
 
-.and {
-  border-color:blue;
+div.item .builder_image.conditions{
+  background-image:url("/assets/icon_conditions.png");
 }
 
-.or {
-  border-color:green;
+div.item .builder_image.treatments{
+  background-image:url("/assets/icon_treatments.png");
 }
+
+div.item .builder_image.history{
+  background-image:url("/assets/icon_history.png");
+}
+
+div.item .builder_image.demographics{
+  background-image:url("/assets/icon_demo.png");
+}
+
+div.item .builder_image.observations{
+  background-image:url("/assets/icon_observations.png");
+}
+
+
+div.item .builder_image.drop_target{
+  background-image:url("/assets/drop_target.png");
+}
+
+div.style_header {
+ width:100%;  
+ max-height:12px; 
+ height:12px;
+ line-height:12px;
+}
+
+div.style_header > div.style_row {
+  width:100%;
+  max-height:12px; 
+  height:12px;
+}
+
+div.style_row > div.curve_style {
+  width: 38px;
+  background-image: url("/assets/condition_or_continued.png");
+}
+
+div.style_row > div.line_style {
+
+  background-image: url("/assets/condition_or_line.png");
+}
+
+div.or_item:last-child > div.style_header > div.style_row > div.curve_style{
+  background-image: url("/assets/condition_or_end.png");
+}
+
+div.or_item:last-child > div.style_header > div.style_row > div.line_style{
+  background-image: url();
+}
+
+div.or_item:first-child > div.style_header > div.style_row > div.curve_style{
+   background-image: url("/assets/condition_or_start.png");
+}
+
+div.or_item:first-child > div.style_header > div.style_row > div.line_style{
+  background-image: url("/assets/condition_or_line.png");
+}
+
+div.or_item:only-child > div.style_header > div.style_row > div.curve_style{
+   background-image: url();
+}
+
+div.or_item:only-child > div.style_header > div.style_row > div.line_style{
+   background-image: url();
+}
+
+
+
+
+
+div.and_item > div.container_cell > div.item .builder_image {
+  height:50px;
+}
+
+div.and_item > div.container_cell > div.item .builder_image.treatments{
+   background-image:url("/assets/icon_treatments_and.png");
+}
+
+div.and_item > div.container_cell > div.item .builder_image.history{
+   background-image:url("/assets/icon_history_and.png");
+}
+
+div.and_item > div.container_cell > div.item .builder_image.conditions{
+   background-image:url("/assets/icon_conditions_and.png");
+}
+
+div.and_item > div.container_cell > div.item .builder_image.observations{
+   background-image:url("/assets/icon_observations_and.png");
+}
+
+div.and_item > div.container_cell > div.item .builder_image.demographics{
+   background-image:url("/assets/icon_demo_and.png");
+}
+
+
+div.and_item > div.container_cell > div.item .builder_image.drop_target{
+   background-image:url("/assets/drop_target.png");
+}
+
+
+
+div.and_item:last-child > div.container_cell > div.item .builder_image.treatments{
+   background-image:url("/assets/icon_treatments.png");
+}
+
+div.and_item:last-child > div.container_cell > div.item .builder_image.history{
+   background-image:url("/assets/icon_history.png");
+}
+
+div.and_item:last-child > div.container_cell > div.item .builder_image.conditions{
+   background-image:url("/assets/icon_conditions.png");
+}
+
+div.and_item:last-child > div.container_cell > div.item .builder_image.observations{
+   background-image:url("/assets/icon_observations.png");
+}
+
+div.and_item:last-child > div.container_cell > div.item .builder_image.demographics{
+   background-image:url("/assets/icon_demo.png");
+}
+
