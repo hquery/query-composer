@@ -13,7 +13,7 @@ end %>
   if element.include? 'end' %>
     new queryStructure.Range("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['start'] %>", "<%= element['end'] %>")<%= comma_if_last %>
   <% elsif element['comparator'] %>
-    new queryStructure.Comparison("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>", "<%= element['comparator'] %>")<%= comma_if_last %>
+    new queryStructure.Comparison("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>", "<%= element['comparator'].html_safe %>")<%= comma_if_last %>
   <% else %>
     new queryStructure.Rule("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>")<%= comma_if_last %>
   <% end

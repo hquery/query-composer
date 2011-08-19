@@ -81,13 +81,13 @@
       <% end %>
         <tr>
           <td> group by </td>
-          <td> <select><option>--select--</option><option>location</option>
+          <td> <select id="group_0"><option>--select--</option><option>location</option>
             <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
                 <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
             <% end %>
             
             </select></td>
-            <td> <select><option>--select--</option><option>location</option>
+            <td> <select id="group_1"><option>--select--</option><option>location</option>
               <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
                   <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
               <% end %>
@@ -97,16 +97,16 @@
     </table>
   </div>
 
-  <h2>Analyze</h2>
+  <h2>Aggregate</h2>
   <div id="aggregate">
     <table>
         <tr>
           <td>
-            <input key="frequency" type="checkbox"> Frequency
-            <input key="sum" type="checkbox"> Summation
-            <input key="mean" type="checkbox"> Mean
-            <input key="median" type="checkbox"> Median
-            <input key="mode" type="checkbox"> Mode
+            <input key="frequency" type="checkbox" id="aggregate_frequency"> Frequency
+            <input key="sum" type="checkbox" id="aggregate_sum"> Summation
+            <input key="mean" type="checkbox" id="aggregate_mean"> Mean
+            <input key="median" type="checkbox" id="aggregate_median"> Median
+            <input key="mode" type="checkbox" id="aggregate_mode"> Mode
           </td>
         </tr>
     </table>

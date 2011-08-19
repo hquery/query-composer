@@ -11,7 +11,7 @@ function extractPatient(patient) {
    groups = [] 
    query_structure['group'].each do |group| 
      args = (group['title'] == 'age') ? 'new Date()' : ''
-     groups << "{title: '#{group['title']}',  value: patient.#{group['callstack']}() }"
+     groups << "{title: '#{group['title']}',  value: patient.#{group['callstack']}(#{args}) }"
    end 
 
    values = [] 
@@ -20,7 +20,7 @@ function extractPatient(patient) {
      values << "{title: '#{select['title']}',  value: patient.#{select['callstack']}(#{args}) }"
    end
 
-   final_values = '1';
+   final_values = '{value:1}';
    if (values.length > 0)
      final_values =  "[#{values.join(',')}]"
    end
@@ -59,14 +59,14 @@ function filter(patient) {
 function map(patient) {  
   if (find(patient)) {
     if (filter(patient)) {
-      emit('target_pop', 1);
+      emit('target_pop', {value:1});
       extractPatient(patient);
     } else {
-      emit('filtered_pop', 1);
+      emit('filtered_pop', {value:1});
     }
   }
   else {
-    emit('unfound_pop', 1);
+    emit('unfound_pop', {value:1});
   }
-  emit('total_pop', 1);
+  emit('total_pop', {value:1});
 }

@@ -38,7 +38,7 @@ class QueriesController < ApplicationController
   
   # TODO: remove this once this has stabilized
   def show
-    @query.map = @query.full_map
+#    @query.map = @query.full_map
   end
 
   def edit

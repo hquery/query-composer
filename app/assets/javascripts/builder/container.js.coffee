@@ -14,6 +14,9 @@ class queryStructure.Query
   rebuildFromJson: (@json) ->
     this.find = this.buildFromJson(null, @json['find'])
     this.filter = this.buildFromJson(null, @json['filter'])
+    this.select = @json['select']
+    this.group = @json['group']
+    this.aggregate = @json['aggregate']
     
   buildFromJson: (@parent, @element) ->
     if this.getElementType(@element) == 'rule'
@@ -21,7 +24,7 @@ class queryStructure.Query
       if (ruleType == 'Range')
         return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['start'], @element['end'])
       else if (ruleType == 'Comparison')
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparison'])
+        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparator'])
       else
         return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
     else
@@ -167,8 +170,20 @@ class queryStructure.Comparison
   constructor: (@category, @title, @field, @value, @comparator) ->
   toJson: ->
     return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value, "comparator" : this.comparator }
-  test: (patient) -> 
-    return  patient[this.field]() == this.value
+  test: (patient) ->
+    value = null; 
+    if (this.field == 'age') 
+      value = patient[this.field](new Date())
+    else 
+      value = patient[this.field]()
+    
+    if (this.comparator == '=')
+      return value == this.value
+    else if (this.comparator == '<')
+      return value < this.value
+    else 
+      return value > this.value
+    
 
 #########
 # Fileds 
