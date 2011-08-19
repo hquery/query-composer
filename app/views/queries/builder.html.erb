@@ -4,10 +4,12 @@
 <% content_for :head do -%>
 <script type="text/javascript">
   $(document).ready(function() {
+      builderUI.query = new queryStructure.Query()
       $('#edit_query_<%= @query.id%>').submit(function() {
         $('#query_query_structure').val(builderUI.generateJson());
         return true;
       });
+      builderUI.repopulateUi(<%= @query.query_structure.to_json.html_safe %>);
   });
 </script>
 <% end -%>
