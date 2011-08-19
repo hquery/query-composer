@@ -14,22 +14,22 @@ function extractPatient(patient) {
      groups << "{title: '#{group['title']}',  value: patient.#{group['callstack']}(#{args}) }"
    end 
 
-   values = [] 
+   values = []
    query_structure['select'].each do |select| 
      args = (select['title'] == 'age') ? 'new Date()' : ''
      values << "{title: '#{select['title']}',  value: patient.#{select['callstack']}(#{args}) }"
    end
 
-   final_values = '{value:1}';
+   final_values = '{values: [{value:1}] }';
    if (values.length > 0)
      final_values =  "[#{values.join(',')}]"
    end
-   final_group = '{title: null,  value: null}'
+   final_group = '[{title: null,  value: null}]'
    if (groups.length > 0)
      final_groups =  "[#{groups.join(',')}]"
    end
   %>  
-  emit(<%= final_groups %>, <%= final_values %>);
+  emit({type: 'group', value: <%= final_groups %> }, {values: <%= final_values %>});
 }
 
 function find(patient) {
@@ -59,14 +59,14 @@ function filter(patient) {
 function map(patient) {  
   if (find(patient)) {
     if (filter(patient)) {
-      emit('target_pop', {value:1});
+      emit({type: 'magic', value: 'target_pop' }, {values: [{value:1}] });
       extractPatient(patient);
     } else {
-      emit('filtered_pop', {value:1});
+      emit({type: 'magic', value: 'filtered_pop' }, {values: [{value:1}] });
     }
   }
   else {
-    emit('unfound_pop', {value:1});
+    emit({type: 'magic', value: 'unfound_pop' }, {values: [{value:1}] });
   }
-  emit('total_pop', {value:1});
+  emit({type: 'magic', value: 'total_pop' }, {values: [{value:1}] });
 }

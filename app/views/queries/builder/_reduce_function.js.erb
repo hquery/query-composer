@@ -4,9 +4,34 @@
 %>
 
 function reduce(key, values) {
-  var sum = 0;
-  for(var i in values) {
-    sum += values[i]['value'];
+  
+  if (key['type'] == 'magic') {
+    var sum = 0;
+    
+    var result = {rereduce: true}
+    
+    for(var i in values) {
+      sum += values[i]['values'][0]['value'];
+    }
+    
+    result['values'] = [{value:sum}];
+    
+    return result;
+  } else if (key['type'] == 'group') {
+    
+    var sums = 0;
+    
+    var result = {rereduce: true}
+    
+    for(var i in values) {
+      sum += values[i]['values'][0]['value'];
+    }
+    
+    result['values'] = [{value:sum}];
+    
+    return result;
+    
+    
   }
-  return {value: sum};
+  
 };
