@@ -10,16 +10,63 @@ class queryStructure.Query
 
   toJson: -> 
     return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'select' : this.select, 'group' : this.group, 'aggregate' : this.aggregate }
+  
+  rebuildFromJson: (@json) ->
+    this.find = this.buildFromJson(null, @json['find'])
+    this.filter = this.buildFromJson(null, @json['filter'])
+    
+  buildFromJson: (@parent, @element) ->
+    if this.getElementType(@element) == 'rule'
+      ruleType = this.getRuleType(@element)
+      if (ruleType == 'Range')
+        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['start'], @element['end'])
+      else if (ruleType == 'Comparison')
+        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparison'])
+      else
+        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
+    else
+      container = this.getContainerType(@element)
+      newContainer = new queryStructure[container](@parent, null, @element.name || null)
+      for child in @element[container.toLowerCase()]
+        newContainer.add(this.buildFromJson(newContainer, child))
+      return newContainer
+      
+  getElementType: (@element) ->
+    if @element['and']? || @element['or']? || @element['not']? || @element['count_n']?
+      return 'container'
+    else
+      return 'rule'
+          
+  getContainerType: (@element) ->
+    if @element['and']?
+      return 'And'
+    else if @element['or']?
+      return 'Or'
+    else if @element['not']?
+      return 'Not'
+    else if @element['count_n']?
+      return 'CountN'
+    else
+      return null
+
+  getRuleType: (@element) ->
+    if @element['start']?
+      return 'Range'
+    else if @element['comparator']?
+      return 'Comparison'
+    else
+      return 'Rule'
 
 ##############
 # Containers 
 ##############
 class queryStructure.Container
-  constructor: (@parent, @children) ->
+  constructor: (@parent, @children, @name) ->
     if @children?
       this.children = @children
     else
       this.children = []
+    this.name = @name if @name?
 
   add: (element) ->
     this.children.push(element)
@@ -57,7 +104,10 @@ class queryStructure.And extends queryStructure.Container
     childJson = [];
     for child in this.children
       childJson.push(child.toJson())
-    return { "and" : childJson }
+    if this.name?
+      return { "name" : this.name, "and" : childJson }
+    else
+      return { "and" : childJson }
 
   test: (patient) ->
     for child in this.children

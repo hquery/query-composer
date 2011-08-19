@@ -30,6 +30,10 @@ class Query < BaseQuery
     end
   end
   
+  def json
+    json = query_structure.as_json
+  end
+  
   private
 
   def generate_map_reduce

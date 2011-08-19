@@ -1,16 +1,37 @@
 var builderUI = builderUI || {};
 
-builderUI.generateJson = function() {
-  query = new queryStructure.Query();
-  query.find = builderUI.buildWhere('find');
-  query.filter = builderUI.buildWhere('filter');
-  query.select = builderUI.buildSelect();
-  query.group = builderUI.buildGroupBy();
-  query.aggregate = builderUI.buildAggregate();
+builderUI.query;
 
-  return JSON.stringify(query.toJson());
+builderUI.generateJson = function() {
+  builderUI.query.find = builderUI.buildWhere('find');
+  builderUI.query.filter = builderUI.buildWhere('filter');
+  builderUI.query.select = builderUI.buildSelect();
+  builderUI.query.group = builderUI.buildGroupBy();
+  builderUI.query.aggregate = builderUI.buildAggregate();
+
+  return JSON.stringify(builderUI.query.toJson());
 };
 
+builderUI.repopulateUi = function(json) {
+  builderUI.query.rebuildFromJson(json);
+  builderUI.repopulateUiZone(builderUI.query.find, 'find');
+  builderUI.repopulateUiZone(builderUI.query.filter, 'filter');
+}
+
+builderUI.repopulateUiZone = function(container, category) {
+  if (container.name != undefined) {
+    for (var c in container.children) {
+      var comparison = container.children[c];
+      $('#' + category + '_' + comparison.title).prop('checked', true);
+      $('#' + category + '_' + comparison.title + '_comparison').val(comparison.comparator);
+      $('#' + category + '_' + comparison.title + '_value').val(comparison.value);
+    }
+  } else {
+    for (var c in container.children) {
+      builderUI.repopulateUiZone(container.children[c], category);
+    }
+  }
+}
 
 builderUI.buildWhere = function(category) {
   var demographics = []
@@ -25,7 +46,7 @@ builderUI.buildWhere = function(category) {
   
   var root = new queryStructure.And();
   bottom = root.add(new queryStructure.Or());
-  bottom = bottom.add(new queryStructure.And())
+  bottom = bottom.add(new queryStructure.And(bottom, null, 'demographics'));
 
   for (index in demographics) {
     var demographic = demographics[index];
