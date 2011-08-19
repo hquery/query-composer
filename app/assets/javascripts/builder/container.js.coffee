@@ -15,9 +15,9 @@ class queryStructure.Query
 # Containers 
 ##############
 class queryStructure.Container
-  constructor: (@parent, @children...) ->
-    if @children? && @children[0]?
-      this.children = @children[0]
+  constructor: (@parent, @children) ->
+    if @children?
+      this.children = @children
     else
       this.children = []
 

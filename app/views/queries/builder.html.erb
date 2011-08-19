@@ -81,13 +81,13 @@
           <td> group by </td>
           <td> <select><option>--select--</option><option>location</option>
             <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
-                <option><%= demographic[:long_name] %></option>
+                <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
             <% end %>
             
             </select></td>
             <td> <select><option>--select--</option><option>location</option>
               <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
-                  <option><%= demographic[:long_name] %></option>
+                  <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
               <% end %>
 
               </select></td>
