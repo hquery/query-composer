@@ -17,22 +17,31 @@
 }
 
 .drop_target {
-  background-color: #555555;
+
+  display:block;
 }
 
-img {
-  padding: 1px;
+.and {
+  background-color: #dddddd;
+  padding:1px;
 }
 
+.or {
+  background-color: #FFFFFF;
+}
+
+div.and_drop_zone {
+
+}
 div.item {
 
-  min-width:100px;
+  min-width:120px;
   line-height: 1.5px;
 }
 
 div.item > div.container_row {
 
-  min-width:100px;
+  min-width:120px;
   line-height: 1.5px;
 }
 
