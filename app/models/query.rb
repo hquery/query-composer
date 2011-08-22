@@ -55,12 +55,14 @@ class Query < BaseQuery
     pretty_function = ""
     tab_count = 0
     function.each_line do |line|
-      if !(line =~ /^\t*\n/) # Only include lines that consist of more than just tabs and spaces
+      if !(line =~ /^[\t  ]*\n/) # Only include lines that consist of more than just tabs and spaces
         line = line.gsub("  ", '') # Erase all existing leading tabs
-        if (line =~ /[\{\[\(]\n*$/) # Indent further if we're opening some kind of block
+        if (line =~ /^[\t ]*[\}\]\)]+.*[\{\[\(]\n*/) # Indent less to print since we're closing a block, but leave tab_count the same since we're also opening one
+          tab_count-1.times { pretty_function << "  " }
+        elsif (line =~ /[\{\[\(]\n*$/) # Indent further if we're opening some kind of block
           tab_count.times { pretty_function << "  " }
           tab_count += 1 
-        elsif (line =~ /^\t*[\}\]\)]+;*\n*/) # Indent less if we're closing some kind of block
+        elsif (line =~ /^[\t  ]*[\}\]\)]+;*\n*/) # Indent less if we're closing some kind of block
           tab_count -= 1 
           tab_count.times { pretty_function << "  " }
         else
