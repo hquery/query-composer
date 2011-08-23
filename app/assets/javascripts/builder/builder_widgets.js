@@ -110,7 +110,7 @@ $.widget("ui.AndContainerUI", $.ui.ContainerUI, {
         // second cell in the row ,  content cell
         row.append(contentCell);
         row.append(dropZoneCell);
-        if (item && item.type != null) {
+        if (item && item.name != null) {
             $(contentCell).ItemUI({
                 parent: this,
                 item: item
@@ -233,31 +233,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
 
 
     _createItemUI: function(i, item) {
-        // var cell = $("<div>", {
-        //           "class": "container_cell or_item"
-        //       });
-        //       // table cell for or row
-        //      // var table = $("<div>", {"class": "container" });
-        //       // style row for the cell item
-        //     //  cell.append(table);
-        // 
-        //      // var contentCell = $("<div>", {"class": "container_row" });
-        //       // content row for the item -- do I need to add a cell to the row to wrap things in?
-        //     
-        //     //  table.append(contentCell);
-        // 
-        // 
-        //       var style = $("<div>", {"class": "container style_header" });
-        //       var styleRow = $("<div>", {"class": "container_row style_row" });
-        //       var curveCell = $("<div>", {"class": "container_cell curve_style"  });
-        //       var lineCell = $("<div>", {"class": "container_cell line_style" });
-        //       curveCell.append("&nbsp;");
-        //       lineCell.append("&nbsp;");
-        //       style.append(styleRow);
-        //       styleRow.append(curveCell);
-        //       styleRow.append(lineCell);
-        //       cell.append(style);
-        //       
+     
         var cell = this._createItemContainer();
         var lineCell = cell.children('.style_header').children(".style_row").children(".line_style")
         var arr = [cell];
@@ -269,7 +245,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
          });
          
          
-        if (item && item.type != null) {
+        if (item && item.name != null) {
             $(cell).ItemUI({parent: this,item: item});
         } else {
             if (item instanceof queryBuilder.And) {
