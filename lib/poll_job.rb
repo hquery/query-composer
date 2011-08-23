@@ -35,7 +35,7 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
       # build the multi-part elements for the request
       # need to do this inside the loop since UploadIO is single-use
       filter = UploadIO.new(StringIO.new(execution.query.filter), 'application/json')
-      map = UploadIO.new(StringIO.new(get_denamespace_js(execution.query.user) + get_builder_js + execution.query.map), 'application/javascript')
+      map = UploadIO.new(StringIO.new(execution.query.full_map), 'application/javascript')
       reduce = UploadIO.new(StringIO.new(execution.query.reduce), 'application/javascript')
 
       # get the endpoint url and build the request
@@ -46,10 +46,7 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
     end    
   end
   
-  # TODO: probably should be moved to a library rather than sending it as part of the map
-  def self.get_builder_js
-    CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare=>true)
-  end
+
 
   # Submit a HTTP request and process the results according to the
   # hQuery protocol. Redirects cause a new poll to be scheduled, success

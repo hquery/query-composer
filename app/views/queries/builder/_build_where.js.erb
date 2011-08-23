@@ -1,0 +1,29 @@
+<% if element.include? 'and'
+  operation = 'And'
+elsif element.include? 'or'
+  operation = 'Or'
+elsif element.include? 'not'
+  operation = 'Not'
+elsif element.include? 'count_n'
+  operation = 'CountN'
+else
+  operation = 'rule'
+end %>
+<% if operation == 'rule'
+  if element.include? 'end' %>
+    new queryStructure.Range("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['start'] %>", "<%= element['end'] %>")<%= comma_if_last %>
+  <% elsif element['comparator'] %>
+    new queryStructure.Comparison("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>", "<%= element['comparator'].html_safe %>")<%= comma_if_last %>
+  <% else %>
+    new queryStructure.Rule("<%= element['category'] %>", "<%= element['title'] %>", "<%= element['field'] %>", "<%= element['value'] %>")<%= comma_if_last %>
+  <% end
+else %>
+  new queryStructure.<%= operation %>(null, [
+  <% element[operation.downcase].each do |subelement|
+    if subelement != element[operation.downcase].last
+      cil = ','
+    end %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :element => subelement, :comma_if_last => cil } %>
+  <% end %>
+  ])<%= comma_if_last %>
+<% end %>
