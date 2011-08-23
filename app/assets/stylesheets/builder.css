@@ -56,6 +56,10 @@ div.item .builder_image {
   background-repeat:no-repeat;
 }
 
+div.item .builder_image.drop_target{
+  background-image:url("/assets/drop_target.png");
+}
+
 div.item .builder_image.conditions{
   background-image:url("/assets/icon_conditions.png");
 }
