@@ -116,7 +116,7 @@ $.widget("ui.AndContainerUI", $.ui.ContainerUI, {
                 item: item
             });
         } else {
-            if (item instanceof queryBuilder.And) {
+            if (item instanceof queryStructure.And) {
                 $(contentCell).AndContainerUI({
                     parent: this,
                     container: item
@@ -133,7 +133,7 @@ $.widget("ui.AndContainerUI", $.ui.ContainerUI, {
     drop: function(event,ui) {
       var type = ui.draggable.data("type");
              if(this.container.children.length == 0){
-               var or = new queryBuilder.Or();
+               var or = new queryStructure.Or();
                
                or.add({
                     "type": type,
@@ -191,7 +191,7 @@ $.widget("ui.AndContainerUI", $.ui.ContainerUI, {
             this.container.add(data,widget.container);
             widget.element.parents(".container_row:first").after(item);
         } else {
-            var or = new queryBuilder.Or();
+            var or = new queryStructure.Or();
             or.add(widget.item);
             or.add(data);
             //this.container.replace(widget.item, or);
@@ -235,7 +235,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
     _createItemUI: function(i, item) {
      
         var cell = this._createItemContainer();
-        var lineCell = cell.children('.style_header').children(".style_row").children(".line_style")
+        var lineCell = $(".line_style",cell);
         var arr = [cell];
         lineCell.droppable({
              drop: bind(this.childDropped, this,  arr),
@@ -248,7 +248,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
         if (item && item.name != null) {
             $(cell).ItemUI({parent: this,item: item});
         } else {
-            if (item instanceof queryBuilder.And) {
+            if (item instanceof queryStructure.And) {
                 $(cell).AndContainerUI({
                     parent: this,
                     container: item
@@ -266,7 +266,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
     drop: function(event, ui) {
        var type = ui.draggable.data("type");
        var data = {
-           "type": type,
+           "name": type,
            "description": "dropped"
        };
         if(this.container.children.length == 0){
@@ -309,7 +309,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
          //   this.container.add(data,widget.container);
             widget.element.after(item);
         } else {
-            var and = new queryBuilder.And();
+            var and = new queryStructure.And();
             and.add(widget.item);
             and.add(data);
         //    this.container.replace(widget.contaier,and);
@@ -345,17 +345,6 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
        var cell = $("<div>", {
             "class": "container_cell or_item"
         });
-        // table cell for or row
-       // var table = $("<div>", {"class": "container" });
-        // style row for the cell item
-      //  cell.append(table);
-
-       // var contentCell = $("<div>", {"class": "container_row" });
-        // content row for the item -- do I need to add a cell to the row to wrap things in?
-      
-      //  table.append(contentCell);
-
-
         var style = $("<div>", {"class": "container style_header" });
         var styleRow = $("<div>", {"class": "container_row style_row" });
         var curveCell = $("<div>", {"class": "container_cell curve_style"  });
@@ -387,32 +376,16 @@ $.widget("ui.ItemUI", {
 
     _createContainer: function() {
 
-        this.div = $("<div>", {
-            "class": "container item"
-        });
-
-        this.contentRow = $("<div>", {
-            "class": "container_row"
-        });
-  
-
-        this.div.append(this.contentRow);
-
-
-        this.imageCell = $("<div>", {
-            "class": "container_cell builder_image " +this.item.type 
-        });
-        this.textCell = $("<div>", {
-            "class": "container_cell description "
-        });
-
+        this.div = createItemContainer(this.item.name,this.item.description);
+        
+        this.imageCell = $(".builder_image",this.div);
+        this.textCell = $(".description",this.div);
+        this.contentRow = $(".content_row",this.div);
         // add the appropriate image/component
      //  this.imageCell.append($("<img>", {
       //     "src": "/assets/icon_"+ (this.item.type || 'conditions') +".png"
       // }));
-      
-        this.imageCell.append("&nbsp;");
-        
+
         
         this.imageCell.droppable({
             drop: bind(this._dropBottom,this),
@@ -422,24 +395,13 @@ $.widget("ui.ItemUI", {
             greedy: true
         });
 
-        this.imageCell.data("widget", this);
-        
-        // add the text
-        this.textCell.append(this.item.description);
-
-        this.contentRow.append(this.imageCell);
-        this.contentRow.append(this.textCell);
-
-
-         this.textCell.droppable({
+        this.textCell.droppable({
               drop: bind(this._dropRight,this),
               out: bind(this._outRight,this),
               accept: bind(this._accept,this),
               over: bind(this._overRight,this),
               greedy: true
           });
-        
-
 
         return this.div;
     },
@@ -457,11 +419,9 @@ $.widget("ui.ItemUI", {
        
          this.textCell.next().hide("fast");
          this.textCell.next().remove();
-       
-        
         var type = ui.draggable.data("type");
-        this.parent.childDropped(widget, "right", {
-            "type": type,
+        this.parent.childDropped(this, "right", {
+            "name": type,
             "description": "dropped"
         });
     },
@@ -470,24 +430,24 @@ $.widget("ui.ItemUI", {
         this.contentRow.next().remove();
        
          var type = ui.draggable.data("type");
-          this.parent.childDropped(widget, "bottom", {
-              "type": type,
+         this.parent.childDropped(this, "bottom", {
+              "name": type,
               "description": "dropped"
           });
     },
     _overRight: function(event, ui) {
        // this.parent.childOver(this,"right",ui);
-        // var widget = $(this).data("widget");
-        //      //widget.parent.childOver(widget, "right");
-        //      var cell = $("<div>", {
-        //          "class": "container_cell drop_target"
-        //      });
-        //      // table cell for or row
-        //      cell.append(dropTargetImage);
-        //      cell.hide();
-        //      widget.textCell.after(cell);
-        //      cell.show("fast");
-        //$(this).css("background-color", "red");
+        
+             //widget.parent.childOver(widget, "right");
+             var cell = $("<div>", {
+                 "class": "container_cell drop_target"
+             });
+             // table cell for or row
+             cell.append(dropTargetImage);
+             cell.hide();
+             this.textCell.after(cell);
+             cell.show("fast");
+            $(this).css("background-color", "red");
     },
     _overBottom: function(event, ui) {
        

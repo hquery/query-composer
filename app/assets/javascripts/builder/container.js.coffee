@@ -5,13 +5,13 @@ queryStructure.createContainer= (parent, json) ->
   _ret = null
   _children = []
   if(json["and"])
-    _ret =  new queryStructure.And(parent,json["and"])
+    _ret =  new queryStructure.And(parent,[])
     _children = json["and"]
   else if(json["or"])
-    _ret =   new queryStructure.Or(parent,json["or"])
+    _ret =   new queryStructure.Or(parent,[])
     _children = json["or"]
   else if(json["not"])
-    _ret =   new queryStructure.Not(parent,json["not"])
+    _ret =   new queryStructure.Not(parent,[])
     _children = json["not"]
 
   for item in _children
