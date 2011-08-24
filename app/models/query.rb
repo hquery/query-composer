@@ -5,7 +5,6 @@ class Query < BaseQuery
 
   belongs_to :user
   has_many :events
-  has_and_belongs_to_many :endpoints
   
   def last_execution
     executions.desc(:time).first
@@ -19,5 +18,4 @@ class Query < BaseQuery
 
     execution.execute()
   end
-
 end

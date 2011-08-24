@@ -1,9 +1,10 @@
 class Execution
   include Mongoid::Document
-  embedded_in :query, class_name: "Query", inverse_of: :executions
-  embeds_many :results, class_name: 'Result', inverse_of: :execution
 
-  field :time, type: Integer              # exection time
+  embedded_in :query
+  has_many :results
+
+  field :time, type: Integer              # execution time
   field :aggregate_result, type: Hash     # final aggregated result
   field :notification, type: Boolean      # if the user wants to be notified by email when the result is ready
 
@@ -13,26 +14,29 @@ class Execution
     result_statuses
   end
 
-  def execute()
-
-    query.endpoints.each do |endpoint|
-      self.results << Result.new(endpoint: endpoint)
+  def execute(endpoints)
+    endpoints.each do |endpoint|
+      query_url = submit(endpoint)
+      Result.create(endpoint: endpoint, query_url: query_url,
+                    status: Result::QUEUED, execution: self)
+      
     end
-
-    PollJob.submit_all(self)
-
   end
 
   def finished?
-    unfinished_results.count == 0
+    unfinished_results.empty?
   end
 
   def unfinished_results
-    results.select {|result| result.status == Result::QUEUED}
+    results.where(status: Result::QUEUED)
   end
 
   def cancel
     results.each {|result| result.cancel}
+  end
+  
+  def submit(endpoint)
+
   end
 
 end
