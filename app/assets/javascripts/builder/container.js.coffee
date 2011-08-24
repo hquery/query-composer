@@ -89,28 +89,37 @@ class queryStructure.Container
     if @children?
       this.children = @children
     else
-      this.children = []
+      @children = []
     this.name = @name if @name?
 
-
-  add: (element) ->
-    this.children.push(element)
-    return element;
+  add: (element, after) ->
+    index = this.childIndex(after) + 1
+    this.children.splice(index,0,element)
+    element.parent = this
+    return element
 
   remove: ->
     this.parent.removeChild(this)
 
   removeChild: (victim) ->
-    for i in children
-      if children[i] == victim
-        children.splice(i, 1)
+    for index,_child of @children
+      if _child == victim
+        @children.splice(i, 1)
         
   replaceChild: (child, newChild) ->
-    for i in children
-      if children[i] == child
-        children[i] = newChild
+    for index,_child of @children
+      if _child == child
+        @children[index] = newChild
         newChild.parent = this
-        
+  
+  childIndex: (child) ->
+    if child == null
+      return -1
+    for index, _child of @children
+      if _child == child
+        return index
+    return -1
+            
   clear: ->
     children = []
 

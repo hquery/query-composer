@@ -43,6 +43,15 @@ function createItemContainer(image, description){
     return div;
 }
 
+
+var factories = {
+  "conditions" :function(){  return new queryStructure.And(null,[], "conditions");},
+  "observations":function(){ return new queryStructure.And(null,[], "observations"); },
+  "treatments":function(){   return new queryStructure.And(null,[], "treatments"); },
+  "demographics" : function(){ return new queryStructure.And(null,[], "demographics");},
+  "history"      : function(){return new queryStructure.And(null,[], "history"); } 
+}
+
 var dropTargetItem = createItemContainer("drop_target", "");
 
 /* Base container UI widget */
@@ -52,11 +61,8 @@ $.widget("ui.ContainerUI", {
         },
     _create: function() {
         this.container = this.options.container;
-        this.items = [];
         this.parent = this.options.parent;
         this.element.append(this._createContainer());
-        this.element.append(this.div);
-
     }
 }
 
@@ -113,7 +119,7 @@ $.widget("ui.AndContainerUI", $.ui.ContainerUI, {
         if (item && item.name != null) {
             $(contentCell).ItemUI({
                 parent: this,
-                item: item
+                container: item
             });
         } else {
             if (item instanceof queryStructure.And) {
@@ -192,9 +198,9 @@ $.widget("ui.AndContainerUI", $.ui.ContainerUI, {
             widget.element.parents(".container_row:first").after(item);
         } else {
             var or = new queryStructure.Or();
-            or.add(widget.item);
+            or.add(widget.container);
             or.add(data);
-            //this.container.replace(widget.item, or);
+            this.container.replaceChild(widget.container, or);
             var ui = this._createItemUI( - 1, or);
             widget.element.parents(".container_row:first").replaceWith(ui);
         }
@@ -202,8 +208,6 @@ $.widget("ui.AndContainerUI", $.ui.ContainerUI, {
 
 }
 );
-
-
 
 $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
     options: {
@@ -246,7 +250,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
          
          
         if (item && item.name != null) {
-            $(cell).ItemUI({parent: this,item: item});
+            $(cell).ItemUI({parent: this,container: item});
         } else {
             if (item instanceof queryStructure.And) {
                 $(cell).AndContainerUI({
@@ -296,6 +300,7 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
             this.element.css("background-color", "red");
         }
     },
+    
     out: function(event,ui) {
         if (this.dropTarget) {
             this.dropTarget.remove();
@@ -305,20 +310,21 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
 
     childDropped: function(widget, direction, data) {
         if (direction != "bottom") {
-            var item = this._createItemUI( - 1, data);
-         //   this.container.add(data,widget.container);
+            var item = this._createItemUI( -1, data);
+            this.container.add(data,widget.container);
             widget.element.after(item);
         } else {
             var and = new queryStructure.And();
-            and.add(widget.item);
+            and.add(widget.container);
             and.add(data);
-        //    this.container.replace(widget.contaier,and);
+            this.container.replaceChild(widget.container,and);
             var ui = this._createItemUI( - 1, and);
             widget.element.replaceWith(ui);
             
         }
     },
     
+
     childOverRight: function(event,ui,cell){
       var c =  this.getRightDropTarget();
        c.hide("fast");
@@ -338,7 +344,6 @@ $.widget("ui.OrContainerUI", $.ui.ContainerUI, {
       }
       return this.rightDropTarget;
     },
-    
     
     
     _createItemContainer: function(){
@@ -368,19 +373,17 @@ $.widget("ui.ItemUI", {
     options: {},
 
     _init: function() {
-        this.item = this.options.item;
+        this.container = this.options.container;
         this.parent = this.parent = this.options.parent;
         this.element.append(this._createContainer());
     },
 
-
     _createContainer: function() {
 
-        this.div = createItemContainer(this.item.name,this.item.description);
-        
+        this.div = createItemContainer(this.container.name,this.container.description);
         this.imageCell = $(".builder_image",this.div);
         this.textCell = $(".description",this.div);
-        this.contentRow = $(".content_row",this.div);
+        this.contentRow = $(".container_row",this.div);
         // add the appropriate image/component
      //  this.imageCell.append($("<img>", {
       //     "src": "/assets/icon_"+ (this.item.type || 'conditions') +".png"
@@ -420,20 +423,14 @@ $.widget("ui.ItemUI", {
          this.textCell.next().hide("fast");
          this.textCell.next().remove();
         var type = ui.draggable.data("type");
-        this.parent.childDropped(this, "right", {
-            "name": type,
-            "description": "dropped"
-        });
+        this.parent.childDropped(this, "right",factories[type]());
     },
     _dropBottom: function(event, ui) {
        
         this.contentRow.next().remove();
        
          var type = ui.draggable.data("type");
-         this.parent.childDropped(this, "bottom", {
-              "name": type,
-              "description": "dropped"
-          });
+         this.parent.childDropped(this, "bottom",factories[type]());
     },
     _overRight: function(event, ui) {
        // this.parent.childOver(this,"right",ui);
@@ -447,7 +444,6 @@ $.widget("ui.ItemUI", {
              cell.hide();
              this.textCell.after(cell);
              cell.show("fast");
-            $(this).css("background-color", "red");
     },
     _overBottom: function(event, ui) {
        
@@ -464,7 +460,6 @@ $.widget("ui.ItemUI", {
         row.hide();
         this.div.append(row);
         row.show("fast");
-        // widget.parent.childOver(widget, "bottom");
 
     }
 });
