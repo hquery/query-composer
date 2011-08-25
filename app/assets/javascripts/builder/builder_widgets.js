@@ -28,6 +28,10 @@ function resetPosition(elem){
  elem.css("left","");  
 }
 
+function createNewItem(itemData){
+  
+}
+
 
 var factories = {
     "conditions": function() {
@@ -141,23 +145,27 @@ $.widget("ui.ContainerUI", {
         var droppedWidget = ui.draggable.data('widget');
 
         if (!droppedWidget) {
-            var data = createNewItem(ui.draggable.data("item"));
+            var data = ui.draggable.data("item");
 
-            var el = new queryStructure.ItemUI($('<li>', {"class" : "collection_item"}), {
-                collection: ui.draggable.data('item')
-            });
+            var el = $('<li>', {"class" : "dependency resource_dep"});
+            el.ItemUI({container:data});
             droppedWidget = el.data().ItemUI;
         }
 
         // if parent is this container do nothing
         if (droppedWidget.parent == this) {
-
-            } else {
+          resetPosition(droppedWidget.element);
+        } else {
+            var oldParent = droppedWidget.parent;
             droppedWidget.setParent(this);
             this.ul.append(droppedWidget.element);
             resetPosition(droppedWidget.element);
+             if(oldParent){
+                oldParent.destroyIfEmpty()
+              }
         }
-
+       
+       
     },
 
 
@@ -191,7 +199,7 @@ $.widget("ui.ContainerUI", {
 
     setParent: function(widget) {
         if (widget == this.parent) return;
-        this.parent = widget;
+        this.container.remove();
         widget.container.add(this.container);
 
     },
@@ -204,15 +212,36 @@ $.widget("ui.ContainerUI", {
     childDropped: function(widget, other) {
         // check for new item
         other.element.remove();
-        var collection = (this.container instanceof queryStructure.And) ? new queryStructure.Or(this.container, [widget.container, other.container]) :
-                                                            new queryStructure.And(this.container, [widget.container, other.container]);
+        var collection = (this.container instanceof queryStructure.And) ? new queryStructure.Or() :
+                                                            new queryStructure.And();
+                                                            
+
+        this.container.replaceChild(widget.container,collection);
+        collection.addAll([widget.container, other.container]);
         var ui = this._createItemUI( - 1, collection)
         widget.element.replaceWith(ui);
+        // if other was the last thing in it's parent
+        // remove the parent 
+        if(other.parent){
+          other.parent.destroyIfEmpty()
+        }
         other.destroy();
         widget.destroy();
     }
 
+   ,
+   destroyIfEmpty: function(){
+     var p = this.parent;
+  
+     if(p && this.container && this.container.children.length == 0){
+       this.container.remove();
+       this.element.remove();
+       this.destroy();
+       p.destroyIfEmpty();
+       
+     }
 
+   }
 
 }
 
@@ -296,6 +325,10 @@ $.widget("ui.ItemUI", {
     },
     drop: function(event, ui) {
         var other = ui.draggable.data('widget');
+        if(other == null){
+          var el = $('<li>', {class:"dependency resource_dep"}).ItemUI({container:ui.draggable.data('item')});
+          other = el.data().ItemUI;
+        }
         this.parent.childDropped(this, other);
         // this.parent.childDropped(this,)
         // var type = ui.draggable.data("type");

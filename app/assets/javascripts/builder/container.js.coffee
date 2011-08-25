@@ -85,26 +85,33 @@ class queryStructure.Query
 ##############
 
 class queryStructure.Container
-  constructor: (@parent, @children, @name) ->
-    if @children?
-      this.children = @children
-    else
-      @children = []
-    this.name = @name if @name?
+  constructor: (@parent, @children = [], @name, @negate = false) ->
+
 
   add: (element, after) ->
-    index = this.childIndex(after) + 1
-    this.children.splice(index,0,element)
+    # first see if the element is already part of the children array
+    # if it is there is no need to do anything
+    if this.childIndex(element) == -1
+      index = this.childIndex(after) + 1
+      this.children.splice(index,0,element)
+      if element.parent && element.parent != this
+        element.parent.removeChild(element)
     element.parent = this
     return element
-
+ 
+  addAll: (items, after) ->
+    for item in items
+      after = this.add(item,after)
+      
   remove: ->
-    this.parent.removeChild(this)
+    if @parent
+      @parent.removeChild(this)
 
   removeChild: (victim) ->
     for index,_child of @children
       if _child == victim
-        @children.splice(i, 1)
+        child = @children.splice(index, 1)
+        child.parent = null
         
   replaceChild: (child, newChild) ->
     for index,_child of @children
@@ -126,14 +133,14 @@ class queryStructure.Container
 class queryStructure.Or extends queryStructure.Container
   toJson: ->
     childJson = [];
-    for child in this.children
+    for child in @children
       childJson.push(child.toJson())
     return { "or" : childJson }
   
   test: (patient) -> 
-    if (this.children.length == 0)
+    if (@children.length == 0)
       return true;
-    for child in this.children
+    for child in @children
       if (child.test(patient)) 
         return true;
     return false;
@@ -142,15 +149,15 @@ class queryStructure.Or extends queryStructure.Container
 class queryStructure.And extends queryStructure.Container
   toJson: ->
     childJson = [];
-    for child in this.children
+    for child in @children
       childJson.push(child.toJson())
-    if this.name?
-      return { "name" : this.name, "and" : childJson }
+    if @name?
+      return { "name" : @name, "and" : childJson }
     else
       return { "and" : childJson }
 
   test: (patient) ->
-    for child in this.children
+    for child in @children
       if (!child.test(patient)) 
         return false;
     return true;
@@ -160,12 +167,12 @@ class queryStructure.And extends queryStructure.Container
 class queryStructure.Not extends queryStructure.Container
   toJson: ->
     childJson = [];
-    for child in this.children
+    for child in @children
       childJson.push(child.toJson())
     return { "not" : childJson }
 
     test: (patient) -> 
-      for child in this.children
+      for child in @children
         if (child.test(patient)) 
           return true;
       return false;
@@ -177,12 +184,12 @@ class queryStructure.CountN extends queryStructure.Container
   
   toJson: ->
     childJson = [];
-    for child in this.children
+    for child in @children
       childJson.push(child.toJson())
     return { "n" : this.n, "count_n" : childJson }
 
     test: (patient) -> 
-      for child in this.children
+      for child in @children
         if (child.test(patient)) 
           return true;
       return false;
@@ -194,7 +201,7 @@ class queryStructure.CountN extends queryStructure.Container
 class queryStructure.Rule
   constructor: (@category, @title, @field, @value) ->
   toJson: ->
-    return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value }
+    return { "category" : @category, "title" : @title, "field" : @field, "value" : @value }
   
 
 
@@ -206,20 +213,20 @@ class queryStructure.Range
 class queryStructure.Comparison
   constructor: (@category, @title, @field, @value, @comparator) ->
   toJson: ->
-    return { "category" : this.category, "title" : this.title, "field" : this.field, "value" : this.value, "comparator" : this.comparator }
+    return { "category" : @category, "title" : @title, "field" : @field, "value" : @value, "comparator" : @comparator }
   test: (patient) ->
     value = null; 
     if (this.field == 'age') 
-      value = patient[this.field](new Date())
+      value = patient[@field](new Date())
     else 
-      value = patient[this.field]()
+      value = patient[@field]()
     
-    if (this.comparator == '=')
-      return value == this.value
-    else if (this.comparator == '<')
-      return value < this.value
+    if (@comparator == '=')
+      return value == @value
+    else if (@comparator == '<')
+      return value < @value
     else 
-      return value > this.value
+      return value > @value
     
 
 #########
@@ -228,7 +235,7 @@ class queryStructure.Comparison
 class queryStructure.Field
   constructor: (@title, @callstack) ->
   toJson: ->
-    return { "title" : this.title, "callstack" : this.callstack }
+    return { "title" : @title, "callstack" : @callstack }
   extract: (patient) -> 
     # TODO: this needs to be a little more intelligent - AQ
     return patient[callstack]();

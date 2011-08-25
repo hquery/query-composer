@@ -196,7 +196,7 @@ div#trash {
 }
   
 div#workspace {
-    float: left;
+        float: left;
         margin: 138px 0 0 50px;
         height: relative;
         min-width: 500px;
@@ -229,11 +229,13 @@ div#workspace_top_border_lower {
 div#find {
     float: left;
     color: #000;
-        width: 100%;
+    width: 100%;
+    height: 200px;
 }
 
 div#find h1 {
     float: left;
+    clear:both;
     margin: 20px 0 0 -5px;
     text-decoration:none;
     font-size: 18pt;
