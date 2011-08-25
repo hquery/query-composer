@@ -4,7 +4,7 @@
 class EndpointCronJob
   include ScheduledJob
   
-  run_every 5.minutes
+  run_every 5.seconds
   
   def perform
     Endpoint.all.each do |endpoint|

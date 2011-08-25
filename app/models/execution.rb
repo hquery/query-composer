@@ -1,5 +1,8 @@
+require 'gateway_utils'
+
 class Execution
   include Mongoid::Document
+  include GatewayUtils
 
   embedded_in :query
   has_many :results
@@ -16,10 +19,16 @@ class Execution
 
   def execute(endpoints)
     endpoints.each do |endpoint|
+      query.user.save_library_functions_locally unless query.user.library_functions.empty?
+      post_library_function(endpoint)
       query_url = submit(endpoint)
-      Result.create(endpoint: endpoint, query_url: query_url,
-                    status: Result::QUEUED, execution: self)
-      
+      if query_url
+        Result.create(endpoint: endpoint, query_url: query_url,
+                      status: Result::QUEUED, execution: self)
+      else
+        Result.create(endpoint: endpoint,
+                      status: Result::FAILED, execution: self)
+      end
     end
   end
 
@@ -34,9 +43,4 @@ class Execution
   def cancel
     results.each {|result| result.cancel}
   end
-  
-  def submit(endpoint)
-
-  end
-
 end

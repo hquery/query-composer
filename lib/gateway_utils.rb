@@ -16,7 +16,7 @@ module GatewayUtils
   
   # javascript that takes the namespaced user functions and creates non-namespaced aliases in the current scope
   # then redefines hquery_user_functions in the local scope so that users cannot access other users functions
-  def get_denamespace_js(user)
+  def js_to_localize_user_functions(user)
     composer_id = COMPOSER_ID
     "if (typeof hquery_user_functions != 'undefined' 
          && null != hquery_user_functions['f#{composer_id}'] 
@@ -26,5 +26,44 @@ module GatewayUtils
            } 
            hquery_user_functions = {}; 
      } \r\n"
+  end
+  
+  def submit(endpoint)
+    query_url = nil
+    query_url = endpoint.submit_url
+    full_map = js_to_localize_user_functions(query.user) + query.map
+    request = query_request(full_map, query.reduce, query.filter, query_url)
+    Net::HTTP.start(query_url.host, query_url.port) do |http|
+      response = http.request(request)
+      if response.code == '201'
+        query_url = response['Location']
+        EndpointLog.create(status: :create, message: "Created new query: #{query_url}", endpoint: endpoint)
+      else
+        EndpointLog.create(status: :error, message: "Did not understand the response: #{response}", endpoint: endpoint)
+      end
+    end
+    
+    query_url
+  end
+  
+  def post_library_function(endpoint)
+    functions = UploadIO.new(StringIO.new(query.user.library_function_definitions), 'application/javascript')
+
+    url = URI.parse endpoint.functions_url
+    request = Net::HTTP::Post::Multipart.new(url.path, {'functions'=>functions, 'user_id'=>query.user.id, 'composer_id'=>COMPOSER_ID})
+
+    begin
+      Net::HTTP.start(url.host, url.port) do |http|
+        response = http.request(request)
+        case response
+        when Net::HTTPSuccess
+          EndpointLog.create(status: :user_functions, message: "user functions inserted", endpoint: endpoint)
+        else
+          EndpointLog.create(status: :user_functions, message: "user functions failed", endpoint: endpoint)
+        end
+      end
+    rescue Exception => ex
+      EndpointLog.create(status: :user_functions, message: "user functions failed: #{ex}", endpoint: endpoint)
+    end
   end
 end

@@ -72,4 +72,29 @@ class User
   def library_function_definitions
     (library_functions.map {|function| function.definition}).join("\r\n")
   end
+  
+  def save_library_functions_locally
+    
+    # update gateway
+    # add alias stuff to map function
+    
+    db = Mongoid::Config.master
+    composer_id = COMPOSER_ID
+    # need to add this if it is not there
+    hquery = db['system.js'].find({_id: 'hquery_user_functions'});
+    if (hquery.count == 1) 
+      user_namespace = ''
+      if (hquery.first['value']['f'+composer_id.to_s].nil?) 
+        user_namespace += "hquery_user_functions['f#{composer_id}'] = {}; "
+      end
+    else
+      user_namespace = "hquery_user_functions = {}; hquery_user_functions['f#{composer_id}'] = {}; "
+    end
+    user_namespace = user_namespace + "f#{id.to_s} = new function(){#{library_function_definitions}}; "
+    user_namespace = user_namespace + "hquery_user_functions['f#{composer_id}']['f#{id.to_s}'] = f#{id.to_s}; "
+    db.eval(user_namespace)
+
+
+    db.eval("db.system.js.save({_id:'hquery_user_functions', value : hquery_user_functions })")
+  end
 end
