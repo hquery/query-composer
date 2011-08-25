@@ -22,6 +22,13 @@ function _getDataModel(elem) {
     return data.AndContainerUI || data.OrContainerUI || data.ItemUI;
 }
 
+function resetPosition(elem){
+ elem.css("position","");
+ elem.css("top", "");
+ elem.css("left","");  
+}
+
+
 var factories = {
     "conditions": function() {
         return new queryStructure.And(null, [], "conditions");
@@ -70,6 +77,7 @@ $.widget("ui.ContainerUI", {
         var $dc = $("<div>", {
             'class': 'dependency_collection'
         });
+        $dc.addClass((this.container instanceof queryStructure.And)? "and" : "or")
         var $expando = $("<div>", {
             'class': 'expando'
         }).hover(bind(function() {
@@ -120,7 +128,7 @@ $.widget("ui.ContainerUI", {
     },
 
     over: function(event, ui) {
-        this.element.setActive(true);
+        this.setActive(true);
     },
 
     out: function(event, ui) {
@@ -128,7 +136,7 @@ $.widget("ui.ContainerUI", {
     },
 
     drop: function(element, ui) {
-        this.div.removeClass('active');
+        this.setActive(false);
 
         var droppedWidget = ui.draggable.data('widget');
 
@@ -147,6 +155,7 @@ $.widget("ui.ContainerUI", {
             } else {
             droppedWidget.setParent(this);
             this.ul.append(droppedWidget.element);
+            resetPosition(droppedWidget.element);
         }
 
     },
@@ -183,7 +192,7 @@ $.widget("ui.ContainerUI", {
     setParent: function(widget) {
         if (widget == this.parent) return;
         this.parent = widget;
-        this.container.add(widget.collection);
+        widget.container.add(this.container);
 
     },
 
@@ -295,6 +304,12 @@ $.widget("ui.ItemUI", {
     over: function(event, ui) {
         this.element.addClass("over")
     },
+    setParent: function(widget) {
+        if (widget == this.parent) return;
+        this.parent = widget;
+        widget.container.add(this.container);
+
+    }
 
 });
 
