@@ -22,8 +22,10 @@ queryStructure.createContainer= (parent, json) ->
 
 class queryStructure.Query
   constructor: ->
-    this.find = new queryStructure.And(null, new queryStructure.Or())
-    this.filter = new queryStructure.And(null, new queryStructure.Or())
+    this.find = new queryStructure.And(null)
+    this.find.add(new queryStructure.Or())
+    this.filter = new queryStructure.And(null)
+    this.filter.add(new queryStructure.Or())
     this.select = []
     this.group = []
     this.aggregate = []

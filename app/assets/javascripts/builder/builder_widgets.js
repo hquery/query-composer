@@ -22,10 +22,11 @@ function _getDataModel(elem) {
     return data.AndContainerUI || data.OrContainerUI || data.ItemUI;
 }
 
-function resetPosition(elem){
- elem.css("position","");
- elem.css("top", "");
- elem.css("left","");  
+function resetPosition(draggable) {
+ draggable.css({
+   top: '0',
+   left: '0'
+ });
 }
 
 function createNewItem(itemData){
@@ -158,8 +159,10 @@ $.widget("ui.ContainerUI", {
         } else {
             var oldParent = droppedWidget.parent;
             droppedWidget.setParent(this);
-            this.ul.append(droppedWidget.element);
             resetPosition(droppedWidget.element);
+            resetPosition(ui.draggable);
+            this.ul.append(droppedWidget.element);
+            
              if(oldParent){
                 oldParent.destroyIfEmpty()
               }
@@ -201,6 +204,7 @@ $.widget("ui.ContainerUI", {
         if (widget == this.parent) return;
         this.container.remove();
         widget.container.add(this.container);
+        this.parent = widget;
 
     },
 
@@ -292,7 +296,9 @@ $.widget("ui.ItemUI", {
             'class': 'name',
             text: this.container.name
         }));
-
+        $(div).dblclick(function(){
+          alert("Clicked");
+        })
         this.element.append(div);
 
         this.element.draggable({
@@ -330,17 +336,15 @@ $.widget("ui.ItemUI", {
           other = el.data().ItemUI;
         }
         this.parent.childDropped(this, other);
-        // this.parent.childDropped(this,)
-        // var type = ui.draggable.data("type");
-        // this.parent.childDropped(this, "right",factories[type]());
     },
     over: function(event, ui) {
         this.element.addClass("over")
     },
     setParent: function(widget) {
-        if (widget == this.parent) return;
-        this.parent = widget;
+       if (widget == this.parent) return;
+        this.container.remove();
         widget.container.add(this.container);
+        this.parent = widget;
 
     }
 

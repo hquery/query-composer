@@ -289,6 +289,7 @@ div#find_bottom_border {
 
 div#find_bottom_border_lower {      
       float: bottom;
+      clear: both;
       background: #CCCCCC;
         border: 0 #CCCCCC;
         border-style: solid;
@@ -303,6 +304,7 @@ div#header_line {
   
 div#filter_bottom_border {
       float: bottom;
+
        background-color: white;
        border-color: white;
        border-radius: 0 0 18px 18px;
@@ -313,6 +315,7 @@ div#filter_bottom_border {
 }
 div#filter_bottom_border_lower {
     float: bottom;
+    clear: both;
     background: #CCCCCC;
       border: 0 #CCCCCC;
       border-style: solid;
@@ -323,6 +326,7 @@ div#filter_bottom_border_lower {
 }
 div#extract_bottom_border {
       float: bottom;
+
        background-color: white;
        border-color: white;
        border-radius: 0 0 18px 18px;
@@ -334,6 +338,7 @@ div#extract_bottom_border {
 
 div#extract_bottom_border_lower {
     float: bottom;
+    clear: both;
     background: #CCCCCC;
       border: 0 #CCCCCC;
       border-style: solid;
@@ -364,6 +369,7 @@ div#workspace_bottom_border {
 
 div#workspace_bottom_border_lower {
     float: bottom;
+    clear: both;
     background: #CCCCCC;
       border: 0 #CCCCCC;
       border-style: solid;

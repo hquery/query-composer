@@ -9,6 +9,14 @@
     $("#icon_conditions").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
     $("#icon_observations").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
     $("#icon_treatments").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
+    
+    
+    
+    
+    var query = new queryStructure.Query();
+    
+    $("#find > .conditional_editor").AndContainerUI({container:query.find});
+    //$("#filter > .content").AndContainerUI({container:query.filter});
   });
   </script>
   
@@ -68,6 +76,7 @@
 
     <div id="find">   
           <h1>find</h1>
+          <div class="conditional_editor"></div>
           <div id="find_bottom_border_lower">
             <div id="find_bottom_border">
             </div>
@@ -76,7 +85,7 @@
 
     <div id="filter">
           <h1>filter</h1>
- 
+           <div class="conditional_editor"></div>
           <div id="filter_bottom_border_lower">
             <div id="filter_bottom_border">
             </div>
