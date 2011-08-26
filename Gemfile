@@ -37,4 +37,5 @@ group :test do
  # gem 'therubyracer'
   gem 'factory_girl'
   gem 'mocha', :require => false
+  gem 'pry'
 end

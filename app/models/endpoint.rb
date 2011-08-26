@@ -3,7 +3,7 @@ require 'rss'
 class Endpoint
   include Mongoid::Document
 
-  SUBMIT_PATH = 'queues'
+  SUBMIT_PATH = 'queries'
   FUNCTIONS_PATH = 'library_functions'
 
   has_many :endpoint_logs
@@ -30,27 +30,26 @@ class Endpoint
   end
   
   def check
-    begin
-      url = submit_url
-      response = Net::HTTP.start(url.host, url.port) do |http|
-        http['If-Modified-Since'] = last_check.to_formatted_s(:rfc822)
-        http['Accept'] = 'application/atom+xml'
-        http.get(url.path)
+    url = submit_url
+    response = Net::HTTP.start(url.host, url.port) do |http|
+      headers = {}
+      if last_check
+        headers['If-Modified-Since'] = last_check.to_formatted_s(:rfc822)
       end
-      
-      case response
-      when Net::HTTPSuccess
-        endpoint_logs.create(status: :update, message: 'Feed changed, updating')
-        update_queries(response.body)
-        update_attribute(:last_check, Time.now)
-      when Net::HTTPNotModified
-        endpoint_logs.create(status: :not_modified, message: 'No changes')
-        update_attribute(:last_check, Time.now)
-      else
-        endpoint_logs.create(status: :error, message: "Did not understand the response: #{response}")
-      end
-    rescue Exception => ex
-      endpoint_logs.create(status: :error, message: "Error executing HTTP request: #{response}")
+      headers['Accept'] = 'application/atom+xml'
+      http.get(url.path, headers)
+    end
+
+    case response
+    when Net::HTTPSuccess
+      endpoint_logs.create(status: :update, message: 'Feed changed, updating')
+      update_results(response.body)
+      update_attribute(:last_check, Time.now)
+    when Net::HTTPNotModified
+      endpoint_logs.create(status: :not_modified, message: 'No changes')
+      update_attribute(:last_check, Time.now)
+    else
+      endpoint_logs.create(status: :error, message: "Did not understand the response: #{response}")
     end
   end
   
@@ -59,7 +58,7 @@ class Endpoint
     parsed_feed.entries.each do |atom_entry|
       query_url = atom_entry.id.try(:content)
       query_update_time = atom_entry.updated.try(:content)
-      result = active_results_for_this_endpoint.where(:query_url =>  query_url, :updated_at.lt => query_update_time)
+      result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
       if result
         result.check()
       end

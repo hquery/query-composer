@@ -1,6 +1,5 @@
 require 'stringio'
 require 'net/http/post/multipart'
-require 'poll_job'
 
 class QueriesController < ApplicationController
   # load resource must be before authorize resource
@@ -20,7 +19,7 @@ class QueriesController < ApplicationController
   end
 
   def log
-    @events = Event.all(:conditions => {:query_id => params[:id]})
+    #@events = Event.all(:conditions => {:query_id => params[:id]})
   end
 
   def new

@@ -27,8 +27,7 @@ class Result
   def check
     url = URI.parse(query_url)
     response = Net::HTTP.start(url.host, url.port) do |http|
-      http['If-Modified-Since'] = updated_at.to_formatted_s(:rfc822)
-      http.get(url.path)
+      http.get(url.path, 'If-Modified-Since' => updated_at.to_formatted_s(:rfc822))
     end
     
     case response
@@ -41,12 +40,15 @@ class Result
         save!
         fetch_result
       else
-        self.status = query_status
-        save!
+        if self.status != query_status
+          self.status = query_status
+          save!
+        else
+          self.update_attribute(:created_at, Time.now)          
+        end
       end
     when Net::HTTPNotModified
-      # touch the record to bump created_at
-      save!
+      self.update_attribute(:created_at, Time.now)
     else
       self.error_msg = "Unknown response: #{response}"
       save!

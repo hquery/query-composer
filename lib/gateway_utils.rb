@@ -46,11 +46,11 @@ module GatewayUtils
     query_url
   end
   
-  def post_library_function(endpoint)
-    functions = UploadIO.new(StringIO.new(query.user.library_function_definitions), 'application/javascript')
+  def post_library_function(endpoint, user)
+    functions = UploadIO.new(StringIO.new(user.library_function_definitions), 'application/javascript')
 
-    url = URI.parse endpoint.functions_url
-    request = Net::HTTP::Post::Multipart.new(url.path, {'functions'=>functions, 'user_id'=>query.user.id, 'composer_id'=>COMPOSER_ID})
+    url = endpoint.functions_url
+    request = Net::HTTP::Post::Multipart.new(url.path, {'functions'=>functions, 'user_id'=> user.id, 'composer_id'=>COMPOSER_ID})
 
     begin
       Net::HTTP.start(url.host, url.port) do |http|

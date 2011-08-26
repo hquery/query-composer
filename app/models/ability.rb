@@ -25,7 +25,7 @@ class Ability
     elsif user.id
       can :manage, Query, :user_id => user.id
       can :manage, LibraryFunction, :user_id => user.id
-      can :manage, Event, :query => {:user_id => user.id}
+      #can :manage, Event, :query => {:user_id => user.id}
       can :read, Endpoint
       can :read, TemplateQuery
     end

@@ -19,8 +19,11 @@ class Execution
 
   def execute(endpoints)
     endpoints.each do |endpoint|
-      query.user.save_library_functions_locally unless query.user.library_functions.empty?
-      post_library_function(endpoint)
+      if query.user.library_functions.present?
+        query.user.save_library_functions_locally
+        post_library_function(endpoint, query.user)
+      end
+      
       query_url = submit(endpoint)
       if query_url
         Result.create(endpoint: endpoint, query_url: query_url,
@@ -43,4 +46,35 @@ class Execution
   def cancel
     results.each {|result| result.cancel}
   end
+  
+  # ===============
+  # = Aggregation =
+  # ===============
+  def aggregate
+    #binding.pry
+    response = Result.collection.map_reduce(self.map_fn(), query.reduce, :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
+    results = response['results']
+    if results
+      self.aggregate_result = {}
+      results.each do |result|
+        self.aggregate_result[result['_id']] = result['value']
+      end
+      save!
+    end
+  end
+
+  def map_fn
+    <<END_OF_FN
+    function() {
+      #{js_to_localize_user_functions(query.user)}
+        if (this.status == "complete") {
+          for(var key in this.value) {
+            if (key != "_id") {
+              emit(key, this.value[key]);
+            }
+          }
+        }
+      }
+END_OF_FN
+    end
 end
