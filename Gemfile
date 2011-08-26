@@ -11,7 +11,7 @@ gem 'coffee-script'
 gem 'uglifier'
 
 gem 'jquery-rails'
-gem 'sprockets', '= 2.0.0.beta.10' 
+gem 'sprockets', '= 2.0.0.beta.14' 
 gem 'bson_ext', :platforms => :mri
 gem "mongoid", "~> 2.0"
 gem 'mongoid_rails_migrations'
