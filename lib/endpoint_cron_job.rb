@@ -9,7 +9,7 @@ class EndpointCronJob
   def perform
     Endpoint.all.each do |endpoint|
       if endpoint.unfinished_results?
-        
+        endpoint.check
       end
     end
   end
