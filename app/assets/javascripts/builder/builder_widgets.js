@@ -66,6 +66,7 @@ $.widget("ui.ContainerUI", {
         this.element.addClass("collection");
         var self = this;
         this.element.draggable({
+          helper:'clone',
           cursor: 'crosshair',
           snap: false,
           revert: 'invalid',
@@ -73,7 +74,8 @@ $.widget("ui.ContainerUI", {
           refreshPositions: true,
           stacks: ".ui-layout-center, .content, .section, .header, #test,.ui-droppable",
           handle: '.expando',
-          start:function(){$(this).data("widget",self)}
+          start:function(){$(this).data("widget",self); self.element.hide();},
+          stop:function(){self.element.show();}
         });
     },
 
@@ -214,7 +216,13 @@ $.widget("ui.ContainerUI", {
     },
 
     childDropped: function(widget, other) {
-        // check for new item
+        
+        if(this.reordering && widget.parent == this && other.parent == this) {
+          if(this.container.moveBefore(widget.container,other.container)){
+            widget.element.before(other.element);
+            return;
+          }
+        }
         other.element.remove();
         var collection = (this.container instanceof queryStructure.And) ? new queryStructure.Or() :
                                                             new queryStructure.And();
@@ -302,13 +310,15 @@ $.widget("ui.ItemUI", {
         this.element.append(div);
 
         this.element.draggable({
+            helper: 'clone',
             cursor: 'crosshair',
             snap: false,
             revert: 'invalid',
             zIndex: 1000,
             refreshPositions: true,
             stacks: ".ui-layout-center, .content, .section, .header, #test,.ui-droppable",
-            start:function(){$(this).data("widget",self)}
+            start:function(){$(this).data("widget",self); self.element.hide();},
+            stop:function(){self.element.show();}
         });
 
         this.element.droppable({

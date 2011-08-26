@@ -93,11 +93,13 @@ class queryStructure.Container
   add: (element, after) ->
     # first see if the element is already part of the children array
     # if it is there is no need to do anything
-    if this.childIndex(element) == -1
-      index = this.childIndex(after) + 1
-      this.children.splice(index,0,element)
-      if element.parent && element.parent != this
-        element.parent.removeChild(element)
+    index = @children.length
+    ci = this.childIndex(after)
+    if ci != -1
+      index = ci + 1
+    this.children.splice(index,0,element)
+    if element.parent && element.parent != this
+      element.parent.removeChild(element)
     element.parent = this
     return element
  
@@ -110,17 +112,28 @@ class queryStructure.Container
       @parent.removeChild(this)
 
   removeChild: (victim) ->
-    for index,_child of @children
-      if _child == victim
-        child = @children.splice(index, 1)
-        child.parent = null
+    index = this.childIndex(victim)
+    if index != -1
+      @children.splice(index,1)
+      victim.parent = null
         
   replaceChild: (child, newChild) ->
-    for index,_child of @children
-      if _child == child
-        @children[index] = newChild
-        newChild.parent = this
+    index = this.childIndex(child)
+    if index != -1
+      @children[index] = newChild
+      child.parent = null
+      newChild.parent = this
   
+  moveBefore: (child, other) ->
+    i1 = this.childIndex(child)
+    i2 = this.childIndex(other)
+    if i1 != -1 && i2 != -1
+      child = @children.splice(i2, 1)
+      @children.splice(i1-1,0,other)
+      return true
+    
+    return false
+      
   childIndex: (child) ->
     if child == null
       return -1
