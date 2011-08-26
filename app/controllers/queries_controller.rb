@@ -76,15 +76,6 @@ class QueriesController < ApplicationController
     end
   end
   
-  # Called from queries/new and passed a list of operations and parameters dictated by the UI to define a MapReduce job
-  def generate_query
-    @query_structure = JSON.parse(params[:query_structure])
-        
-    respond_to do |format|
-      format.js { render :layout => false }
-    end
-  end
-
   def clone_template
     @query = TemplateQuery.find(params[:template_id]).to_query
     @query.title = "#{@query.title} (cloned)"
