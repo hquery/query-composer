@@ -221,3 +221,14 @@ img.busy_indicator {
 ol, ul {
 list-style: none;
 }
+.or > ul {
+  display: table-cell;
+}
+.or > ul > li {
+  display: inline;
+  float: left;
+}
+
+.and > ul > li {
+  clear: left;
+}
