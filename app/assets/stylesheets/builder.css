@@ -7,6 +7,7 @@ div.section div.content {
 }
 
 div.resource_dependency {
+  display:table-row;
 }
 
 div.resource_dependency .name{
@@ -208,7 +209,7 @@ img.busy_indicator {
 	-moz-border-radius: 0;
 }
 
-.resource_dependency .name, .resource_dpendency .criticality_toggle {
+.resource_dependency .name, .resource_dependency .criticality_toggle {
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -231,4 +232,36 @@ list-style: none;
 
 .and > ul > li {
   clear: left;
+}
+
+
+.item_image {
+  display:table-cell;
+  width:40px;
+  height:40px;
+}
+
+.item_image.observations {
+  background-image:url('/assets/icon_observations.png');
+  background-repeat: no-repeat;
+}
+
+.item_image.history {
+  background-image:url('/assets/icon_history.png') ;
+  background-repeat: no-repeat;
+}
+
+.item_image.treatments {
+  background-image:url('/assets/icon_treatments.png');
+  background-repeat: no-repeat;
+}
+
+.item_image.conditions {
+  background-image:url('/assets/icon_conditions.png');
+  background-repeat: no-repeat;
+}
+
+.item_image.demographics {
+  background-image:url('/assets/icon_demo.png');
+  background-repeat: no-repeat;
 }

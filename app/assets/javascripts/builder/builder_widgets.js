@@ -285,6 +285,9 @@ $.widget("ui.ItemUI", {
         var div = $("<div>", {
             "class": "resource_dependency"
         });
+        var img = $("<div>", {"class":"item_image "+this.container.name});
+        img.append("&nbsp;");
+        div.append(img);
         div.append($('<div>', {
             'class': 'name',
             text: this.container.name
@@ -320,9 +323,6 @@ $.widget("ui.ItemUI", {
 
     },
 
-    _createContainer: function() {
-        return div;
-    },
     accept: function(event, ui) {
         return true;
     },
