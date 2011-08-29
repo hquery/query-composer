@@ -22,16 +22,8 @@ class QueriesController < ApplicationController
     #@events = Event.all(:conditions => {:query_id => params[:id]})
   end
 
-  def new
-    @endpoints = Endpoint.all
-  end
-
   def before_create
     @query.user = current_user
-  end
-
-  def edit
-    @endpoints = Endpoint.all
   end
 
   def execute
@@ -73,7 +65,6 @@ class QueriesController < ApplicationController
   def clone_template
     @query = TemplateQuery.find(params[:template_id]).to_query
     @query.title = "#{@query.title} (cloned)"
-    @endpoints = Endpoint.all
     render :new
   end
 

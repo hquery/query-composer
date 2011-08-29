@@ -51,7 +51,6 @@ class QueriesControllerTest < ActionController::TestCase
     sign_in @user
     get :new
     assert_not_nil assigns[:query]
-    assert_not_nil assigns[:endpoints]
     assert_response :success
   end
 
@@ -94,7 +93,6 @@ class QueriesControllerTest < ActionController::TestCase
     get :edit, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
-    assert_not_nil assigns[:endpoints]
     assert_response :success
   end
 
