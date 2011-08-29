@@ -35,11 +35,19 @@ class QueriesController < ApplicationController
   end
 
   def execute
+    if (params[:endpoint_ids]) 
+      endpoint_ids = params[:endpoint_ids].map {|id| BSON::ObjectId(id)}
+      endpoints = Endpoint.criteria.for_ids(endpoint_ids)
 
-    # execute the query, and pass in if the user should be notified by email when execution completes
-    @query.execute(params[:notification])
+      notify = params[:notification]
 
-    redirect_to :action => 'show'
+      # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
+      @query.execute(endpoints, notify)
+
+      redirect_to :action => 'show'
+    else
+      redirect_to :action => 'show', notice: "Cannot execute a query if no endpoints are provided."
+    end
   end
 
   def cancel

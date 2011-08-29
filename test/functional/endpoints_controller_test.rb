@@ -94,12 +94,12 @@ class EndpointsControllerTest < ActionController::TestCase
   end
   
   test "should refresh endpoint statuses" do
-    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queues/server_status", :body => 
+    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queries/server_status", :body => 
       "{\"queued\":0,\"running\":0,\"successful\":331,\"failed\":0,\"retried\":0,\"avg_runtime\":4.54074623361455,\"backend_status\":\"good\"}")
     get :refresh_endpoint_statuses
 
     assert_equal "GET", FakeWeb.last_request.method
-    assert_equal 11, assigns[:endpoint_server_statuses].size
+    assert_equal Endpoint.all.length, assigns[:endpoint_server_statuses].size
     assert_equal 'good', assigns[:endpoint_server_statuses][Endpoint.all[0].id][:backend_status]
   end
   
@@ -109,7 +109,7 @@ class EndpointsControllerTest < ActionController::TestCase
       endpoint.save!
     end
     get :refresh_endpoint_statuses
-    assert_equal 11, assigns[:endpoint_server_statuses].size
+    assert_equal Endpoint.all.length, assigns[:endpoint_server_statuses].size
     assert_equal 'unreachable', assigns[:endpoint_server_statuses][Endpoint.all[0].id][:backend_status]
   end
   

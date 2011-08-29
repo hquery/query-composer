@@ -2,7 +2,7 @@ module EndpointsHelper
   def fetch_endpoint_statuses
     @endpoint_server_statuses = {}
     @endpoints.each do |endpoint|
-      url = URI.parse endpoint.submit_url
+      url = endpoint.submit_url
       request = Net::HTTP::Get.new(url.path + "/server_status")
       begin
         Net::HTTP.start(url.host, url.port) do |http|

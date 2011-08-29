@@ -26,7 +26,7 @@ Factory.define :user_with_queries, :parent => :user do |user|
   user.after_create { |u| Factory(:query, :user => u) }
   user.after_create { |u| Factory(:query, :user => u) }
   user.after_create { |u| Factory(:query, :user => u) }
-  user.after_create { |u| Factory(:query, :user => u) }
+  user.after_create { |u| Factory(:query_with_queued_results, :user => u) }
   user.after_create { |u| Factory(:query_with_completed_results, :user => u) }
 end
 
@@ -59,6 +59,14 @@ Factory.define :query do |q|
   q.user Factory.build(:user)
 end
 
+Factory.define :query_with_queued_results, :parent => :query do |query|
+  query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
+  
+  query.executions { 
+    [] << Factory.build(:queued_execution)
+  }
+end
+
 Factory.define :query_with_completed_results, :parent => :query do |query|
   query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
   
@@ -82,6 +90,12 @@ end
 
 Factory.define :execution do |e|
   e.time Time.now.to_i
+end
+
+Factory.define :queued_execution, :parent => :execution do |e|
+  e.after_build do |ex|
+    Factory.create(:result_waiting, :endpoint => Factory(:endpoint), :execution => ex)
+  end
 end
 
 Factory.define :completed_execution, :parent => :execution do |e|

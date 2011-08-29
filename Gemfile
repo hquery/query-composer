@@ -1,17 +1,20 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0.rc4'
+gem 'rails', '3.1.0.rc5'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-# Asset template engines
-gem 'sass-rails', "~> 3.1.0.rc"
-gem 'coffee-script'
-gem 'uglifier'
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails', "~> 3.1.0.rc"
+  gem 'coffee-rails', "~> 3.1.0.rc"
+  gem 'uglifier'
+end
 
 gem 'jquery-rails'
-gem 'sprockets', '= 2.0.0.beta.14' 
+gem 'sprockets', '= 2.0.0.beta.13' 
 gem 'bson_ext', :platforms => :mri
 gem "mongoid", "~> 2.0"
 gem 'mongoid_rails_migrations'
