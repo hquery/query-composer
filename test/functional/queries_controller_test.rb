@@ -167,6 +167,14 @@ class QueriesControllerTest < ActionController::TestCase
     assert_redirected_to(query_path(query.id))
   end
   
+  test "executing without endpoints should warn" do
+    sign_in @user
+    query = Query.find(@ids[2])
+
+    post :execute, id: @ids[2], notification: true
+    assert_redirected_to(query_path(query.id) + "?notice=Cannot+execute+a+query+if+no+endpoints+are+provided.")
+  end
+  
   # test "log displays query log" do
   #   sign_in @user
   #   query_from_db = Query.find(@ids[1])

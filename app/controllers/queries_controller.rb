@@ -35,8 +35,9 @@ class QueriesController < ApplicationController
   end
 
   def execute
-    if (params[:endpoint_ids]) 
-      endpoint_ids = params[:endpoint_ids].map {|id| BSON::ObjectId(id)}
+    endpoint_ids = params[:endpoint_ids]
+    if (endpoint_ids && !endpoint_ids.empty?) 
+      endpoint_ids = endpoint_ids.map! {|id| BSON::ObjectId(id)}
       endpoints = Endpoint.criteria.for_ids(endpoint_ids)
 
       notify = params[:notification]

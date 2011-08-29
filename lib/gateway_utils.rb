@@ -33,16 +33,19 @@ module GatewayUtils
     query_url = endpoint.submit_url
     full_map = js_to_localize_user_functions(query.user) + query.map
     request = query_request(full_map, query.reduce, query.filter, query_url)
-    Net::HTTP.start(query_url.host, query_url.port) do |http|
-      response = http.request(request)
-      if response.code == '201'
-        query_url = response['Location']
-        EndpointLog.create(status: :create, message: "Created new query: #{query_url}", endpoint: endpoint)
-      else
-        EndpointLog.create(status: :error, message: "Did not understand the response: #{response}", endpoint: endpoint)
+    begin
+      Net::HTTP.start(query_url.host, query_url.port) do |http|
+        response = http.request(request)
+        if response.code == '201' 
+          query_url = response['Location']
+          EndpointLog.create(status: :create, message: "Created new query: #{query_url}", endpoint: endpoint)
+        else
+          EndpointLog.create(status: :error, message: "Did not understand the response: #{response.code} : #{response.message}", endpoint: endpoint)
+        end
       end
-    end
-    
+    rescue Exception => ex
+      EndpointLog.create(status: :error, message: "Exception submitting endpoint: #{ex}", endpoint: endpoint)
+    end    
     query_url
   end
   

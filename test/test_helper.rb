@@ -6,7 +6,7 @@ require 'fakeweb'
 require 'factory_girl'
 require 'mocha'
 require 'pry'
-#require 'ruby-debug'
+require 'ruby-debug'
 
 FactoryGirl.find_definitions
 

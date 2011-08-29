@@ -26,7 +26,7 @@ gem "hquery-patient-api", :git=>'http://github.com/hquery/patientapi.git'
 gem 'devise'
 gem 'cancan'
 gem 'pry'
-#gem 'ruby-debug19'
+gem 'ruby-debug19'
 gem 'bluecloth'
 
 # To use debugger
