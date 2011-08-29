@@ -5,6 +5,7 @@ require 'rails/test_help'
 require 'fakeweb'
 require 'factory_girl'
 require 'mocha'
+require 'pry'
 #require 'ruby-debug'
 
 FactoryGirl.find_definitions
@@ -15,8 +16,9 @@ class ActiveSupport::TestCase
     User.all.each {|x| x.destroy}
     BaseQuery.all.each {|x| x.destroy}
     Endpoint.all.each {|x| x.destroy}
-    Event.all.each {|x| x.destroy}
+    EndpointLog.all.each {|x| x.destroy}
     LibraryFunction.all.each {|x| x.destroy}
+    Result.all.each {|x| x.destroy}
     db = Mongoid::Config.master
     db['system.js'].remove({})
   end

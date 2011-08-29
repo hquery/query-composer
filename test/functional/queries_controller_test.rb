@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'poll_job'
 include Devise::TestHelpers
 
 class QueriesControllerTest < ActionController::TestCase
