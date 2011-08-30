@@ -101,87 +101,12 @@ div#search_box .searchfield {
     box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
 }
 
-div#icons {
-    margin: 120px 60px 0 20px;
-    position: relative;
-    float: left;
-    width: 200px;
-    height: 800px;
-    text-decoration:none;
-}
-
-div#icons h1 {
-    font-weight:normal;
-    font-size: 18pt;  
-}
-
-div#icons ul {
-    padding: 10px 0 0 20px;
-    margin: 20px 0 0 20px;
-    position: float left;
-    font-size: 12pt;
-
-}
-
-div#icons img {
-    margin: 0 10px 0 0;
-    vertical-align:-30px;
-    padding: 0 0 20px 0;
-} 
-
 div#variables {
     height: 46%;
 }
 
-div#display_border_color {
-      float: right;
-         background-color: #8FC1D3;
-         border-color: #8FC1D3;
-         opacity: 1;
-         border-radius: 0 18px 18px 0;
-         border-style: solid;
-         border-width: 0 18px 0 0;
-         width: 18px;
-         height: 100%;
-}
 
-div#display_border_edge {
-      margin: 0 -18px 0 0;
-      float: right;
-         background-color: white;
-         border-color: white;
-         border-radius: 0 18px 18px 0;
-         border-style: solid;
-         border-width: 0 18px 0 0;
-         width: 0px;
-         height: 100%;
-}
 
-div#variables_border_color {
-      float: right;
-         background-color: #B7E0E1;
-         border-color: #B7E0E1;
-         border-radius: 0 18px 18px 0;
-         border-style: solid;
-         border-width: 0 18px 0 0;
-         width: 18px;
-         height: 100%;
-}
-div#variables_border_edge {
-      margin: 0 -18px 0 0;
-      float: right;
-         background-color: white;
-         border-color: white;
-         border-radius: 0 18px 18px 0;
-         border-style: solid;
-         border-width: 0 18px 0 0;
-         width: 0px;
-         height: 100%;
-}
-div#icons ul {
-        list-style-type: none;
-        padding:0; margin:0;
-}
 
 div#display {
     margin: 36px 0 0 0;
