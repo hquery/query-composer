@@ -1,6 +1,5 @@
 require 'stringio'
 require 'net/http/post/multipart'
-require 'poll_job'
 
 class QueriesController < ApplicationController
   # load resource must be before authorize resource
@@ -20,11 +19,7 @@ class QueriesController < ApplicationController
   end
 
   def log
-    @events = Event.all(:conditions => {:query_id => params[:id]})
-  end
-
-  def new
-    @endpoints = Endpoint.all
+    #@events = Event.all(:conditions => {:query_id => params[:id]})
   end
 
   def before_create
@@ -41,10 +36,6 @@ class QueriesController < ApplicationController
 #    @query.map = @query.full_map
   end
 
-  def edit
-    @endpoints = Endpoint.all
-  end
-
   def builder
   end
 
@@ -53,11 +44,20 @@ class QueriesController < ApplicationController
   end
 
   def execute
+    endpoint_ids = params[:endpoint_ids]
+    if (endpoint_ids && !endpoint_ids.empty?) 
+      endpoint_ids = endpoint_ids.map! {|id| BSON::ObjectId(id)}
+      endpoints = Endpoint.criteria.for_ids(endpoint_ids)
 
-    # execute the query, and pass in if the user should be notified by email when execution completes
-    @query.execute(params[:notification])
+      notify = params[:notification]
 
-    redirect_to :action => 'show'
+      # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
+      @query.execute(endpoints, notify)
+
+      redirect_to :action => 'show'
+    else
+      redirect_to :action => 'show', notice: "Cannot execute a query if no endpoints are provided."
+    end
   end
 
   def cancel
@@ -82,7 +82,6 @@ class QueriesController < ApplicationController
   def clone_template
     @query = TemplateQuery.find(params[:template_id]).to_query
     @query.title = "#{@query.title} (cloned)"
-    @endpoints = Endpoint.all
     render :new
   end
 

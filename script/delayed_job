@@ -2,5 +2,5 @@
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
 require 'delayed/command'
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'poll_job'))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'endpoint_cron_job'))
 Delayed::Command.new(ARGV).daemonize
