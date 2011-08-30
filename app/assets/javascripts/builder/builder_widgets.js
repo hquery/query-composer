@@ -30,6 +30,39 @@ function resetPosition(draggable) {
 }
 
 
+
+function openPopup(widget){
+  alert("this is where the open popup code will go");
+  $(":ui-popup").popup("close");
+  $("<div>").popup({"widget":widget});
+}
+
+
+$.widget("ui.popup",{
+  
+  options: {},
+  
+  _create: function(){
+    this.element.addClass("ui-popup");
+    this.widget = this.options.widget;
+  },
+  
+  _init: function(){
+  this.content = $("<div>"); // call template creation
+  $(this.element).position({of:this.widget.element, my:"bottom", at:"top"});
+  $(this.element).show();
+  },
+  
+  
+  save: function(){
+    
+  },
+  
+  
+});
+
+
+
 /* Base container UI widget */
 $.widget("ui.ContainerUI", {
     options: {
@@ -41,23 +74,25 @@ $.widget("ui.ContainerUI", {
         this.element.append(this._createContainer());
         this.element.addClass("collection");
         var self = this;
-        this.element.draggable({
-            helper: 'clone',
-            cursor: 'crosshair',
-            snap: false,
-            revert: 'invalid',
-            zIndex: 1000,
-            refreshPositions: true,
-            stacks: ".ui-layout-center, .content, .section, .header, #test,.ui-droppable",
-            handle: '.expando',
-            start: function() {
-                $(this).data("widget", self);
-                self.element.hide();
-            },
-            stop: function() {
-                self.element.show();
-            }
-        });
+        if (this.parent){
+          this.element.draggable({
+              helper: 'clone',
+              cursor: 'crosshair',
+              snap: false,
+              revert: 'invalid',
+              zIndex: 1000,
+              refreshPositions: true,
+              stacks: ".ui-layout-center, .content, .section, .header, #test,.ui-droppable",
+              handle: '.expando',
+              start: function() {
+                  $(this).data("widget", self);
+                  //self.element.hide();
+              },
+              stop: function() {
+                  //self.element.show();
+              }
+          });
+        }
     },
 
     _createContainer: function() {
@@ -154,6 +189,20 @@ $.widget("ui.ContainerUI", {
             if (oldParent) {
                 oldParent.destroyIfEmpty()
             }
+
+             if(oldParent && 
+                oldParent.container.children.length == 1 && 
+                (oldParent.container instanceof queryStructure.And)){
+                var child = oldParent.container.children[0];
+                var childui = this._createItemUI( - 1, child);
+                this.container.add(child);
+                droppedWidget.element.after(childui);
+
+                oldParent.container.remove();
+                oldParent.element.remove();
+                oldParent.destroy();
+
+              }
         }
 
 
@@ -211,6 +260,9 @@ $.widget("ui.ContainerUI", {
                 return;
             }
         }
+        
+        var sameParent = widget.parent == other.parent;
+        var otherParent = other.parent;
         other.element.remove();
         var collection = (this.container instanceof queryStructure.And) ? new queryStructure.Or() : new queryStructure.And();
 
@@ -226,6 +278,20 @@ $.widget("ui.ContainerUI", {
         }
         other.destroy();
         widget.destroy();
+        
+        if(!sameParent && 
+          otherParent.container.children.length == 1 && 
+          (otherParent.container instanceof queryStructure.And)){
+          var child = other.parent.container.children[0];
+          var childui = this._createItemUI( - 1, child);
+          this.container.add(child, collection);
+          ui.after(childui);
+          
+          otherParent.container.remove();
+          otherParent.element.remove();
+          otherParent.destroy();
+          
+        }
     }
 
     ,
@@ -293,7 +359,7 @@ $.widget("ui.ItemUI", {
             text: this.container.name
         }));
         $(div).dblclick(function() {
-            alert("Clicked");
+            self.openPopup()
         })
         this.element.append(div);
 
@@ -307,10 +373,10 @@ $.widget("ui.ItemUI", {
             stacks: ".ui-layout-center, .content, .section, .header, #test,.ui-droppable",
             start: function() {
                 $(this).data("widget", self);
-                self.element.hide();
+                //self.element.hide();
             },
             stop: function() {
-                self.element.show();
+                //self.element.show();
             }
         });
 
@@ -350,6 +416,10 @@ $.widget("ui.ItemUI", {
         widget.container.add(this.container);
         this.parent = widget;
 
+    },
+    
+    openPopup: function(){
+      alert("this is where the opening of the popup code will go");
     }
 
 });
