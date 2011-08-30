@@ -9,7 +9,7 @@
       <th></th>
     </tr>
     <% 
-      results.each do |result| 
+      query.last_execution.results.each do |result| 
     %>
       <tr valign='top'>
         <td><%= result.endpoint.base_url %></td>
