@@ -9,13 +9,13 @@
 function extractPatient(patient) {
   <% 
    groups = [] 
-   query_structure['group'].each do |group| 
+   query_structure['extract']['groups'].each do |group| 
      args = (group['title'] == 'age') ? 'new Date()' : ''
      groups << "{title: '#{group['title']}',  value: patient.#{group['callstack']}(#{args}) }"
    end 
 
    values = []
-   query_structure['select'].each do |select| 
+   query_structure['extract']['selections'].each do |select| 
      args = (select['title'] == 'age') ? 'new Date()' : ''
      values << "{title: '#{select['title']}',  value: patient.#{select['callstack']}(#{args}) }"
    end
