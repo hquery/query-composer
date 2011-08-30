@@ -1,0 +1,50 @@
+<% content_for :head do -%>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $( "#execution-popup" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 450,
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+
+    $( "#<%= button_id %>" ).click(function() {
+      $( "#execution-popup" ).dialog( "open" );
+    });        
+  });
+</script>
+<% end -%>
+
+<div id="execution-popup" title="Execution Options">
+  <h1>Notification:</h1>
+  <input id="notify-checkbox" name="notify" type="checkbox"> Send email notification when query completes
+  <h1>Endpoints:</h1>
+  <table id="endpoints" class="simpleTable">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Url</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <% for endpoint in endpoints %>
+      <tr>
+        <td><%= check_box_tag "query[endpoint_ids][]", endpoint.id %></td>
+        <td><%= endpoint.name %></td>
+        <td><%= endpoint.base_url %></td>
+      </tr> 
+      <% end %>
+    </tbody>
+  </table>
+</div>

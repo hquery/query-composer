@@ -33,6 +33,7 @@ class QueriesController < ApplicationController
   
   # TODO: remove this once this has stabilized
   def show
+    @endpoints = Endpoint.all
 #    @query.map = @query.full_map
   end
 
@@ -56,7 +57,8 @@ class QueriesController < ApplicationController
 
       redirect_to :action => 'show'
     else
-      redirect_to :action => 'show', notice: "Cannot execute a query if no endpoints are provided."
+      flash[:alert] = "Cannot execute a query if no endpoints are provided."
+      redirect_to :action => 'show'
     end
   end
 
