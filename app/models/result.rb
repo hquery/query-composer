@@ -4,7 +4,7 @@ class Result
 
   QUEUED = 'queued'
   FAILED = 'failed'
-  COMPLETE = 'complete'
+  COMPLETE = 'success'
   CANCELED = 'canceled'
   RUNNING = 'running'
   FETCHING_RESULT = 'fetching_result'

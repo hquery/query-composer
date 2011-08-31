@@ -51,7 +51,6 @@ class Execution
   # = Aggregation =
   # ===============
   def aggregate
-    #binding.pry
     response = Result.collection.map_reduce(self.map_fn(), query.reduce, :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
     results = response['results']
     if results
@@ -67,7 +66,7 @@ class Execution
     <<END_OF_FN
     function() {
       #{js_to_localize_user_functions(query.user)}
-        if (this.status == "complete") {
+        if (this.status == "#{Result::COMPLETE}") {
           for(var key in this.value) {
             if (key != "_id") {
               emit(key, this.value[key]);

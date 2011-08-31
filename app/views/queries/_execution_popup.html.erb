@@ -28,7 +28,7 @@
 <div id="execution-popup" title="Execution Options">
   <%= simple_form_for @query, :url => url_for(:action => 'execute'), :method => 'post', :html => {id: 'execution-popup-form'} do |f| %>
   <h1>Notification:</h1>
-  <%= check_box_tag "notify", "notify", false %> Send email notification when query completes
+  <%= check_box_tag "notification", true, false %> Send email notification when query completes
   <h1>Endpoints:</h1>
   <table id="endpoints" class="simpleTable">
     <thead>

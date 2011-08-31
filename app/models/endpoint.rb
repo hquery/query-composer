@@ -1,4 +1,5 @@
 require 'rss'
+require 'net/http'
 
 class Endpoint
   include Mongoid::Document
@@ -37,25 +38,29 @@ class Endpoint
   
   def check
     url = submit_url
-    response = Net::HTTP.start(url.host, url.port) do |http|
-      headers = {}
-      if last_check
-        headers['If-Modified-Since'] = last_check.to_formatted_s(:rfc822)
+    begin
+      response = Net::HTTP.start(url.host, url.port) do |http|
+        headers = {}
+        if last_check
+          headers['If-Modified-Since'] = last_check.to_formatted_s(:rfc822)
+        end
+        headers['Accept'] = 'application/atom+xml'
+        http.get(url.path, headers)
       end
-      headers['Accept'] = 'application/atom+xml'
-      http.get(url.path, headers)
-    end
 
-    case response
-    when Net::HTTPSuccess
-      endpoint_logs.create(status: :update, message: 'Feed changed, updating')
-      update_results(response.body)
-      update_attribute(:last_check, Time.now)
-    when Net::HTTPNotModified
-      endpoint_logs.create(status: :not_modified, message: 'No changes')
-      update_attribute(:last_check, Time.now)
-    else
-      endpoint_logs.create(status: :error, message: "Did not understand the response: #{response}")
+      case response
+      when Net::HTTPSuccess
+        endpoint_logs.create(status: :update, message: 'Feed changed, updating')
+        update_results(response.body)
+        update_attribute(:last_check, Time.now)
+      when Net::HTTPNotModified
+        endpoint_logs.create(status: :not_modified, message: 'No changes')
+        update_attribute(:last_check, Time.now)
+      else
+        endpoint_logs.create(status: :error, message: "Did not understand the response: #{response}")
+      end
+    rescue Exception => ex
+        endpoint_logs.create(status: :error, message: "endpoint check failed: #{ex}")
     end
   end
   
@@ -67,11 +72,16 @@ class Endpoint
       result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
       if result
         result.check()
+        aggregate_execution result
       end
     end
   end
   
   private
+  
+  def aggregate_execution result
+    Query.where("executions._id" => result.execution_id).first.executions.find(result.execution_id).aggregate
+  end
   
   def active_results_for_this_endpoint
     results.any_in(status: [Result::RUNNING, Result::QUEUED])
