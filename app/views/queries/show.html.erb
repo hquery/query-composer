@@ -1,7 +1,7 @@
 <% content_for :head do -%>
-<script type="text/javascript">
-var refreshFailCount = 0;
-var queryInfoRefreshInterval = setInterval(function() {
+  <script type="text/javascript">
+  var refreshFailCount = 0;
+  var queryInfoRefreshInterval = setInterval(function() {
   $.ajax({
     type: "GET",
     url: "/queries/<%= @query.id %>/refresh_execution_results",
@@ -10,24 +10,27 @@ var queryInfoRefreshInterval = setInterval(function() {
       refreshFailCount++;
       if (refreshFailCount >= 10) {
         clearInterval(queryInfoRefreshInterval);
-        alert("Too many failed queries to the gateway. Canceling the refresh. This should be handled prettily in the future.");
+        alert("Too many failed queries to the gateway. Canceling the refresh.");
       }
     }
   })
   }, 5000);
-
-
-  $(document).ready(function() {
-    <% if (alert) %>
-    alert('<%= alert %>')
-    <% end %>
-  });
-
   </script>
   <% end -%>
   <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
   <%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
 
+  <!-- needs to be below execution_popup so that execution popup is not visible during alert -->
+  <% content_for :head do -%>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        <% if (alert) %>
+          alert('<%= alert %>')
+        <% end %>
+      });
+    </script>
+  <% end -%>
+  
   <div id="mainPanel">
 
     <h1>Query Definition</h1>

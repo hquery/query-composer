@@ -50,7 +50,7 @@ class QueriesController < ApplicationController
       endpoint_ids = endpoint_ids.map! {|id| BSON::ObjectId(id)}
       endpoints = Endpoint.criteria.for_ids(endpoint_ids)
 
-      notify = params[:notification]
+      notify = params[:notify]
 
       # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
       @query.execute(endpoints, notify)

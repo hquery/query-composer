@@ -9,7 +9,7 @@ module GatewayUtils
     reduce_io = UploadIO.new(StringIO.new(reduce), 'application/javascript')
 
     # get the endpoint url and build the request
-    payload = {'map' => map, 'reduce' => reduce_io}
+    payload = {'map' => map_io, 'reduce' => reduce_io}
     payload['filter'] = filter_io if filter
     Net::HTTP::Post::Multipart.new(query_url.path, payload)
   end
