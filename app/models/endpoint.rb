@@ -5,6 +5,7 @@ class Endpoint
 
   SUBMIT_PATH = 'queries'
   FUNCTIONS_PATH = 'library_functions'
+  STATUS_PATH = 'queues'
 
   has_many :endpoint_logs
   has_many :results
@@ -23,6 +24,11 @@ class Endpoint
   def functions_url
     @parsed_base ||= URI.parse(base_url)
     @parsed_base.merge(FUNCTIONS_PATH)
+  end
+  
+  def status_url
+    @parsed_base ||= URI.parse(base_url)
+    @parsed_base.merge(STATUS_PATH)
   end
   
   def unfinished_results?

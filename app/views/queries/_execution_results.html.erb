@@ -5,7 +5,6 @@
     <tr>
       <th align='left'>Query URL</th>
       <th align='left'>Status</th>
-      <th align='left'>Next Poll</th>
       <th align='left'>Poll URL</th>
       <th align='left'>Result</th>
       <th></th>
@@ -16,7 +15,6 @@
       <tr valign='top'>
         <td><%= result.endpoint.base_url %></td>
         <td><%= result.status %><%= result.error_msg if result.status == Result::FAILED %></td>
-        <td>next poll</td>
         <td><%= result.result_url %></td>
         <td>
           <% # This call uses /queries because this whole partial is called from an ActionMailer and it needs absolute paths%>
