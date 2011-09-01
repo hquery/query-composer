@@ -60,7 +60,7 @@ class Endpoint
         endpoint_logs.create(status: :error, message: "Did not understand the response: #{response}")
       end
     rescue Exception => ex
-        endpoint_logs.create(status: :error, message: "endpoint check failed: #{ex}")
+      endpoint_logs.create(status: :error, message: "endpoint check failed: #{ex}")
     end
   end
   
@@ -72,16 +72,12 @@ class Endpoint
       result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
       if result
         result.check()
-        aggregate_execution result
+        result.execution.try(:aggregate)
       end
     end
   end
   
   private
-  
-  def aggregate_execution result
-    Query.where("executions._id" => result.execution_id).first.executions.find(result.execution_id).aggregate
-  end
   
   def active_results_for_this_endpoint
     results.any_in(status: [Result::RUNNING, Result::QUEUED])
