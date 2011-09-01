@@ -31,32 +31,71 @@ function resetPosition(draggable) {
 
 
 
-function openPopup(widget){
-  alert("this is where the open popup code will go");
-  $(":ui-popup").popup("close");
-  $("<div>").popup({"widget":widget});
-}
-
-
 $.widget("ui.popup",{
   
-  options: {},
+  options: {
+    position:{
+             my:"left top",
+             at:"right top"    
+    }
+  },
   
   _create: function(){
-    this.element.addClass("ui-popup");
-    this.widget = this.options.widget;
+    this.content = this.options.content;
+    this.widg = this.options.widget;
+    this.div = this._createPopupShell();
+    $(this.element).append(this.div);
+    this.position = this.options.position;
+    this.position["of"] = this.element;
+   
   },
   
   _init: function(){
-  this.content = $("<div>"); // call template creation
-  $(this.element).position({of:this.widget.element, my:"bottom", at:"top"});
-  $(this.element).show();
+   this.div.position(this.position);
+   
   },
   
+  open: function(){
+    this.div.show();
+    this.div.position(this.position);
+  },
+  
+  close: function(){
+    this.div.hide();
+  },
+  
+  cancel: function(){
+    this.close();
+  },
   
   save: function(){
-    
+    // save some stuff then close
+    this.close();
   },
+  
+  _createPopupShell: function(){
+    var div = $("<div >", {"class":"popup-frame", 'style':"position:absolute"});
+    div.hide();
+    this.contentDiv = $("<div class='popup-content'>");
+    this.contentDiv.append(this.content);
+    var buttonRow = $("<div></div>");
+    var saveButton = $("<input class='save' type='button' value='save'>");
+    saveButton.click(bind(this.save, this));
+    var closeButton = $("<input class='close' type='button' value='cancel'>");
+    closeButton.click(bind(this.close,this));
+    
+    buttonRow.append(saveButton);
+    buttonRow.append(closeButton);
+    div.append(buttonRow);
+    
+    // drop in in the body so we can use it 
+    
+    // figure out arrow position 
+    div.append($("<div class='popup-arrow-border'></div><div class='popup-arrow'></div>"));
+    return div;
+  }
+  
+
   
   
 });
@@ -190,17 +229,9 @@ $.widget("ui.ContainerUI", {
                 oldParent.destroyIfEmpty()
             }
 
-             if(oldParent && 
-                oldParent.container.children.length == 1 && 
+             if(oldParent && oldParent != this.parent &&
                 (oldParent.container instanceof queryStructure.And)){
-                var child = oldParent.container.children[0];
-                var childui = this._createItemUI( - 1, child);
-                this.container.add(child);
-                droppedWidget.element.after(childui);
-
-                oldParent.container.remove();
-                oldParent.element.remove();
-                oldParent.destroy();
+                oldParent._collapsIfSingleChild();
 
               }
         }
@@ -212,7 +243,7 @@ $.widget("ui.ContainerUI", {
     _createItemUI: function(i, item) {
 
         var cell = $('<li>', {
-            class: "dependency"
+            'class': "dependency"
         });
         if (item && item.name != null) {
             $(cell).ItemUI({
@@ -279,21 +310,24 @@ $.widget("ui.ContainerUI", {
         other.destroy();
         widget.destroy();
         
-        if(!sameParent && 
-          otherParent.container.children.length == 1 && 
-          (otherParent.container instanceof queryStructure.And)){
-          var child = other.parent.container.children[0];
-          var childui = this._createItemUI( - 1, child);
-          this.container.add(child, collection);
-          ui.after(childui);
-          
-          otherParent.container.remove();
-          otherParent.element.remove();
-          otherParent.destroy();
-          
+        if(!sameParent && otherParent && (otherParent.container instanceof queryStructure.And)){
+          otherParent._collapsIfSingleChild();
         }
+    },
+    
+    _collapsIfSingleChild: function(){
+      if(this.container && this.container.children.length == 1 && this.parent && this.container.parent){
+        var child = this.container.children[0];
+        var childui = this.parent._createItemUI( - 1, child);
+        this.container.parent.add(child,this.container);
+        this.element.replaceWith(childui);
+        this.container.remove();
+        this.element.remove();
+        this.destroy();
+      }
     }
 
+    
     ,
     destroyIfEmpty: function() {
         var p = this.parent;
@@ -351,6 +385,7 @@ $.widget("ui.ItemUI", {
         var div = $("<div>", {
             "class": "resource_dependency"
         });
+        this.div = div;
         var img = $("<div>", {"class":"item_image "+this.container.name});
         img.append("&nbsp;");
         div.append(img);
@@ -399,7 +434,7 @@ $.widget("ui.ItemUI", {
         var other = ui.draggable.data('widget');
         if (other == null) {
             var el = $('<li>', {
-                class: "dependency resource_dep"
+                'class': "dependency resource_dep"
             }).ItemUI({
                 container: ui.draggable.data('item')
             });
@@ -419,7 +454,8 @@ $.widget("ui.ItemUI", {
     },
     
     openPopup: function(){
-      alert("this is where the opening of the popup code will go");
+      this.element.popup({'widg':this});
+      this.element.popup("open");
     }
 
 });
