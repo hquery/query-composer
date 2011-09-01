@@ -38,11 +38,13 @@ $.widget("ui.popup",{
              my:"left top",
              at:"right top"    
     }
+    ,
+    arrow: "none"
   },
   
   _create: function(){
     this.content = this.options.content;
-    this.widg = this.options.widget;
+    this.widg = this.options.widg;
     this.div = this._createPopupShell();
     $(this.element).append(this.div);
     this.position = this.options.position;
@@ -57,6 +59,7 @@ $.widget("ui.popup",{
   
   open: function(){
     this.div.show();
+    this._positionArrow(this.div);
     this.div.position(this.position);
   },
   
@@ -88,14 +91,55 @@ $.widget("ui.popup",{
     buttonRow.append(closeButton);
     div.append(buttonRow);
     
-    // drop in in the body so we can use it 
-    
-    // figure out arrow position 
     div.append($("<div class='popup-arrow-border'></div><div class='popup-arrow'></div>"));
     return div;
-  }
-  
+  },
 
+  _positionArrow: function(div){
+     // drop in in the body so we can use it 
+      if(this.options.arrow && this.options.arrow!= "none"){
+        var arrowDiv = $("div.popup-arrow", div);
+        var arrowBorder = $("div.popup-arrow-border", div);
+        var direction = this.options.arrow.direction;
+        var location = this.options.arrow.location || ".50";
+          // figure out arrow position 
+        var directions = ["left","right","bottom","top"]; 
+        if(!arrowDiv.hasClass("popup-arrow-"+direction)){
+          $.each(directions,function(i,v){
+            arrowDiv.removeClass("popup-arrow-"+v);
+            arrowBorder.removeClass("popup-arrow-border-"+v);
+          });
+          arrowDiv.css({top:"", left:"", bottom:"", right:""});
+          arrowBorder.css({top:"", left:"", bottom:"", right:""});
+          arrowDiv.addClass("popup-arrow-"+direction);
+          arrowBorder.addClass("popup-arrow-border-"+direction);
+        }
+        
+        var width = div.width();
+        var height = div.height();
+        
+        var arrowWidth = arrowDiv.width();
+        var arrowHeight = arrowDiv.height();
+        location = (location == "center") ? ".5" : location;
+        var fLoc = parseFloat(location);
+        if(!isNaN(fLoc)){
+           
+           if(direction == "left" || direction == "right"){
+              var where = (height * fLoc) + (arrowHeight/2);
+              arrowDiv.css({"top":where+"px"});
+              arrowBorder.css({"top":where+"px"});
+           }else{
+             var where = (width * fLoc) + (arrowWidth/2);
+             arrowDiv.css({"left":where+"px"});
+             arrowBorder.css({"left":where+"px"});
+           }
+        }else{
+        arrowDiv.addClass(direction+"-"+location);
+        arrowBorder.addClass(direction+"-"+location);
+        }
+       }
+  }
+   
   
   
 });
@@ -454,7 +498,7 @@ $.widget("ui.ItemUI", {
     },
     
     openPopup: function(){
-      this.element.popup({'widg':this});
+      this.element.popup({'widg':this, arrow:{direction:"left", location:"top"}});
       this.element.popup("open");
     }
 
