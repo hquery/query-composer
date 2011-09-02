@@ -3,18 +3,15 @@
   <h1>Create New Query</h1>
  
   <script>
+  var query = new queryStructure.Query();
+  query.rebuildFromJson(<%= (@query.query_structure || {}).to_json %>);
   $(document).ready(function(){
     $("#icon_demo").draggable({helper:"clone",opacity:".5", refreshPostions:true , start:function(){$(this).data("item",new queryStructure.And(null, [], "demographics"))}});
     $("#icon_history").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
     $("#icon_conditions").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
     $("#icon_observations").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
     $("#icon_treatments").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
-    
-    
-    
-    
-    var query = new queryStructure.Query();
-    
+
     $("#find > .conditional_editor").AndContainerUI({container:query.find});
     //$("#filter > .content").AndContainerUI({container:query.filter});
   });

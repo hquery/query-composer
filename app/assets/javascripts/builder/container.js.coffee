@@ -23,18 +23,16 @@ queryStructure.createContainer= (parent, json) ->
 class queryStructure.Query
   constructor: ->
     this.find = new queryStructure.And(null)
-    this.find.add(new queryStructure.Or())
     this.filter = new queryStructure.And(null)
-    this.filter.add(new queryStructure.Or())
     this.extract = new queryStructure.Extraction([], [])
 
   toJson: -> 
     return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'extract' : this.extract.toJson() }
   
   rebuildFromJson: (@json) ->
-    this.find = this.buildFromJson(null, @json['find'])
-    this.filter = this.buildFromJson(null, @json['filter'])
-    this.extract = queryStructure.Extraction.rebuildFromJson(@json['extract'])
+    this.find = if @json['find'] then this.buildFromJson(null, @json['find']) else new queryStructure.And(null)
+    this.filter = if  @json['filter'] then this.buildFromJson(null, @json['filter'] ) else new queryStructure.And(null)
+    this.extract = if @json['extract'] then queryStructure.Extraction.rebuildFromJson(@json['extract']) else new queryStructure.Extraction([], [])
     
   buildFromJson: (@parent, @element) ->
     if this.getElementType(@element) == 'rule'
@@ -84,7 +82,7 @@ class queryStructure.Query
 
 class queryStructure.Container
   constructor: (@parent, @children = [], @name, @negate = false) ->
-
+    @children ||= []
 
   add: (element, after) ->
     # first see if the element is already part of the children array
