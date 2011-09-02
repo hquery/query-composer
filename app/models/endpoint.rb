@@ -72,15 +72,15 @@ class Endpoint
       result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
       if result
         result.check()
-        aggregate_execution result
+        get_execution(result).try(:aggregate)
       end
     end
   end
   
   private
   
-  def aggregate_execution result
-    Query.where("executions._id" => result.execution_id).first.executions.find(result.execution_id).aggregate
+  def get_execution result
+    Query.where("executions._id" => result.execution_id).first.executions.find(result.execution_id) if result.execution_id
   end
 
   def active_results_for_this_endpoint
