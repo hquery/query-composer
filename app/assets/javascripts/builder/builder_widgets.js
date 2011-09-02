@@ -167,7 +167,7 @@ $.widget("ui.ContainerUI", {
               revert: 'invalid',
               zIndex: 1000,
               refreshPositions: true,
-              stacks: ".ui-layout-center, .content, .section, .header, #test,.ui-droppable",
+         //     stack: ".ui-layout-center, .content, .section, .header, #test,.ui-droppable",
               handle: '.expando',
               start: function() {
                   $(this).data("widget", self);
@@ -209,7 +209,7 @@ $.widget("ui.ContainerUI", {
             },
             this)
         });
-
+        
         $expander.prepend($expandIndicator);
         $expando.prepend($expander);
         $dc.append($expando);
@@ -218,7 +218,7 @@ $.widget("ui.ContainerUI", {
         $expando.droppable({
             drop: bind(this.drop, this),
             greedy: true,
-            tolerance: 'pointer',
+            tolerance: 'intersect',
             over: bind(this.over, this),
             out: bind(this.out, this)
         });

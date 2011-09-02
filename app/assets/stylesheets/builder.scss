@@ -1,0 +1,223 @@
+@import "mixins";
+/* Define styles for drag and drop query builder */
+
+$activeBackground : #CCF2F7;
+$activeBorderWidth : 2px;
+$depTypeName : #AAAAAA;  // 'AND' and 'OR' in the tree
+
+$itemBorderRadius : 7px;
+
+$itemPaddingTop : 5px;
+$itemPaddingBottom : 5px;
+$itemPaddingLeft : 10px;
+$itemPaddingRight :  10px;
+
+$itemPadding : $itemPaddingTop $itemPaddingRight $itemPaddingBottom $itemPaddingLeft;
+
+
+
+div.resource_dependency {
+  display:table-row;
+  .name {
+    padding:3px 0;
+	  display: inline-block;
+  	vertical-align: middle;
+	}
+}
+
+li.dependency {
+	margin-bottom: 2px;
+}
+
+div.dependency_collection {
+  padding: 5px 0 0 20px;
+  .active, &.active {
+    @include rounded($itemBorderRadius);
+    background-color:$activeBackground;
+  }
+  .dep_type {
+    display:inline;
+    color:$depTypeName;
+    font-weight:bold;
+    
+    span.expansion_indicator {
+      width: 20px;
+      height: 20px;
+      background-image: url('/assets/sprites_small.png');
+      background-position: -504px 62px;
+      display:inline-block;
+    }
+  }
+  // show different sprite when collection is collapsed
+  &.collapsed .dep_type span.expansion_indicator {
+    background-position: -483px 62px;
+  }
+  .expando {
+//    margin-bottom:5px;
+  }
+}
+
+@mixin resourceHover {
+  background-color:lighten($activeBackground, 5%);
+  @include rounded($itemBorderRadius);
+  border: $activeBorderWidth dashed darken($activeBackground, 20%);
+  padding-top    : $itemPaddingTop - $activeBorderWidth;
+  padding-right  : $itemPaddingRight - $activeBorderWidth;
+  padding-bottom : $itemPaddingBottom - $activeBorderWidth;
+  padding-left   : $itemPaddingLeft - $activeBorderWidth;
+	margin-bottom: 2px;
+}
+div.conditional_editor {
+  margin-bottom:10px;
+  margin-left:25px;
+  li.resource_dep {
+  	padding: $itemPadding;
+	  cursor: pointer;
+	  &:hover {@include resourceHover}
+  }
+  // this is a collection inside of a dependency group (e.g. and OR inside of an AND)
+  li.dependency.collection {
+  	padding: $itemPadding;
+	  cursor: pointer;
+	  &.hover {@include resourceHover}
+  }
+}
+
+.ui-draggable {
+  cursor:move;
+}
+
+.ui-draggable-dragging {
+  opacity: .75;
+	filter: alpha(opacity=75);
+  z-index:100;
+  padding:5px;
+  background-color:lighten($activeBackground, 5%);
+  border: $activeBorderWidth dashed darken($activeBackground, 20%);
+  @include rounded(7px);
+}
+
+.or > ul {
+  display: table-cell;
+  & > li {
+    display: inline;
+    float: left;
+  }
+}
+
+.item_image {
+  display:table-cell;
+  width:40px;
+  height:40px;
+  background-repeat:no-repeat;
+  &.observations {
+    background-image:url('/assets/icon_observations.png');
+  }
+  &.history {
+    background-image:url('/assets/icon_history.png');
+  }
+  &.treatments {
+    background-image:url('/assets/icon_treatments.png');
+  }
+  &.conditions {
+    background-image:url('/assets/icon_conditions.png');
+  }
+  &.demographics {
+    background-image:url('/assets/icon_demo.png');
+  }
+}
+
+
+
+
+.popup-frame {
+     background-color:#EDEDED;
+    border:2px solid #666666;
+    font-size:35px;
+    line-height:1.3em;
+    margin:10px auto;
+    padding:10px;
+    position:relative;
+    text-align:center;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-box-shadow:0 0 5px #888888;
+    -webkit-box-shadow:0 0 5px #888888;
+}
+
+.popup-content {
+  
+}
+
+
+.popup-arrow-border {
+  border-style: solid;
+  border-width: 10px;
+  height:0;
+  width:0;
+  position:absolute;
+
+
+}
+.popup-arrow {
+  
+  border-style: solid;
+  border-width: 10px;
+  height:0;
+  width:0;
+  position:absolute;
+
+  
+}
+
+
+
+
+
+
+.popup-arrow-bottom {
+  border-color: #EDEDED transparent transparent transparent;
+  bottom:-17.5px;
+}
+.popup-arrow-border-bottom {
+  border-color: #666666 transparent transparent transparent;
+  bottom:-20px;
+}
+
+
+.popup-arrow-left {
+  border-color: transparent #EDEDED transparent transparent;
+  left:-17.5px;
+}
+.popup-arrow-border-left {
+  border-color:  transparent #666666 transparent transparent;
+  left:-20px;
+}
+
+
+.popup-arrow-top {
+  border-color:  transparent transparent #EDEDED transparent;
+  top:-17.5px;
+}
+.popup-arrow-border-top {
+  border-color:  transparent transparent #666666 transparent;
+  top:-20px;
+}
+
+
+.popup-arrow-right {
+  border-color: transparent transparent transparent #EDEDED ;
+  right:-17.5px;
+}
+.popup-arrow-border-right {
+  border-color:  transparent transparent transparent #666666;
+  right:-20px;
+}
+
+
+.left-top, .right-top { top: 1px; }
+.left-bottom , .right-bottom {bottom: 1px;  }
+
+
+.bottom-left, .top-left { left: 1px;}
+.bottom-right , .top-right { right:1px;}
