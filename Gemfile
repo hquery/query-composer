@@ -26,7 +26,7 @@ gem 'hquery-patient-api', :git=>'http://github.com/hquery/patientapi.git', :bran
 gem 'devise'
 gem 'cancan'
 gem 'pry'
-gem 'ruby-debug19'
+#gem 'ruby-debug19'
 gem 'bluecloth'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
