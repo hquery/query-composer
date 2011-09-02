@@ -99,7 +99,7 @@ class EndpointsControllerTest < ActionController::TestCase
     get :refresh_endpoint_statuses
 
     assert_equal "GET", FakeWeb.last_request.method
-    assert_equal 11, assigns[:endpoint_server_statuses].size
+    assert_equal Endpoint.all.length, assigns[:endpoint_server_statuses].size
     assert_equal 'good', assigns[:endpoint_server_statuses][Endpoint.all[0].id][:backend_status]
   end
   
@@ -109,7 +109,7 @@ class EndpointsControllerTest < ActionController::TestCase
       endpoint.save!
     end
     get :refresh_endpoint_statuses
-    assert_equal 11, assigns[:endpoint_server_statuses].size
+    assert_equal Endpoint.all.length, assigns[:endpoint_server_statuses].size
     assert_equal 'unreachable', assigns[:endpoint_server_statuses][Endpoint.all[0].id][:backend_status]
   end
   

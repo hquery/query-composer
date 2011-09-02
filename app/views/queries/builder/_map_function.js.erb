@@ -6,30 +6,27 @@
   # query_structure - The JSON that represents the query for which we're writing the map function.
 %>
 
-function extractPatient(patient) {
-  <% 
-   groups = [] 
-   query_structure['group'].each do |group| 
-     args = (group['title'] == 'age') ? 'new Date()' : ''
-     groups << "{title: '#{group['title']}',  value: patient.#{group['callstack']}(#{args}) }"
-   end 
-
-   values = []
-   query_structure['select'].each do |select| 
-     args = (select['title'] == 'age') ? 'new Date()' : ''
-     values << "{title: '#{select['title']}',  value: patient.#{select['callstack']}(#{args}) }"
-   end
-
-   final_values = '{values: [{value:1}] }';
-   if (values.length > 0)
-     final_values =  "[#{values.join(',')}]"
-   end
-   final_group = '[{title: null,  value: null}]'
-   if (groups.length > 0)
-     final_groups =  "[#{groups.join(',')}]"
-   end
-  %>  
-  emit({type: 'group', value: <%= final_groups %> }, {values: <%= final_values %>});
+function map(patient) {
+  var populationValue = new reducer.Value(
+    {
+      'target_pop' : 0,
+      'filtered_pop' : 0,
+      'unfound_pop' : 0,
+      'total_pop' : 1
+    },
+    rereduced = false
+  );
+  
+  if (find(patient)) {
+    populationValue.values.filtered_pop = 1;
+    if (filter(patient)) {
+      populationValue.values.target_pop = 1;
+      extract(patient);
+    }
+  } else {
+    populationValue.values.unfound_pop = 1;
+  }
+  emit({ 'type' : 'population' }, populationValue);
 }
 
 function find(patient) {
@@ -56,17 +53,37 @@ function filter(patient) {
   return root.test(patient);
 }
 
-function map(patient) {  
-  if (find(patient)) {
-    if (filter(patient)) {
-      emit({type: 'magic', value: 'target_pop' }, {values: [{value:1}] });
-      extractPatient(patient);
-    } else {
-      emit({type: 'magic', value: 'filtered_pop' }, {values: [{value:1}] });
-    }
-  }
-  else {
-    emit({type: 'magic', value: 'unfound_pop' }, {values: [{value:1}] });
-  }
-  emit({type: 'magic', value: 'total_pop' }, {values: [{value:1}] });
+function extract(patient) {
+  <% selections = []
+  query_structure['extract']['selections'].each do |select|
+    args = (select['title'] == 'age') ? 'new Date()' : ''
+    selections << "'#{select['title']}' : patient.#{select['callstack']}(#{args})"
+  end
+  values = ''
+  if (selections.length > 0)
+    values = selections.join(",\n")
+  end
+    
+  group_by = []
+  query_structure['extract']['groups'].each do |group| 
+    args = (group['title'] == 'age') ? 'new Date()' : ''
+    group_by << "'#{group['title']}' : patient.#{group['callstack']}(#{args})"
+  end
+  groups = ''
+  if (group_by.length > 0)
+    groups =  group_by.join(",\n")
+  end %>
+
+  var key = {
+    'type' : 'group',
+    <%= groups %>
+  };
+  var value = new reducer.Value(
+    {
+      <%= values %>
+    },
+    rereduced = false
+  );
+    
+  emit(key, value);
 }

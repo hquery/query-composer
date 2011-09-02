@@ -1,129 +1,130 @@
-<%= javascript_include_tag "builder/container" %>
-<%= javascript_include_tag "builder/builder-ui" %>
 
-<% content_for :head do -%>
-<script type="text/javascript">
-  $(document).ready(function() {
-      builderUI.query = new queryStructure.Query()
-      $('#edit_query_<%= @query.id%>').submit(function() {
-        $('#query_query_structure').val(builderUI.generateJson());
-        return true;
-      });
-      builderUI.repopulateUi(<%= @query.query_structure.to_json.html_safe %>);
+
+  <h1>Create New Query</h1>
+ 
+  <script>
+  var query = new queryStructure.Query();
+  <% puts @query.query_structure.to_json %>
+  query.rebuildFromJson(<%= (@query.query_structure || {}).to_json.html_safe %>);
+  $(document).ready(function(){
+    $("#icon_demo").draggable({helper:"clone",opacity:"1", refreshPostions:true , start:function(){$(this).data("item",new queryStructure.And(null, [], "demographics"))}});
+    $("#icon_history").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
+    $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
+    $("#icon_observations").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
+    $("#icon_treatments").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
+
+    $("#find > .conditional_editor").AndContainerUI({container:query.find});
+    //$("#filter > .content").AndContainerUI({container:query.filter});
   });
 </script>
-<% end -%>
-
-
-<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
-
-<div id="mainPanel">
-
-  <h1>Editing Query</h1>
-
-  <%= simple_form_for @query do |f| %>
-
-  <table class="simpleTable">
-    <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
-    <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
-  </table>
-  
-  <%= f.hidden_field :query_structure %>
-  <%= f.hidden_field :generated, value: 1 %>
-
-  <h2>Find</h2>
-  <div id="find">
-    <table>
-      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
-        <tr>
-          <td>
-            <input type="checkbox" id="find_<%= demographic[:id] %>" key="<%= demographic[:id]%>"> <%= demographic[:long_name] %>
-          </td>
-          <td>
-            <select id="find_<%= demographic[:id] %>_comparison"><option>=</option><option>&lt;</option><option>&gt;</option></select>
-          </td>
-          <td>
-            <input id="find_<%= demographic[:id] %>_value" type="text"/>
-          </td>
-        </tr>
-      <% end %>
-    </table>
+<div id="query_builder">
+<div id="icons">
+  <div id="search_box">
+    <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
   </div>
 
-  <h2>Filter</h2>
-  <div id="filter">
-    <table>
-      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
-        <tr>
-          <td>
-            <input type="checkbox" id="filter_<%= demographic[:id] %>" key="<%= demographic[:id] %>"> <%= demographic[:long_name] %>
-          </td>
-          <td>
-            <select id="filter_<%= demographic[:id] %>_comparison"><option>=</option><option>&lt;</option><option>&gt;</option></select>
-          </td>
-          <td>
-            <input id="filter_<%= demographic[:id] %>_value" type="text"/>
-          </td>
-        </tr>
-      <% end %>
-    </table>
+  <div id="variables_border_color">
+    <div id="variables_border_edge">
+      <div id="variables">
+        <h1>variables</h1>
+        <ul>
+          <li>
+            <%= image_tag("icon_demo.png",{class:"demo", id:"icon_demo"}) %>demographics
+          </li>
+          <li>
+            <%= image_tag("icon_history.png",{class:"demo", id:"icon_history"}) %>health history
+          </li>
+          <li>
+           <%= image_tag("icon_conditions.png",{class:"demo", id:"icon_conditions"}) %>conditions
+          </li>
+          <li>
+           <%= image_tag("icon_observations.png",{class:"demo", id:"icon_observations"}) %>observations
+          </li>
+          <li>
+           <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <h2>Extract</h2>
-  <div id="extract">
-    <table>
-      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
-        <tr>
-          <td>
-            <input type="checkbox" id="extract_<%= demographic[:id] %>" key="<%= demographic[:id] %>"> <%= demographic[:long_name] %>
-          </td>
-        </tr>
-      <% end %>
-        <tr>
-          <td> group by </td>
-          <td> <select id="group_0"><option>--select--</option><option>location</option>
-            <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
-                <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
-            <% end %>
-            
-            </select></td>
-            <td> <select id="group_1"><option>--select--</option><option>location</option>
-              <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
-                  <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
-              <% end %>
-
-              </select></td>
-        </tr>
-    </table>
+  <div id="display_border_color">
+    <div id="display_border_edge">
+      <div id="display">
+        <h1>display</h1>
+        <ul>
+          <li>
+             <%= image_tag("icon_freq.png") %>frequency
+          </li>
+          <li>
+           <%= image_tag("icon_location.png") %>location
+          </li>
+          <li>
+           <%= image_tag("icon_time.png") %>time
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
-
-  <h2>Aggregate</h2>
-  <div id="aggregate">
-    <table>
-        <tr>
-          <td>
-            <input key="frequency" type="checkbox" id="aggregate_frequency"> Frequency
-            <input key="sum" type="checkbox" id="aggregate_sum"> Summation
-            <input key="mean" type="checkbox" id="aggregate_mean"> Mean
-            <input key="median" type="checkbox" id="aggregate_median"> Median
-            <input key="mode" type="checkbox" id="aggregate_mode"> Mode
-          </td>
-        </tr>
-    </table>
-  </div>
-
-
-  <h2>Endpoints</h2>
-  <%= render :partial=>"endpoint" %>
-
-  <div class="ctrl"> 
-    <%= f.button :submit if !@disabled %>
-    <% if (not @query.id.nil?) %>
-      <%= link_to 'cancel', @query %>
-    <% else %>
-      <%= link_to 'cancel', queries_path %>
-    <% end %> 
-  </div>
-  <% end %>
-  
 </div>
+
+  <div id="workspace"> <!-- div id=workspace was here -->
+    <div class="top_border">
+      <div class="top_border_lower">
+      </div>
+    </div>
+
+    <div id="find" class="querySection">   
+          <h1>find</h1>
+          <div class="conditional_editor"></div>
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
+            </div>
+          </div>
+    </div>
+
+    <div id="filter" class="querySection">
+          <h1>filter</h1>
+           <div class="conditional_editor"></div>
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
+            </div>
+          </div>
+    </div>
+
+    <div id="extract" class="querySection">
+          <h1>extract</h1>
+            
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
+            </div>
+          </div>
+    </div>
+
+    <div id="analyze" class="querySection">
+        <h1>analyze</h1>
+        <div class="conditional_editor">
+        </div>
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
+            </div>
+          </div>
+
+    </div>
+</div>
+</div>
+  <div id="otherside">
+    <div id="stats">
+      <h1></h1>
+    </div>
+
+    <div id="trash">
+    </div>
+
+    <div id="connectors">
+      <h1></h1>
+    </div>
+</div>
+
+
+

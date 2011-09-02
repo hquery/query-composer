@@ -7,10 +7,7 @@ builderUI.query;
 builderUI.generateJson = function() {
   builderUI.query.find = builderUI.buildWhere('find');
   builderUI.query.filter = builderUI.buildWhere('filter');
-  builderUI.query.select = builderUI.buildSelect();
-  builderUI.query.group = builderUI.buildGroupBy();
-  builderUI.query.aggregate = builderUI.buildAggregate();
-
+  builderUI.query.extract = builderUI.buildExtract();
   return JSON.stringify(builderUI.query.toJson());
 };
 
@@ -18,22 +15,23 @@ builderUI.repopulateUi = function(json) {
   builderUI.query.rebuildFromJson(json);
   builderUI.repopulateUiZone(builderUI.query.find, 'find');
   builderUI.repopulateUiZone(builderUI.query.filter, 'filter');
-  builderUI.repopulateUiZone(builderUI.query.select, 'extract');
-  builderUI.repopulateUiZone(builderUI.query.aggregate, 'aggregate');
-  builderUI.repopulateUiZone(builderUI.query.group, 'group');
+  builderUI.repopulateUiZone(builderUI.query.extract, 'extract');
 }
 
 builderUI.repopulateUiZone = function(container, category) {
-  if (category === 'group') {
-    for (var index in container) {
-      selection = container[index]
-      $('#'+category+'_'+index).val(selection['title']);
+  if (category === 'extract') {
+    $('.aggregate_selection').attr('disabled', 'disabled');
+    for (var index in container.selections) {
+      selection = container.selections[index]
+      $('#extract_'+selection['title']).prop('checked', true);
+      $('#aggregate_'+selection['title']).val(selection.aggregation);
+      $('#aggregate_'+selection['title']).removeAttr('disabled');
     }
-  } else if (category === 'extract' || category === 'aggregate') {
-    for (var index in container) {
-      checkbox = container[index]
-      $('#'+category+'_'+checkbox['title']).prop('checked', true);
+    for (var index in container.groups) {
+      group = container.groups[index]
+      $('#group_'+index).val(group['title']);
     }
+    
   } else {
     if (container.name != undefined) {
       for (var c in container.children) {
@@ -73,35 +71,35 @@ builderUI.buildWhere = function(category) {
   return root;
 };
 
-builderUI.buildSelect = function() {
-  fields = [];
+builderUI.buildExtract = function() {
+  selects = builderUI.buildSelections();
+  groups = builderUI.buildGroupBy();
+  return new queryStructure.Extraction(selects, groups);
+};
+
+builderUI.buildSelections = function() {
+  selects = [];
   $('#extract input:checked').each(function(index) {
     key = $(this).attr('key');
-    field = new queryStructure.Field(key, key);
-    
-    fields.push(field);
+    aggregation = [$('#aggregate_'+key).val()];
+    if (aggregation[0] != '--select--') {
+      select = new queryStructure.Selection(key, key, aggregation);
+      selects.push(select);
+    } else {
+      alert('Extraction for ' + key + ' will be skipped because it was not aggregated')
+    }
   });
-  return fields;
+  return selects
 };
 
 builderUI.buildGroupBy = function() {
-  fields = []
-  $('#extract select').each(function(index) {
+  groups = []
+  $('#group select').each(function(index) {
     key = $(this).val();
     if (key != '--select--') {
-      field = new queryStructure.Field(key, key);
-      fields.push(field);
+      group = new queryStructure.Group(key, key);
+      groups.push(group);
     }
   });
-  return fields;
-};
-
-builderUI.buildAggregate = function() {
-  fields = [];
-  $('#aggregate input:checked').each(function(index) {
-    key = $(this).attr('key');
-    field = new queryStructure.Field(key, key);
-    fields.push(field);
-  });
-  return fields;
+  return groups;
 };

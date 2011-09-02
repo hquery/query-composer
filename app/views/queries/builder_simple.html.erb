@@ -1,0 +1,139 @@
+<%= javascript_include_tag "builder/container" %>
+<%= javascript_include_tag "builder/builder-ui" %>
+
+<% content_for :head do -%>
+<script type="text/javascript">
+$(document).ready(function() {
+  builderUI.query = new queryStructure.Query()
+  $('#edit_query_<%= @query.id%>').submit(function() {
+    $('#query_query_structure').val(builderUI.generateJson());
+    return true;
+  });
+  $('#extract input:checkbox').change(function() {
+    aggregate = $('#aggregate_'+$(this).attr('key'));
+    if ($(this).prop('checked')) {
+      aggregate.removeAttr('disabled');
+    } else {
+      aggregate.attr('disabled', 'disabled');
+    }
+  });
+  builderUI.repopulateUi(<%= @query.query_structure.to_json.html_safe %>);
+});
+</script>
+<% end -%>
+
+
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+
+<div id="mainPanel">
+
+  <h1>Editing Query</h1>
+
+  <%= simple_form_for @query do |f| %>
+
+  <table class="simpleTable">
+    <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
+    <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
+  </table>
+
+  <%= f.hidden_field :query_structure %>
+  <%= f.hidden_field :generated, value: 1 %>
+
+  <h2>Find</h2>
+  <div id="find">
+    <table>
+      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+      <tr>
+        <td>
+          <input type="checkbox" id="find_<%= demographic[:id] %>" key="<%= demographic[:id]%>"> <%= demographic[:long_name] %>
+        </td>
+        <td>
+          <select id="find_<%= demographic[:id] %>_comparison"><option>=</option><option>&lt;</option><option>&gt;</option></select>
+        </td>
+        <td>
+          <input id="find_<%= demographic[:id] %>_value" type="text"/>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <h2>Filter</h2>
+  <div id="filter">
+    <table>
+      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+      <tr>
+        <td>
+          <input type="checkbox" id="filter_<%= demographic[:id] %>" key="<%= demographic[:id] %>"> <%= demographic[:long_name] %>
+        </td>
+        <td>
+          <select id="filter_<%= demographic[:id] %>_comparison"><option>=</option><option>&lt;</option><option>&gt;</option></select>
+        </td>
+        <td>
+          <input id="filter_<%= demographic[:id] %>_value" type="text"/>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+
+
+
+  <h2>Extract</h2>
+  <div id="extract">
+    <table>
+      <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+      <tr>
+        <td>
+          <input type="checkbox" id="extract_<%= demographic[:id] %>" key="<%= demographic[:id] %>"> <%= demographic[:long_name] %>
+        </td>
+        <td>
+          <select id="aggregate_<%= demographic[:id] %>" class="aggregate_selection"><option>--select--</option>
+            <option value="frequency">Frequency</option>
+            <option value="sum">Summation</option>
+            <option value="mean">Mean</option>
+            <option value="median">Median</option>
+            <option value="mode">Mode</option>
+          </select>
+        </td>
+      </tr>
+      <% end %>
+      <tr id="group">
+        <td> group by </td>
+        <td> <select id="group_0"><option>--select--</option><option>location</option>
+          <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+          <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
+          <% end %>
+
+        </select></td>
+        <td> <select id="group_1"><option>--select--</option><option>location</option>
+          <% HQUERY_VARIABLES[:demographics][:options].each do |demographic| %>
+          <option value="<%= demographic[:id] %>"><%= demographic[:long_name] %></option>
+          <% end %>
+
+        </select></td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>Analyze</h2>
+  <div id="analyze">
+    <table>
+      <tr>
+        <td>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="ctrl"> 
+    <%= f.button :submit if !@disabled %>
+    <% if (not @query.id.nil?) %>
+    <%= link_to 'cancel', @query %>
+    <% else %>
+    <%= link_to 'cancel', queries_path %>
+    <% end %> 
+  </div>
+  <% end %>
+
+</div>

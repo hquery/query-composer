@@ -1,4 +1,4 @@
-@queryStructure = @queryStructure || {};
+@queryStructure = @queryStructure || {}
 
 
 queryStructure.createContainer= (parent, json) ->
@@ -23,22 +23,16 @@ queryStructure.createContainer= (parent, json) ->
 class queryStructure.Query
   constructor: ->
     this.find = new queryStructure.And(null)
-    this.find.add(new queryStructure.Or())
     this.filter = new queryStructure.And(null)
-    this.filter.add(new queryStructure.Or())
-    this.select = []
-    this.group = []
-    this.aggregate = []
+    this.extract = new queryStructure.Extraction([], [])
 
   toJson: -> 
-    return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'select' : this.select, 'group' : this.group, 'aggregate' : this.aggregate }
+    return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'extract' : this.extract.toJson() }
   
   rebuildFromJson: (@json) ->
-    this.find = this.buildFromJson(null, @json['find'])
-    this.filter = this.buildFromJson(null, @json['filter'])
-    this.select = @json['select']
-    this.group = @json['group']
-    this.aggregate = @json['aggregate']
+    this.find = if @json['find'] then this.buildFromJson(null, @json['find']) else new queryStructure.And(null)
+    this.filter = if  @json['filter'] then this.buildFromJson(null, @json['filter'] ) else new queryStructure.And(null)
+    this.extract = if @json['extract'] then queryStructure.Extraction.rebuildFromJson(@json['extract']) else new queryStructure.Extraction([], [])
     
   buildFromJson: (@parent, @element) ->
     if this.getElementType(@element) == 'rule'
@@ -88,7 +82,7 @@ class queryStructure.Query
 
 class queryStructure.Container
   constructor: (@parent, @children = [], @name, @negate = false) ->
-
+    @children ||= []
 
   add: (element, after) ->
     # first see if the element is already part of the children array
@@ -254,3 +248,34 @@ class queryStructure.Field
   extract: (patient) -> 
     # TODO: this needs to be a little more intelligent - AQ
     return patient[callstack]();
+
+class queryStructure.Group extends queryStructure.Field
+  constructor: (@title, @callstack) ->
+  @rebuildFromJson: (@json) ->
+    return new queryStructure.Group(@json['title'], @json['callstack'])
+
+class queryStructure.Selection extends queryStructure.Field
+  constructor: (@title, @callstack, @aggregation) ->
+  toJson: ->
+    return { "title" : @title, "callstack" : @callstack, 'aggregation' : @aggregation }
+  @rebuildFromJson: (@json) ->
+    return new queryStructure.Selection(@json['title'], @json['callstack'], @json['aggregation'])
+
+class queryStructure.Extraction
+  constructor: (@selections, @groups) ->
+  toJson: ->
+    selectJson = []
+    groupJson = []
+    for selection in @selections
+      selectJson.push(selection.toJson())
+    for group in @groups
+      groupJson.push(group.toJson())
+    return { "selections" : selectJson, "groups" : groupJson }
+  @rebuildFromJson: (@json) ->
+    selections = []
+    groups = []
+    for selection in @json['selections']
+      selections.push(queryStructure.Selection.rebuildFromJson(selection))
+    for group in @json['groups']
+      groups.push(queryStructure.Group.rebuildFromJson(group))
+    return new queryStructure.Extraction(selections, groups)

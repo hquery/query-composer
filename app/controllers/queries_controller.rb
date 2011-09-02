@@ -1,6 +1,5 @@
 require 'stringio'
 require 'net/http/post/multipart'
-require 'poll_job'
 
 class QueriesController < ApplicationController
   # load resource must be before authorize resource
@@ -10,8 +9,8 @@ class QueriesController < ApplicationController
 
   # add breadcrumbs
   add_breadcrumb 'Queries', :queries_url
-  add_breadcrumb_for_resource :query, :title, only: %w{edit show log execution_history}
-  add_breadcrumb_for_actions only: %w{edit new log execution_history}
+  add_breadcrumb_for_resource :query, :title, only: %w{edit show log execution_history builder builder_simple}
+  add_breadcrumb_for_actions only: %w{edit new log execution_history builder builder_simple}
 
   creates_updates_destroys :query
 
@@ -20,10 +19,10 @@ class QueriesController < ApplicationController
   end
 
   def log
-    @events = Event.all(:conditions => {:query_id => params[:id]})
+    #@events = Event.all(:conditions => {:query_id => params[:id]})
   end
 
-  def new
+  def show
     @endpoints = Endpoint.all
   end
 
@@ -35,26 +34,36 @@ class QueriesController < ApplicationController
   def before_update
     convert_to_hash(:query_structure)
   end
-  
-  # TODO: remove this once this has stabilized
-  def show
-#    @query.map = @query.full_map
-  end
 
-  def edit
-    @endpoints = Endpoint.all
+
+  def new
+    template = params[:builder] ? "queries/builder": "queries/new"
+    render :template=> template
   end
 
   def builder
+  end
+
+  def builder_simple
     @endpoints = Endpoint.all
   end
 
   def execute
+    endpoint_ids = params[:endpoint_ids]
+    if (endpoint_ids && !endpoint_ids.empty?) 
+      endpoint_ids = endpoint_ids.map! {|id| BSON::ObjectId(id)}
+      endpoints = Endpoint.criteria.for_ids(endpoint_ids)
 
-    # execute the query, and pass in if the user should be notified by email when execution completes
-    @query.execute(params[:notification])
+      notify = params[:notification]
+      
+      # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
+      @query.execute(endpoints, notify)
 
-    redirect_to :action => 'show'
+      redirect_to :action => 'show'
+    else
+      flash[:alert] = "Cannot execute a query if no endpoints are provided."
+      redirect_to :action => 'show'
+    end
   end
 
   def cancel
@@ -79,7 +88,6 @@ class QueriesController < ApplicationController
   def clone_template
     @query = TemplateQuery.find(params[:template_id]).to_query
     @query.title = "#{@query.title} (cloned)"
-    @endpoints = Endpoint.all
     render :new
   end
 
