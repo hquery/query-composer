@@ -7,7 +7,7 @@ class ResultTest < ActiveSupport::TestCase
 
   test "check a result that has changed" do
     FakeWeb.register_uri(:get, "http://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
-                         :body => '{"status": "complete", "result_url": "http://localhost/results/1234"}')
+                         :body => '{"status": "'+Result::COMPLETE+'", "result_url": "http://localhost/results/1234"}')
     FakeWeb.register_uri(:get, "http://localhost/results/1234",
                          :body => '{"foo": "bar"}')
 

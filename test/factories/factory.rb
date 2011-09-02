@@ -126,7 +126,7 @@ end
 
 Factory.define :result_with_value, :parent => :result do |result| 
   result.value ({"M" => 50, "F" => 30})
-  result.status 'complete'
+  result.status Result::COMPLETE
 end
 
 # =====================

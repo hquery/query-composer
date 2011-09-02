@@ -170,7 +170,7 @@ class QueriesControllerTest < ActionController::TestCase
     query = Query.find(@ids[2])
 
     post :execute, id: @ids[2], notification: true
-    assert_redirected_to(query_path(query.id) + "?notice=Cannot+execute+a+query+if+no+endpoints+are+provided.")
+    assert_redirected_to(query_path(query.id))
   end
   
   # test "log displays query log" do

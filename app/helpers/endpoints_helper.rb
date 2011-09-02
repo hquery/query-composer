@@ -11,6 +11,7 @@ module EndpointsHelper
             @endpoint_server_statuses[endpoint.id] = JSON.parse(response.body)
           end
         end
+        
       rescue Exception => ex
         @endpoint_server_statuses[endpoint.id] = {
           'queued' => 'unknown',
