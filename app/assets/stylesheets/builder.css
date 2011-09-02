@@ -313,47 +313,47 @@ list-style: none;
 
 .popup-arrow-bottom {
   border-color: #EDEDED transparent transparent transparent;
-  bottom:-19px;
+  bottom:-17.5px;
 }
 .popup-arrow-border-bottom {
   border-color: #666666 transparent transparent transparent;
-  bottom:-22px;
+  bottom:-20px;
 }
 
 
 .popup-arrow-left {
   border-color: transparent #EDEDED transparent transparent;
-  left:-19px;
+  left:-17.5px;
 }
 .popup-arrow-border-left {
   border-color:  transparent #666666 transparent transparent;
-  left:-22px;
+  left:-20px;
 }
 
 
 .popup-arrow-top {
   border-color:  transparent transparent #EDEDED transparent;
-  top:-19px;
+  top:-17.5px;
 }
 .popup-arrow-border-top {
   border-color:  transparent transparent #666666 transparent;
-  top:-22px;
+  top:-20px;
 }
 
 
 .popup-arrow-right {
   border-color: transparent transparent transparent #EDEDED ;
-  right:-19px;
+  right:-17.5px;
 }
 .popup-arrow-border-right {
   border-color:  transparent transparent transparent #666666;
-  right:-22px;
+  right:-20px;
 }
 
 
-.left-top, .right-top { top: 3px; }
-.left-bottom , .right-bottom {bottom: 3px;  }
+.left-top, .right-top { top: 1px; }
+.left-bottom , .right-bottom {bottom: 1px;  }
 
 
-.bottom-left, .top-left { left: 3px;}
-.bottom-right , .top-right { right:3px;}
+.bottom-left, .top-left { left: 1px;}
+.bottom-right , .top-right { right:1px;}
