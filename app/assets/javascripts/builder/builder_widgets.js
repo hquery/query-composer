@@ -46,7 +46,7 @@ $.widget("ui.popup",{
     this.content = this.options.content;
     this.widg = this.options.widg;
     this.div = this._createPopupShell();
-    $(this.element).append(this.div);
+    $(document.body).append(this.div);
     this.position = this.options.position;
     this.position["of"] = this.element;
    
@@ -100,8 +100,10 @@ $.widget("ui.popup",{
       if(this.options.arrow && this.options.arrow!= "none"){
         var arrowDiv = $("div.popup-arrow", div);
         var arrowBorder = $("div.popup-arrow-border", div);
-        var direction = this.options.arrow.direction;
-        var location = this.options.arrow.location || ".50";
+        var arrowParts = this.options.arrow.split(" ");
+        
+        var direction = arrowParts[0] || "left";    
+        var location = arrowParts[1] || ".50";
           // figure out arrow position 
         var directions = ["left","right","bottom","top"]; 
         if(!arrowDiv.hasClass("popup-arrow-"+direction)){
@@ -498,8 +500,9 @@ $.widget("ui.ItemUI", {
     },
     
     openPopup: function(){
-      this.element.popup({'widg':this, arrow:{direction:"left", location:"top"}});
-      this.element.popup("open");
+      var image = $(".item_image", this.div);
+      image.popup({'widg':this, arrow:"left .08", offset:"5px"});
+      image.popup("open");
     }
 
 });
