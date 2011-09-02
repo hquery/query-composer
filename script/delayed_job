@@ -2,5 +2,10 @@
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
 require 'delayed/command'
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'poll_job'))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'endpoint_cron_job'))
+
+# schedule the EndpointCronJob if we are starting and it's not already there
+if (!(ARGV & ['start', 'run', 'restart']).empty? and (Delayed::Job.all.keep_if {|x| x.handler.include? 'EndpointCronJob'}).count == 0) 
+  Delayed::Job.enqueue payload_object: EndpointCronJob.new, run_at: 2.from_now
+end
 Delayed::Command.new(ARGV).daemonize
