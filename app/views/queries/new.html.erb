@@ -1,38 +1,32 @@
 
-
-  <h1>Create New Query</h1>
- 
-  <script>
+<script>
+  var query;
   $(document).ready(function(){
-    $("#icon_demo").draggable({helper:"clone",opacity:".5", refreshPostions:true , start:function(){$(this).data("item",new queryStructure.And(null, [], "demographics"))}});
-    $("#icon_history").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
-    $("#icon_conditions").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
-    $("#icon_observations").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
-    $("#icon_treatments").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
+    $("#icon_demo").draggable({helper:"clone",opacity:"1", refreshPostions:true , start:function(){$(this).data("item",new queryStructure.And(null, [], "demographics"))}});
+    $("#icon_history").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
+    $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
+    $("#icon_observations").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
+    $("#icon_treatments").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
     
-    
-    
-    
-    var query = new queryStructure.Query();
+    query = new queryStructure.Query();
     
     $("#find > .conditional_editor").AndContainerUI({container:query.find});
     //$("#filter > .content").AndContainerUI({container:query.filter});
   });
-  </script>
-  
-  
-  <div id="icons">
-    <div id="search_box">
-      <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
-    </div>
+</script>
+<div id="query_builder">
+<div id="icons">
+  <div id="search_box">
+    <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+  </div>
 
-    <div id="variables">
-      <div id="variables_border_color"></div>
-      <div id="variables_border_edge"></div>
-      <h1>variables</h1>
+  <div id="variables_border_color">
+    <div id="variables_border_edge">
+      <div id="variables">
+        <h1>variables</h1>
         <ul>
           <li>
-            <%= image_tag("icon_demographics.png",{class:"demo", id:"icon_demo"}) %> demographics
+            <%= image_tag("icon_demo.png",{class:"demo", id:"icon_demo"}) %>demographics
           </li>
           <li>
             <%= image_tag("icon_history.png",{class:"demo", id:"icon_history"}) %>health history
@@ -47,12 +41,14 @@
            <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
           </li>
         </ul>
+      </div>
     </div>
+  </div>
 
-    <div id="display">
-      <div id="display_border_color"></div>
-      <div id="display_border_edge"></div>
-      <h1>display</h1>
+  <div id="display_border_color">
+    <div id="display_border_edge">
+      <div id="display">
+        <h1>display</h1>
         <ul>
           <li>
              <%= image_tag("icon_freq.png") %>frequency
@@ -64,53 +60,56 @@
            <%= image_tag("icon_time.png") %>time
           </li>
         </ul>
+      </div>
     </div>
   </div>
+</div>
 
-
-  <div id="workspace">
-    <div id="workspace_top_border">
-      <div id="workspace_top_border_lower">
+  <div id="workspace"> <!-- div id=workspace was here -->
+    <div class="top_border">
+      <div class="top_border_lower">
       </div>
     </div>
 
-    <div id="find">   
+    <div id="find" class="querySection">   
           <h1>find</h1>
           <div class="conditional_editor"></div>
-          <div id="find_bottom_border_lower">
-            <div id="find_bottom_border">
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
             </div>
           </div>
     </div>
 
-    <div id="filter">
+    <div id="filter" class="querySection">
           <h1>filter</h1>
            <div class="conditional_editor"></div>
-          <div id="filter_bottom_border_lower">
-            <div id="filter_bottom_border">
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
             </div>
           </div>
     </div>
 
-    <div id="extract">
+    <div id="extract" class="querySection">
           <h1>extract</h1>
             
-          <div id="extract_bottom_border_lower">
-            <div id="extract_bottom_border">
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
             </div>
           </div>
     </div>
 
-    <div id="analyze" class="conditional_editor">
+    <div id="analyze" class="querySection">
         <h1>analyze</h1>
-        <div id="workspace_bottom_border_lower">
-          <div id="workspace_bottom_border">
+        <div class="conditional_editor">
+        </div>
+          <div class="bottom_border_lower">
+            <div class="bottom_border">
+            </div>
           </div>
-        </div> 
 
     </div>
 </div>
-
+</div>
   <div id="otherside">
     <div id="stats">
       <h1></h1>

@@ -1,64 +1,171 @@
-
-$paletteWidth  : 18px;
+@import "mixins";
+$paletteWidth  : 200px;
+$paletteBorderWidth  : 18px;
 $paletteRadius : 18px;
+
+$workspaceBorderColor :#cccccc;
+$workspaceBorderWidth : 18px;
+$workspaceBorderRadius : 18px;
+
+$variablesBorderColor  : #B7E0E1;
+$displayBorderColor : #8FC1D3;
+
+
+div#search_box input {
+    font-size:10pt;
+}
+
+div#search_box .searchfield {
+    margin: -20px 0 5px 0;
+    background: #fff;
+    padding: 6px 6px 6px 8px;
+    width: 170px;
+    border: solid 1px #bcbbbb;
+    outline: none;
+    @include rounded(2em);
+    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+}
+
 
 div#icons {
   margin: 20px;
   position: relative;
   float: left;
-  width: 200px;
-  height: 800px;
-  text-decoration:none;
-    
+  width: $paletteWidth;
     
   h1 { 
     font-weight:normal;
     font-size: 16pt;
-    margin:10px $paletteWidth*2 10px 0;
+    margin:10px $paletteBorderWidth*2 0 0;
   }
   
   ul {
+    margin-top:10px;
     list-style-type: none;
     font-size: 10pt;
   }
   li {
     margin:0 0 10px 0;
+    width: $paletteWidth - 20;
     img {
       margin: 0 10px 0 0;
       vertical-align:-12px;
     } 
   }
-  
-  
 }
 
 div#display_border_color,
 div#display_border_edge,
 div#variables_border_color,
 div#variables_border_edge {
-  float: right;
   border-radius: 0 $paletteRadius $paletteRadius 0;
   border-style: solid;
-  border-width: 0 $paletteWidth 0 0;
+  border-width: 0 $paletteBorderWidth 0 0;
   width: $paletteWidth;
-  height: 100%;
 }
 
 div#display_border_edge,
 div#variables_border_edge {
-  margin: 0 $paletteWidth*-1 0 0;
-  float: right;
   background-color: white;
   border-color: white;
-  width: 0px;
+  width: $paletteWidth - $paletteBorderWidth;
 }
 
 div#variables_border_color {
-  background-color: #B7E0E1;
-  border-color: #B7E0E1;
+  background-color: $variablesBorderColor;
+  border-color: $variablesBorderColor;
 }
 div#display_border_color {
-  background-color: #8FC1D3;
-  border-color:  #8FC1D3;
+  margin-top:20px;
+  background-color: $displayBorderColor;
+  border-color:  $displayBorderColor;
 }
 
+div#variables, div#display {
+  padding: 0 0 30px 0;
+}
+
+
+div#workspace {
+  margin: 20px 30px 20px 260px;
+  min-width: 700px;
+  max-width: 100%;
+  // to change to support full-width trees that do not wrap, uncomment below
+  // and remove max-width above.
+  /*
+    width:100%;
+    padding-right:30px;
+  */
+  h1 { 
+    position:absolute;
+    top:50px;
+    left:0;
+    width:1em;
+    height:1em;
+    font-size: 18pt;
+    font-weight: normal;
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+  }
+  .querySection {
+     position:relative;
+     min-height:200px;
+     padding-bottom: 30px;
+  }
+}
+
+div#filter h1 {
+  top:70px;
+}
+div#extract h1 {
+  top:100px;
+}
+div#analyze h1 {
+  top:120px;
+}
+
+div#stats {
+}
+
+div#trash {
+}
+
+.top_border, .top_border_lower, .bottom_border, .bottom_border_lower {
+  width:100%;
+  border-style:solid;
+  }
+div.top_border {
+  background-color: $workspaceBorderColor;
+  border-color: $workspaceBorderColor;
+  border-radius: $workspaceBorderRadius $workspaceBorderRadius 0 0;
+  border-width: $workspaceBorderWidth 0 0 0;
+  height: $workspaceBorderWidth - 3;
+}
+
+div.top_border_lower {
+  background-color: white;
+  border-color: white;
+  border-radius: $workspaceBorderRadius $workspaceBorderRadius 0 0;
+  border-width: $workspaceBorderWidth - 3 0 0 0;
+  height: 2px;
+}
+
+
+div.bottom_border_lower {      
+  background-color: $workspaceBorderColor;
+  border-color:$workspaceBorderColor;
+  border-radius: 0 0 $workspaceBorderRadius $workspaceBorderRadius;
+  border-width: 0 0 $workspaceBorderWidth*2 0;
+  height: 0px;
+  position:absolute;
+  bottom:0;
+}
+div.bottom_border {
+  background-color: white;
+  border-color: white;
+  border-radius: 0 0 $workspaceBorderRadius $workspaceBorderRadius;
+  border-width: 0 0 $workspaceBorderWidth 0;
+  height: 0;
+}

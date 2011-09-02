@@ -8,6 +8,7 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
   font-family: inherit;
   vertical-align: baseline;
 }
+ol,ul {list-style:none}
 article, aside, dialog, figure, footer, header, hgroup, nav, section { display: block; }
 body { line-height: 1.5; }
 table {

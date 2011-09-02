@@ -1,0 +1,128 @@
+@import "mixins";
+/* Define styles for drag and drop query builder */
+
+$activeBackground : #CCF2F7;
+$activeBorderWidth : 2px;
+$depTypeName : #AAAAAA;  // 'AND' and 'OR' in the tree
+
+$itemBorderRadius : 7px;
+
+$itemPaddingTop : 5px;
+$itemPaddingBottom : 5px;
+$itemPaddingLeft : 10px;
+$itemPaddingRight :  10px;
+
+$itemPadding : $itemPaddingTop $itemPaddingRight $itemPaddingBottom $itemPaddingLeft;
+
+
+
+div.resource_dependency {
+  display:table-row;
+  .name {
+    padding:3px 0;
+	  display: inline-block;
+  	vertical-align: middle;
+	}
+}
+
+li.dependency {
+	margin-bottom: 2px;
+}
+
+div.dependency_collection {
+  padding: 5px 0 0 20px;
+  .active, &.active {
+    @include rounded($itemBorderRadius);
+    background-color:$activeBackground;
+  }
+  .dep_type {
+    display:inline;
+    color:$depTypeName;
+    font-weight:bold;
+    
+    span.expansion_indicator {
+      width: 20px;
+      height: 20px;
+      background-image: url('/assets/sprites_small.png');
+      background-position: -504px 62px;
+      display:inline-block;
+    }
+  }
+  // show different sprite when collection is collapsed
+  &.collapsed .dep_type span.expansion_indicator {
+    background-position: -483px 62px;
+  }
+  .expando {
+//    margin-bottom:5px;
+  }
+}
+
+@mixin resourceHover {
+  background-color:lighten($activeBackground, 5%);
+  @include rounded($itemBorderRadius);
+  border: $activeBorderWidth dashed darken($activeBackground, 20%);
+  padding-top    : $itemPaddingTop - $activeBorderWidth;
+  padding-right  : $itemPaddingRight - $activeBorderWidth;
+  padding-bottom : $itemPaddingBottom - $activeBorderWidth;
+  padding-left   : $itemPaddingLeft - $activeBorderWidth;
+	margin-bottom: 2px;
+}
+div.conditional_editor {
+  margin-bottom:10px;
+  margin-left:25px;
+  li.resource_dep {
+  	padding: $itemPadding;
+	  cursor: pointer;
+	  &:hover {@include resourceHover}
+  }
+  // this is a collection inside of a dependency group (e.g. and OR inside of an AND)
+  li.dependency.collection {
+  	padding: $itemPadding;
+	  cursor: pointer;
+	  &.hover {@include resourceHover}
+  }
+}
+
+.ui-draggable {
+  cursor:move;
+}
+
+.ui-draggable-dragging {
+  opacity: .75;
+	filter: alpha(opacity=75);
+  z-index:100;
+  padding:5px;
+  background-color:lighten($activeBackground, 5%);
+  border: $activeBorderWidth dashed darken($activeBackground, 20%);
+  @include rounded(7px);
+}
+
+.or > ul {
+  display: table-cell;
+  & > li {
+    display: inline;
+    float: left;
+  }
+}
+
+.item_image {
+  display:table-cell;
+  width:40px;
+  height:40px;
+  background-repeat:no-repeat;
+  &.observations {
+    background-image:url('/assets/icon_observations.png');
+  }
+  &.history {
+    background-image:url('/assets/icon_history.png');
+  }
+  &.treatments {
+    background-image:url('/assets/icon_treatments.png');
+  }
+  &.conditions {
+    background-image:url('/assets/icon_conditions.png');
+  }
+  &.demographics {
+    background-image:url('/assets/icon_demo.png');
+  }
+}
