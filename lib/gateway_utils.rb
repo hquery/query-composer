@@ -28,11 +28,43 @@ module GatewayUtils
      } \r\n"
   end
   
+  def full_map query
+    if (query.generated?)
+      builder_map_javascript_library + query.map
+    else
+      js_to_localize_user_functions(query.user) + query.map
+    end
+  end
+  
+  # The reduce function is only allowed to be exactly one function, so we stuff everything inside
+  def full_reduce query
+    if (query.generated?)
+      reduce = "function(key, values) {"
+      reduce += query.reduce + builder_reduce_javascript_library
+      reduce += "return reduce(key, values);}"
+    else
+      reduce = query.reduce
+    end
+    return reduce
+  end
+  
+  # get javascript for builder queries
+  def builder_map_javascript_library
+    container = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare=>true)
+    container = "var queryStructure = queryStructure || {}; \n" + container
+    reducer = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
+    return container + reducer
+  end
+  
+  def builder_reduce_javascript_library
+    return CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
+  end
+  
+  
   def submit(endpoint)
     query_url = nil
     query_url = endpoint.submit_url
-    full_map = js_to_localize_user_functions(query.user) + query.map
-    request = query_request(full_map, query.reduce, query.filter, query_url)
+    request = query_request(full_map(query), full_reduce(query), query.filter, query_url)
     begin
       Net::HTTP.start(query_url.host, query_url.port) do |http|
         response = http.request(request)

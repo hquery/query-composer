@@ -22,6 +22,10 @@ class QueriesController < ApplicationController
     #@events = Event.all(:conditions => {:query_id => params[:id]})
   end
 
+  def show
+    @endpoints = Endpoint.all
+  end
+
   def before_create
     @query.user = current_user
     convert_to_hash(:query_structure)
@@ -31,11 +35,6 @@ class QueriesController < ApplicationController
     convert_to_hash(:query_structure)
   end
   
-  # TODO: remove this once this has stabilized
-  def show
-    @endpoints = Endpoint.all
-#    @query.map = @query.full_map
-  end
 
   def builder
   end

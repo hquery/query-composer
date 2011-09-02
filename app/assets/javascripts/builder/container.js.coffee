@@ -1,4 +1,4 @@
-@queryStructure = @queryStructure || {};
+@queryStructure = @queryStructure || {}
 
 
 queryStructure.createContainer= (parent, json) ->
