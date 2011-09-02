@@ -36,7 +36,7 @@ class PollJob < Struct.new(:query_id, :execution_id, :result_id)
       # need to do this inside the loop since UploadIO is single-use
       filter = UploadIO.new(StringIO.new(execution.query.filter), 'application/json')
       map = UploadIO.new(StringIO.new(execution.query.full_map), 'application/javascript')
-      reduce = UploadIO.new(StringIO.new(execution.query.reduce), 'application/javascript')
+      reduce = UploadIO.new(StringIO.new(execution.query.full_reduce), 'application/javascript')
 
       # get the endpoint url and build the request
       url = URI.parse result.endpoint.submit_url

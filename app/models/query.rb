@@ -30,8 +30,17 @@ class Query < BaseQuery
     end
   end
   
-  def json
-    json = query_structure.as_json
+  # The reduce function is only allowed to be exactly one function, so we stuff everything inside
+  def full_reduce
+    reduce = "function(key, values) {"
+    if (self.generated?)
+      reduce = reduce + self.reduce + Query.get_reduce_js
+    else
+      reduce = reduce + PollJob.get_denamespace_js(self.user) + self.reduce
+    end
+    
+    reduce = reduce + "return reduce(key, values);}"
+    return reduce
   end
   
   private
@@ -51,18 +60,22 @@ class Query < BaseQuery
   end
   
   # Note: This is not generic to all code; it assumes that all closing blocks are on their own line like we do within our generated code
+  # TODO (agoldstein):  We should write comments in generated MapReduce code so a user can understand it, but strip it out when sending out to the gateway
   def prettify_generated_function function
     pretty_function = ""
     tab_count = 0
     function.each_line do |line|
-      if !(line =~ /^[\t  ]*\n/) # Only include lines that consist of more than just tabs and spaces
+      if (line =~ /^[\t   ]*function /) # Skip a line to make it easier to spot new functions
+        pretty_function << "\n"
+      end
+      if !(line =~ /^[\t   ]*\n/) # Only include lines that consist of more than just tabs and spaces
         line = line.gsub("  ", '') # Erase all existing leading tabs
-        if (line =~ /^[\t ]*[\}\]\)]+.*[\{\[\(]\n*/) # Indent less to print since we're closing a block, but leave tab_count the same since we're also opening one
-          tab_count-1.times { pretty_function << "  " }
+        if (line =~ /^[\t   ]*[\}\]\)]+.*[\{\[\(]+\n*/) # Indent less to print since we're closing a block, but leave tab_count the same since we're also opening one
+          (tab_count-1).times { pretty_function << "  " }
         elsif (line =~ /[\{\[\(]\n*$/) # Indent further if we're opening some kind of block
           tab_count.times { pretty_function << "  " }
           tab_count += 1 
-        elsif (line =~ /^[\t  ]*[\}\]\)]+;*\n*/) # Indent less if we're closing some kind of block
+        elsif (line =~ /^[\t   ]*[\}\]\)]+;*\n*/) # Indent less if we're closing some kind of block
           tab_count -= 1 
           tab_count.times { pretty_function << "  " }
         else
@@ -78,7 +91,13 @@ class Query < BaseQuery
   # get javascript for builder queries
   def self.get_builder_js
     container = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare=>true)
-    "var queryStructure = queryStructure || {}; \n" + container
+    container = "var queryStructure = queryStructure || {}; \n" + container
+    reducer = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
+    return container + reducer
+  end
+  
+  def self.get_reduce_js
+    return CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
   end
   
 end

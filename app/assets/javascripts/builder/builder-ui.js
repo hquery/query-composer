@@ -81,8 +81,8 @@ builderUI.buildSelections = function() {
   selects = [];
   $('#extract input:checked').each(function(index) {
     key = $(this).attr('key');
-    aggregation = $('#aggregate_'+key).val();
-    if (aggregation != '--select--') {
+    aggregation = [$('#aggregate_'+key).val()];
+    if (aggregation[0] != '--select--') {
       select = new queryStructure.Selection(key, key, aggregation);
       selects.push(select);
     } else {

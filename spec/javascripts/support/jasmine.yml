@@ -1,3 +1,11 @@
+coverage:
+  enabled:    true
+  encoding:   utf-8
+  tmp_dir:    tmp
+  report_dir: public/coverage
+  skip_paths:
+    - public/javascripts/vendor
+
 # src_files
 #
 # Return an array of filepaths relative to src_dir to include before jasmine specs.
