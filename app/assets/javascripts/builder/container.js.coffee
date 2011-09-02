@@ -1,23 +1,4 @@
-@queryStructure = @queryStructure || {}
-
-
-queryStructure.createContainer= (parent, json) ->
-  _ret = null
-  _children = []
-  if(json["and"])
-    _ret =  new queryStructure.And(parent,[])
-    _children = json["and"]
-  else if(json["or"])
-    _ret =   new queryStructure.Or(parent,[])
-    _children = json["or"]
-  else if(json["not"])
-    _ret =   new queryStructure.Not(parent,[])
-    _children = json["not"]
-
-  for item in _children
-     _ret.add(queryStructure.createContainer(_ret,item))
-  
-  _ret
+@queryStructure ||= {}
 
 
 class queryStructure.Query
@@ -45,7 +26,7 @@ class queryStructure.Query
         return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
     else
       container = this.getContainerType(@element)
-      newContainer = new queryStructure[container](@parent, null, @element.name || null)
+      newContainer = new queryStructure[container](@parent, [], @element.name, @element.title, @element.negate)
       for child in @element[container.toLowerCase()]
         newContainer.add(this.buildFromJson(newContainer, child))
       return newContainer
@@ -81,7 +62,7 @@ class queryStructure.Query
 ##############
 
 class queryStructure.Container
-  constructor: (@parent, @children = [], @name, @negate = false) ->
+  constructor: (@parent, @children = [], @name, @title, @negate = false) ->
     @children ||= []
 
   add: (element, after) ->
@@ -138,53 +119,49 @@ class queryStructure.Container
             
   clear: ->
     children = []
+    
+  childrenToJson: ->
+     childJson = [];
+     for child in @children
+       childJson.push(child.toJson())
+     return childJson
+      
 
 class queryStructure.Or extends queryStructure.Container
   toJson: ->
-    childJson = [];
-    for child in @children
-      childJson.push(child.toJson())
-    return { "or" : childJson }
+    childJson = this.childrenToJson()
+    return { "name" : @name, "or" : childJson, "negate" : @negate, "title" : @title }
   
   test: (patient) -> 
     if (@children.length == 0)
       return true;
+    retval = false  
     for child in @children
       if (child.test(patient)) 
-        return true;
-    return false;
+        retval true
+        break
+    return if @negate then !retval else retval;
 
 
 class queryStructure.And extends queryStructure.Container
   toJson: ->
-    childJson = [];
-    for child in @children
-      childJson.push(child.toJson())
-    if @name?
-      return { "name" : @name, "and" : childJson }
-    else
-      return { "and" : childJson }
+    childJson = this.childrenToJson()
+    return { "name" : @name, "and" : childJson, "negate" : @negate, "title" : @title }
+
 
   test: (patient) ->
+    if (@children.length == 0)
+      return true;
+    retval = true  
     for child in @children
       if (!child.test(patient)) 
-        return false;
-    return true;
+        retval =  false
+        break
+        
+    return if @negate then !retval else retval
 
 
 
-class queryStructure.Not extends queryStructure.Container
-  toJson: ->
-    childJson = [];
-    for child in @children
-      childJson.push(child.toJson())
-    return { "not" : childJson }
-
-    test: (patient) -> 
-      for child in @children
-        if (child.test(patient)) 
-          return true;
-      return false;
   
 
 class queryStructure.CountN extends queryStructure.Container
