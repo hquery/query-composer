@@ -14,7 +14,7 @@
     $("#icon_treatments").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
 
     $("#find > .conditional_editor").AndContainerUI({container:query.find});
-    //$("#filter > .content").AndContainerUI({container:query.filter});
+    $("#filter > .conditional_editor").AndContainerUI({container:query.filter});
   });
 </script>
 <div id="query_builder">

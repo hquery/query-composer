@@ -162,7 +162,6 @@ class queryStructure.And extends queryStructure.Container
 
 
 
-  
 
 class queryStructure.CountN extends queryStructure.Container
   constructor: (@parent, @n) ->
