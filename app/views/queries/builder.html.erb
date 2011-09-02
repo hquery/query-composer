@@ -4,7 +4,8 @@
  
   <script>
   var query = new queryStructure.Query();
-  query.rebuildFromJson(<%= (@query.query_structure || {}).to_json %>);
+  <% puts @query.query_structure.to_json %>
+  query.rebuildFromJson(<%= (@query.query_structure || {}).to_json.html_safe %>);
   $(document).ready(function(){
     $("#icon_demo").draggable({helper:"clone",opacity:".5", refreshPostions:true , start:function(){$(this).data("item",new queryStructure.And(null, [], "demographics"))}});
     $("#icon_history").draggable({helper:"clone",opacity:".5", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
