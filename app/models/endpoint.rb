@@ -72,7 +72,10 @@ class Endpoint
       result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
       if result
         result.check()
-        get_execution(result).try(:aggregate)
+        if (result.status == Result::COMPLETE)
+          get_execution(result).try(:aggregate)
+          result.aggregated = true;
+        end
       end
     end
   end

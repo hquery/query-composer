@@ -40,7 +40,7 @@ class Execution
   end
 
   def unfinished_results
-    results.where(status: Result::QUEUED)
+    results.where(:status.in => [Result::QUEUED, Result::RESCHEDULED])
   end
 
   def cancel
@@ -68,7 +68,7 @@ class Execution
       #{js_to_localize_user_functions(query.user)}
         if (this.status == "#{Result::COMPLETE}") {
           for(var key in this.value) {
-            if (key != "_id") {
+            if (key != "_id" && key != 'created_at' && key != 'query_id') {
               emit(key, this.value[key]);
             }
           }
