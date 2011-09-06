@@ -10,6 +10,19 @@ class reducer.Value
       element.values[title + '_sum'] = 0
     @values[title + '_sum'] += element.values[title] + element.values[title + '_sum']
   
+  frequency: (title, element) ->
+    if (!@rereduced)
+      @values[title + '_frequency'] = {}
+    if (!element.rereduced)
+      element.values[title + "_frequency"] = {}
+      key = ('' + element.values[title]).replace('.', '~') # Mongo doesn't seem to accept hash keys with decimals in our rereducable values.
+      element.values[title + "_frequency"][key] = 1
+    for k, v of element.values[title + '_frequency']
+      if @values[title + '_frequency'][key]?
+        @values[title + '_frequency'][key] += 1
+      else
+        @values[title + '_frequency'][key] = 1
+  
   mean: (title, element) ->
     if (!@rereduced)
       @values[title + '_mean'] = 0
@@ -39,29 +52,25 @@ class reducer.Value
       @values[title + '_median'] = (leftCenter + rightCenter) / 2
     else
       @values[title + '_median'] = @values[title + '_median_list'][@values[title + '_median_list'].length / 2]
-  
-  ###
+
   mode: (title, element) ->
-    # counts of all, most frequent
     if (!@rereduced)
-      @values[title + '_mode'] = 0
-      @values[title + '_mode_counts'] = {}
+      @values[title + '_mode_frequency'] = {}
     if (!element.rereduced)
-      element.values[title + '_mode'] = element.values[title]
-      element.values[title + '_median_list'] = { element.values[title] : 1 }
-  ###
-    
-  frequency: (title, element) ->
-    if (!@rereduced)
-      @values[title + '_frequency'] = 
-        {}
-    if (!element.rereduced)
-      element.values[title + "_frequency"] = 
-        {}
-      element.values[title + "_frequency"]["'#{ element.values[title] }'"] = 1
-    for key,value of element.values[title + '_frequency']
-      @values[title + '_frequency']["\"11\""] = key
-      #if @values[title + '_frequency']["'#{ key }'"]?
-        #@values[title + '_frequency']["'#{ key }'"] += value
-      #else
-      #@values[title + '_frequency']["#{ key }"] = value
+      element.values[title + "_mode_frequency"] = {}
+      key = ('' + element.values[title]).replace('.', '~') # Mongo doesn't seem to accept hash keys with decimals in our rereducable values
+      element.values[title + "_mode_frequency"][key] = 1
+    for key, value of element.values[title + '_mode_frequency']
+      if @values[title + '_mode_frequency'][key]?
+        @values[title + '_mode_frequency'][key] += 1
+      else
+        @values[title + '_mode_frequency'][key] = 1
+    most_frequent_key = []
+    most_frequent_value = 0
+    for key, value of @values[title + '_mode_frequency']
+      if value == most_frequent_value
+        most_frequent_key.push(key)
+      else if value > most_frequent_value
+        most_frequent_key = [key]
+        most_frequent_value = value
+    @values[title + '_mode'] = most_frequent_key
