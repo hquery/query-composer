@@ -41,17 +41,22 @@ class reducer.Value
     if (!@rereduced)
       @values[title + '_median_list'] = []
     if (!element.rereduced)
-      element.values[title + '_median_list'] = element.values[title]
+      element.values[title + '_median_list'] = [element.values[title]]
     i = 0
-    while (i < @values[title + '_median_list'].length && element.values[title + '_median_list'][0] > @values[title + '_median_list'][i])
+    while i < @values[title + '_median_list'].length && element.values[title + '_median_list'].length > 0
+      while element.values[title + '_median_list'].length > 0 && element.values[title + '_median_list'][0] < @values[title + '_median_list'][i]
+        front_value = (element.values[title + '_median_list'].splice(0, 1))[0]
+        @values[title + '_median_list'].splice(i, 0, front_value)
+        i++
       i++
-    @values[title + '_median_list'].splice(i, 0, element.values[title + '_median_list'])
+    for value in element.values[title + '_median_list']
+      @values[title + '_median_list'].splice(@values[title + '_median_list'].length, 0, value)
     if (@values[title + '_median_list'].length % 2 == 0)
       leftCenter = @values[title + '_median_list'][Math.floor(@values[title + '_median_list'].length / 2)]
-      rightCenter = @values[title + '_median_list'][Math.floor(@values[title + '_median_list'].length / 2) - 1] 
+      rightCenter = @values[title + '_median_list'][Math.floor(@values[title + '_median_list'].length / 2) - 1]
       @values[title + '_median'] = (leftCenter + rightCenter) / 2
     else
-      @values[title + '_median'] = @values[title + '_median_list'][@values[title + '_median_list'].length / 2]
+      @values[title + '_median'] = @values[title + '_median_list'][Math.floor(@values[title + '_median_list'].length / 2)]
 
   mode: (title, element) ->
     if (!@rereduced)
