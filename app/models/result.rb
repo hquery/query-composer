@@ -4,7 +4,7 @@ class Result
 
   QUEUED = 'queued'
   FAILED = 'failed'
-  COMPLETE = 'success'
+  COMPLETE = 'complete'
   CANCELED = 'canceled'
   RUNNING = 'running'
   RESCHEDULED = 'rescheduled'
