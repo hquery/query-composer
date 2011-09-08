@@ -10,7 +10,6 @@
       refreshFailCount++;
       if (refreshFailCount >= 10) {
         clearInterval(queryInfoRefreshInterval);
-        alert("Too many failed queries to the gateway. Canceling the refresh.");
       }
     }
   })
