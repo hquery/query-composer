@@ -510,6 +510,71 @@ $.widget("ui.ItemUI", {
 
 
 
+$.widget("ui.ExtractUI", {
+  _create: function(){
+    this.div = $(".extract_editor",this.element);
+    this.element.droppable({
+          drop: bind(this.drop, this),
+          greedy: true,
+          tolerance: 'pointer',
+          hoverClass: 'active'
+      });
+    this.ul = $("<ul>");  
+    this.div.append(this.ul);
+  },
+  
+  drop:function(){
+    this.addItem();
+  },
+  
+  addItem: function(){
+      var cell = $('<li>', {
+          'class': "dependency"
+      });
+
+     cell.ExtractItemUI({type:"conditions"});
+     this.ul.append(cell);
+  }
+  
+  
+  
+  
+  
+});
+
+
+$.widget("ui.ExtractItemUI", {
+  
+  
+  _create:function(){
+    var div = $("<div>", {
+        "class": "resource_dependency"
+    });
+    this.div = div;
+    var self = this;
+    var img = $("<div>", {"class":"item_image "+this.options.type});
+    img.append("&nbsp;");
+    div.append(img);
+    div.append($('<div>', {
+        'class': 'name',
+        text: this.options.type
+    }));
+    $(div).dblclick(function() {
+        self.openPopup()
+    })
+    this.element.append(div);
+  }
+  ,
+  openPopup: function(){
+    var image = $(".item_image", this.div);
+    image.popup({'widg':this, arrow:"left .08", offset:"5px"});
+    image.popup("open");
+  }
+});
+
+
+
+
 
 
 
