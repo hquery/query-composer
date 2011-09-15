@@ -51,7 +51,7 @@ class Execution
   # = Aggregation =
   # ===============
   def aggregate
-    response = Result.collection.map_reduce(self.map_fn, query.reduce, :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
+    response = Result.collection.map_reduce(self.map_fn(), self.query.reduce, :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
     results = response['results']
     if results
       self.aggregate_result = {}
@@ -68,7 +68,7 @@ class Execution
     pretty_result = {}
     pretty_key = ""
     pretty_values = {}
-    if (result['_id'] =~ /type_population/)
+    if (result['_id']['type'] == 'population')
       pretty_key = "Populations"
       pretty_values = {
         'Target Population' => result['value']['values']['target_pop_sum'],
@@ -76,11 +76,10 @@ class Execution
         'Unfound Population' => result['value']['values']['unfound_pop_sum'],
         'Total Population' => result['value']['values']['total_pop_sum']
       }
-    elsif (result['_id'] =~ /type_group/)
+    elsif (result['_id']['type'] == 'group')
       self.query.query_structure['extract']['groups'].each do |group|
         pretty_key << group['title'].capitalize
-        result['_id'].match(/#{group['title']}_(.*)/) # Grab the value of the group (e.g., if group is gender, we find either "M" or "F")
-        pretty_key << ": #{$1}"
+        pretty_key << ": #{result['_id'][group['title']]}"
         pretty_key << ", " unless (group == self.query.query_structure['extract']['groups'].last)
       end
       self.query.query_structure['extract']['selections'].each do |selection|
@@ -110,17 +109,45 @@ class Execution
   end
 
   def map_fn
+    reducer_code = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
+    user_code = js_to_localize_user_functions(query.user)
+    
     <<END_OF_FN
     function() {
-      #{js_to_localize_user_functions(query.user)}
-        if (this.status == "#{Result::COMPLETE}") {
-          for(var key in this.value) {
-            if (key != "_id") {
-              emit(key, this.value[key]);
+      #{reducer_code}
+      #{user_code}
+      if (this.status == "#{Result::COMPLETE}") {
+        for(var key in this.value) {
+          if (key != "_id" && key != "created_at" && key != "query_id") {
+            if (#{self.query.generated?} && (key.match(new RegExp("type_population")) || key.match(new RegExp("type_group")))) {
+              var hashifiedKey = {};
+              if (key.match(new RegExp("type_population"))) {
+                hashifiedKey['type'] = 'population';
+              } else {
+                hashifiedKey['type'] = 'group';
+              }
+              if (hashifiedKey.type == 'group') {
+                var queryStructure = #{self.query.query_structure.to_json}
+                for (var group in queryStructure['extract']['groups']) {
+                  var match = RegExp(queryStructure['extract']['groups'][group]['title'] + "_(.*)", '');
+                  var results = key.match(match);
+                  hashifiedKey[queryStructure['extract']['groups'][group]['title']] = results[1];
+                }
+              }
+              
+              this.value[key] = new reducer.Value(this.value[key]['values'], this.value[key]['rereduced']);
             }
+            
+            var originalKey = key;
+            if (#{self.query.generated?}) {
+              key = hashifiedKey;
+            }
+            
+            emit(key, this.value[originalKey]);
           }
         }
       }
+    }
 END_OF_FN
-    end
+  end
 end

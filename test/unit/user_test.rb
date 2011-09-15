@@ -20,14 +20,14 @@ class UserTest < ActiveSupport::TestCase
     
     user = User.find(@user_ids[0])
     assert_not_nil user
-    assert_equal 5, user.queries.length
+    assert_equal 6, user.queries.length
     
     user.queries.each do |query|
       assert @ids.include?(query.id)
       assert not(@ids_not_owned.include?(query.id))
     end
     
-    assert_equal 8, Query.all.length
+    assert_equal 9, Query.all.length
     
   end
   

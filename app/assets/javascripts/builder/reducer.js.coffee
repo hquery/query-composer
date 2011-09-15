@@ -14,9 +14,9 @@ class reducer.Value
     if (!@rereduced)
       @values[title + '_frequency'] = {}
     if (!element.rereduced)
-      element.values[title + "_frequency"] = {}
+      element.values[title + '_frequency'] = {}
       key = ('' + element.values[title]).replace('.', '~') # Mongo doesn't seem to accept hash keys with decimals in our rereducable values.
-      element.values[title + "_frequency"][key] = 1
+      element.values[title + '_frequency'][key] = 1
     for k, v of element.values[title + '_frequency']
       if @values[title + '_frequency'][key]?
         @values[title + '_frequency'][key] += 1
@@ -62,9 +62,9 @@ class reducer.Value
     if (!@rereduced)
       @values[title + '_mode_frequency'] = {}
     if (!element.rereduced)
-      element.values[title + "_mode_frequency"] = {}
+      element.values[title + '_mode_frequency'] = {}
       key = ('' + element.values[title]).replace('.', '~') # Mongo doesn't seem to accept hash keys with decimals in our rereducable values
-      element.values[title + "_mode_frequency"][key] = 1
+      element.values[title + '_mode_frequency'][key] = 1
     for key, value of element.values[title + '_mode_frequency']
       if @values[title + '_mode_frequency'][key]?
         @values[title + '_mode_frequency'][key] += 1

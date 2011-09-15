@@ -20,8 +20,6 @@ class Query < BaseQuery
     execution.execute(endpoints)
   end
   
-  private
-
   def generate_map_reduce
     if (self.generated?)
       map_function = ""
@@ -35,6 +33,8 @@ class Query < BaseQuery
       self.reduce = prettify_generated_function(reduce_template)
     end
   end
+  
+  private
   
   # Note: This is not generic to all code; it assumes that all closing blocks are on their own line like we do within our generated code
   # TODO (agoldstein):  We should write comments in generated MapReduce code so a user can understand it, but strip it out when sending out to the gateway

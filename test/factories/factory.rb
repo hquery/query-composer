@@ -28,6 +28,7 @@ Factory.define :user_with_queries, :parent => :user do |user|
   user.after_create { |u| Factory(:query, :user => u) }
   user.after_create { |u| Factory(:query_with_queued_results, :user => u) }
   user.after_create { |u| Factory(:query_with_completed_results, :user => u) }
+  user.after_create { |u| Factory(:generated_query_with_completed_results, :user => u) }
 end
 
 Factory.define :user_with_library_functions, :parent => :user do |user|
@@ -59,6 +60,29 @@ Factory.define :query do |q|
   q.user Factory.build(:user)
 end
 
+Factory.define :generated_query, :parent => :query do |q|
+  q.query_structure ({
+    "find" =>
+      { "and" => [
+        { "or" => [ 
+          { "name" => "demographics",
+            "and" => [ 
+              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "18", "comparator" => ">" } ] } ] } ] },
+    "filter" =>
+      { "and" => [ 
+        { "or" => [ 
+          { "name" => "demographics",
+            "and" => [ 
+              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "65", "comparator" => "<" } ] } ] } ] },
+    "extract" => 
+      { "selections" => [ 
+          { "title" => "age", "callstack" => "age", "aggregation" => [ "sum" ] } ],
+        "groups" => [ { "title" => "gender", "callstack" => "gender" } ] } 
+  })
+  q.generated true
+  q.user Factory.build(:user)
+end
+
 Factory.define :query_with_queued_results, :parent => :query do |query|
   query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
   
@@ -75,6 +99,11 @@ Factory.define :query_with_completed_results, :parent => :query do |query|
   }
 end
 
+Factory.define :generated_query_with_completed_results, :parent => :generated_query do |query|
+  query.executions { 
+    [] << Factory.build(:completed_execution_for_generated_query)
+  }
+end
 
 # =============
 # = Endpoints =
@@ -105,6 +134,13 @@ Factory.define :completed_execution, :parent => :execution do |e|
   end
 end
 
+Factory.define :completed_execution_for_generated_query, :parent => :execution do |e|
+  e.after_build do |ex|
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+  end
+end
+
 # ===========
 # = Results =
 # ===========
@@ -127,6 +163,38 @@ end
 Factory.define :result_with_value, :parent => :result do |result| 
   result.value ({"M" => 50, "F" => 30})
   result.status Result::COMPLETE
+end
+
+Factory.define :result_with_value_from_generated_query, :parent => :result_with_value do |result|
+  result.value ({
+    "type_group_gender_F" => {
+      "values" => {
+        "age" => 0,
+        "age_sum" => 6000
+      },
+      "rereduced" => true
+    },
+    "type_group_gender_M" => {
+      "values" => {
+        "age" => 0,
+        "age_sum" => 4000
+      },
+      "rereduced" => true
+    },
+    "type_population" => {
+      "values" => {
+        "target_pop" => 0,
+        "filtered_pop" => 0,
+        "unfound_pop" => 0,
+        "total_pop" => 0,
+        "target_pop_sum" => 300,
+        "filtered_pop_sum" => 400,
+        "unfound_pop_sum" => 100,
+        "total_pop_sum" => 500
+      },
+      "rereduced" => true
+    }
+  })
 end
 
 # =====================
