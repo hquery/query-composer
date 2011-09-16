@@ -9,6 +9,7 @@ $.widget("ui.CodeList",{
     this.div = $("<div>");
     this.div.append($("<span>").append(this.options.title));
     this.selectBox = $("<select>");
+    this.selectBox.append("<option>Select</option>");
     this.selectBox.change(function(event){
       
       $("option:selected",this.selectBox).each(function () {

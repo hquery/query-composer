@@ -9,8 +9,8 @@
         val
   results.length > 0
         
-@comparators.inRange = (a,b) ->
-  @comparators.gt_equal(a,b[0]) && @comparators.lt_equal(a,b[1])
+@comparators.inRange = (a,low,high) ->
+  @comparators.gt_equal(a,low) && @comparators.lt_equal(a,high)
 
 @comparators.equal = (a,b) ->
   a == b

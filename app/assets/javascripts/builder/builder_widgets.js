@@ -75,6 +75,7 @@ $.widget("ui.popup",{
   save: function(){
     // save some stuff then close
     this.close();
+    updateQuery();
   },
   
   _createPopupShell: function(){
