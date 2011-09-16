@@ -200,7 +200,7 @@ class QueriesControllerTest < ActionController::TestCase
     # With no running queries, update_query_info should successfully return unfinished_query_count == 0
     query = Query.find(@ids[0])
     get :refresh_execution_results, id: query.id
-    assert_equal 0, assigns(:incomplete_results)
+    assert_equal false, assigns(:incomplete_results)
   end
   
   test "should refresh execution with 1 pending" do
@@ -210,7 +210,7 @@ class QueriesControllerTest < ActionController::TestCase
     query.last_execution.results[0].status = Result::QUEUED
     query.save!
     get :refresh_execution_results, id: query.id
-    assert_equal 1, assigns(:incomplete_results)
+    assert_equal true, assigns(:incomplete_results)
   end
   
   test "should get execution history" do

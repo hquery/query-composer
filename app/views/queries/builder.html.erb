@@ -17,8 +17,19 @@
     $("#filter > .conditional_editor").AndContainerUI({container:query.filter});
     $("#extract").ExtractUI();
   });
+  
+  
+  function updateQuery(){
+    $.ajax(
+     {type:"PUT", 
+      url:"/queries/<%= @query._id %>", 
+      data:{"query":{"query_structure":JSON.stringify(query.toJson()), "id":"<%= @query._id %>"}}, 
+      success:function(data){alert("saved?");}})
+  }
 </script>
 <div id="query_builder">
+  
+  
 <div id="icons">
   <div id="search_box">
     <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />

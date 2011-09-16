@@ -10,7 +10,6 @@
       refreshFailCount++;
       if (refreshFailCount >= 10) {
         clearInterval(queryInfoRefreshInterval);
-        alert("Too many failed queries to the gateway. Canceling the refresh.");
       }
     }
   })
@@ -44,7 +43,10 @@
         <th>Endpoints</th>
         <td class="subTable"><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
       </tr>
-      <%= render :partial => 'aggregate_results', :locals => { :query => @query } %></td>
+      <tr>
+        <th>Aggregate Result</th>
+        <td class="subTable"><%= render :partial => 'aggregate_results', :locals => { :query => @query } %></td>
+      </tr>
       <tr>
         <td></td>
         <td class="subTable">

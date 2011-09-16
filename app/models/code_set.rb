@@ -3,7 +3,7 @@ class CodeSet
   include Mongoid::Timestamps
   
   field :name, :type=> String
-  field :type, :type = > String
+  field :type, :type => String
   field :description, :type=> String
 
   
@@ -11,9 +11,10 @@ class CodeSet
   
   def add_code(code_system , code)
     cs = get_code_system(code_system)
-    unless cs.index(code) do
+    unless cs.index(code)
       cs << code
     end
+    
   end
   
   def remove_code(code_system, code)
@@ -36,5 +37,7 @@ class CodeSet
    type = hash['type'] || type
    description = hash['description'] || description
    codes = hash['codes'] || codes
+   save
   end
+  
 end

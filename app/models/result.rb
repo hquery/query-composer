@@ -4,9 +4,10 @@ class Result
 
   QUEUED = 'queued'
   FAILED = 'failed'
-  COMPLETE = 'success'
+  COMPLETE = 'complete'
   CANCELED = 'canceled'
   RUNNING = 'running'
+  RESCHEDULED = 'rescheduled'
   FETCHING_RESULT = 'fetching_result'
 
   belongs_to :execution
@@ -17,6 +18,7 @@ class Result
   field :query_url, type: String
   field :value, type: Hash
   field :error_msg, type: String
+  field :aggregated, type: Boolean
 
   def cancel
     if self.status.nil? || self.status == Result::QUEUED

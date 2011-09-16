@@ -39,6 +39,8 @@ class Endpoint
   def check
     url = submit_url
     begin
+      check_time = Time.now
+      
       response = Net::HTTP.start(url.host, url.port) do |http|
         headers = {}
         if last_check
@@ -52,10 +54,10 @@ class Endpoint
       when Net::HTTPSuccess
         endpoint_logs.create(status: :update, message: 'Feed changed, updating')
         update_results(response.body)
-        update_attribute(:last_check, Time.now)
+        update_attribute(:last_check, check_time)
       when Net::HTTPNotModified
         endpoint_logs.create(status: :not_modified, message: 'No changes')
-        update_attribute(:last_check, Time.now)
+        update_attribute(:last_check, check_time)
       else
         endpoint_logs.create(status: :error, message: "Did not understand the response: #{response}")
       end
@@ -72,7 +74,10 @@ class Endpoint
       result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
       if result
         result.check()
-        get_execution(result).try(:aggregate)
+        if (result.status == Result::COMPLETE)
+          get_execution(result).try(:aggregate)
+          result.aggregated = true;
+        end
       end
     end
   end

@@ -31,6 +31,7 @@ function resetPosition(draggable) {
 
 
 
+
 $.widget("ui.popup",{
   
   options: {
@@ -81,6 +82,7 @@ $.widget("ui.popup",{
     div.hide();
     this.contentDiv = $("<div class='popup-content'>");
     this.contentDiv.append(this.content);
+    div.append(this.contentDiv);
     var buttonRow = $("<div></div>");
     var saveButton = $("<input class='save' type='button' value='save'>");
     saveButton.click(bind(this.save, this));
@@ -501,7 +503,10 @@ $.widget("ui.ItemUI", {
     
     openPopup: function(){
       var image = $(".item_image", this.div);
-      image.popup({'widg':this, arrow:"left .08", offset:"5px"});
+      var edName = this.container.name.replace(/^\w/, function($0) { return $0.toUpperCase(); });
+      
+      this.editor = (this.editor || eval("$('<div>')."+edName+"Editor({container:this.container})"));
+      image.popup({'widg':this, arrow:"left .08", offset:"5px", content:this.editor});
       image.popup("open");
     }
 
@@ -536,10 +541,6 @@ $.widget("ui.ExtractUI", {
      this.ul.append(cell);
   }
   
-  
-  
-  
-  
 });
 
 
@@ -571,6 +572,8 @@ $.widget("ui.ExtractItemUI", {
     image.popup("open");
   }
 });
+
+
 
 
 

@@ -29,7 +29,6 @@ QueryComposer::Application.configure do
   silence_warnings do
     begin
       require 'pry'
-      require 'ruby-debug'
       IRB = Pry
     rescue LoadError
     end

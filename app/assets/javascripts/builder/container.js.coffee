@@ -17,13 +17,14 @@ class queryStructure.Query
     
   buildFromJson: (@parent, @element) ->
     if this.getElementType(@element) == 'rule'
-      ruleType = this.getRuleType(@element)
-      if (ruleType == 'Range')
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['start'], @element['end'])
-      else if (ruleType == 'Comparison')
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparator'])
-      else
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
+      ruleType = @element.type
+      return new queryStructure[ruleType]( @element.data)
+      # if (ruleType == 'Range')
+      #        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['start'], @element['end'])
+      #      else if (ruleType == 'Comparison')
+      #        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparator'])
+      #      else
+      #        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
     else
       container = this.getContainerType(@element)
       newContainer = new queryStructure[container](@parent, [], @element.name, @element.title, @element.negate)
@@ -123,7 +124,8 @@ class queryStructure.Container
   childrenToJson: ->
      childJson = [];
      for child in @children
-       childJson.push(child.toJson())
+       js = if child["toJson"] then  child.toJson() else child
+       childJson.push(js )
      return childJson
       
 
@@ -138,7 +140,7 @@ class queryStructure.Or extends queryStructure.Container
     retval = false  
     for child in @children
       if (child.test(patient)) 
-        retval true
+        retval = true
         break
     return if @negate then !retval else retval;
 
@@ -184,10 +186,10 @@ class queryStructure.CountN extends queryStructure.Container
 # Rules 
 #########
 class queryStructure.Rule
-  constructor: (@category, @title, @field, @value) ->
+  constructor: (@type, @data) ->
   toJson: ->
-    return { "category" : @category, "title" : @title, "field" : @field, "value" : @value }
-  
+    return { "type" : @type, "data" : @data }
+    
 
 
 class queryStructure.Range
