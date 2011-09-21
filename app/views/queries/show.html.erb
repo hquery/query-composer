@@ -26,6 +26,11 @@
         <% if (alert) %>
           alert('<%= alert %>')
         <% end %>
+        
+        $('#advanced_edit').click(function() {
+          value = confirm('Advanced editing of a standard query will create a cloned copy of this query.  The cloned version will not be editable via the standard query builder.  The original query will remain unmodified and can still be edited with the builder, but changes to the cloned query will not be reflected in the original. Do you want to clone this query for advanced editing?');
+          return value;
+        });
       });
     </script>
   <% end -%>
@@ -52,9 +57,12 @@
         <td class="subTable">
           <table>
             <tr>
-              <td><%= button_to 'Edit', { :action => 'edit', :id => @query.id }, :method => :get %></td>
-              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get %></td>
-              <td><%= button_to 'Builder Simple', { :action => 'builder_simple', :id => @query.id }, :method => :get %></td>
+              <td><%= button_to 'Edit', { :action => 'edit', :id => @query.id }, :method => :get%></td>
+              <% if (@query.generated?) %>
+                <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get %></td>
+                <td><%= button_to 'Advanced Edit', { :action => 'edit_code', :id => @query.id }, :method => :get, id: 'advanced_edit' %></td>
+              <% else %>
+              <% end %>
               <td><button id="execute-button">execute</button></td>
             </tr>
           </table>

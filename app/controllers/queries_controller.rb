@@ -25,22 +25,41 @@ class QueriesController < ApplicationController
   def show
     @endpoints = Endpoint.all
   end
+  
+  def edit
+    if (@query.generated?)
+      redirect_to action: 'builder_simple'
+    else
+      redirect_to action: 'edit_code'
+    end
+  end
+  
+  def edit_code
+    if (@query.generated?) 
+      @query = @query.clone
+      @query.title = "#{@query.title} (cloned)"
+      @query.generated = false;
+      @query.save!
+    end
+  end
 
   def before_create
     @query.user = current_user
-    convert_to_hash(:query_structure)
+    @query.init_query_structure!
+  end
+  
+  def after_create
+    redirect_to edit_query_path(@query)
   end
   
   def before_update
     convert_to_hash(:query_structure)
   end
   
-
   def builder
   end
 
   def builder_simple
-    @endpoints = Endpoint.all
   end
 
   def execute

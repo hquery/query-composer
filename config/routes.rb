@@ -27,6 +27,7 @@ QueryComposer::Application.routes.draw do
 	    get 'cancel_execution'
 	    get 'builder'
 	    get 'builder_simple'
+	    get 'edit_code'
     end
   end
   

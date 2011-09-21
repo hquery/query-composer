@@ -33,6 +33,14 @@ class Query < BaseQuery
       self.reduce = prettify_generated_function(reduce_template)
     end
   end
+
+  def clone
+    Query.new(self.attributes.except('_id'));
+  end
+  
+  def init_query_structure!
+    self.query_structure = {"find"=>{"and"=>[{"or"=>[]}]}, "filter"=>{"and"=>[{"or"=>[]}]}, "extract"=>{"selections"=>[], "groups"=>[]}}
+  end
   
   private
   
@@ -64,6 +72,5 @@ class Query < BaseQuery
     
     return pretty_function
   end
-  
   
 end
