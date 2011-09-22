@@ -21,13 +21,14 @@ QueryComposer::Application.routes.draw do
       post 'execute'
       delete 'destroy'
       get 'log'
-	    get 'refresh_execution_results'
-	    get 'execution_history'
-	    get 'cancel'
-	    get 'cancel_execution'
-	    get 'builder'
-	    get 'builder_simple'
-	    get 'edit_code'
+      get 'refresh_execution_results'
+      get 'execution_history'
+      get 'cancel'
+      get 'cancel_execution'
+      get 'builder'
+      get 'builder_simple'
+      get 'edit_code'
+      get 'result'
     end
   end
   

@@ -1,0 +1,47 @@
+
+<% content_for :head do -%>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var r = Raphael("chart");
+      r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
+      
+      r.g.text(320, 100, "<%= @query.title %>").attr({"font-size": 20});
+      
+      var values = [];
+      var labels = [];
+      
+      <% @query.last_execution.aggregate_result.each do |key, value| -%>
+        <% next if ['_id', 'created_at', 'query_id'].include? key %>
+        values.push(<%= value %>);
+        labels.push("%% <%= key %>")
+      <% end -%>
+      
+      var pie = r.g.piechart(320, 240, 100, values, {legend: labels, legendpos: "west"});
+      pie.hover(function () {
+          this.sector.stop();
+          this.sector.scale(1.1, 1.1, this.cx, this.cy);
+          if (this.label) {
+              this.label[0].stop();
+              this.label[0].scale(1.5);
+              this.label[1].attr({"font-weight": 800});
+          }
+      }, function () {
+          this.sector.animate({scale: [1, 1, this.cx, this.cy]}, 500, "bounce");
+          if (this.label) {
+              this.label[0].animate({scale: 1}, 500, "bounce");
+              this.label[1].attr({"font-weight": 400});
+          }
+      });
+    });
+  </script>
+<% end -%>
+
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+
+<div id="mainPanel">
+
+  <h1>Result</h1>
+  <div id="chart"></div>
+
+  <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Event Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
+</div>

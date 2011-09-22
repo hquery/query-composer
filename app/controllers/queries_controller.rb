@@ -58,6 +58,9 @@ class QueriesController < ApplicationController
   
   def builder
   end
+  
+  def result
+  end
 
   def builder_simple
   end
