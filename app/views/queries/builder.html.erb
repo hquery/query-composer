@@ -8,8 +8,8 @@
   query.rebuildFromJson(<%= (@query.query_structure || {}).to_json.html_safe %>);
   $(document).ready(function(){
     $("#icon_demo").draggable({helper:"clone",opacity:"1", refreshPostions:true , start:function(){$(this).data("item",new queryStructure.And(null, [], "demographics"))}});
-    $("#icon_history").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
-    $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
+  // $("#icon_history").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
+  //  $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
     $("#icon_observations").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
     $("#icon_treatments").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
 
@@ -24,9 +24,20 @@
      {type:"PUT", 
       url:"/queries/<%= @query._id %>", 
       data:{"query":{"query_structure":JSON.stringify(query.toJson()), "id":"<%= @query._id %>"}}, 
-      success:function(data){alert("saved?");}})
+      success:function(data){}})
   }
   
+  
+  $("body, #pageContent, #container").droppable({
+    greedy:true,
+    accept:function(ui){
+      return $(ui).data().ItemUI || $(ui).data().AndContainerUI || $(ui).data().OrContainerUI;
+    },
+    drop:function(element, ui){
+      var item = $(ui.draggable).data().ItemUI || $(ui.draggable).data().AndContainerUI || $(ui.draggable).data().OrContainerUI;
+      item._remove();
+    }
+  });
 
 </script>
 <div id="query_builder">

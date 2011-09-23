@@ -5,18 +5,22 @@ $.widget("ui.DemographicsEditor",{
     // the encompassing container for the demographic objects
     var self = this;
     this.container = this.options.container;
-    this.ageRange = this.options.ageRange;
-    this.gender = this.options.gender;
-    this.raceCode = this.options.raceCode;
-    this.maritalStatusCode = this.options.maritalStatusCode;
+    this.demo = this.get("DemographicRule");
+    
+     this.ageRange = (this.demo) ? this.demo.data.ageRange : {low:0, high:130};
+     this.gender = (this.demo) ? this.demo.data.gender : null;
+     this.raceCode =(this.demo) ? this.demo.data.raceCode : null;
+     this.maritalStatusCode = (this.demo) ? this.demo.data.maritalStatusCode : null;
+    
     this.div = $("<div>");
     this.element.append(this.div);
     
-    this.ageDiv = $("<div>").append("<span>age</span><input class='age_range' type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' /> ");
+    this.ageDiv = $("<div>").append("<span>age</span><input class='age_range' type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' value='"+ this.ageRange.low + " - "+ this.ageRange.high+"' /> ");
     this.age_slider = $("<div>").slider({
       min:0, 
       max:130, 
       range:true,values: [ 0, 130 ],
+      values:[self.ageRange.low, self.ageRange.high],
       slide: function( event, ui ) {
          $( ".age_range",self.ageDiv ).val("" + ui.values[ 0 ] + " - " + ui.values[ 1 ]  );
          self.ageRange = {low:ui.values[ 0 ], high:ui.values[ 1 ]};
@@ -26,7 +30,7 @@ $.widget("ui.DemographicsEditor",{
     this.ageDiv.append(this.age_slider);
   
     this.genderDiv = $("<div>").append("<span>gender</span>");
-    this.genderDiv.append(this._createGenderSelect());
+    this.genderDiv.append(this._createGenderSelect(this.gender));
     this.raceDiv = $("<div>").CodeList({title:"Ethnicity",type:"enticity_codes",selected:"", onChange:function(code,event){self.raceCode = code; self._update()}});
     this.msDiv = $("<div>").CodeList({title:"Marital Staus",type:"marital_status",selected:"", onChange:function(code,event){self.maritalStatusCode = code; self._update()}});
     
@@ -38,12 +42,15 @@ $.widget("ui.DemographicsEditor",{
     
   },
   
-  _createGenderSelect:function(){
+  _createGenderSelect:function(selected){
     
     var sel =  $("<select>");
     sel.append("<option>Select</option>");
     $.each(["M","F","UN"],function(i,g){
         var op = $("<option>",{"value":g}).append(g);
+        if(selected == g){
+          op.attr("selected","true");
+        }
         sel.append(op);
     });
     var self = this;

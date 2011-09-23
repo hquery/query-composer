@@ -85,13 +85,13 @@ $.widget("ui.popup",{
     this.contentDiv.append(this.content);
     div.append(this.contentDiv);
     var buttonRow = $("<div></div>");
-    var saveButton = $("<input class='save' type='button' value='save'>");
+    var saveButton = $("<input class='save' type='button' value='Done'>");
     saveButton.click(bind(this.save, this));
-    var closeButton = $("<input class='close' type='button' value='cancel'>");
-    closeButton.click(bind(this.close,this));
+   // var closeButton = $("<input class='close' type='button' value='cancel'>");
+   // closeButton.click(bind(this.close,this));
     
     buttonRow.append(saveButton);
-    buttonRow.append(closeButton);
+   // buttonRow.append(closeButton);
     div.append(buttonRow);
     
     div.append($("<div class='popup-arrow-border'></div><div class='popup-arrow'></div>"));
@@ -251,7 +251,7 @@ $.widget("ui.ContainerUI", {
         this.setActive(false);
 
         var droppedWidget = ui.draggable.data('widget');
-
+        var _new = false;
         if (!droppedWidget) {
             var data = ui.draggable.data("item");
 
@@ -262,6 +262,7 @@ $.widget("ui.ContainerUI", {
                 container: data
             });
             droppedWidget = el.data().ItemUI;
+            _new = true;
         }
 
         // if parent is this container do nothing
@@ -284,8 +285,12 @@ $.widget("ui.ContainerUI", {
 
               }
         }
+        
+        if(_new){
+          droppedWidget.openPopup();
+        }
 
-
+       updateQuery();
     },
 
 
@@ -362,6 +367,7 @@ $.widget("ui.ContainerUI", {
         if(!sameParent && otherParent && (otherParent.container instanceof queryStructure.And)){
           otherParent._collapsIfSingleChild();
         }
+        updateQuery();
     },
     
     _collapsIfSingleChild: function(){
@@ -373,11 +379,10 @@ $.widget("ui.ContainerUI", {
         this.container.remove();
         this.element.remove();
         this.destroy();
+        
       }
-    }
-
+    },
     
-    ,
     destroyIfEmpty: function() {
         var p = this.parent;
 
@@ -386,9 +391,20 @@ $.widget("ui.ContainerUI", {
             this.element.remove();
             this.destroy();
             p.destroyIfEmpty();
-
+            
         }
 
+    },
+
+    _remove:function(){
+      var el = this.element;
+      function callback() {
+         el.remove();
+        }
+      this.element.hide( "explode", {}, 1000, callback );
+     
+      this.container.remove();
+      updateQuery();
     }
 
 }
@@ -509,6 +525,16 @@ $.widget("ui.ItemUI", {
       this.editor = (this.editor || eval("$('<div>')."+edName+"Editor({container:this.container})"));
       image.popup({'widg':this, arrow:"left .08", offset:"5px", content:this.editor});
       image.popup("open");
+    },
+    _remove:function(){
+        var el = this.element;
+        function callback() {
+           el.remove();
+          }
+        this.element.hide( "explode", {}, 1000, callback );
+
+        this.container.remove();
+        updateQuery();
     }
 
 });

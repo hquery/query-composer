@@ -1,3 +1,5 @@
+require 'result_presenter'
+
 class Query < BaseQuery
   include Mongoid::Document
 
@@ -20,8 +22,6 @@ class Query < BaseQuery
     execution.execute(endpoints)
   end
   
-  private
-
   def generate_map_reduce
     if (self.generated?)
       map_function = ""
@@ -35,6 +35,20 @@ class Query < BaseQuery
       self.reduce = prettify_generated_function(reduce_template)
     end
   end
+
+  def clone
+    Query.new(self.attributes.except('_id'));
+  end
+  
+  def init_query_structure!
+    self.query_structure = {"find"=>{"and"=>[{"or"=>[]}]}, "filter"=>{"and"=>[{"or"=>[]}]}, "extract"=>{"selections"=>[], "groups"=>[]}}
+  end
+  
+  def result_presenter
+    ResultPresenter.new(title, last_execution.try(:aggregate_result))
+  end
+  
+  private
   
   # Note: This is not generic to all code; it assumes that all closing blocks are on their own line like we do within our generated code
   # TODO (agoldstein):  We should write comments in generated MapReduce code so a user can understand it, but strip it out when sending out to the gateway
@@ -64,6 +78,5 @@ class Query < BaseQuery
     
     return pretty_function
   end
-  
   
 end

@@ -1,0 +1,9 @@
+{name:"Annulled",           description:"", type:"marital_status",   codes:{ "HL7":["A"]} }
+{name:"Divorced",           description:"", type:"marital_status",   codes:{ "HL7":["D"]} }
+{name:"Interlocutory",      description:"", type:"marital_status",   codes:{ "HL7":["I"]} }
+{name:"Legally Separated",  description:"", type:"marital_status",   codes:{ "HL7":["L"]} }
+{name:"Married",            description:"", type:"marital_status",   codes:{ "HL7":["M"]} }
+{name:"Polygamous",         description:"", type:"marital_status",   codes:{ "HL7":["P"]} }
+{name:"Never Married",      description:"", type:"marital_status",   codes:{ "HL7":["S"]} }
+{name:"Domestic partner",   description:"", type:"marital_status",   codes:{ "HL7":["T"]} }
+{name:"Widowed",            description:"", type:"marital_status",   codes:{ "HL7":["W"]} }
