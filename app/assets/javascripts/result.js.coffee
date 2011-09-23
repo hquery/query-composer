@@ -9,12 +9,15 @@ window.HQuery =
         fin = ->
           @sector.stop()
           @sector.scale 1.1, 1.1, @cx, @cy
+          @flag = r.g.popup(@cx, @cy, @sector.value.value or "0")
           if @label
             @label[0].stop()
             @label[0].scale 1.5
             @label[1].attr {"font-weight": 800}
         fout = ->
           @sector.animate {scale: [1, 1, @cx, @cy]}, 500, "bounce"
+          @flag.animate {opacity: 0}, 300, ->
+                                          this.remove()
           if @label
             @label[0].animate {scale: 1}, 500, "bounce"
             @label[1].attr {"font-weight": 400}
