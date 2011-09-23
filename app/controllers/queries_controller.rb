@@ -60,6 +60,7 @@ class QueriesController < ApplicationController
   end
   
   def result
+    @presenter = @query.result_presenter
   end
 
   def builder_simple

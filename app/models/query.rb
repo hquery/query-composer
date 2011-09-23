@@ -1,3 +1,5 @@
+require 'result_presenter'
+
 class Query < BaseQuery
   include Mongoid::Document
 
@@ -40,6 +42,10 @@ class Query < BaseQuery
   
   def init_query_structure!
     self.query_structure = {"find"=>{"and"=>[{"or"=>[]}]}, "filter"=>{"and"=>[{"or"=>[]}]}, "extract"=>{"selections"=>[], "groups"=>[]}}
+  end
+  
+  def result_presenter
+    ResultPresenter.new(title, last_execution.try(:aggregate_result))
   end
   
   private

@@ -5,18 +5,10 @@
       var r = Raphael("chart");
       r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
       
-      r.g.text(320, 100, "<%= @query.title %>").attr({"font-size": 20});
+      r.g.text(320, 100, "<%= @presenter.title %>").attr({"font-size": 20});
       
-      var values = [];
-      var labels = [];
-      
-      <% @query.last_execution.aggregate_result.each do |key, value| -%>
-        <% next if ['_id', 'created_at', 'query_id'].include? key %>
-        values.push(<%= value %>);
-        labels.push("%% <%= key %>")
-      <% end -%>
-      
-      var pie = r.g.piechart(320, 240, 100, values, {legend: labels, legendpos: "west"});
+      var pie = r.g.piechart(320, 240, 100, <%= @presenter.value_javascript_array %>, 
+                                            {legend: <%= raw @presenter.key_javascript_array %>, legendpos: "west"});
       pie.hover(function () {
           this.sector.stop();
           this.sector.scale(1.1, 1.1, this.cx, this.cy);
