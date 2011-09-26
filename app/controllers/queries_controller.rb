@@ -55,7 +55,12 @@ class QueriesController < ApplicationController
   def before_update
     convert_to_hash(:query_structure)
   end
-  
+
+  def new
+    template = params[:builder] ? "queries/builder": "queries/new"
+    render :template=> template
+  end
+
   def builder
   end
   
