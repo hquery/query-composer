@@ -1,79 +1,77 @@
 @queryStructure = @queryStructure || {}
 
-
-queryStructure.createContainer= (parent, json) ->
+queryStructure.createContainer = (parent, json) ->
   _ret = null
   _children = []
-  if(json["and"])
-    _ret =  new queryStructure.And(parent,[])
-    _children = json["and"]
-  else if(json["or"])
-    _ret =   new queryStructure.Or(parent,[])
-    _children = json["or"]
-  else if(json["not"])
-    _ret =   new queryStructure.Not(parent,[])
-    _children = json["not"]
+  if (json['and'])
+    _ret = new queryStructure.And(parent, [])
+    _children = json['and']
+  else if (json['or'])
+    _ret = new queryStructure.Or(parent, [])
+    _children = json['or']
+  else if (json['not'])
+    _ret = new queryStructure.Not(parent, [])
+    _children = json['not']
 
   for item in _children
      _ret.add(queryStructure.createContainer(_ret,item))
   
-  _ret
-
+  return _ret
 
 class queryStructure.Query
   constructor: ->
-    this.find = new queryStructure.And(null)
-    this.find.add(new queryStructure.Or())
-    this.filter = new queryStructure.And(null)
-    this.filter.add(new queryStructure.Or())
-    this.extract = new queryStructure.Extraction([], [])
+    @find = new queryStructure.And(null)
+    @find.add(new queryStructure.Or())
+    @filter = new queryStructure.And(null)
+    @filter.add(new queryStructure.Or())
+    @extract = new queryStructure.Extraction([], [])
 
-  toJson: -> 
-    return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'extract' : this.extract.toJson() }
+  toJson: ->
+    return { 'find' : @find.toJson(), 'filter' : @filter.toJson(), 'extract' : @extract.toJson() }
   
-  rebuildFromJson: (@json) ->
-    this.find = this.buildFromJson(null, @json['find'])
-    this.filter = this.buildFromJson(null, @json['filter'])
-    this.extract = queryStructure.Extraction.rebuildFromJson(@json['extract'])
+  rebuildFromJson: (json) ->
+    @find = @buildFromJson(null, json['find'])
+    @filter = @buildFromJson(null, json['filter'])
+    @extract = queryStructure.Extraction.rebuildFromJson(json['extract'])
     
-  buildFromJson: (@parent, @element) ->
-    if this.getElementType(@element) == 'rule'
-      ruleType = this.getRuleType(@element)
+  buildFromJson: (parent, element) ->
+    if @getElementType(element) == 'rule'
+      ruleType = @getRuleType(element)
       if (ruleType == 'Range')
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['start'], @element['end'])
+        return new queryStructure[ruleType](element['category'], element['title'], element['field'], element['start'], element['end'])
       else if (ruleType == 'Comparison')
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparator'])
+        return new queryStructure[ruleType](element['category'], element['title'], element['field'], element['value'], element['comparator'])
       else
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
+        return new queryStructure[ruleType](element['category'], element['title'], element['field'], element['value'])
     else
-      container = this.getContainerType(@element)
-      newContainer = new queryStructure[container](@parent, null, @element.name || null)
-      for child in @element[container.toLowerCase()]
-        newContainer.add(this.buildFromJson(newContainer, child))
+      container = @getContainerType(element)
+      newContainer = new queryStructure[container](parent, null, element.name || null)
+      for child in element[container.toLowerCase()]
+        newContainer.add(@buildFromJson(newContainer, child))
       return newContainer
       
-  getElementType: (@element) ->
-    if @element['and']? || @element['or']? || @element['not']? || @element['count_n']?
+  getElementType: (element) ->
+    if element['and']? || element['or']? || element['not']? || element['count_n']?
       return 'container'
     else
       return 'rule'
           
-  getContainerType: (@element) ->
-    if @element['and']?
+  getContainerType: (element) ->
+    if element['and']?
       return 'And'
-    else if @element['or']?
+    else if element['or']?
       return 'Or'
-    else if @element['not']?
+    else if element['not']?
       return 'Not'
-    else if @element['count_n']?
+    else if element['count_n']?
       return 'CountN'
     else
       return null
 
-  getRuleType: (@element) ->
-    if @element['start']?
+  getRuleType: (element) ->
+    if element['start']?
       return 'Range'
-    else if @element['comparator']?
+    else if element['comparator']?
       return 'Comparison'
     else
       return 'Rule'
@@ -85,13 +83,12 @@ class queryStructure.Query
 class queryStructure.Container
   constructor: (@parent, @children = [], @name, @negate = false) ->
 
-
   add: (element, after) ->
     # first see if the element is already part of the children array
     # if it is there is no need to do anything
-    if this.childIndex(element) == -1
-      index = this.childIndex(after) + 1
-      this.children.splice(index,0,element)
+    if @childIndex(element) == -1
+      index = @childIndex(after) + 1
+      @children.splice(index,0,element)
       if element.parent && element.parent != this
         element.parent.removeChild(element)
     element.parent = this
@@ -99,14 +96,14 @@ class queryStructure.Container
  
   addAll: (items, after) ->
     for item in items
-      after = this.add(item,after)
+      after = @add(item,after)
       
   remove: ->
     if @parent
       @parent.removeChild(this)
 
   removeChild: (victim) ->
-    for index,_child of @children
+    for index, _child of @children
       if _child == victim
         child = @children.splice(index, 1)
         child.parent = null
@@ -143,7 +140,6 @@ class queryStructure.Or extends queryStructure.Container
         return true;
     return false;
 
-
 class queryStructure.And extends queryStructure.Container
   toJson: ->
     childJson = [];
@@ -160,8 +156,6 @@ class queryStructure.And extends queryStructure.Container
         return false;
     return true;
 
-
-
 class queryStructure.Not extends queryStructure.Container
   toJson: ->
     childJson = [];
@@ -175,7 +169,6 @@ class queryStructure.Not extends queryStructure.Container
           return true;
       return false;
   
-
 class queryStructure.CountN extends queryStructure.Container
   constructor: (@parent, @n) ->
     super
@@ -184,7 +177,7 @@ class queryStructure.CountN extends queryStructure.Container
     childJson = [];
     for child in @children
       childJson.push(child.toJson())
-    return { "n" : this.n, "count_n" : childJson }
+    return { "n" : @n, "count_n" : childJson }
 
     test: (patient) -> 
       for child in @children
@@ -196,17 +189,15 @@ class queryStructure.CountN extends queryStructure.Container
 #########
 # Rules 
 #########
+
 class queryStructure.Rule
   constructor: (@category, @title, @field, @value) ->
   toJson: ->
     return { "category" : @category, "title" : @title, "field" : @field, "value" : @value }
   
-
-
 class queryStructure.Range
   constructor: (@category, @title, @field, @start, @end) ->
   toJson: ->
-
 
 class queryStructure.Comparison
   constructor: (@category, @title, @field, @value, @comparator) ->
@@ -214,7 +205,7 @@ class queryStructure.Comparison
     return { "category" : @category, "title" : @title, "field" : @field, "value" : @value, "comparator" : @comparator }
   test: (patient) ->
     value = null; 
-    if (this.field == 'age') 
+    if (@field == 'age') 
       value = patient[@field](new Date())
     else 
       value = patient[@field]()
@@ -228,8 +219,9 @@ class queryStructure.Comparison
     
 
 #########
-# Fileds 
+# Fields 
 #########
+
 class queryStructure.Field
   constructor: (@title, @callstack) ->
   toJson: ->

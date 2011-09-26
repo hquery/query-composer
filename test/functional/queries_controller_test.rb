@@ -217,7 +217,7 @@ class QueriesControllerTest < ActionController::TestCase
     sign_in @user
     query = Query.find(@ids[4])
     get :execution_history, id: query.id
-    assigned_query = assigns(:query);
+    assigned_query = assigns(:query)
     assert_not_nil assigned_query
     assert_response :success
   end
@@ -248,7 +248,6 @@ class QueriesControllerTest < ActionController::TestCase
     assert_redirected_to(query_path(query.id))
 
   end
-  
   
   test "should cancel execution" do
     sign_in @user
@@ -287,6 +286,13 @@ class QueriesControllerTest < ActionController::TestCase
     assert_equal @template_query.map, query.map
     assert_equal @template_query.reduce, query.reduce
     assert_response :success
+  end
+  
+  test "should return endpoints for simple builder" do
+    sign_in @user
+    query = Query.find(@ids[0])
+    get :builder_simple, id: query.id
+    assert_equal 10, assigns(:endpoints).length
   end
   
 end
