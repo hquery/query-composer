@@ -4,21 +4,22 @@
     <th align='left'>Value</th>
   </tr>
 
-<% if query.last_execution && query.last_execution.aggregate_result %>
-
-  <% query.last_execution.aggregate_result.each do |key, value| %>
-  <% next if key=='_id' %>
+<% presenter = query.result_presenter
+  if presenter.exist?
+    presenter.each_pair do |key, value| -%>
   <tr>
     <td><code><%= key %>:</code></td>
     <td><code><%= jsonify(value) %></code></td>
   </tr>
-  <% end %>
+  <% end -%>
 
-<% else %>
+<% else -%>
   <tr>
     <td>Aggregated Results not available</td>
     <td></td>
   </tr>
-<% end %>
+<% end -%>
 
 </table>
+
+<%= link_to 'Pie Chart', result_query_url(query, :type => 'pie') %> | <%= link_to 'Bar Chart', result_query_url(query, :type => 'bar') %> 

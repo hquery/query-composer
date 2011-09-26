@@ -379,3 +379,9 @@ div#workspace_bottom_border_lower {
       width: 100%;
 }
 
+div#chart {
+  margin: 0 auto;
+  width: 640px;
+  height: 480px;
+}
+

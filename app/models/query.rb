@@ -1,3 +1,5 @@
+require 'result_presenter'
+
 class Query < BaseQuery
   include Mongoid::Document
 
@@ -33,6 +35,18 @@ class Query < BaseQuery
       self.reduce = prettify_generated_function(reduce_template)
     end
   end
+
+  def clone
+    Query.new(self.attributes.except('_id'));
+  end
+  
+  def init_query_structure!
+    self.query_structure = {"find"=>{"and"=>[{"or"=>[]}]}, "filter"=>{"and"=>[{"or"=>[]}]}, "extract"=>{"selections"=>[], "groups"=>[]}}
+  end
+  
+  def result_presenter
+    ResultPresenter.new(title, last_execution.try(:aggregate_result))
+  end
   
   private
   
@@ -64,6 +78,5 @@ class Query < BaseQuery
     
     return pretty_function
   end
-  
   
 end

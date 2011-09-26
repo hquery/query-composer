@@ -128,11 +128,7 @@ $(document).ready(function() {
 
   <div class="ctrl"> 
     <%= f.button :submit if !@disabled %>
-    <% if (not @query.id.nil?) %>
     <%= link_to 'cancel', @query %>
-    <% else %>
-    <%= link_to 'cancel', queries_path %>
-    <% end %> 
   </div>
   <% end %>
 
