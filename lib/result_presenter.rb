@@ -19,12 +19,11 @@ class ResultPresenter
   end
   
   def key_javascript_array
-    key_list = keys.map {|k| "\"#{k}\""}.join(', ')
-    "[#{key_list}]"
+    @keys.to_json
   end
   
   def value_javascript_array
-    "[#{values.join(', ')}]"
+    @values.to_json
   end
   
   def each_pair
