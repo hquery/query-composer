@@ -3,34 +3,45 @@ class CodeSetsController < ApplicationController
   
   
   def index
-    @code_lists = CodeList.all
+    @code_sets = CodeSet.all
   end
   
   
   def new
-    @code_list = CodeList.new
+    @code_set = CodeSet.new
   end
   
-  
-  def add_code
-    
+  def create
+    @code_set = CodeSet.new
+    @code_set.set_properties(params[:code_set])
+    redirect_to :action=>:show, :id=>@code_set
   end
   
-  def remove_code
-    
+  def show
+    @code_set = CodeSet.find(params[:id])
   end
  
+  def edit
+    @code_set = CodeSet.find(params[:id])
+  end
+  
+  def update
+    @code_set = CodeSet.find(params[:id])
+    @code_set.set_properties(params[:code_set])
+    redirect_to :action=>:show
+  end
+  
   def by_type
-    @code_set = CodeSet.where(type:params[:type])
+    @code_sets = CodeSet.where(type:params[:type])
     respond_to do |format|
-       format.html
-       format.json {render :json=>@code_set}
+       format.html {render :template=>"code_sets/index.html"}
+       format.json {render :json=>@code_sets}
       end
   end
   
   def save_json
     json = params[:json]
-    @code_list = CodeSet.find(params[:id]).from_json(json)
+    @code_set = CodeSet.find(params[:id]).from_json(json)
   end
   
 end
