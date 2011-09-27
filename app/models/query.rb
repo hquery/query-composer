@@ -1,4 +1,5 @@
 require 'result_presenter'
+require 'generated_result_presenter'
 
 class Query < BaseQuery
   include Mongoid::Document
@@ -45,7 +46,11 @@ class Query < BaseQuery
   end
   
   def result_presenter
-    ResultPresenter.new(title, last_execution.try(:aggregate_result))
+    if generated?
+      GeneratedResultPresenter.new(title, last_execution.try(:aggregate_result))
+    else
+      ResultPresenter.new(title, last_execution.try(:aggregate_result))
+    end
   end
   
   private

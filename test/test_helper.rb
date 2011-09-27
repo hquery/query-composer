@@ -14,6 +14,7 @@ class ActiveSupport::TestCase
   def dump_database
     User.all.each {|x| x.destroy}
     BaseQuery.all.each {|x| x.destroy}
+    Query.all.each {|x| x.destroy}
     Endpoint.all.each {|x| x.destroy}
     EndpointLog.all.each {|x| x.destroy}
     LibraryFunction.all.each {|x| x.destroy}

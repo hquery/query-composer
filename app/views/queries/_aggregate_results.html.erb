@@ -12,7 +12,10 @@
     <td><code><%= jsonify(value) %></code></td>
   </tr>
   <% end -%>
-
+  <tr>
+    <td><%= link_to 'Pie Chart', result_query_url(query, :type => 'pie') %></td>
+    <td><%= link_to 'Bar Chart', result_query_url(query, :type => 'bar') %> </td>
+  </tr>
 <% else -%>
   <tr>
     <td>Aggregated Results not available</td>
@@ -22,4 +25,3 @@
 
 </table>
 
-<%= link_to 'Pie Chart', result_query_url(query, :type => 'pie') %> | <%= link_to 'Bar Chart', result_query_url(query, :type => 'bar') %> 

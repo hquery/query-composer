@@ -262,3 +262,24 @@ Factory.define :library_function do |f|
   f.sequence(:name) { |n| "sum#{n}()" }
   f.definition "this.sum = function(values) {\r\n        result = 0;\r\n          values.forEach(function(value) {\r\n            result += value;\r\n          });\r\n          return result;\r\n        }\r\n"
 end
+
+
+# ======================
+# = Code sets          =
+# ======================
+
+
+Factory.define :code_set do |cs|
+  cs.name nil
+  cs.type nil
+  cs.description nil
+  cs.codes nil
+end
+
+Factory.define :annulled_marital_status_code, :parent => :code_set do |cs|
+  codes = {"MaritalStatusCodes" => ["A"]}
+  cs.name "Annulled"
+  cs.description ""
+  cs.type "marital_status"
+  cs.codes codes
+end
