@@ -39,9 +39,5 @@ class CodeSetsController < ApplicationController
       end
   end
   
-  def save_json
-    json = params[:json]
-    @code_set = CodeSet.find(params[:id]).from_json(json)
-  end
-  
+
 end
