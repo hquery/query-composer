@@ -27,7 +27,7 @@ class queryStructure.Query
       return newContainer
       
   getElementType: (element) ->
-    if element['and']? || element['or']? || element['not']? || element['count_n']?
+    if element['and']? || element['or']?
       return 'container'
     else
       return 'rule'
@@ -37,20 +37,8 @@ class queryStructure.Query
       return 'And'
     else if element['or']?
       return 'Or'
-    else if element['not']?
-      return 'Not'
-    else if element['count_n']?
-      return 'CountN'
     else
       return null
-
-  getRuleType: (element) ->
-    if element['start']?
-      return 'Range'
-    else if element['comparator']?
-      return 'Comparison'
-    else
-      return 'Rule'
 
 ##############
 # Containers 
@@ -144,7 +132,6 @@ class queryStructure.And extends queryStructure.Container
     childJson = @childrenToJson()
     return { "name" : @name, "and" : childJson, "negate" : @negate, "title" : @title }
 
-
   test: (patient) ->
     if (@children.length == 0)
       return true;
@@ -156,63 +143,10 @@ class queryStructure.And extends queryStructure.Container
         
     return if @negate then !retval else retval
 
-
-
-
-class queryStructure.CountN extends queryStructure.Container
-  constructor: (@parent, @n) ->
-    super
-  
-  toJson: ->
-    childJson = [];
-    for child in @children
-      childJson.push(child.toJson())
-    return { "n" : @n, "count_n" : childJson }
-
-    test: (patient) -> 
-      for child in @children
-        if (child.test(patient)) 
-          return true;
-      return false;
-    
-
 #########
-# Rules 
+# Fields 
 #########
-class queryStructure.Rule
-  constructor: (@type, @data) ->
-  toJson: ->
-    return { "type" : @type, "data" : @data }
-    
 
-
-class queryStructure.Range
-  constructor: (@category, @title, @field, @start, @end) ->
-  toJson: ->
-
-
-class queryStructure.Comparison
-  constructor: (@category, @title, @field, @value, @comparator) ->
-  toJson: ->
-    return { "category" : @category, "title" : @title, "field" : @field, "value" : @value, "comparator" : @comparator }
-  test: (patient) ->
-    value = null; 
-    if (@field == 'age') 
-      value = patient[@field](new Date())
-    else 
-      value = patient[@field]()
-    
-    if (@comparator == '=')
-      return value == @value
-    else if (@comparator == '<')
-      return value < @value
-    else 
-      return value > @value
-    
-
-#########
-# Fileds 
-#########
 class queryStructure.Field
   constructor: (@title, @callstack) ->
   toJson: ->
@@ -230,7 +164,7 @@ class queryStructure.Selection extends queryStructure.Field
   constructor: (@title, @callstack, @aggregation) ->
   toJson: ->
     return { "title" : @title, "callstack" : @callstack, 'aggregation' : @aggregation }
-  rebuildFromJson: (json) ->
+  @rebuildFromJson: (json) ->
     return new queryStructure.Selection(json['title'], json['callstack'], json['aggregation'])
 
 class queryStructure.Extraction
@@ -243,7 +177,7 @@ class queryStructure.Extraction
     for group in @groups
       groupJson.push(group.toJson())
     return { "selections" : selectJson, "groups" : groupJson }
-  rebuildFromJson: (json) ->
+  @rebuildFromJson: (json) ->
     selections = []
     groups = []
     for selection in json['selections']

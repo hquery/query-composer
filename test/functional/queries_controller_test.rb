@@ -343,11 +343,4 @@ class QueriesControllerTest < ActionController::TestCase
     assert_response :success
   end
   
-  test "should return endpoints for simple builder" do
-    sign_in @user
-    query = Query.find(@ids[0])
-    get :builder_simple, id: query.id
-    assert_equal 10, assigns(:endpoints).length
-  end
-  
 end
