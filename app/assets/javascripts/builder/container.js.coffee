@@ -1,53 +1,33 @@
-@queryStructure = @queryStructure || {}
-
-
-queryStructure.createContainer= (parent, json) ->
-  _ret = null
-  _children = []
-  if(json["and"])
-    _ret =  new queryStructure.And(parent,[])
-    _children = json["and"]
-  else if(json["or"])
-    _ret =   new queryStructure.Or(parent,[])
-    _children = json["or"]
-  else if(json["not"])
-    _ret =   new queryStructure.Not(parent,[])
-    _children = json["not"]
-
-  for item in _children
-     _ret.add(queryStructure.createContainer(_ret,item))
-  
-  _ret
+@queryStructure ||= {}
 
 
 class queryStructure.Query
   constructor: ->
     this.find = new queryStructure.And(null)
-    this.find.add(new queryStructure.Or())
     this.filter = new queryStructure.And(null)
-    this.filter.add(new queryStructure.Or())
     this.extract = new queryStructure.Extraction([], [])
 
   toJson: -> 
     return { 'find' : this.find.toJson(), 'filter' : this.filter.toJson(), 'extract' : this.extract.toJson() }
   
   rebuildFromJson: (@json) ->
-    this.find = this.buildFromJson(null, @json['find'])
-    this.filter = this.buildFromJson(null, @json['filter'])
-    this.extract = queryStructure.Extraction.rebuildFromJson(@json['extract'])
+    this.find = if @json['find'] then this.buildFromJson(null, @json['find']) else new queryStructure.And(null)
+    this.filter = if  @json['filter'] then this.buildFromJson(null, @json['filter'] ) else new queryStructure.And(null)
+    this.extract = if @json['extract'] then queryStructure.Extraction.rebuildFromJson(@json['extract']) else new queryStructure.Extraction([], [])
     
   buildFromJson: (@parent, @element) ->
     if this.getElementType(@element) == 'rule'
-      ruleType = this.getRuleType(@element)
-      if (ruleType == 'Range')
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['start'], @element['end'])
-      else if (ruleType == 'Comparison')
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparator'])
-      else
-        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
+      ruleType = @element.type
+      return new queryStructure[ruleType]( @element.data)
+      # if (ruleType == 'Range')
+      #        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['start'], @element['end'])
+      #      else if (ruleType == 'Comparison')
+      #        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'], @element['comparator'])
+      #      else
+      #        return new queryStructure[ruleType](@element['category'], @element['title'], @element['field'], @element['value'])
     else
       container = this.getContainerType(@element)
-      newContainer = new queryStructure[container](@parent, null, @element.name || null)
+      newContainer = new queryStructure[container](@parent, [], @element.name, @element.title, @element.negate)
       for child in @element[container.toLowerCase()]
         newContainer.add(this.buildFromJson(newContainer, child))
       return newContainer
@@ -83,17 +63,19 @@ class queryStructure.Query
 ##############
 
 class queryStructure.Container
-  constructor: (@parent, @children = [], @name, @negate = false) ->
-
+  constructor: (@parent, @children = [], @name, @title, @negate = false) ->
+    @children ||= []
 
   add: (element, after) ->
     # first see if the element is already part of the children array
     # if it is there is no need to do anything
-    if this.childIndex(element) == -1
-      index = this.childIndex(after) + 1
-      this.children.splice(index,0,element)
-      if element.parent && element.parent != this
-        element.parent.removeChild(element)
+    index = @children.length
+    ci = this.childIndex(after)
+    if ci != -1
+      index = ci + 1
+    this.children.splice(index,0,element)
+    if element.parent && element.parent != this
+      element.parent.removeChild(element)
     element.parent = this
     return element
  
@@ -106,17 +88,28 @@ class queryStructure.Container
       @parent.removeChild(this)
 
   removeChild: (victim) ->
-    for index,_child of @children
-      if _child == victim
-        child = @children.splice(index, 1)
-        child.parent = null
+    index = this.childIndex(victim)
+    if index != -1
+      @children.splice(index,1)
+      victim.parent = null
         
   replaceChild: (child, newChild) ->
-    for index,_child of @children
-      if _child == child
-        @children[index] = newChild
-        newChild.parent = this
+    index = this.childIndex(child)
+    if index != -1
+      @children[index] = newChild
+      child.parent = null
+      newChild.parent = this
   
+  moveBefore: (child, other) ->
+    i1 = this.childIndex(child)
+    i2 = this.childIndex(other)
+    if i1 != -1 && i2 != -1
+      child = @children.splice(i2, 1)
+      @children.splice(i1-1,0,other)
+      return true
+    
+    return false
+      
   childIndex: (child) ->
     if child == null
       return -1
@@ -127,54 +120,50 @@ class queryStructure.Container
             
   clear: ->
     children = []
+    
+  childrenToJson: ->
+     childJson = [];
+     for child in @children
+       js = if child["toJson"] then  child.toJson() else child
+       childJson.push(js )
+     return childJson
+      
 
 class queryStructure.Or extends queryStructure.Container
   toJson: ->
-    childJson = [];
-    for child in @children
-      childJson.push(child.toJson())
-    return { "or" : childJson }
+    childJson = this.childrenToJson()
+    return { "name" : @name, "or" : childJson, "negate" : @negate, "title" : @title }
   
   test: (patient) -> 
     if (@children.length == 0)
       return true;
+    retval = false  
     for child in @children
       if (child.test(patient)) 
-        return true;
-    return false;
+        retval = true
+        break
+    return if @negate then !retval else retval;
 
 
 class queryStructure.And extends queryStructure.Container
   toJson: ->
-    childJson = [];
-    for child in @children
-      childJson.push(child.toJson())
-    if @name?
-      return { "name" : @name, "and" : childJson }
-    else
-      return { "and" : childJson }
+    childJson = this.childrenToJson()
+    return { "name" : @name, "and" : childJson, "negate" : @negate, "title" : @title }
+
 
   test: (patient) ->
+    if (@children.length == 0)
+      return true;
+    retval = true  
     for child in @children
       if (!child.test(patient)) 
-        return false;
-    return true;
+        retval =  false
+        break
+        
+    return if @negate then !retval else retval
 
 
 
-class queryStructure.Not extends queryStructure.Container
-  toJson: ->
-    childJson = [];
-    for child in @children
-      childJson.push(child.toJson())
-    return { "not" : childJson }
-
-    test: (patient) -> 
-      for child in @children
-        if (child.test(patient)) 
-          return true;
-      return false;
-  
 
 class queryStructure.CountN extends queryStructure.Container
   constructor: (@parent, @n) ->
@@ -197,10 +186,10 @@ class queryStructure.CountN extends queryStructure.Container
 # Rules 
 #########
 class queryStructure.Rule
-  constructor: (@category, @title, @field, @value) ->
+  constructor: (@type, @data) ->
   toJson: ->
-    return { "category" : @category, "title" : @title, "field" : @field, "value" : @value }
-  
+    return { "type" : @type, "data" : @data }
+    
 
 
 class queryStructure.Range

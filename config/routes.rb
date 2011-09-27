@@ -32,6 +32,15 @@ QueryComposer::Application.routes.draw do
     end
   end
   
+  
+  resources :code_sets do
+
+  end
+  
+  namespace :code_sets do
+    get "by_type/:type", :action=>:by_type
+  end
+  
   root :to => 'queries#index'
   
 

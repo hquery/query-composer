@@ -30,26 +30,12 @@ function map(patient) {
 }
 
 function find(patient) {
-  var root = new queryStructure.Or(null, [
-  <% query_structure['find']['and'].each do |subelement|
-    if subelement != query_structure['find']['and'].last
-      comma_if_last = ','
-    end %>
-    <%= render :partial => '/queries/builder/build_where', :locals => { :element => subelement, :comma_if_last => comma_if_last } %>
-  <% end %>
-  ]);
+  var root = <%= render :partial => '/queries/builder/build_where', :locals => { :element => query_structure["find"], :comma_if_last => "" } %>
   return root.test(patient);
 }
 
 function filter(patient) {
-  var root = new queryStructure.Or(null, [
-  <% query_structure['filter']['and'].each do |subelement|
-    if subelement != query_structure['filter']['and'].last
-      comma_if_last = ','
-    end %>
-    <%= render :partial => '/queries/builder/build_where', :locals => { :element => subelement, :comma_if_last => comma_if_last } %>
-  <% end %>
-  ]);
+  var root = <%= render :partial => '/queries/builder/build_where', :locals => { :element => query_structure["filter"], :comma_if_last => "" } %>
   return root.test(patient);
 }
 

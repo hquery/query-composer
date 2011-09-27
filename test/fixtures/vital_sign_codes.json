@@ -1,0 +1,10 @@
+{"name": "Respitory Rate", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["9279-1"]} }
+{"name": "Heart Rate", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["8867-4"]} }
+{"name": "O2 % BldC Oximetry", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["2710-2"]} }
+{"name": "BP Systolic", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["8480-6" ]} } 
+{"name": "BP Diastolic", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["8462-4" ]} } 
+{"name": "Body Temperature", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["8310-5" ]} } 
+{"name": "Height", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["8302-2"]} } 
+{"name": "Height (Lying)", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["8306-3"]} } 
+{"name": "Head Circumference", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["8287-5"]} }
+{"name": "Weight Measured", "description":"", "type":"vital_sign_codes", "codes":{"LOINC":["3141-9"]} }
