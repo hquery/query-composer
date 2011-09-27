@@ -7,10 +7,10 @@ $.widget("ui.DemographicsEditor",{
     this.container = this.options.container;
     this.demo = this.get("DemographicRule");
     
-     this.ageRange = (this.demo) ? this.demo.data.ageRange : {low:0, high:130};
-     this.gender = (this.demo) ? this.demo.data.gender : null;
-     this.raceCode =(this.demo) ? this.demo.data.raceCode : null;
-     this.maritalStatusCode = (this.demo) ? this.demo.data.maritalStatusCode : null;
+    this.ageRange = (this.demo) ? this.demo.data.ageRange : {low:0, high:130};
+    this.gender = (this.demo) ? this.demo.data.gender : null;
+    this.raceCode =(this.demo) ? this.demo.data.raceCode : null;
+    this.maritalStatusCode = (this.demo) ? this.demo.data.maritalStatusCode : null;
     
     this.div = $("<div>");
     this.element.append(this.div);

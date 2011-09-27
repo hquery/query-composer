@@ -4,9 +4,6 @@ $.widget("ui.FunctionalStatusEditor",{
     this.div = $("<div>");
     this.div.append("<span>Functional Status</span><span><select></select></span>");
     this.element.append(this.div);
-    // "<div>"+
-    //   "<span>Vitals</span><span><select></select></span>"+
-    // "</div>";
   }
 });
 
@@ -20,10 +17,7 @@ $.widget("ui.AllergiesEditor",{
     this.div = $("<div>");
     this.div.append("<span>Allergies</span><span><select></select></span>");
     this.element.append(this.div);
-    
-    // "<div>"+
-    //   "<span>Vitals</span><span><select></select></span>"+
-    // "</div>";
+
   }
 });
 
