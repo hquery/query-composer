@@ -90,7 +90,72 @@ $.widget("ui.DemographicsEditor",{
      });
      this.container.add(object);
   }
+});
+
+
+$.widget("ui.DemographicsExtractor", {
+  options:{},
   
+  _create: function() {
+    var self = this;
+    
+    this.div = $("<div>");
+    
+    this.genderDiv = $("<div>");
+    this.genderCheck = this.genderDiv.append("<span>Gender</span>");
+    this.genderAggregate = this.genderDiv.append("<span>Aggregate</span>");
+    this.ageDiv = $("<div>");
+    this.ageCheck = this.ageDiv.append("<span>Age</span>");
+    this.ageAggregate = this.ageDiv.append("<span>Aggregate</span>");
+    
+    this.element.append(this.div);
+    this.div.append(this.genderDiv);
+    this.div.append(this.ageDiv);
+  },
   
+  _createAggregationSelect: function(selected) {
+    
+    var sel =  $("<select>");
+    sel.append("<option>Aggregate</option>");
+    $.each(["Sum","Frequency","Mean","Median","Mode"], function(i, g) {
+      var op = $("<option>",{"value":g}).append(g);
+      if (selected == g) {
+        op.attr("selected","true");
+      }
+      sel.append(op);
+    });
+    var self = this;
+    sel.change(function(event){
+      $("option:selected",this).each(function () {
+        var genderCode = $(this).attr("value");
+        self.gender = genderCode;
+        self._update()
+      });
+    });
+    return sel;
+  },
   
+  _update:function(){
+    this.set(new queryStructure.DemographicRule({ageRange:this.ageRange, gender:this.gender, raceCode:this.raceCode, maritalStatusCode:this.maritalStatusCode}));
+  },
+  
+  get:function(type){
+    var entry = null;
+     $.each(this.container.children,function(i, node){
+        if(node.type == type){
+          entry = node;
+        }
+     });
+     return entry;
+  },
+  
+  set:function(object){
+     var self = this;
+     $.each(this.container.children,function(i, node){
+        if(node.type == object.type){
+          self.container.removeChild(node)
+        }
+     });
+     this.container.add(object);
+  }
 });

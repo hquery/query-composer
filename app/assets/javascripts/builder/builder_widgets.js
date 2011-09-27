@@ -564,7 +564,7 @@ $.widget("ui.ExtractUI", {
           'class': "dependency"
       });
 
-     cell.ExtractItemUI({type:"conditions"});
+     cell.ExtractItemUI({type:"demographics"});
      this.ul.append(cell);
   }
   
@@ -595,17 +595,8 @@ $.widget("ui.ExtractItemUI", {
   ,
   openPopup: function(){
     var image = $(".item_image", this.div);
+    this.editor = eval("$('<div>').DemographicsExtractor({container:this.container})");
     image.popup({'widg':this, arrow:"left .08", offset:"5px"});
     image.popup("open");
   }
 });
-
-
-
-
-
-
-
-
-
-
