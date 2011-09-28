@@ -9,30 +9,36 @@ QueryComposer::Application.routes.draw do
   post "admin/disable"
   
   get "endpoints/refresh_endpoint_statuses"
+  post 'queries/generate_query'
 
   resources :endpoints
   resources :library_functions
+  resources :template_queries
 
-  match 'qryadmin', :to => 'qryadmin#index', :via => "get"
-  match 'qryadmin/adminnew', :to => 'qryadmin#adminnew', :via => "get"
-  match 'qryadmin/adminnew', :to => 'qryadmin#adminnew', :via => "post"
-  match 'qryadmin/:id/clone', :to => 'qryadmin#clone', :via => "post"
-  match 'qryadmin/:id/modify', :to => 'qryadmin#modify', :via => "get"
-  match 'qryadmin/:id/modify', :to => 'qryadmin#modify', :via => "post"
-  match 'qryadmin/:id/modup', :to => 'qryadmin#modup', :via => "put", :as => "modup"
-  match 'qryadmin/admincreate', :to => 'qryadmin#admincreate', :via => "post", :as => "admincreate"
-  match 'qryadmin/destroy', :to => 'qryadmin#destroy', :via => "delete"
-
+  post "queries/clone_template"
   resources :queries do
     member do
       post 'execute'
       delete 'destroy'
       get 'log'
-	    get 'refresh_execution_results'
-	    get 'execution_history'
-	    get 'cancel'
-	    get 'cancel_execution'
+      get 'refresh_execution_results'
+      get 'execution_history'
+      get 'cancel'
+      get 'cancel_execution'
+      get 'builder'
+      get 'builder_simple'
+      get 'edit_code'
+      get 'result'
     end
+  end
+  
+  
+  resources :code_sets do
+
+  end
+  
+  namespace :code_sets do
+    get "by_type/:type", :action=>:by_type
   end
   
   root :to => 'queries#index'

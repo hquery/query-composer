@@ -1,0 +1,69 @@
+<%
+  # This partial defines the reduce function of MapReduce jobs. It handles the logic of blank UI zones, generates functions that match the passed in query_structure,
+  # and emits requested information.
+  #
+  # Locals
+  # query_structure - The JSON that represents the query for which we're writing the map function.
+%>
+
+function reduce(key, values) {
+  var result;
+  
+  if (key.type == 'population') {
+    result = new reducer.Value(
+      {
+        'target_pop' : 0,
+        'filtered_pop' : 0,
+        'unfound_pop' : 0,
+        'total_pop' : 0
+      },
+      rereduced = false
+    );
+    
+    for (var i in values) {
+      result.sum('target_pop', values[i]);
+      result.sum('filtered_pop', values[i]);
+      result.sum('unfound_pop', values[i]);
+      result.sum('total_pop', values[i]);
+      values[i].rereduced = true;
+      result.rereduced = true;
+    }
+  } else if (key.type == 'group') {
+    <% selections = []
+    query_structure['extract']['selections'].each do |select|
+      selections << "'#{select['title']}' : 0"
+    end
+    initial_values = ''
+    if (selections.length > 0)
+      initial_values = selections.join(",\n")
+    end %>
+    
+    result = new reducer.Value(
+      {
+        <%= initial_values %>
+      },
+      rereduced = false
+    );
+    
+    for (var i in values) {
+      <% aggregates = []
+      query_structure['extract']['selections'].each do |select|
+        # TODO - We need to decide on a default action when no aggregate is defined. For now, we'll just sum.
+        if select['aggregation'].empty?
+          select['aggregation'] << 'sum'
+        end
+        select['aggregation'].each do |aggregate|
+          aggregates << "result.#{aggregate}('#{select['title']}', values[i]);"
+        end
+      end
+      aggregation = aggregates.join("\n") %>
+
+      <%= aggregation %>
+
+      result.rereduced = true;
+      values[i].rereduced = true;
+    }
+  }
+  
+  return result;
+}

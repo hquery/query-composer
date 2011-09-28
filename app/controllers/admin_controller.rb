@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
-  before_filter :validate_authorization!
   before_filter :authenticate_user!
+  before_filter :validate_authorization!
   add_breadcrumb 'admin', :admin_users_path
 
   def users

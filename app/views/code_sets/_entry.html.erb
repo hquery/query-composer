@@ -1,0 +1,18 @@
+<div>
+
+  <table class="simpleTable">
+    <tr>
+      <th>Name</th>
+      <td><%= link_to entry.name, url_for(entry)  %></td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <td><%= entry.type %></td>
+    </tr>
+    
+    <tr>
+      <th>Description</th>
+      <td><%= entry.description %></td>
+    </tr>
+  </table>
+</div>

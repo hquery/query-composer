@@ -1,0 +1,75 @@
+<%
+  # This partial defines the map function of MapReduce jobs. It handles the logic of blank UI zones, generates functions that match the passed in query_structure,
+  # and emits requested information.
+  #
+  # Locals
+  # query_structure - The JSON that represents the query for which we're writing the map function.
+%>
+
+function map(patient) {
+  var populationValue = new reducer.Value(
+    {
+      'target_pop' : 0,
+      'filtered_pop' : 0,
+      'unfound_pop' : 0,
+      'total_pop' : 1
+    },
+    rereduced = false
+  );
+  
+  if (find(patient)) {
+    populationValue.values.filtered_pop = 1;
+    if (filter(patient)) {
+      populationValue.values.target_pop = 1;
+      extract(patient);
+    }
+  } else {
+    populationValue.values.unfound_pop = 1;
+  }
+  emit({ 'type' : 'population' }, populationValue);
+}
+
+function find(patient) {
+  var root = <%= render :partial => '/queries/builder/build_where', :locals => { :element => query_structure["find"], :comma_if_last => "" } %>
+  return root.test(patient);
+}
+
+function filter(patient) {
+  var root = <%= render :partial => '/queries/builder/build_where', :locals => { :element => query_structure["filter"], :comma_if_last => "" } %>
+  return root.test(patient);
+}
+
+function extract(patient) {
+  <% selections = []
+  query_structure['extract']['selections'].each do |select|
+    args = (select['title'] == 'age') ? 'new Date()' : ''
+    selections << "'#{select['title']}' : patient.#{select['callstack']}(#{args})"
+  end
+  values = ''
+  if (selections.length > 0)
+    values = selections.join(",\n")
+  end
+    
+  group_by = []
+  query_structure['extract']['groups'].each do |group| 
+    args = (group['title'] == 'age') ? 'new Date()' : ''
+    group_by << "'#{group['title']}' : patient.#{group['callstack']}(#{args})"
+  end
+  groups = ''
+  if (group_by.length > 0)
+    groups =  group_by.join(",\n")
+  end %>
+
+  var key = {
+    'type' : 'group',
+    <%= groups %>
+  };
+  var value = new reducer.Value(
+    {
+      <%= values %>
+    },
+    rereduced = false
+  );
+    
+  emit(key, value);
+}

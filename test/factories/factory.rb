@@ -23,11 +23,12 @@ Factory.define :unapproved_user, :parent => :user do |u|
 end
 
 Factory.define :user_with_queries, :parent => :user do |user|
-  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
-  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
-  user.after_create { |u| Factory(:query_with_endpoints, :user => u) }
-  user.after_create { |u| Factory(:query_with_execution, :user => u) }
+  user.after_create { |u| Factory(:query, :user => u) }
+  user.after_create { |u| Factory(:query, :user => u) }
+  user.after_create { |u| Factory(:query, :user => u) }
+  user.after_create { |u| Factory(:query_with_queued_results, :user => u) }
   user.after_create { |u| Factory(:query_with_completed_results, :user => u) }
+  user.after_create { |u| Factory(:generated_query_with_completed_results, :user => u) }
 end
 
 Factory.define :user_with_library_functions, :parent => :user do |user|
@@ -42,7 +43,7 @@ end
 # = QUERIES =
 # ===========
 
-Factory.define :query do |q|
+Factory.define :template_query do |q|
   q.sequence(:title) { |n| "title #{n}" }
   q.description "description"
   q.filter ""
@@ -50,33 +51,59 @@ Factory.define :query do |q|
   q.reduce "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
 end
 
-Factory.define :query_with_endpoints, :parent => :query do |query|
-  query.after_create do |q|
-    q.endpoints << Factory(:endpoint)
-    q.endpoints << Factory(:endpoint)
-  end
+Factory.define :query do |q|
+  q.sequence(:title) { |n| "title #{n}" }
+  q.description "description"
+  q.filter ""
+  q.map "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
+  q.reduce "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
+  q.user Factory.build(:user)
 end
 
-Factory.define :query_with_execution, :parent => :query_with_endpoints do |query|
-  query.executions { 
-    [] << Factory.build(:execution)
-  }
-  query.after_create do |q| 
-    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result, :endpoint => endpoint)} }
-  end
+Factory.define :generated_query, :parent => :query do |q|
+  q.query_structure ({
+    "find" =>
+      { "and" => [
+        { "or" => [ 
+          { "name" => "demographics",
+            "and" => [ 
+              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "18", "comparator" => ">" } ] } ] } ] },
+    "filter" =>
+      { "and" => [ 
+        { "or" => [ 
+          { "name" => "demographics",
+            "and" => [ 
+              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "65", "comparator" => "<" } ] } ] } ] },
+    "extract" => 
+      { "selections" => [ 
+          { "title" => "age", "callstack" => "age", "aggregation" => [ "sum" ] } ],
+        "groups" => [ { "title" => "gender", "callstack" => "gender" } ] } 
+  })
+  q.generated true
+  q.user Factory.build(:user)
 end
 
-Factory.define :query_with_completed_results, :parent => :query_with_endpoints do |query|
+Factory.define :query_with_queued_results, :parent => :query do |query|
   query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
   
   query.executions { 
-    [] << Factory.build(:execution)
+    [] << Factory.build(:queued_execution)
   }
-  query.after_create do |q| 
-    q.executions.each {|execution| execution.results = q.endpoints.collect{|endpoint| Factory.build(:result_with_value, :endpoint => endpoint)} }
-  end
 end
 
+Factory.define :query_with_completed_results, :parent => :query do |query|
+  query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
+  
+  query.executions { 
+    [] << Factory.build(:completed_execution)
+  }
+end
+
+Factory.define :generated_query_with_completed_results, :parent => :generated_query do |query|
+  query.executions { 
+    [] << Factory.build(:completed_execution_for_generated_query)
+  }
+end
 
 # =============
 # = Endpoints =
@@ -94,20 +121,80 @@ Factory.define :execution do |e|
   e.time Time.now.to_i
 end
 
+Factory.define :queued_execution, :parent => :execution do |e|
+  e.after_build do |ex|
+    Factory.create(:result_waiting, :endpoint => Factory(:endpoint), :execution => ex)
+  end
+end
+
+Factory.define :completed_execution, :parent => :execution do |e|
+  e.after_build do |ex|
+    Factory.create(:result_with_value, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value, :endpoint => Factory(:endpoint), :execution => ex)
+  end
+end
+
+Factory.define :completed_execution_for_generated_query, :parent => :execution do |e|
+  e.after_build do |ex|
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+  end
+end
+
 # ===========
 # = Results =
 # ===========
 
 Factory.define :result do |r|
-  r.next_poll nil
   r.value nil
   r.result_url nil
   r.status nil
 end
 
+Factory.define :result_waiting, :parent => :result do |r|
+  r.value nil
+  r.result_url nil
+  r.status Result::QUEUED
+  r.query_url 'http://localhost:3000/queries/4e4c08b5431a5f5dc1000001'
+  r.created_at Time.new(2011, 1, 1)
+  r.updated_at Time.new(2011, 1, 1)
+end
+
 Factory.define :result_with_value, :parent => :result do |result| 
   result.value ({"M" => 50, "F" => 30})
-  result.status 'Complete'
+  result.status Result::COMPLETE
+end
+
+Factory.define :result_with_value_from_generated_query, :parent => :result_with_value do |result|
+  result.value ({
+    "type_group_gender_F" => {
+      "values" => {
+        "age" => 0,
+        "age_sum" => 6000
+      },
+      "rereduced" => true
+    },
+    "type_group_gender_M" => {
+      "values" => {
+        "age" => 0,
+        "age_sum" => 4000
+      },
+      "rereduced" => true
+    },
+    "type_population" => {
+      "values" => {
+        "target_pop" => 0,
+        "filtered_pop" => 0,
+        "unfound_pop" => 0,
+        "total_pop" => 0,
+        "target_pop_sum" => 300,
+        "filtered_pop_sum" => 400,
+        "unfound_pop_sum" => 100,
+        "total_pop_sum" => 500
+      },
+      "rereduced" => true
+    }
+  })
 end
 
 # =====================
@@ -117,4 +204,25 @@ end
 Factory.define :library_function do |f|
   f.sequence(:name) { |n| "sum#{n}()" }
   f.definition "this.sum = function(values) {\r\n        result = 0;\r\n          values.forEach(function(value) {\r\n            result += value;\r\n          });\r\n          return result;\r\n        }\r\n"
+end
+
+
+# ======================
+# = Code sets          =
+# ======================
+
+
+Factory.define :code_set do |cs|
+  cs.name nil
+  cs.type nil
+  cs.description nil
+  cs.codes nil
+end
+
+Factory.define :annulled_marital_status_code, :parent => :code_set do |cs|
+  codes = {"MaritalStatusCodes" => ["A"]}
+  cs.name "Annulled"
+  cs.description ""
+  cs.type "marital_status"
+  cs.codes codes
 end

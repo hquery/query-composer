@@ -1,0 +1,20 @@
+
+<% content_for :head do -%>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      HQuery.drawChart("<%= params[:type] %>", "<%= @presenter.title %>",
+                      <%= raw @presenter.key_javascript_array %>,
+                      <%= @presenter.value_javascript_array %>);
+    });
+  </script>
+<% end -%>
+
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+
+<div id="mainPanel">
+
+  <h1>Result</h1>
+  <div id="chart"></div>
+
+  <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Event Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
+</div>

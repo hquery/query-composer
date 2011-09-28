@@ -1,16 +1,27 @@
-<% if query.last_execution && query.last_execution.aggregate_result %>
-	<tr id="aggregate_results">
-    	<th>Aggregate Result</th>
-    	<td class="subTable">
-			<table>
-				<% query.last_execution.aggregate_result.each do |key, value| %>
-    			<% next if key=='_id' %>
-    			<tr>
-      				<td><code><%= key %>:</code></td>
-      				<td><code><%= jsonify(value) %></code></td>
-    			</tr>
-    			<% end %>
-			</table>
-		</td>
-	</tr>
-<% end %>
+<table id='aggregate_results'>
+  <tr>
+    <th align='left'>Key</th>
+    <th align='left'>Value</th>
+  </tr>
+
+<% presenter = query.result_presenter
+  if presenter.exist?
+    presenter.each_pair do |key, value| -%>
+  <tr>
+    <td><code><%= key %>:</code></td>
+    <td><code><%= jsonify(value) %></code></td>
+  </tr>
+  <% end -%>
+  <tr>
+    <td><%= link_to 'Pie Chart', result_query_url(query, :type => 'pie') %></td>
+    <td><%= link_to 'Bar Chart', result_query_url(query, :type => 'bar') %> </td>
+  </tr>
+<% else -%>
+  <tr>
+    <td>Aggregated Results not available</td>
+    <td></td>
+  </tr>
+<% end -%>
+
+</table>
+

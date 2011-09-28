@@ -1,0 +1,136 @@
+
+
+<html lang=en> 
+<link rel="stylesheet" href="hquery.css" /> 
+<head> 
+<title>hQuery</title> 
+<meta charset="utf-8"> 
+<link rel="icon" 
+      type="image/ico" 
+      href="http://example.com/favicon.ico"> 
+ 
+</head> 
+ 
+<body> 
+<header> 
+	<a href="/"><img src="images/logo.png" alt="Logo"/></a> 
+	<h1>Signed in as User</h1> 
+	<div id="navmenu"> 
+		<ul> 
+			<li><a href="builder.html" class="selected">Builder</a></li> 
+			<li><a href="dash.html">Dashboard</a></li> 
+			<li><a href="report.html">Report</a></li> 
+			<li><a href="profile.html">Profile</a></li> 
+			<li><a href="account.html">Account</a></li> 
+			<li><a href="help.html">Help</a></li> 
+			<li><a href="signout.html">Sign out</a></li> 
+		</ul> 
+	</div> 
+ 
+ 
+	<div id="header_line"> </div> 
+</header> 
+	
+<div id="icons"> 
+	<div id="search_box"> 
+		<input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" /> 
+	</div> 
+	
+	<div id="variables"> 
+		<div id="variables_border_color"></div> 
+		<div id="variables_border_edge"></div> 
+		<h1>variables</h1> 
+			<ul> 
+				<li> 
+				<img src="images/icon_demo.png" draggable ondragstart="dragHandler(event)" id="icon_demo">demographics
+				</li> 
+				<li> 
+				<img src="images/icon_history.png" draggable>health history
+				</li> 
+				<li> 
+				<img src="images/icon_conditions.png" draggable>conditions
+				</li> 
+				<li> 
+				<img src="images/icon_observations.png" draggable>observations
+				</li> 
+				<li> 
+				<img src="images/icon_treatments.png" draggable>treatments
+				</li> 
+			</ul> 
+	</div> 
+ 
+	<div id="display"> 
+		<div id="display_border_color"></div> 
+		<div id="display_border_edge"></div> 
+		<h1>display</h1> 
+			<ul> 
+				<img class 
+				<li> 
+				<img src="images/icon_freq.png" draggable>frequency
+				</li> 
+				<li> 
+				<img src="images/icon_location.png" draggable>location
+				</li> 
+				<li> 
+				<img src="images/icon_time.png" draggable>time
+				</li> 
+			</ul> 
+	</div> 
+</div> 
+ 
+ 
+<div id="workspace"> 
+	<div id="workspace_top_border"> 
+		<div id="workspace_top_border_lower"> 
+		</div> 
+	</div> 
+	<div id="population"> 	
+				<h1>population</h1> 
+					<canvas></canvas> 
+					<canvas></canvas> 
+				<div id="population_bottom_border_lower"> 
+					<div id="population_bottom_border"> 
+					</div> 
+				</div> 
+	</div> 
+		
+	<div id="criteria"> 
+				<h1>criteria</h1> 
+					<canvas></canvas> 
+					<canvas></canvas> 
+				<div id="criteria_bottom_border_lower"> 
+					<div id="criteria_bottom_border"> 
+					</div> 
+				</div> 
+	</div> 
+	
+	<div id="results"> 
+			<h1>results</h1> 
+				<canvas></canvas> 
+				<canvas></canvas> 
+			<div id="workspace_bottom_border_lower"> 
+				<div id="workspace_bottom_border"> 
+				</div> 
+			</div> 
+		
+	</div> 
+</div> 
+ 
+<div id="otherside"> 
+	<div id="stats"> 
+		<h1></h1> 
+	</div> 
+	
+	<div id="trash"> 
+	</div> 
+</div> 
+<footer> 
+</footer> 
+ 
+</body>	
+ 
+</html><%- content_for(:head) do -%>
+  <%= javascript_include_tag 'builder_translator' %>
+<%- end -%>
+
+<button id="generate_query_button">Generate Query</button>

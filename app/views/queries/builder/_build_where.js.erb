@@ -1,0 +1,24 @@
+<% if element.include? 'and'
+  operation = 'And'
+elsif element.include? 'or'
+  operation = 'Or'
+elsif element.include? 'count_n'
+  operation = 'CountN'
+else
+  operation = 'rule'
+end %>
+<% if operation == 'rule'
+  if element["type"] %>
+   new queryStructure.<%= element["type"].html_safe %>( <%= element["data"].to_json.html_safe %>)
+   <% 
+ end
+else %>
+  new queryStructure.<%= operation %>(<%= element["name"] ? "'#{element["name"]}'" : "null" %>, [
+  <% element[operation.downcase].each do |subelement|
+    if subelement != element[operation.downcase].last
+      cil = ','
+    end %>
+    <%= render :partial => '/queries/builder/build_where', :locals => { :element => subelement, :comma_if_last => cil } %>
+  <% end %>
+  ])<%= comma_if_last %>
+<% end %>
