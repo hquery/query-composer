@@ -1,3 +1,11 @@
+<header>
+  <div id="logo">
+    <div><p><a href="/"><%= image_tag "hquery_header_logo.png", :alt => "hQuery logo"%></a></p>
+    <p>user: <%= current_user.first_name.to_s %> <%= current_user.last_name.to_s %></p></div>
+  </div>
+  <%= yield :tabMenu %>
+</header>
+
 <div id="header">
   <div id="breadcrumbBox">
     <ul id="breadcrumbItems">
@@ -11,3 +19,5 @@
     <%= render :partial => 'shared/top_nav' %>
   </div><!-- end #breadcrumbBox -->
 </div><!-- end #header -->
+
+
