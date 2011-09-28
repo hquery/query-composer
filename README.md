@@ -38,7 +38,7 @@ Install Instructions
 
 ###Summary of Steps for Windows
   1. (windows) Download and install Railsinstaller
-  2. Update Gems
+  2. Update Gems (this step is not necessary if Railsinstaller v2.0.0 used)
   3. Install Git (this step is not necessary if Railsinstaller used)
   4. Install Mongo
   5. (windows) Create Clone of repositories
@@ -88,7 +88,7 @@ Open a terminal and run
  
 ###1w. WINDOWS - Download and install Railsinstaller
     
-  a)  If you are working from behing a proxy, from the cmd prompt issue following command
+  a)  If you are working from behind a proxy, from the cmd prompt issue following command
     
     $ set HTTP_PROXY=http://proxy_host:proxy_port
     
@@ -96,29 +96,21 @@ Open a terminal and run
     
   [http://railsinstaller.org/](http://railsinstaller.org/)
   
-  Packages included in version 1.1.1 are: 
-  
-    Ruby 1.8.7-p334
-    Rails 3.0.7
-    Git 1.7.3.1
+  Packages included in version 2.0.0 are: 
+    Ruby 1.9.2-p290
+    Rails 3.1
+    Bundler 1.0.18
+    Git 1.7.6
     Sqlite 3.7.3
     TinyTDS 0.4.5
     SQL Server support 3.0.14
     DevKit
-  
+ 
   Follow the included directions and these packages should be successfully installed.
   
-  c) Download rubyinstaller-1.9.2-p180 to update the version of ruby available: http://rubyinstaller.org/downloads/
-  
-   1. install the ruby 1.9.2 installer
-   2. after install is complete open the windows control panel, and open system,
-      then select the "Advanced" tab
-   3. click the environment variables button
-   4. under system variables, find PATH.  Click edit, and add C:\Ruby192\bin; 
-      (make sure you have the trailing ';') to the BEGINNING of the path value
-   5. restart your command prompt and type ruby -v to verify the version reports 1.9.2p180
-   6. note, you will likely need to run set HTTP_PROXY=http://proxy_host:proxy_port 
-      in the new prompt unless it's been set system wide, or you are not behind a proxy
+  A key will be saved to the clipboard during this process for Git.  During the process you will be asked
+  to enter an email and other information.  Upon completion goto GitHub and use the email used durning setup to
+  register.  Paste the key that was saved to the clipboard as a new key in GitHub.
   
 d) Install the ruby dev kit, also available at [http://rubyinstaller.org/downloads/](http://rubyinstaller.org/downloads/). The dev kit will allow building native gems.
 
@@ -141,7 +133,12 @@ d) Install the ruby dev kit, also available at [http://rubyinstaller.org/downloa
 
 ###1j. JRuby
   
-  Currently jruby instructions are not available    
+  Currently jruby instructions are not available 
+  
+  WINDOWS:
+     a.  download from www.jruby.org
+     b.  add jruby bin path to PATH environment variable
+     c.  execute "export JRUBY_OPTS=--1.9"   
 
 ###2.  Gem Update
 
@@ -221,19 +218,12 @@ In a browser open the URL: http://localhost:3000/queries/
 
 ###7w. WINDOWS - Starting the Application
 
-Verify gemfile has the following lines:
-
-    gem "bson_ext", "~> 1.3", :platforms => :mri
-    # gem 'therubyracer'
-
-(the # may have to be added to the beginning of the therubyracer line to comment it out)
-
-Verify bson_ext and mongo gems have same version.
-
+ 
 In a terminal, change directory to the query-composer directory
 run:
+
+    Add the directory /tmp/pids to the query-composer directory
    
-    gem install bson_ext
     bundle install
     bundle exec ruby script/delayed_job run
     bundle exec rails server
@@ -241,16 +231,13 @@ run:
 In a second terminal, change directory to the query-gateway directory
 run:
    
+   Add the directory /tmp/pids to the query-gateway directory
+   
     bundle install
    
-The gem nokogiri is set at version 1.4.4 but has an error on Windows.
-To get around this, update to 1.4.4.1 and remove 1.4.4:
-   
-    gem install nokogiri -v=1.4.4.1
-    gem uninstall nokogiri -v=1.4.4
    
 Finish starting the application by running:
-   
+    bundle exec rake db:seed
     bundle exec ruby script/delayed_job run
     bundle exec rails server -p 3001
      
