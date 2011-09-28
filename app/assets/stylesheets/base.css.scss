@@ -107,14 +107,12 @@ div#chart {
   th {
     color: #888888;
   }
+  td.good_status {color:green}
+  td.fail_status {color:red}
+  pre {font-family:Consolas,Monaco,"Courier New";}
 }
 
 td.subTable {padding:0 10px 0 0}
-
-.simpleTable pre {font-family:Consolas,Monaco,"Courier New";}
-.simpleTable td.good_status {color:green}
-.simpleTable td.fail_status {color:red}
-
 
 #execution_results td ,th {
   padding: 2px;
