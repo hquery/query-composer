@@ -1,8 +1,4 @@
-@font-face {
-  font-family: Myriad-Regular;
-    src: url('fonts/Myriad-Regular.eot');
-    src: local('Myriad-Regular') url('myriad-regular.otf') format('Myriad-Regular.ttf');
-}
+
 body {
     font-size: 12pt;
     font-family: Myriad-Regular, Myriad, sans-serif;
