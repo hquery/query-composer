@@ -10,13 +10,11 @@
 
 </head>
 <body>
-    <%= render :partial => 'shared/header', :locals => {:definition => @definition} %>
-
+  <%= render :partial => 'shared/header', :locals => {:definition => @definition} %>
   <div id="container">
   
     <div id="pageContent">
       <%= yield %>
-
     </div><!-- end #pageContent -->
   </div>
 

@@ -1,6 +1,5 @@
-<% content_for :foobar do %>
-  page specific sidebar content
-<% end %>
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+
   <script>
   var query = new queryStructure.Query();
 
