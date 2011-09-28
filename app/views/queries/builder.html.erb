@@ -40,37 +40,59 @@
   });
 
 </script>
+
+<script>
+	$(document).ready(function () {  
+	  var top = $('#icons').offset().top - parseFloat($('#icons').css('marginTop').replace(/auto/, 0));
+	  
+	  $(window).scroll(function (event) {
+	    // what the y position of the scroll is
+    	var y = $(this).scrollTop();
+  
+    // whether that's below the form
+    	if (y >= top) {
+      // if so, ad the fixed class
+     	 $('#icons').addClass('fixed');
+   	 } else {
+      // otherwise remove it
+      $('#icons').removeClass('fixed');
+    }
+  });
+});
+</script>
+
+
 <div id="query_builder">
   
-  
-<div id="icons">
-  <div id="search_box">
-    <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
-  </div>
+<div id="iconsWrapper">  
+	<div id="icons">
+	  <div id="search_box">
+	    <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+	  </div>
 
-  <div id="variables_border_color">
-    <div id="variables_border_edge">
-      <div id="variables">
-        <h1>variables</h1>
-        <ul>
-          <li>
-            <%= image_tag("icon_demo.png",{class:"demo", id:"icon_demo"}) %>demographics
-          </li>
-          <li>
-            <%= image_tag("icon_history.png",{class:"demo", id:"icon_history"}) %>health history
-          </li>
-          <li>
-           <%= image_tag("icon_conditions.png",{class:"demo", id:"icon_conditions"}) %>conditions
-          </li>
-          <li>
-           <%= image_tag("icon_observations.png",{class:"demo", id:"icon_observations"}) %>observations
-          </li>
-          <li>
-           <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
-          </li>
-        </ul>
-      </div>
-    </div>
+	  <div id="variables_border_color">
+    	<div id="variables_border_edge">
+    	  <div id="variables">
+    	    <h1>variables</h1>
+    	    <ul>
+    	      <li>
+        	    <%= image_tag("icon_demo.png",{class:"demo", id:"icon_demo"}) %>demographics
+          	</li>
+	          <li>
+   	         <%= image_tag("icon_history.png",{class:"demo", id:"icon_history"}) %>health history
+    	      </li>
+       	   <li>
+        	   <%= image_tag("icon_conditions.png",{class:"demo", id:"icon_conditions"}) %>conditions
+       	   </li>
+     	     <li>
+     	      <%= image_tag("icon_observations.png",{class:"demo", id:"icon_observations"}) %>observations
+     	     </li>
+        	  <li>
+        	   <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
+        	  </li>
+	        </ul>
+    	  </div>
+ 	   </div>
   </div>
 
   <div id="display_border_color">
@@ -91,6 +113,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
   <div id="workspace"> <!-- div id=workspace was here -->
