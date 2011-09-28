@@ -1,0 +1,59 @@
+<%= simple_form_for(@code_set) do |f| %>
+
+<%= f.error_notification %>
+
+<%= f.hidden_field :id %>
+
+
+  <table class="simpleTable">
+    <tr>
+      <th>Name</th>
+      <td><%= f.input_field :name %></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><%= f.input_field :type %></td>
+    </tr>
+    
+    <tr>
+      <th>Description</th>
+      <td><%= f.input_field :description %></td>
+    </tr>
+    
+    
+    <tr>
+      <th>Codes</th>
+      <td id="codes">
+        
+         <%
+         index = 0
+          (@code_set.codes || {}).each_pair do |k,v| %>
+            <div>
+             <span> <%=  text_field_tag  "code_set[codes][][code_system]", k %></span> <span><%=  text_field_tag  "code_set[codes][][codes]",  v.join(", ")%></span>  
+            </div>
+            
+         <% 
+          index = index + 1
+         end %>
+         <a id="add_code_system">Add</a>
+      </td>
+      </tr>
+    
+  </table>
+
+<script>
+ var current_index = <%= index %>;
+ $(document).ready(function(){
+   $("#add_code_system").click(function(){
+     var div = $("<div>");
+     var span = $("<span>").append($("<input>",{"type":"text", "name":"code_set[codes][][code_system]"}));
+     var span2 = $("<span>").append($("<input>",{"type":"text", "name":"code_set[codes][][codes]"}));
+     div.append(span).append(" ").append(span2);
+     $(this).before(div);
+   });
+ });
+</script>  
+<div class="actions">
+  <%= f.button :submit %>
+</div>
+<% end %>

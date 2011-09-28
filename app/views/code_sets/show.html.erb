@@ -1,0 +1,31 @@
+<div>
+
+  <table class="simpleTable">
+    <tr>
+      <th>Name</th>
+      <td><%= link_to @code_set.name, url_for(@code_set)  %></td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <td><%=  @code_set.type %></td>
+    </tr>
+    
+    <tr>
+      <th>Description</th>
+      <td><%=  @code_set.description %></td>
+    </tr>
+    
+    <tr>
+      <th>Codes</th>
+      <td>
+         <% @code_set.codes.each_pair do |k,v| %>
+            <div>
+             <span> <%= k %>: </span> <span><%= v.join(", ")%></span>  
+            </div>
+        
+         <% end %>
+      </td>
+      </tr>
+  </table>
+  <%= link_to "Edit", edit_code_set_url(@code_set)%>
+</div>

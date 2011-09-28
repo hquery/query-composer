@@ -53,7 +53,8 @@ module GatewayUtils
     container = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare=>true)
     container = "var queryStructure = queryStructure || {}; \n" + container
     reducer = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
-    return container + reducer
+    rules = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/rules.js.coffee').read, :bare=>true)
+    return container + reducer + rules
   end
   
   def builder_reduce_javascript_library

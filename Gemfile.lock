@@ -5,6 +5,15 @@ GIT
   specs:
     hquery-patient-api (0.1.0)
 
+GIT
+  remote: https://github.com/cyrilpic/delayed_job_mongoid.git
+  revision: 6862742f85547add9b7c08a8422b1a6ac19fb414
+  branch: nil_error
+  specs:
+    delayed_job_mongoid (1.0.4)
+      delayed_job (~> 2.1.1)
+      mongoid (>= 2.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -64,9 +73,6 @@ GEM
     delayed_job (2.1.4)
       activesupport (~> 3.0)
       daemons
-    delayed_job_mongoid (1.0.4)
-      delayed_job (~> 2.1.1)
-      mongoid (>= 2.0)
     devise (1.4.7)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -108,7 +114,7 @@ GEM
       bson (>= 1.3.1)
     mongoid (2.2.1)
       activemodel (~> 3.0)
-      mongo (>= 1.3, < 1.4)
+      mongo (< 1.4, >= 1.3)
       tzinfo (~> 0.3.22)
     mongoid_rails_migrations (0.0.14)
       activesupport (>= 3.0.0)
@@ -209,7 +215,7 @@ DEPENDENCIES
   coffee-rails
   cover_me (>= 1.0.0.rc6)
   delayed_job
-  delayed_job_mongoid
+  delayed_job_mongoid!
   devise
   factory_girl
   fakeweb

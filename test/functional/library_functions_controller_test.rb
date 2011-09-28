@@ -23,7 +23,7 @@ class LibraryFunctionsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:library_functions)
     library_functions = assigns(:library_functions)
     assert_equal @user.library_functions.count, library_functions.count
-    assert_equal @user.library_functions, library_functions
+    assert_equal @user.library_functions.first.definition, library_functions.first.definition
     
   end
 

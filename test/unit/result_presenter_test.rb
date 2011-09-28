@@ -21,11 +21,11 @@ class ResultPresenterTest < ActionController::TestCase
   
   test "properly format javascript arrays for values" do
     p = ResultPresenter.new('foo', '_id' => 1234, 'M' => 2, 'F' => 2)
-    assert_equal '[2, 2]', p.value_javascript_array
+    assert_equal '[2,2]', p.value_javascript_array
   end
   
   test "properly format javascript arrays for keys" do
     p = ResultPresenter.new('foo', '_id' => 1234, 'M' => 2, 'F' => 2)
-    assert_equal '["M", "F"]', p.key_javascript_array
+    assert_equal '["M","F"]', p.key_javascript_array
   end
 end
