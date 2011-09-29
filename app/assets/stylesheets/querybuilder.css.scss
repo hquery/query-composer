@@ -29,12 +29,24 @@ div#search_box .searchfield {
 }
 
 
+div#iconsWrapper { 
+  position: absolute;
+}
+
+div#icons.fixed {
+  position: fixed;
+  top: 0;
+}  
+
 div#icons {
-  margin: 20px;
+  margin: 20px 20px 20px 0;
   position: relative;
   float: left;
   width: $paletteWidth;
-    
+  top: 0;
+  /* just used to show how to include the margin in the effect */
+  padding-top: 5px;
+  
   h1 { 
     font-weight:normal;
     font-size: 16pt;
@@ -64,6 +76,7 @@ div#variables_border_edge {
   border-style: solid;
   border-width: 0 $paletteBorderWidth 0 0;
   width: $paletteWidth;
+
 }
 
 div#display_border_edge,
@@ -85,6 +98,7 @@ div#display_border_color {
 
 div#variables, div#display {
   padding: 0 0 30px 0;
+
 }
 
 
@@ -152,7 +166,6 @@ div.top_border_lower {
   height: 2px;
 }
 
-
 div.bottom_border_lower {      
   background-color: $workspaceBorderColor;
   border-color:$workspaceBorderColor;
@@ -162,6 +175,7 @@ div.bottom_border_lower {
   position:absolute;
   bottom:0;
 }
+
 div.bottom_border {
   background-color: white;
   border-color: white;
@@ -169,3 +183,7 @@ div.bottom_border {
   border-width: 0 0 $workspaceBorderWidth 0;
   height: 0;
 }
+	
+
+
+

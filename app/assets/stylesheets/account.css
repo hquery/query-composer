@@ -1,32 +1,6 @@
-a.bluebutton, a.whitebutton {
-  background: transparent url('blue_right.png') no-repeat scroll top right;
-  color: #666;
-  display: inline-block;
-  font-weight: bold;
-  font-size: 10px;
-  margin-left: 6px;
-  padding-right: 16px;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  z-index: 100;
-}
-a.whitebutton { background: transparent url('white_right.png') no-repeat scroll top right; }
-a.bluebutton span {
-  background: transparent url('blue_left.png') no-repeat;
-  display: block;
-  line-height: 14px;
-  padding: 8px 10px 8px 28px;
-}
-a.whitebutton span {
-  background: transparent url('blue_left.png') no-repeat;
-  display: block;
-  line-height: 14px;
-  padding: 8px 10px 8px 28px;
-}
-a.whitebutton span { background: transparent url('white_left.png') no-repeat; }
-.bluebutton:active { outline: none; }
-.whitebutton.active { outline: none; }
+/* ACCOUNT.CSS */
+
+
 body.login { background-color: #fafafa; }
 div#cap-top {
   background: transparent url(cap-top.png) no-repeat;

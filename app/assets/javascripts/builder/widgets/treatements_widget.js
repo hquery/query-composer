@@ -16,9 +16,13 @@ $.widget("ui.TreatmentsEditor",{
   options: {},
   _create:function(){
     this.container = this.options.container;
-    
+    var self = this; 
+    this.encounterRule = this.findRuleByName("encounters");
+    var code = (this.encounterRule )? this.encounterRule.data.code : null;
     this.div = $("<div>");
-    this.encountersDiv = $("<div>").EncountersEditor({parent:this});
+    this.encountersDiv = $("<div>").CodeList({title:"Encounters",type:"encounter", selected:code, onChange:function(code,event){self.encounterRule = new queryStructure.CodeSetRule({type:"encounters",code:code}); self._update();}});
+    
+    
    
     this.div.append(this.encountersDiv);
     
@@ -43,7 +47,31 @@ $.widget("ui.TreatmentsEditor",{
         }
      });
      this.container.add(object);
-  }
+  },
   
+  findRuleByName:function(name){
+     var entry = null;
+     $.each(this.container.children,function(i, node){
+        if(node && node.name == name ){
+          entry = node;
+        }
+     });
+       return entry;
+  },
+  
+  findRuleByType:function(type){
+    var entry = null;
+      $.each(this.container.children,function(i, node){
+          if(node && node.type == type ){
+            entry = node;
+          }
+       });
+       return entry;
+  },
+  
+  _update:function(){
+    this.container.clear();
+    if(this.encounterRule){this.container.add(this.encounterRule);}
+  }
   
 });
