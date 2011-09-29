@@ -49,7 +49,11 @@ class QueriesController < ApplicationController
   end
   
   def after_create
-    redirect_to edit_query_path(@query)
+    if @query.generated?
+      redirect_to builder_query_path(@query)
+    else
+      redirect_to edit_query_path(@query)
+    end
   end
   
   def before_update
