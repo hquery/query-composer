@@ -14,7 +14,7 @@ $itemPaddingRight :  10px;
 
 $itemPadding : $itemPaddingTop $itemPaddingRight $itemPaddingBottom $itemPaddingLeft;
 
-
+$popupBackground : #f5f5f5;
 
 div.resource_dependency {
   display:table-row;
@@ -159,7 +159,7 @@ div.extract_editor {
 
 
 .popup-frame {
-     background-color:#EDEDED;
+    background-color:$popupBackground;
     border:2px solid #666666;
     line-height:1.3em;
     margin:10px auto;
@@ -172,6 +172,14 @@ div.extract_editor {
 }
 
 .popup-content {
+  padding:0 10px 10px;
+  font-size:0.9em;
+  h2 {font-weight:bold}
+  label {width:7em; display:inline-block;}
+  .ui-slider-handle {
+    width:0.5em;
+  }
+  p {margin:5px 0}
   
 }
 
@@ -202,7 +210,7 @@ div.extract_editor {
 
 
 .popup-arrow-bottom {
-  border-color: #EDEDED transparent transparent transparent;
+  border-color: $popupBackground transparent transparent transparent;
   bottom:-17.5px;
 }
 .popup-arrow-border-bottom {
@@ -212,7 +220,7 @@ div.extract_editor {
 
 
 .popup-arrow-left {
-  border-color: transparent #EDEDED transparent transparent;
+  border-color: transparent $popupBackground transparent transparent;
   left:-17.5px;
 }
 .popup-arrow-border-left {
@@ -222,7 +230,7 @@ div.extract_editor {
 
 
 .popup-arrow-top {
-  border-color:  transparent transparent #EDEDED transparent;
+  border-color:  transparent transparent $popupBackground transparent;
   top:-17.5px;
 }
 .popup-arrow-border-top {
@@ -232,7 +240,7 @@ div.extract_editor {
 
 
 .popup-arrow-right {
-  border-color: transparent transparent transparent #EDEDED ;
+  border-color: transparent transparent transparent $popupBackground ;
   right:-17.5px;
 }
 .popup-arrow-border-right {
