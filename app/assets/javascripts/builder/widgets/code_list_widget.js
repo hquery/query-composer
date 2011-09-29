@@ -7,7 +7,7 @@ $.widget("ui.CodeList",{
     this.auto_complete = this.options.auto_complete;
     this.selected = this.options.selected;
     this.div = $("<div>");
-    this.div.append($("<span>").append(this.options.title));
+    this.div.append($("<label>").append(this.options.title));
     this.selectBox = $("<select>");
     this.selectBox.append("<option>Select</option>");
     this.selectBox.change(function(event){
@@ -23,7 +23,7 @@ $.widget("ui.CodeList",{
       
     });
     
-    this.div.append($("<span>").append(this.selectBox));
+    this.div.append(this.selectBox);
     this.element.append(this.div);
     this._loadCodeList();
     this.onChange = this.options.onChange || function(){};

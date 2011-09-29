@@ -13,10 +13,11 @@ $.widget("ui.DemographicsEditor",{
      this.maritalStatusCode = (this.demo) ? this.demo.data.maritalStatusCode : null;
     
     this.div = $("<div>");
+    $("<h2>").text("Demographics").appendTo(this.div);
     this.element.append(this.div);
     
-    this.ageDiv = $("<div>").append("<span>age</span><input class='age_range' type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' value='"+ this.ageRange.low + " - "+ this.ageRange.high+"' /> ");
-    this.age_slider = $("<div>").slider({
+    this.ageDiv = $("<p>").append("<label>Age</label><input class='age_range' type='text' size='7' id='amount' value='"+ this.ageRange.low + " - "+ this.ageRange.high+"' /> ");
+    this.age_slider = $("<div style='margin:10px'>").slider({
       min:0, 
       max:130, 
       range:true,values: [ 0, 130 ],
@@ -29,10 +30,10 @@ $.widget("ui.DemographicsEditor",{
           });
     this.ageDiv.append(this.age_slider);
   
-    this.genderDiv = $("<div>").append("<span>gender</span>");
+    this.genderDiv = $("<p>").append("<label>Gender</label>");
     this.genderDiv.append(this._createGenderSelect(this.gender));
-    this.raceDiv = $("<div>").CodeList({title:"Ethnicity",type:"enticity_codes",selected:"", onChange:function(code,event){self.raceCode = code; self._update()}});
-    this.msDiv = $("<div>").CodeList({title:"Marital Status",type:"marital_status",selected:"", onChange:function(code,event){self.maritalStatusCode = code; self._update()}});
+    this.raceDiv = $("<p>").CodeList({title:"Ethnicity",type:"enticity_codes",selected:"", onChange:function(code,event){self.raceCode = code; self._update()}});
+    this.msDiv = $("<p>").CodeList({title:"Marital Status",type:"marital_status",selected:"", onChange:function(code,event){self.maritalStatusCode = code; self._update()}});
     
     
     this.div.append(this.ageDiv);
