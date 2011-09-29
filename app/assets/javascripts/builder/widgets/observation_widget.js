@@ -24,8 +24,8 @@ $.widget("ui.ObservationsEditor",{
 
     var code = (this.allergyRule) ? this.allergyRule.data.code : null;
    // this.functionalStatusRule = this.findRuleByName("functionalStatus");
-    this.vitalsDiv = $("<div>").VitalsEditor({parent:this, rule:this.vitalSignRule});
-    this.allergiesDiv = $("<div>").CodeList({title:"Allergies",type:"allergy",selected:code, onChange:function(code,event){self.allergyRule = new queryStructure.CodeSetRule({type:"allergy",code:code}); self._update();}});
+    this.vitalsDiv = $("<p>").VitalsEditor({parent:this, rule:this.vitalSignRule});
+    this.allergiesDiv = $("<p>").CodeList({title:"Allergies",type:"allergy",selected:code, onChange:function(code,event){self.allergyRule = new queryStructure.CodeSetRule({type:"allergy",code:code}); self._update();}});
     //this.funcionalStatusDiv = $("<div>").CodeList({title:"Race",type:"functional_status",selected:this.functionalStatusCode, onChange:function(code,event){self.functionalStatusCode = code; self.set(new queryStructure.CodeSetRule({type:"functional_status",code:code}))}});
     
     this.div.append(this.funcionalStatusDiv);
