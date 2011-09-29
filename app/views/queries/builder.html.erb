@@ -1,7 +1,5 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
 
-
-  <h1>Create New Query</h1>
- 
   <script>
   var query = new queryStructure.Query();
 
@@ -12,6 +10,7 @@
   //  $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
     $("#icon_observations").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
     $("#icon_treatments").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
+    $("#icon_raw_javascript").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "rawJavascript"))}});
 
     $("#find > .conditional_editor").AndContainerUI({container:query.find});
     $("#filter > .conditional_editor").AndContainerUI({container:query.filter});
@@ -93,9 +92,13 @@
         	  <li>
         	   <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
         	  </li>
+        	  <li>
+               <%= image_tag("icon_rawJavascript.png",{class:"demo", id:"icon_raw_javascript"}) %>treatments
+            </li>
 	        </ul>
     	  </div>
  	   </div>
+
   </div>
 </div>
 

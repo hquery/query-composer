@@ -119,7 +119,7 @@ class queryStructure.Container
     return -1
             
   clear: ->
-    children = []
+    @children = []
     
   childrenToJson: ->
      childJson = [];
@@ -186,9 +186,10 @@ class queryStructure.CountN extends queryStructure.Container
 # Rules 
 #########
 class queryStructure.Rule
-  constructor: (@type, @data) ->
+  constructor: (@name,  @data) ->
+    @type = this.constructor.name
   toJson: ->
-    return { "type" : @type, "data" : @data }
+    return { 'name':@name, "type" : @type, "data" : @data }
     
 
 

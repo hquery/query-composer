@@ -5,17 +5,18 @@
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-
+  <!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
   <%= yield :head %>
 
 </head>
 <body>
-
+  <%= render :partial => 'shared/header', :locals => {:definition => @definition} %>
   <div id="container">
-    <%= render :partial => 'shared/header', :locals => {:definition => @definition} %>
+  
     <div id="pageContent">
       <%= yield %>
-
     </div><!-- end #pageContent -->
   </div>
 
