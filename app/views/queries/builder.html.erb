@@ -44,13 +44,16 @@
 <script>
 	$(document).ready(function () {  
 	  var top = $('#icons').offset().top - parseFloat($('#icons').css('marginTop').replace(/auto/, 0));
+	  var bottom = top+$('#analyze').height();
+	  
+	  console.log('scrolled');
 	  
 	  $(window).scroll(function (event) {
 	    // what the y position of the scroll is
     	var y = $(this).scrollTop();
   
     // whether that's below the form
-    	if (y >= top) {
+    	if (y >= top && y < bottom) {
       // if so, ad the fixed class
      	 $('#icons').addClass('fixed');
    	 } else {
@@ -72,7 +75,7 @@
 
 	  <div id="variables_border_color">
     	<div id="variables_border_edge">
-    	  <div id="variables">
+    	  <div id="variables" class="icons">
     	    <h1>variables</h1>
     	    <ul>
     	      <li>
@@ -94,10 +97,12 @@
     	  </div>
  	   </div>
   </div>
+</div>
 
+<div id="displayWrapper">
   <div id="display_border_color">
     <div id="display_border_edge">
-      <div id="display">
+      <div id="display" class="icons">
         <h1>display</h1>
         <ul>
           <li>
@@ -114,14 +119,14 @@
     </div>
   </div>
 </div>
-</div>
+
 
   <div id="workspace"> <!-- div id=workspace was here -->
+  <div id="find-filter-extract">
     <div class="top_border">
       <div class="top_border_lower">
       </div>
     </div>
-
     <div id="find" class="querySection">   
           <h1>find</h1>
           <div class="conditional_editor"></div>
@@ -148,7 +153,7 @@
             </div>
           </div>
     </div>
-
+	</div>
     <div id="analyze" class="querySection">
         <h1>analyze</h1>
         <div class="conditional_editor">
@@ -172,6 +177,7 @@
     <div id="connectors">
       <h1></h1>
     </div>
+</div>
 </div>
 
 
