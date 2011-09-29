@@ -157,7 +157,7 @@ class queryStructure.Field
 
 class queryStructure.Group extends queryStructure.Field
   constructor: (@title, @callstack) ->
-  rebuildFromJson: (json) ->
+  @rebuildFromJson: (json) ->
     return new queryStructure.Group(json['title'], json['callstack'])
 
 class queryStructure.Selection extends queryStructure.Field
