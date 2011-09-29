@@ -1,5 +1,17 @@
 @queryStructure ||= {}
 
+
+class queryStructure.CodeSetRule extends queryStructure.Rule
+  constructor: (data) ->
+    super("CodeSetRule", data)
+    @code_set_type = data.type
+  test:  (p) ->
+    if this.data.code == null
+      return true
+    codes = p[@code_set_type]().match(this.data.code.codes)
+    return codes.length != 0
+  
+
 class queryStructure.VitalSignRule extends queryStructure.Rule
   constructor: (data) ->
     super("VitalSignRule", data)
@@ -43,3 +55,13 @@ class queryStructure.DemographicRule extends queryStructure.Rule
       print("matched race? " + match)
     
     return match  
+    
+class queryStructure.RawJavascriptRule extends queryStructure.Rule
+  constructor: (data) ->
+    super("RawJavascriptRule", data)
+    
+  test: (p)  ->
+    if(this.data && this.data.js)
+      try
+        eval("var jscript = "+this.data.js);
+        return jscript(p);

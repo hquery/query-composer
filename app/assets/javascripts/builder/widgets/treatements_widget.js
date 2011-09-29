@@ -5,7 +5,7 @@ $.widget("ui.EncountersEditor",{
   _create:function(){
     var self = this;
     var parent = this.options.parent;
-    $(this.element).CodeList({title:"Encounters",type:"encounter_codes", onChange:function(code,event){parent.set(new queryStructure.EncounterRule({type:"EncounterRule",data:{code:code}}))}});
+    $(this.element).CodeList({title:"Encounters",type:"encounter", onChange:function(code,event){parent.set(new queryStructure.CodeSetRule({type:"encounters",code:code}))}});
     
   }
 });
@@ -28,7 +28,7 @@ $.widget("ui.TreatmentsEditor",{
   get:function(type){
     var entry = null;
      $.each(this.container.and,function(i, node){
-        if(node.type == type){
+        if(node.code_set_type == type){
           entry = node;
         }
      });
@@ -38,7 +38,7 @@ $.widget("ui.TreatmentsEditor",{
   set:function(object){
      var self = this;
      $.each(this.container.children,function(i, node){
-        if(node.type == object.type){
+        if(node.data.type == object.data.type){
           self.container.removeChild(node)
         }
      });

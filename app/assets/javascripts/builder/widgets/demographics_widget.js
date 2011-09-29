@@ -31,7 +31,7 @@ $.widget("ui.DemographicsEditor",{
   
     this.genderDiv = $("<div>").append("<span>gender</span>");
     this.genderDiv.append(this._createGenderSelect(this.gender));
-    this.raceDiv = $("<div>").CodeList({title:"Ethnicity",type:"enticity_codes",selected:"", onChange:function(code,event){self.raceCode = code; self._update()}});
+    this.raceDiv = $("<div>").CodeList({title:"Race",type:"race",selected:"", onChange:function(code,event){self.raceCode = code; self._update()}});
     this.msDiv = $("<div>").CodeList({title:"Marital Staus",type:"marital_status",selected:"", onChange:function(code,event){self.maritalStatusCode = code; self._update()}});
     
     

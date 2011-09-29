@@ -30,7 +30,7 @@ $.widget("ui.VitalsEditor",{
     var parent = this.options.parent;
     var selected = (this.options.rule && this.options.rule.data.code) ? this.options.rule.data.code._id : "";
     
-    $(this.element).CodeList({title:"Vital Signs",type:"vital_sign_codes",selected:selected, onChange:function(code,event){parent.set(new queryStructure.VitalSignRule({code:code}))}});
+    $(this.element).CodeList({title:"Vital Signs",type:"vital_sign",selected:selected, onChange:function(code,event){parent.set(new queryStructure.VitalSignRule({code:code}))}});
     
   }
 });

@@ -1,0 +1,163 @@
+{"name": "inpatient" , "description": "" , "type": "encounter" , "codes":{"CPT": ["99251", "99324", "99281", "96150", "99238", "99324", "99315", "99307"],    "SNOMEDCT": [24882007, 210098006, 405614004, 2252009, 50849002]}}
+{"name": "outpatient" , "description": "" , "type": "encounter" , "codes":{"CPT": ["V72.3", "97003", "99241", "99212", "92012", "99213", "V70.0", "99213", "92014", "99241", "98940", "Z00.1", "99251", "11", "V72.4", "99396", "99412", "99429", "99396", "99404", "90801", "99201", "Z34.9", "424619006", "V22.2", "99406"],    "SNOMEDCT": [185349003, 185349003, 185345009, 185346005, 390906007, 439708006, 185316007, 90526000, 19681004]}}
+
+{"type": "race" , "description": "" , "name": "White (non-latino)" , "codes":{"SNOMEDCT": [413774005]}}
+{"type": "race" , "description": "" , "name": "African-American  " , "codes":{"SNOMEDCT": [413655005]}}
+{"type": "race" , "description": "" , "name": "Latino" , "codes":{"SNOMEDCT": [414410002, 414411003, 414413000]}}
+{"type": "race" , "description": "" , "name": "Asian" , "codes":{"SNOMEDCT": [413582008]}}
+{"type": "race" , "description": "" , "name": "Native American" , "codes":{"SNOMEDCT": [413491005]}}
+{"type": "race" , "description": "" , "name": "Other" , "codes":{"SNOMEDCT": [413600007, 414481008, 414752008, 414808009, 415226007, 415794004]}}
+
+{"type": "gender" , "description": "" , "name": "Male" , "codes":{"SNOMEDCT": [248153007]}}
+{"type": "gender" , "description": "" , "name": "Female" , "codes":{"SNOMEDCT": [248152002]}}
+{"type": "gender" , "description": "" , "name": "Transexual/unknown" , "codes":{"SNOMEDCT": [407377005, 407376001]}}
+
+{"type": "marital_status" , "description": "" , "name": "Married" , "codes":{"SNOMEDCT": [87915002],    "HL7": ["M"],    "MaritalStatusCodes": ["M"]}}
+{"type": "marital_status" , "description": "" , "name": "Single- Never Married" , "codes":{"SNOMEDCT": [125725006],    "HL7": ["S"],    "MaritalStatusCodes": ["S"]}}
+{"type": "marital_status" , "description": "" , "name": "Divorced" , "codes":{"SNOMEDCT": [20295000],    "HL7": ["D"],    "MaritalStatusCodes": ["D"]}}
+{"type": "marital_status" , "description": "" , "name": "Widowed" , "codes":{"SNOMEDCT": [3071008, 78061006],    "HL7": ["W"],    "MaritalStatusCodes": ["W"]}}
+
+
+{"name": "Annulled" , "description": "" , "type": "marital_status",codes:{"HL7": ["A"],    "MaritalStatusCodes": ["A"]}}
+{"name": "Interlocutory" , "description": "" , "type": "marital_status",codes:{"HL7": ["I"],    "MaritalStatusCodes": ["I"]}}
+{"name": "Legally Separated" , "description": "" , "type": "marital_status",codes:{"HL7": ["L"],    "MaritalStatusCodes": ["L"]}}
+{"name": "Polygamous" , "description": "" , "type": "marital_status",codes:{"HL7": ["P"],    "MaritalStatusCodes": ["P"]}}
+{"name": "Domestic partner" , "description": "" , "type": "marital_status",codes:{"HL7": ["T"],    "MaritalStatusCodes": ["T"]}}
+
+
+{"type": "religious_affiliation" , "description": "" , "name": "None" , "codes":{"SNOMEDCT": [429403006]}}
+{"type": "religious_affiliation" , "description": "" , "name": "Buddhist" , "codes":{"SNOMEDCT": [137949005]}}
+{"type": "religious_affiliation" , "description": "" , "name": "Christian" , "codes":{"SNOMEDCT": [160549006]}}
+{"type": "religious_affiliation" , "description": "" , "name": "Hindu" , "codes":{"SNOMEDCT": [160545000]}}
+{"type": "religious_affiliation" , "description": "" , "name": "Jewish" , "codes":{"SNOMEDCT": [160543007]}}
+{"type": "religious_affiliation" , "description": "" , "name": "Muslim" , "codes":{"SNOMEDCT": [309884000]}}
+{"type": "religious_affiliation" , "description": "" , "name": "Other" , "codes":{"SNOMEDCT": [248544006, 429547003, 366740002, 429171004, 429543004, 428408006, 429790000, 429787006, 428506007, 429732005, 160542002, 428815009, 160567004]}}
+
+
+{"type": "occupation" , "description": "" , "name": "Animal Health" , "codes":{"SNOMEDCT": [265940000]}}
+{"type": "occupation" , "description": "" , "name": "Assembler" , "codes":{"SNOMEDCT": [309036005]}}
+{"type": "occupation" , "description": "" , "name": "Cater/personal service" , "codes":{"SNOMEDCT": [159681002]}}
+{"type": "occupation" , "description": "" , "name": "Clerical" , "codes":{"SNOMEDCT": [159483005]}}
+{"type": "occupation" , "description": "" , "name": "Construction/Mining" , "codes":{"SNOMEDCT": [160144007]}}
+{"type": "occupation" , "description": "" , "name": "Education/Welfare/Health" , "codes":{"SNOMEDCT": [265930003]}}
+{"type": "occupation" , "description": "" , "name": "Factory Worker" , "codes":{"SNOMEDCT": [236324005]}}
+{"type": "occupation" , "description": "" , "name": "Farming/Fishing" , "codes":{"SNOMEDCT": [159812002]}}
+{"type": "occupation" , "description": "" , "name": "Foreman" , "codes":{"SNOMEDCT": [236322009]}}
+{"type": "occupation" , "description": "" , "name": "Large Machinery/Plant Work" , "codes":{"SNOMEDCT": [308408000]}}
+{"type": "occupation" , "description": "" , "name": "Literary/Artistic/Sports" , "codes":{"SNOMEDCT": [159049007]}}
+{"type": "occupation" , "description": "" , "name": "Making/Repairing" , "codes":{"SNOMEDCT": [159921002]}}
+{"type": "occupation" , "description": "" , "name": "Management Support" , "codes":{"SNOMEDCT": [158758004]}}
+{"type": "occupation" , "description": "" , "name": "Managerial" , "codes":{"SNOMEDCT": [159326004]}}
+{"type": "occupation" , "description": "" , "name": "Materials Processor" , "codes":{"SNOMEDCT": [159864008]}}
+{"type": "occupation" , "description": "" , "name": "Metal/Electrical" , "codes":{"SNOMEDCT": [159864008]}}
+{"type": "occupation" , "description": "" , "name": "Ostepathic Phyisician" , "codes":{"SNOMEDCT": [416889001]}}
+{"type": "occupation" , "description": "" , "name": "Painter/Coater" , "codes":{"SNOMEDCT": [266046003]}}
+{"type": "occupation" , "description": "" , "name": "Product Inspector/Packages" , "codes":{"SNOMEDCT": [160120005]}}
+{"type": "occupation" , "description": "" , "name": "Professional Scientist / Engineer / Technologist " , "codes":{"SNOMEDCT": [265950004]}}
+{"type": "occupation" , "description": "" , "name": "Prostitute" , "codes":{"SNOMEDCT": [159798008]}}
+{"type": "occupation" , "description": "" , "name": "Security/Protective Services" , "codes":{"SNOMEDCT": [265981008]}}
+{"type": "occupation" , "description": "" , "name": "Selling Occupation" , "codes":{"SNOMEDCT": [159606005]}}
+{"type": "occupation" , "description": "" , "name": "Supervisor" , "codes":{"SNOMEDCT": [236321002]}}
+{"type": "occupation" , "description": "" , "name": "Transporting/Moving/Storing" , "codes":{"SNOMEDCT": [266061002]}}
+{"type": "occupation" , "description": "" , "name": "Worker" , "codes":{"SNOMEDCT": [106541005]}}
+
+{"type": "social_history" , "description": "" , "name": "Risk activity involvement" , "codes":{"SNOMEDCT": [138288001 ,138289009 ,138292008, 138291001 ,138290000]}}
+{"type": "social_history" , "description": "" , "name": "Sedentary Lifestyle" , "codes":{"SNOMEDCT": [415510005]}}
+{"type": "social_history" , "description": "" , "name": "Substance Use" , "codes":{"SNOMEDCT": [405140009 ,405137009 ,405138004]}}
+{"type": "social_history" , "description": "" , "name": "History of Travel" , "codes":{"SNOMEDCT": [414448007]}}
+
+
+{"type": "insurance" , "description": "" , "name": "Private Insurance" , "codes":{"SNOMEDCT": [314847007]}}
+{"type": "insurance" , "description": "" , "name": "Uninsured" , "codes":{"SNOMEDCT": [424553001]}}
+
+{"type": "functional_status" , "description": "" , "name": "Mini Mental State Score" , "codes":{"SNOMEDCT": [414750000]}}
+{"type": "functional_status" , "description": "" , "name": "Glasgow Coma Scale" , "codes":{"SNOMEDCT": [248241002]}}
+
+{"type": "allergy" , "description": "" , "name": "Environmental" , "codes":{"SNOMEDCT": [91926002, 91927006, 444316004]}}
+{"type": "allergy" , "description": "" , "name": "Food" , "codes":{"SNOMEDCT": [91937001, 409136006, 420174000]}}
+{"type": "allergy" , "description": "" , "name": "Drug" , "codes":{"SNOMEDCT": [294662001, 294923007, 294924001 ]}}
+{"type": "allergy" , "description": "" , "name": "Animal" , "codes":{"SNOMEDCT": [424213003, 346405008, 232346004]}}
+{"type": "allergy" , "description": "" , "name": "Material" , "codes":{"SNOMEDCT": [300916003, 419788000, 402306009]}}
+
+{"type": "vital_sign" , "description": "" , "name": "Body Mass Index" , "codes":{"SNOMEDCT": [60621009]}}
+{"type": "vital_sign" , "description": "" , "name": "Pulse Rate" , "codes":{"SNOMEDCT": [312905005],    "LOINC": ["8867-4"]}}
+{"type": "vital_sign" , "description": "" , "name": "Pulse Ox" , "codes":{"SNOMEDCT": [284034009],    "LOINC": ["2710-2"]}}
+{"type": "vital_sign" , "description": "" , "name": "Respiratory Rate" , "codes":{"SNOMEDCT": [86290005],    "LOINC": ["9279-1"]}}
+{"type": "vital_sign" , "description": "" , "name": "Systolitic Blood Pressure" , "codes":{"SNOMEDCT": [271649006],    "LOINC": ["8480-6"]}}
+{"type": "vital_sign" , "description": "" , "name": "Diastolic Blood Pressure" , "codes":{"SNOMEDCT": [271650006],    "LOINC": ["8462-4"]}}
+{"type": "vital_sign" , "description": "" , "name": "Body Temperature" , "codes":{"SNOMEDCT": [386725007],    "LOINC": ["8310-5"]}}
+
+{"name": "Height" , "description": "" , "type": "vital_signs" , "codes":{"LOINC": ["8302-2"]}}
+{"name": "Height (Lying)" , "description": "" , "type": "vital_signs" , "codes":{"LOINC": ["8306-3"]}}
+{"name": "Head Circumference" , "description": "" , "type": "vital_signs" , "codes":{"LOINC": ["8287-5"]}}
+{"name": "Weight Measured" , "description": "" , "type": "vital_signs" , "codes":{"LOINC": ["3141-9"]}}
+
+{"type": "medication" , "description": "" , "name": "Aspirin" , "codes":{"SNOMEDCT": [432909005]}}
+{"type": "medication" , "description": "" , "name": "Antihistamine" , "codes":{"SNOMEDCT": [6425004]}}
+{"type": "medication" , "description": "" , "name": "Antibiotics" , "codes":{"SNOMEDCT": [38181000]}}
+{"type": "medication" , "description": "" , "name": "Insulin" , "codes":{"SNOMEDCT": [39487003]}}
+
+{"type": "immunization" , "description": "" , "name": "Diphtheria/Tetanus" , "codes":{"SNOMEDCT": [350327004, 333621002, 333536009]}}
+{"type": "immunization" , "description": "" , "name": "Hepatitis A" , "codes":{"SNOMEDCT": [243789007]}}
+{"type": "immunization" , "description": "" , "name": "Hepatitis B" , "codes":{"SNOMEDCT": [16584000]}}
+{"type": "immunization" , "description": "" , "name": "Rabies" , "codes":{"SNOMEDCT": [170365007, 170366008, 170367004, 416059007]}}
+{"type": "immunization" , "description": "" , "name": "Influenza" , "codes":{"SNOMEDCT": [442333005, 86198006]}}
+{"type": "immunization" , "description": "" , "name": "MMR" , "codes":{"SNOMEDCT": [433733003, 170432003, 170433008]}}
+{"type": "immunization" , "description": "" , "name": "Polio" , "codes":{"SNOMEDCT": [415129008]}}
+{"type": "immunization" , "description": "" , "name": "Typhoid" , "codes":{"SNOMEDCT": [395665009, 170316002, 170317006, 170318001]}}
+
+{"type": "medical_equipment" , "description": "" , "name": "Atomizer" , "codes":{"SNOMEDCT": [291005]}}
+{"type": "medical_equipment" , "description": "" , "name": "gas supply equipment" , "codes":{"SNOMEDCT": [285707009]}}
+{"type": "medical_equipment" , "description": "" , "name": "Cardiac pacemaker" , "codes":{"SNOMEDCT": [303913007]}}
+{"type": "medical_equipment" , "description": "" , "name": "Meters, analyzers and monitors" , "codes":{"SNOMEDCT": [272184006]}}
+{"type": "medical_equipment" , "description": "" , "name": "Mobility Aid" , "codes":{"SNOMEDCT": [183135000]}}
+{"type": "medical_equipment" , "description": "" , "name": "Blood glocose monitoring equipment" , "codes":{"SNOMEDCT": [33748500]}}
+{"type": "medical_equipment" , "description": "" , "name": "Oxygen Equipment" , "codes":{"SNOMEDCT": [336589003]}}
+{"type": "medical_equipment" , "description": "" , "name": "Respiratory Equipment" , "codes":{"SNOMEDCT": [277973009]}}
+
+{"type": "procedure" , "description": "" , "name": "Birthing/Delivery Procedure" , "codes":{"SNOMEDCT": [236973005]}}
+{"type": "procedure" , "description": "" , "name": "preoperative/postoperative" , "codes":{"SNOMEDCT": [266705004]}}
+{"type": "procedure" , "description": "" , "name": "surgical procedure" , "codes":{"SNOMEDCT": [387713003]}}
+{"type": "procedure" , "description": "" , "name": "general treatment" , "codes":{"SNOMEDCT": [7922000]}}
+{"type": "procedure" , "description": "" , "name": "blood/lymphatic operation" , "codes":{"SNOMEDCT": [287345007]}}
+{"type": "procedure" , "description": "" , "name": "Outpatient procedure" , "codes":{"SNOMEDCT": [371883000]}}
+
+
+{"type": "condition" , "description": "" , "name": "Pregnant" , "codes":{"SNOMEDCT": [77386006]}}
+{"type": "condition" , "description": "" , "name": "Diabetes" , "codes":{"SNOMEDCT": [73211009 ]}}
+{"type": "condition" , "description": "" , "name": "Asthma" , "codes":{"SNOMEDCT": [195967001]}}
+{"type": "condition" , "description": "" , "name": "Heart Disease" , "codes":{"SNOMEDCT": [56265001]}}
+{"type": "condition" , "description": "" , "name": "Hypertension" , "codes":{"SNOMEDCT": [38341003]}}
+{"type": "condition" , "description": "" , "name": "Kidney Disease" , "codes":{"SNOMEDCT": [90708001]}}
+{"type": "condition" , "description": "" , "name": "Chronic Lung Disease" , "codes":{"SNOMEDCT": [413839001]}}
+{"type": "condition" , "description": "" , "name": "Breast Cancer" , "codes":{"SNOMEDCT": [254837009]}}
+
+
+{"type": "diagnosis_result" , "description": "" , "name": "Pregnancy Test" , "codes":{"SNOMEDCT": [250423000, 250425007]}}
+{"type": "diagnosis_result" , "description": "" , "name": "Diabetes" , "codes":{"SNOMEDCT": [170763003, 268519009]}}
+{"type": "diagnosis_result" , "description": "" , "name": "Biopsy result abnormal" , "codes":{"SNOMEDCT": [165325009]}}
+{"type": "diagnosis_result" , "description": "" , "name": "Red Blood Cell Findings" , "codes":{"SNOMEDCT": [165422006, 165425008, 165424007]}}
+{"type": "diagnosis_result" , "description": "" , "name": "HIV-Positive" , "codes":{"SNOMEDCT": [165816005]}}
+
+
+{"type": "advance_directive" , "description": "" , "name": "Resuscitation" , "codes":{"SNOMEDCT": [304251008]}}
+{"type": "advance_directive" , "description": "" , "name": "Active Living Will" , "codes":{"SNOMEDCT": [52765003]}}
+{"type": "advance_directive" , "description": "" , "name": "IV Fluid and Support" , "codes":{"SNOMEDCT": [225204009]}}
+{"type": "advance_directive" , "description": "" , "name": "CPR" , "codes":{"SNOMEDCT": [89666000]}}
+{"type": "advance_directive" , "description": "" , "name": "Antibiotics" , "codes":{"SNOMEDCT": [281789004]}}
+{"type": "advance_directive" , "description": "" , "name": "Life Support" , "codes":{"SNOMEDCT": [78823007]}}
+{"type": "advance_directive" , "description": "" , "name": "Tube Feedings" , "codes":{"SNOMEDCT": [61420007]}}
+{"type": "advance_directive" , "description": "" , "name": "Transfusion of blood product" , "codes":{"SNOMEDCT": [116859006]}}
+{"type": "advance_directive" , "description": "" , "name": "Other Directive" , "codes":{"SNOMEDCT": [71388002]}}
+
+{"type": "support" , "description": "" , "name": "Family Support" , "codes":{"SNOMEDCT": [243115004]}}
+{"type": "support" , "description": "" , "name": "Alcoholics Anonymous" , "codes":{"SNOMEDCT": [161109002]}}
+{"type": "support" , "description": "" , "name": "Women's Refuge" , "codes":{"SNOMEDCT": [412785001]}}
+
+{"type": "family_history" , "description": "" , "name": "Cancer" , "codes":{"SNOMEDCT": [275937001]}}
+{"type": "family_history" , "description": "" , "name": "Diabetes" , "codes":{"SNOMEDCT": [160303001]}}
+{"type": "family_history" , "description": "" , "name": "Dementia/Alzheimers Disease" , "codes":{"SNOMEDCT": [429961000]}}
+{"type": "family_history" , "description": "" , "name": "Heart Disease" , "codes":{"SNOMEDCT": [160364005]}}
+{"type": "family_history" , "description": "" , "name": "Kidney Disease" , "codes":{"SNOMEDCT": [289916006]}}
+{"type": "family_history" , "description": "" , "name": "Lung Disease" , "codes":{"SNOMEDCT": [430564002]}}
+{"type": "family_history" , "description": "" , "name": "Stroke" , "codes":{"SNOMEDCT": [275104002]}}
