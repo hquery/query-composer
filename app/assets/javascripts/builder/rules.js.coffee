@@ -29,6 +29,15 @@ class queryStructure.Comparison
     else 
       return value > @value
 
+class queryStructure.CodeSetRule extends queryStructure.Rule
+  constructor: (data) ->
+    super(data.type, data)
+    @code_set_type = data.type
+  test:  (p) ->
+    if this.data.code == null
+      return true
+    codes = p[@code_set_type]().match(this.data.code.codes)
+    return codes.length != 0
 
 class queryStructure.VitalSignRule extends queryStructure.Rule
   constructor: (data) ->
@@ -62,7 +71,8 @@ class queryStructure.DemographicRule extends queryStructure.Rule
       match = p.age() >=this.data.ageRange.low && p.age() <= this.data.ageRange.high 
       print("matched age? " + match)
     if this.data.maritalStatusCode && match 
-       match = p.maritalStatus().includesCodeFrom(this.data.maritalStatusCode.codes)
+       status = p.maritalStatus();
+       match =  status && status.includesCodeFrom(this.data.maritalStatusCode.codes)
        print("matched msc? " + match)
     if this.data.gender && match
       match = p.gender() == this.data.gender
@@ -72,3 +82,13 @@ class queryStructure.DemographicRule extends queryStructure.Rule
       print("matched race? " + match)
     
     return match  
+    
+class queryStructure.RawJavascriptRule extends queryStructure.Rule
+  constructor: (data) ->
+    super("RawJavascriptRule", data)
+    
+  test: (p)  ->
+    if(this.data && this.data.js)
+      try
+        eval("var jscript = "+this.data.js);
+        return jscript(p);

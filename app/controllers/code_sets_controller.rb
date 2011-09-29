@@ -1,32 +1,19 @@
 class CodeSetsController < ApplicationController
-  skip_authorization_check
-  
+  load_and_authorize_resource
   
   def index
     @code_sets = CodeSet.all
   end
   
   
-  def new
-    @code_set = CodeSet.new
-  end
-  
+
   def create
-    @code_set = CodeSet.new
     @code_set.set_properties(params[:code_set])
     redirect_to :action=>:show, :id=>@code_set
   end
   
-  def show
-    @code_set = CodeSet.find(params[:id])
-  end
- 
-  def edit
-    @code_set = CodeSet.find(params[:id])
-  end
   
-  def update
-    @code_set = CodeSet.find(params[:id])
+  def update 
     @code_set.set_properties(params[:code_set])
     redirect_to :action=>:show
   end

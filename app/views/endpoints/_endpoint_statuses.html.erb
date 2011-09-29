@@ -6,7 +6,7 @@
     <th>Jobs running</th>
     <th>Jobs queued</th>
     <th>Average runtime</th>
-    <th></th>
+    <th>&nbsp;</th>
   </tr>
   <% end %>
   <% @endpoints.each do |endpoint| %>
@@ -23,7 +23,7 @@
     <td><%= @endpoint_server_statuses[endpoint.id]['running'] %></td>
     <td><%= @endpoint_server_statuses[endpoint.id]['queued'] %></td>
     <td><%= @endpoint_server_statuses[endpoint.id]['avg_runtime'] %></td>
-    <td><%= button_to 'X', endpoint, confirm: 'Are you sure?', method: :delete, title:"Delete" if current_user.admin?  %></td>
+    <td><%= button_to 'Delete', endpoint, confirm: 'Are you sure you wish to delete this endpoint?', method: :delete, title:"Delete" if current_user.admin?  %></td>
   </tr>
   <% end %>
 </table>

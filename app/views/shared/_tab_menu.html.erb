@@ -1,14 +1,16 @@
-<div id="sidebarNavigation">
-  <div class="sidebarGroup">
-    <ul>
 
+<% content_for :tabMenu do -%>
+<nav>
+  <ul>
       <li class="<%=(selected[:queries]) ? ' selected' : ''%>" data-tab="queries"><%= link_to "Queries", queries_path %></li>
       <li class="<%=(selected[:endpoints]) ? ' selected' : ''%>" data-tab="endpoints"><%= link_to "Endpoints", endpoints_path %></li>
       <li class="<%=(selected[:template_queries]) ? ' selected' : ''%>" data-tab="template_queries"><%= link_to "Template Queries", template_queries_path %></li>
       <li class="<%=(selected[:library_functions]) ? ' selected' : ''%>" data-tab="library_functions"><%= link_to "Library Functions", library_functions_path %></li>
+      <li class="<%=(selected[:help]) ? 'selected' : ''%>" data-tab="help"><a href="#">Help</a></li>
+      <li class="<%=(selected[:account]) ? ' selected' : ''%>" data-tab="account"><%= link_to "Account", edit_user_registration_path(current_user) %></li>
+      <li class="<%=(selected[:admin]) ? ' selected' : ''%>" data-tab="admin"><%= link_to "Admin", admin_users_path %></li>
+      <li data-tab="logout"><%= link_to 'Logout', destroy_user_session_path%></li>
 
-
-    </ul>
-    <br style="clear:both"/>
-  </div>
-</div><!-- end #sidebarNavigation -->
+  </ul>
+  </nav>
+<% end %>

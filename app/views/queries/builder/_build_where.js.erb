@@ -9,12 +9,15 @@ else
 end %>
 <% if operation == 'rule'
   if element["type"] %>
-   new queryStructure.<%= element["type"].html_safe %>( <%= element["data"].to_json.html_safe %>)
+   new queryStructure.<%= element["type"].html_safe %>( <%= element["data"].to_json.html_safe %>)<%= comma_if_last %>
+   
    <% 
  end
 else %>
   new queryStructure.<%= operation %>(<%= element["name"] ? "'#{element["name"]}'" : "null" %>, [
-  <% element[operation.downcase].each do |subelement|
+  <% 
+  count = element[operation.downcase].length
+  element[operation.downcase].each_with_index do |subelement|
     if subelement != element[operation.downcase].last
       cil = ','
     end %>

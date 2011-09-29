@@ -101,7 +101,7 @@ class queryStructure.Container
     return -1
             
   clear: ->
-    children = []
+    @children = []
     
   childrenToJson: ->
      childJson = [];
