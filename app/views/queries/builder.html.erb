@@ -30,10 +30,10 @@
   $("body, #pageContent, #container").droppable({
     greedy:true,
     accept:function(ui){
-      return $(ui).data().ItemUI || $(ui).data().AndContainerUI || $(ui).data().OrContainerUI;
+      return $(ui).data().ItemUI || $(ui).data().AndContainerUI || $(ui).data().OrContainerUI || $(ui).data().ExtractItemUI;
     },
     drop:function(element, ui){
-      var item = $(ui.draggable).data().ItemUI || $(ui.draggable).data().AndContainerUI || $(ui.draggable).data().OrContainerUI;
+      var item = $(ui.draggable).data().ItemUI || $(ui.draggable).data().AndContainerUI || $(ui.draggable).data().OrContainerUI || $(ui.draggable).data().ExtractItemUI;
       item._remove();
     }
   });
