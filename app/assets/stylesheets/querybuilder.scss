@@ -32,6 +32,11 @@ div#icons.fixed {
   position: fixed;
   top: 0;
 }  
+
+div#icons.variable {
+  position: relative;
+  bottom: 0px;
+}
 	
 div#icons {
 
@@ -64,14 +69,18 @@ div#icons {
   }
 }
 
+div#iconsWrapper {
+	position: relative;
+}
+
 div#displayWrapper {
 
-  margin: 20px;
+  margin: -20px 20px 40px 20px;
   clear: both;
-  position: absolute;
+  position: relative;
   float: left;
   width: $paletteWidth;
-  top: 808px;
+  top: 0px;
   /* just used to show how to include the margin in the effect */
   
   h1 { 
@@ -128,10 +137,44 @@ div#variables, div#display {
 
 }
 
+#heading { 
+	margin-top: 20px;
+	margin-left: 280px;
+}
+
 
 div#workspace {
+  margin: 0 30px 20px 280px;
+  padding-top: 0;
+  min-width: 700px;
+  max-width: 100%;
+  // to change to support full-width trees that do not wrap, uncomment below
+  // and remove max-width above.
+  /*
+    width:100%;
+    padding-right:30px;
+  */
+  h1 { 
+    position:absolute;
+    top:50px;
+    left:0;
+    width:1em;
+    height:1em;
+    font-size: 18pt;
+    font-weight: normal;
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+  }
+  .querySection {
+     position:relative;
+     min-height:200px;
+     padding-bottom: 30px;
+  }
+}
+
+div#analyze_workspace {
   margin: 20px 30px 20px 280px;
-  padding-top: 32px;
+  padding-top: 0px;
   min-width: 700px;
   max-width: 100%;
   // to change to support full-width trees that do not wrap, uncomment below

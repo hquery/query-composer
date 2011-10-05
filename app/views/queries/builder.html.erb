@@ -1,6 +1,5 @@
 
 
-  <h1>Create New Query</h1>
  
   <script>
   var query = new queryStructure.Query();
@@ -41,34 +40,69 @@
 
 </script>
 
-<script>
-	$(document).ready(function () {  
-	  var top = $('#icons').offset().top - parseFloat($('#icons').css('marginTop').replace(/auto/, 0));
-	  var bottom = top+$('#analyze').height();
-	  
-	  console.log('scrolled');
-	  
-	  $(window).scroll(function (event) {
-	    // what the y position of the scroll is
-    	var y = $(this).scrollTop();
+ 
+ <script> 
+$(document).ready(function () {
+  		
+	var icons_offsetTop = $("#icons").offset().top - parseFloat($("#icons").css("margin-top").replace(/auto,0));
   
-    // whether that's below the form
-    	if (y >= top && y < bottom) {
-      // if so, ad the fixed class
-     	 $('#icons').addClass('fixed');
-   	 } else {
-      // otherwise remove it
-      $('#icons').removeClass('fixed');
-    }
-  });
-});
-</script>
-
+  		$(window).scroll(function () {
+ // what the offset from the top wrapper is 
+		var icons_scroll_offset = $(document).scrollTop();
+		var document_height = $("#query_builder").height();
+	 
+ // whether the scroll point is over icons top
+		if (icons_scroll_offset >= icons_offsetTop) {
+ // if so, change to add class : fixed
+	 	$("#icons").addClass("fixed");
+	 	
+ // if not, remove it
+ 		} else {
+ 			$("#icons").removeClass("fixed");
+ 	}
+  
+ 
+ // what is the bottom offset from the bottom wrapper is
+ 
+ // whether that's greater than zero
+ 
+ // if so change to position: relative
+ 
+ 	}); 
+ });
+ </script>
+ 
+ <script>
+ $(document).ready(function () {
+  
+  		$(window).scroll(function () {
+ // what the offset from the top wrapper is 
+		var icons_scroll_offset = $(document).scrollTop();
+		var document_height = $("#query_builder").height();
+		
+	 	if (icons_scroll_offset >= document_height) {
+	 	$("#icons").removeClass("fixed").addClass("variable");
+ // if not, remove it
+ 		} else {
+ 			$("#icons").removeClass("variable");
+ 	}
+  
+ 
+ // what is the bottom offset from the bottom wrapper is
+ 
+ // whether that's greater than zero
+ 
+ // if so change to position: relative
+ 
+ 	}); 
+ });
+ </script>
 
 <div id="query_builder">
-  
-<div id="iconsWrapper">  
-	<div id="icons">
+  <h1 id="heading">Create New Query</h1>
+	<div id="fffWrapper"> 
+	<div id="iconsWrapper">  
+		<div id="icons">
 	  <div id="search_box">
 	    <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
 	  </div>
@@ -98,30 +132,9 @@
  	   </div>
   </div>
 </div>
-
-<div id="displayWrapper">
-  <div id="display_border_color">
-    <div id="display_border_edge">
-      <div id="display" class="icons">
-        <h1>display</h1>
-        <ul>
-          <li>
-             <%= image_tag("icon_freq.png") %>frequency
-          </li>
-          <li>
-           <%= image_tag("icon_location.png") %>location
-          </li>
-          <li>
-           <%= image_tag("icon_time.png") %>time
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 </div>
 
-
-  <div id="workspace"> <!-- div id=workspace was here -->
+	<div id="workspace"> <!-- div id=workspace was here -->
   <div id="find-filter-extract">
     <div class="top_border">
       <div class="top_border_lower">
@@ -154,17 +167,41 @@
           </div>
     </div>
 	</div>
+
+</div>
+</div>
+	<div id="analyzeWrapper">
+	<div id="displayWrapper">
+  	<div id="display_border_color">
+ 	   <div id="display_border_edge">
+ 	     <div id="display" class="icons">
+    	    <h1>display</h1>
+        	<ul>
+       	   <li>
+       	      <%= image_tag("icon_freq.png") %>frequency
+        	  </li>
+        	<li>
+           <%= image_tag("icon_location.png") %>location
+          </li>
+  	        <li>
+    	       <%= image_tag("icon_time.png") %>time
+    	      </li>
+    	    </ul>
+    	  </div>
+	    </div>
+	  </div>
+	</div>
+	<div id="analyze_workspace">
     <div id="analyze" class="querySection">
         <h1>analyze</h1>
-        <div class="conditional_editor">
-        </div>
+        	<div class="conditional_editor">
+       		</div>
           <div class="bottom_border_lower">
             <div class="bottom_border">
             </div>
           </div>
-
-    </div>
-</div>
+		</div>
+ 
 </div>
   <div id="otherside">
     <div id="stats">
@@ -177,6 +214,7 @@
     <div id="connectors">
       <h1></h1>
     </div>
+</div>
 </div>
 </div>
 
