@@ -40,11 +40,31 @@ class EndpointTest < ActiveSupport::TestCase
     assert result_updated_at != result.updated_at
   end
   
+  test "monitoring queries with incomprehensible responses" do
+    
+  end
+  
   test "check if there are active queries" do
     endpoint = Factory.create(:endpoint)
     Factory.create(:result_with_value, endpoint: endpoint)
     assert !endpoint.unfinished_results?
     Factory.create(:result_waiting, endpoint: endpoint)
     assert endpoint.unfinished_results?
+  end
+  
+  test "should gracefully handle errors in check" do
+    
+  end
+  
+  test "should update last check time" do
+    
+  end
+  
+  test "should return an execution given a result" do
+    
+  end
+  
+  test "should aggregate results upon query completion" do
+
   end
 end

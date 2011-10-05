@@ -64,16 +64,14 @@ Factory.define :generated_query, :parent => :query do |q|
   q.query_structure ({
     "find" =>
       { "and" => [
-        { "or" => [ 
-          { "name" => "demographics",
-            "and" => [ 
-              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "18", "comparator" => ">" } ] } ] } ] },
+        { "name" => "demographics",
+          "and" => [ 
+            { "category" => "demographics", "title" => "age", "field" => "age", "value" => "18", "comparator" => ">" } ] } ] },
     "filter" =>
       { "and" => [ 
-        { "or" => [ 
-          { "name" => "demographics",
-            "and" => [ 
-              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "65", "comparator" => "<" } ] } ] } ] },
+        { "name" => "demographics",
+          "and" => [ 
+            { "category" => "demographics", "title" => "age", "field" => "age", "value" => "65", "comparator" => "<" } ] } ] },
     "extract" => 
       { "selections" => [ 
           { "title" => "age", "callstack" => "age", "aggregation" => [ "sum" ] } ],

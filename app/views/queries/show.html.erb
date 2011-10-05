@@ -57,13 +57,11 @@
         <td class="subTable">
           <table>
             <tr>
-              <td><%= button_to 'Edit', { :action => 'edit', :id => @query.id }, :method => :get%></td>
               <% if (@query.generated?) %>
                 <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get %></td>
-                <td><%= button_to 'Advanced Edit', { :action => 'edit_code', :id => @query.id }, :method => :get, id: 'advanced_edit' %></td>
-              <% else %>
+                <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'advanced_edit' %></td>
               <% end %>
-              <td><button id="execute-button">execute</button></td>
+              <td><button id="execute-button">Execute</button></td>
             </tr>
           </table>
         </td>
