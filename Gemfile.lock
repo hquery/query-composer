@@ -211,6 +211,7 @@ PLATFORMS
 DEPENDENCIES
   bson_ext
   cancan
+  coderay
   coffee-rails
   cover_me (>= 1.0.0.rc6)
   delayed_job

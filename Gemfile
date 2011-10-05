@@ -29,6 +29,7 @@ gem 'pry'
 gem 'kramdown'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
+gem 'coderay'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'

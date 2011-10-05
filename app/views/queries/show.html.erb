@@ -42,8 +42,8 @@
       <tr><th>Title</th><td><%= @query.title %></td></tr>
       <tr><th>Description</th><td><%= @query.description %></td></tr>
       <tr><th>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
-      <tr><th>Map Function</th><td><pre><%= @query.map %></pre></td></tr>
-      <tr><th>Reduce Function</th><td><pre><%= @query.reduce %></pre></td></tr>
+      <tr><th>Map Function</th><td><%= raw(CodeRay.scan(@query.map, :javascript).div) %></td></tr>
+      <tr><th>Reduce Function</th><td><%= raw(CodeRay.scan(@query.reduce, :javascript).div) %></td></tr>
       <tr>
         <th>Endpoints</th>
         <td class="subTable"><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
