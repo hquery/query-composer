@@ -59,8 +59,8 @@
             <tr>
               <% if (@query.generated?) %>
                 <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get %></td>
-                <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'advanced_edit' %></td>
               <% end %>
+              <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'edit' %></td>
               <td><button id="execute-button">Execute</button></td>
             </tr>
           </table>
