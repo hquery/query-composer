@@ -90,7 +90,105 @@ $.widget("ui.DemographicsEditor",{
      });
      this.container.add(object);
   }
+});
+
+
+$.widget("ui.DemographicsExtractor", {
+  _create: function() {
+    this.div = $("<div>");
+    this.element.append(this.div);
+    
+    this.selectGender = false;
+    this.aggregateGender = ['sum'];
+    this.groupGender = false;
+    this.selectAge = false;
+    this.aggregateAge = ['sum'];
+    this.groupAge = false;
+    
+    var selections = query.extract.selections;
+    for (var s in selections) {
+      var field = selections[s]['title'].charAt(0).toUpperCase() + selections[s]['title'].slice(1);
+      this['select' + field] = true;
+      this['aggregate' + field] = selections[s]['aggregation'];
+    }
+    var groups = query.extract.groups;
+    for (var g in groups) {
+      var field = groups[g]['title'].charAt(0).toUpperCase() + groups[g]['title'].slice(1);
+      this['group' + field] = true;
+    }
+    
+    this.div.append("select");
+    this.selectGenderDiv = $("<div>");
+    this.selectGenderDiv.append(this._createCheckBox('selectGender', 'gender')).append('gender');
+    this.selectGenderDiv.append(this._createAggregationSelect('aggregateGender', 'gender'));
+    this.selectAgeDiv = $("<div>");
+    this.selectAgeDiv.append(this._createCheckBox('selectAge', 'age')).append('age');
+    this.selectAgeDiv.append(this._createAggregationSelect('aggregateAge', 'age'));
+    
+    this.div.append(this.selectGenderDiv);
+    this.div.append(this.selectAgeDiv);
+    this.div.append("<br />"); // With a full apology to mnosal until we refactor all of this into proper CSS
+    
+    this.div.append("group");
+    this.groupGenderDiv = $("<div>");
+    this.groupGenderDiv.append(this._createCheckBox('groupGender', 'gender')).append('gender');
+    this.groupAgeDiv = $("<div>");
+    this.groupAgeDiv.append(this._createCheckBox('groupAge', 'age')).append('age');
+    
+    this.div.append(this.groupGenderDiv);
+    this.div.append(this.groupAgeDiv);
+  },
   
+  _createAggregationSelect: function(field, name) {
+    var select = $("<select style='float: right; margin-left: 5px'>");
+    
+    var aggregationOptions = ["sum","frequency","mean","median","mode"];
+    $.each(aggregationOptions, function(index, value) {
+      var option = $("<option>", { "value" : value }).append(value);
+      select.append(option);
+    });
+    
+    select.val(this[field][0]).selected = true;
+    
+    var self = this;
+    select.change(function(event) {
+      self[field] = [this.value];
+      self._update();
+    });
+    return select;
+  },
   
+  _createCheckBox: function(field, name) {
+    var checked = '';
+    if (this[field]) {
+      checked = "checked='true'";
+    }
+
+    var check = $("<input type='checkbox' name='" + name + "' value='" + name + "' " + checked + " />");
+    
+    var self = this;
+    check.change(function(event) {
+      self[field] = this.checked;
+      self._update();
+    });
+    
+    return check;
+  },
   
+  _update: function() {
+    var selections = [];
+    var groups = [];
+    
+    if (this.selectGender)
+      selections.push(new queryStructure.Selection('gender', 'gender', this.aggregateGender))
+    if (this.selectAge)
+      selections.push(new queryStructure.Selection('age', 'age', this.aggregateAge));
+    
+    if (this.groupGender)
+      groups.push(new queryStructure.Group('gender', 'gender'));
+    if (this.groupAge)
+      groups.push(new queryStructure.Group('age', 'age'));
+    
+    query.extract = new queryStructure.Extraction(selections, groups);
+  }
 });

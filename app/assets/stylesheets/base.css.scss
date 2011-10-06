@@ -1,0 +1,129 @@
+/* base.css.scss hQuery SASS Stylesheet file */
+$defaultLinkColor:#56a6d4;
+$defaultLinkHover : #267f88;
+$defaultTopMargin:0;
+$defaultRightMargin: 20px;
+$defaultBottomMargin:0;
+$defaultLeftMargin:0;
+$defaultPageMargins : $defaultTopMargin $defaultRightMargin $defaultBottomMargin $defaultLeftMargin;
+
+$defaultTopPadding:0;
+$defaultRightPadding: 20px;
+$defaultBottomPadding:20px;
+$defaultLeftPadding:20px;
+$defaultPagePadding : $defaultTopPadding $defaultRightPadding $defaultBottomPadding $defaultLeftPadding;
+
+body {
+  font-size: 12pt;
+  font-family: Myriad-Regular, Myriad, sans-serif;
+  text-decoration: none;
+  font-weight: normal;
+  height: 100%;
+  font-family: "Myriad Pro", "Frutiger", Helvetica, Arial;
+  width: 100%;
+  min-width: 1000px;
+}
+
+a {
+  color: $defaultLinkColor;
+  text-decoration: none;
+  &:hover {  color: $defaultLinkHover;}
+}
+.sep { // separator | character
+  margin: 0 7px 0 5px;
+  color: #cccccc;
+  text-align: center;
+}
+
+header {
+  border-bottom: #e6e6e6 solid 2px;
+  margin: 0 0 10px 0;
+  padding:0 $defaultRightPadding 0 $defaultLeftPadding;
+  div {
+    margin-top:10px;
+    float:left;
+    img {
+      width:153px;
+    }
+    p {font-size:80%}
+  }
+  nav {
+    text-align: left;
+    font-size: 100%;
+    margin-left:200px;
+    ul {
+      list-style-type:none;
+      padding-top:50px;
+      li {
+        display:inline-block;
+      }
+    }
+    a {
+      color:#666;
+      padding:5px 15px 0;
+      text-decoration:none;
+      &:hover {
+        color:#000;
+      }
+    }
+    li.selected a {
+      color:#000;
+      border-bottom: 10px solid white;
+      border-color: #E6E6E6 white white;
+      border-radius: 10px 10px 0 0;
+      border-top: 3px solid #E6E6E6;
+      border-width: 3px 10px 10px;
+      }
+  }
+}
+
+/* outermost wrapper for page contents */
+#container  {
+  font-size: 0.9em;
+}
+
+#pageContent {
+  padding:$defaultPagePadding;
+}
+
+#mainPanel {
+  min-width: 720px;
+  h1 {font-size:1.5em;}
+  h2 {font-size:1.3em;}
+}
+
+div#chart {
+  margin: 0 auto;
+  width: 640px;
+  height: 480px;
+}
+
+.simpleTable {
+  margin:10px 0 20px 0;
+  td, th {
+    padding:3px 15px 3px 0px;
+    vertical-align:top;
+  }
+  th {
+    color: #888888;
+  }
+  td.good_status {color:green}
+  td.fail_status {color:red}
+  pre {font-family:Consolas,Monaco,"Courier New";}
+}
+
+td.subTable {padding:0 10px 0 0}
+
+#execution_results td ,th {
+  padding: 2px;
+}
+#queryExecutionHistory tr td:first-child {padding-right:5px;}
+div.ctrl input[type=button],div.ctrl input[type=submit] {margin-right:15px}
+span.ctrl {margin-left:50px}  
+
+/* errors and notifications */
+div.field_with_errors {
+  display: inline;
+}
+
+p#notice {margin-bottom:20px;}

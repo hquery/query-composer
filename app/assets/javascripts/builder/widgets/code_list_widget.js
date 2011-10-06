@@ -6,13 +6,16 @@ $.widget("ui.CodeList",{
     this.type = this.options.type;
     this.auto_complete = this.options.auto_complete;
     this.selected = this.options.selected;
+    if(this.selected && !(typeof(this.selected) == "string") ){
+      this.selected = this.selected["_id"];
+    }
     this.div = $("<div>");
-    this.div.append($("<span>").append(this.options.title));
+    this.div.append($("<label>").append(this.options.title));
     this.selectBox = $("<select>");
     this.selectBox.append("<option>Select</option>");
     this.selectBox.change(function(event){
       
-      $("option:selected",this.selectBox).each(function () {
+      $("option:selected",this).each(function () {
             var selectedID = $(this).attr("value")
             var code = self._getSelectedCode(selectedID);
             self.selectedCode = code;
@@ -23,7 +26,7 @@ $.widget("ui.CodeList",{
       
     });
     
-    this.div.append($("<span>").append(this.selectBox));
+    this.div.append(this.selectBox);
     this.element.append(this.div);
     this._loadCodeList();
     this.onChange = this.options.onChange || function(){};

@@ -1,4 +1,5 @@
 require 'test_helper'
+include GatewayUtils
 
 class ExecutionTest < ActiveSupport::TestCase
 
@@ -26,20 +27,19 @@ class ExecutionTest < ActiveSupport::TestCase
   test "aggregation for a generated query" do
     query = Factory.create(:generated_query_with_completed_results)
     query.generate_map_reduce
-    base_reduce = "\nfunction reduce(key, values) {\n  var result;\n  if (key.type == 'population') {\n    result = new reducer.Value(\n      {\n        'target_pop' : 0,\n        'filtered_pop' : 0,\n        'unfound_pop' : 0,\n        'total_pop' : 0\n      },\n      rereduced = false\n    );\n    for (var i in values) {\n      result.sum('target_pop', values[i]);\n      result.sum('filtered_pop', values[i]);\n      result.sum('unfound_pop', values[i]);\n      result.sum('total_pop', values[i]);\n      values[i].rereduced = true;\n      result.rereduced = true;\n    }\n  } else if (key.type == 'group') {\n    result = new reducer.Value(\n      {\n        'age' : 0\n      },\n      rereduced = false\n    );\n    for (var i in values) {\n      result.sum('age', values[i]);\n      result.rereduced = true;\n      values[i].rereduced = true;\n    }\n  }\n  return result;\n}"
-    query.reduce = "function(key, values) {" + base_reduce + CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true) + "return reduce(key, values);}"
+    query.reduce = full_reduce(query)
     execution_to_aggregate = query.executions.first
     assert_nil execution_to_aggregate.aggregate_result
     
     execution_to_aggregate.aggregate
     assert_not_nil execution_to_aggregate.aggregate_result
     
-    assert_equal 12000, execution_to_aggregate.aggregate_result['Gender: F']['age']['sum']
-    assert_equal 8000, execution_to_aggregate.aggregate_result['Gender: M']['age']['sum']
-    assert_equal 600, execution_to_aggregate.aggregate_result['Populations']['Target Population']
-    assert_equal 800, execution_to_aggregate.aggregate_result['Populations']['Filtered Population']
-    assert_equal 200, execution_to_aggregate.aggregate_result['Populations']['Unfound Population']
-    assert_equal 1000, execution_to_aggregate.aggregate_result['Populations']['Total Population']
+    assert_equal 24000, execution_to_aggregate.aggregate_result['Gender: F']['age']['sum']
+    assert_equal 16000, execution_to_aggregate.aggregate_result['Gender: M']['age']['sum']
+    assert_equal 1200, execution_to_aggregate.aggregate_result['Populations']['Target Population']
+    assert_equal 1600, execution_to_aggregate.aggregate_result['Populations']['Filtered Population']
+    assert_equal 400, execution_to_aggregate.aggregate_result['Populations']['Unfound Population']
+    assert_equal 2000, execution_to_aggregate.aggregate_result['Populations']['Total Population']
   end
 
   test "query submission" do
@@ -147,5 +147,11 @@ class ExecutionTest < ActiveSupport::TestCase
     
   end
   
-  
+  test "executions should only be finished if there are no queued results" do
+    execution_with_incomplete_results = Factory.create(:query_with_queued_results).executions.first
+    assert !execution_with_incomplete_results.finished?
+    
+    execution_with_complete_results = Factory.create(:query_with_completed_results).executions.first
+    assert execution_with_complete_results.finished?
+  end
 end

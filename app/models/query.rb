@@ -42,7 +42,7 @@ class Query < BaseQuery
   end
   
   def init_query_structure!
-    self.query_structure = {"find"=>{"and"=>[{"or"=>[]}]}, "filter"=>{"and"=>[{"or"=>[]}]}, "extract"=>{"selections"=>[], "groups"=>[]}}
+    self.query_structure = {"find"=>{"and"=>[]}, "filter"=>{"and"=>[]}, "extract"=>{"selections"=>[], "groups"=>[]}}
   end
   
   def result_presenter

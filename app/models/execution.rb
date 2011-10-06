@@ -109,17 +109,32 @@ class Execution
   end
 
   def map_fn
+    if (not self.query.generated?)
+      return <<NON_GENERATED_MAP
+        function() {
+          #{js_to_localize_user_functions(query.user)}
+          if (this.status == "#{Result::COMPLETE}") {
+            for(var key in this.value) {
+              if (key != "_id" && key != 'created_at' && key != 'query_id') {
+                emit(key, this.value[key]);
+              }
+            }
+          }
+        }
+NON_GENERATED_MAP
+    end
+    
     reducer_code = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
     user_code = js_to_localize_user_functions(query.user)
     
-    <<END_OF_FN
+    <<GENERATED_MAP
     function() {
       #{reducer_code}
       #{user_code}
       if (this.status == "#{Result::COMPLETE}") {
         for(var key in this.value) {
           if (key != "_id" && key != "created_at" && key != "query_id") {
-            if (#{self.query.generated?} && (key.match(new RegExp("type_population")) || key.match(new RegExp("type_group")))) {
+            if ((key.match(new RegExp("type_population")) || key.match(new RegExp("type_group")))) {
               var hashifiedKey = {};
               if (key.match(new RegExp("type_population"))) {
                 hashifiedKey['type'] = 'population';
@@ -139,15 +154,13 @@ class Execution
             }
             
             var originalKey = key;
-            if (#{self.query.generated?}) {
-              key = hashifiedKey;
-            }
+            key = hashifiedKey;
             
             emit(key, this.value[originalKey]);
           }
         }
       }
     }
-END_OF_FN
+GENERATED_MAP
   end
 end

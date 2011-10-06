@@ -543,69 +543,119 @@ $.widget("ui.ItemUI", {
 
 
 $.widget("ui.ExtractUI", {
-  _create: function(){
-    this.div = $(".extract_editor",this.element);
+  _create: function() {
+    this.div = $(".extract_editor", this.element);
     this.element.droppable({
-          drop: bind(this.drop, this),
-          greedy: true,
-          tolerance: 'pointer',
-          hoverClass: 'active'
-      });
+      drop: bind(this.drop, this),
+      greedy: true,
+      tolerance: 'pointer',
+      hoverClass: 'active'
+    });
     this.ul = $("<ul>");  
     this.div.append(this.ul);
-  },
-  
-  drop:function(){
-    this.addItem();
-  },
-  
-  addItem: function(){
+    
+    if (query.extract.selections.length > 0 || query.extract.selections.length > 0) {
       var cell = $('<li>', {
-          'class': "dependency"
+        "class": "dependency resource_dep"
       });
-
-     cell.ExtractItemUI({type:"conditions"});
-     this.ul.append(cell);
-  }
+      cell.ExtractItemUI({type:"demographics"});
+      this.ul.append(cell);
+      droppedWidget = cell.data().ExtractItemUI;
+    }
+  },
   
+  drop: function(element, ui) {
+    this.element.removeClass("over");
+
+    var droppedWidget = ui.draggable.data('widget');
+    if (!droppedWidget) {
+      if ($(".extract_editor").children("ul").children("li").length == 0) {
+        var data = ui.draggable.data("item");
+        var cell = $('<li>', {
+          "class": "dependency resource_dep"
+        });
+        cell.ExtractItemUI({type:"demographics"});
+        this.ul.append(cell);
+        droppedWidget = cell.data().ExtractItemUI;
+        droppedWidget.openPopup();
+      }
+    } else {
+      droppedWidget.closePopup();
+      droppedWidget._remove();
+    }
+  },
+  
+  over: function(event, ui) {
+    this.element.addClass("over");
+  },
+  
+  out: function(event, ui) {
+    this.element.removeClass("over");
+  }
 });
 
 
 $.widget("ui.ExtractItemUI", {
-  
-  
-  _create:function(){
+  _create: function() {
     var div = $("<div>", {
         "class": "resource_dependency"
     });
+    
     this.div = div;
-    var self = this;
-    var img = $("<div>", {"class":"item_image "+this.options.type});
+    var img = $("<div>", { "class" : "item_image " + this.options.type });
     img.append("&nbsp;");
     div.append(img);
+    
     div.append($('<div>', {
-        'class': 'name',
-        text: this.options.type
+      'class': 'name',
+      text: this.options.type
     }));
-    $(div).dblclick(function() {
-        self.openPopup()
-    })
     this.element.append(div);
-  }
-  ,
-  openPopup: function(){
+    
+    var self = this;
+    $(div).dblclick(function() {
+      self.openPopup();
+    });
+    
+    this.element.draggable({
+      helper: 'clone',
+      cursor: 'crosshair',
+      snap: false,
+      revert: 'invalid',
+      zIndex: 1000,
+      refreshPositions: true,
+      stacks: ".ui-layout-center, .content, .section, .header, #test, .ui-droppable",
+      start: function() {
+        $(this).data("widget", self);
+      }
+    });
+
+    this.element.droppable({
+      drop: bind(this.drop, this),
+      greedy: true,
+      tolerance: 'pointer',
+      hoverClass: 'active'
+    });
+  },
+  
+  closePopup: function() {
+    $(".item_image", this.div).popup('close');
+  },
+  
+  openPopup: function() {
     var image = $(".item_image", this.div);
-    image.popup({'widg':this, arrow:"left .08", offset:"5px"});
+    this.editor = (this.editor || eval("$('<div>').DemographicsExtractor()"));
+    image.popup({'widg':this, arrow:"left .08", offset:"5px", content:this.editor});
     image.popup("open");
-  }
+  },
+  
+  _remove: function() {
+    query.extract = new queryStructure.Extraction([], []);
+    updateQuery();
+    
+    var cell = this.element;
+    this.element.hide('explode', {}, 1000, function() {
+      cell.remove();
+    });
+  },
 });
-
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,5 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
 
-
- 
   <script>
   var query = new queryStructure.Query();
 
@@ -11,6 +10,7 @@
   //  $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
     $("#icon_observations").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
     $("#icon_treatments").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
+    $("#icon_raw_javascript").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "rawJavascript"))}});
 
     $("#find > .conditional_editor").AndContainerUI({container:query.find});
     $("#filter > .conditional_editor").AndContainerUI({container:query.filter});
@@ -30,10 +30,10 @@
   $("body, #pageContent, #container").droppable({
     greedy:true,
     accept:function(ui){
-      return $(ui).data().ItemUI || $(ui).data().AndContainerUI || $(ui).data().OrContainerUI;
+      return $(ui).data().ItemUI || $(ui).data().AndContainerUI || $(ui).data().OrContainerUI || $(ui).data().ExtractItemUI;
     },
     drop:function(element, ui){
-      var item = $(ui.draggable).data().ItemUI || $(ui.draggable).data().AndContainerUI || $(ui.draggable).data().OrContainerUI;
+      var item = $(ui.draggable).data().ItemUI || $(ui.draggable).data().AndContainerUI || $(ui.draggable).data().OrContainerUI || $(ui.draggable).data().ExtractItemUI;
       item._remove();
     }
   });
@@ -116,10 +116,14 @@ $(document).ready(function () {
      	      </li>
         	  <li title="Drag this variable to query by treatments including: Medications, Immunizations, Medical Equipment, Procedures, and Encounters">
         	   <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
-        	 </li>
+        	  </li>
+        	  <li>
+               <%= image_tag("icon_rawJavascript.png",{class:"demo", id:"icon_raw_javascript"}) %>treatments
+            </li>
 	        </ul>
     	  </div>
  	   </div>
+
   </div>
 </div>
 </div>

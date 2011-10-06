@@ -93,7 +93,7 @@ class QueriesControllerTest < ActionController::TestCase
     get :edit, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
-    assert_redirected_to query_path(query) + "/edit_code"
+    assert_response :success
   end
 
   test "should get edit with generated query" do
@@ -102,50 +102,19 @@ class QueriesControllerTest < ActionController::TestCase
     query.generated = true
     query.init_query_structure!
     query.save!
+    
     get :edit, id: @ids[0]
-    query = assigns(:query)
-    assert_equal @ids[0], query.id
-    assert_redirected_to query_path(query) + "/builder_simple"
-    query.generated = false
-    query.save!
-  end
-
-  test "should get edit code" do
-    sign_in @user
-    get :edit_code, id: @ids[0]
-    query = assigns(:query)
-    assert_equal @ids[0], query.id
-    assert_response :success
-  end
-
-  test "should get edit code with generated query" do
-    sign_in @user
-    query = Query.find(@ids[0])
-    query.generated = true
-    query.init_query_structure!
-    query.save!
-    get :edit_code, id: @ids[0]
     cloned_query = assigns(:query)
     assert !cloned_query.generated?
     assert_not_equal @ids[0], cloned_query.id
     assert_equal "#{query.title} (cloned)", cloned_query.title
     assert_equal query.map, cloned_query.map
     assert_response :success
-    query.generated = false
-    query.save!
   end
 
   test "should get builder" do
     sign_in @user
     get :builder, id: @ids[0]
-    query = assigns(:query)
-    assert_equal @ids[0], query.id
-    assert_response :success
-  end
-
-  test "should get builder simple" do
-    sign_in @user
-    get :builder_simple, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
     assert_response :success
@@ -272,7 +241,7 @@ class QueriesControllerTest < ActionController::TestCase
     sign_in @user
     query = Query.find(@ids[4])
     get :execution_history, id: query.id
-    assigned_query = assigns(:query);
+    assigned_query = assigns(:query)
     assert_not_nil assigned_query
     assert_response :success
   end
@@ -303,7 +272,6 @@ class QueriesControllerTest < ActionController::TestCase
     assert_redirected_to(query_path(query.id))
 
   end
-  
   
   test "should cancel execution" do
     sign_in @user

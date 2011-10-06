@@ -1,32 +1,3 @@
-$.widget("ui.FunctionalStatusEditor",{
-  options: {},
-  _create:function(){
-    this.div = $("<div>");
-    this.div.append("<span>Functional Status</span><span><select></select></span>");
-    this.element.append(this.div);
-    // "<div>"+
-    //   "<span>Vitals</span><span><select></select></span>"+
-    // "</div>";
-  }
-});
-
-
-
-
-$.widget("ui.AllergiesEditor",{
-  options: {},
-  _create:function(){
-    
-    this.div = $("<div>");
-    this.div.append("<span>Allergies</span><span><select></select></span>");
-    this.element.append(this.div);
-    
-    // "<div>"+
-    //   "<span>Vitals</span><span><select></select></span>"+
-    // "</div>";
-  }
-});
-
 
 
 $.widget("ui.VitalsEditor",{
@@ -35,8 +6,7 @@ $.widget("ui.VitalsEditor",{
     var self = this;
     var parent = this.options.parent;
     var selected = (this.options.rule && this.options.rule.data.code) ? this.options.rule.data.code._id : "";
-    
-    $(this.element).CodeList({title:"Vital Signs",type:"vital_sign_codes",selected:selected, onChange:function(code,event){parent.set(new queryStructure.VitalSignRule({code:code}))}});
+    $(this.element).CodeList({title:"Vital Signs",type:"vital_sign",selected:selected, onChange:function(code,event){parent.vitalSignRule = new queryStructure.VitalSignRule({code:code}); parent._update();}});
     
   }
 });
@@ -47,11 +17,16 @@ $.widget("ui.ObservationsEditor",{
   options: {},
   _create:function(){
     this.container = this.options.container;
-    
+    var self = this;
     this.div = $("<div>");
-    this.vitalsDiv = $("<div>").VitalsEditor({parent:this, rule:this.get("VitalSignRule")});
-    this.allergiesDiv = $("<div>").AllergiesEditor();
-    this.funcionalStatusDiv = $("<div>").FunctionalStatusEditor();
+    this.vitalSignRule = this.findRuleByName("VitalSignRule");
+    this.allergyRule = this.findRuleByName("allergy");
+
+    var code = (this.allergyRule) ? this.allergyRule.data.code : null;
+   // this.functionalStatusRule = this.findRuleByName("functionalStatus");
+    this.vitalsDiv = $("<p>").VitalsEditor({parent:this, rule:this.vitalSignRule});
+    this.allergiesDiv = $("<p>").CodeList({title:"Allergies",type:"allergy",selected:code, onChange:function(code,event){self.allergyRule = new queryStructure.CodeSetRule({type:"allergy",code:code}); self._update();}});
+    //this.funcionalStatusDiv = $("<div>").CodeList({title:"Race",type:"functional_status",selected:this.functionalStatusCode, onChange:function(code,event){self.functionalStatusCode = code; self.set(new queryStructure.CodeSetRule({type:"functional_status",code:code}))}});
     
     this.div.append(this.funcionalStatusDiv);
     this.div.append(this.allergiesDiv);
@@ -60,25 +35,33 @@ $.widget("ui.ObservationsEditor",{
     this.element.append(this.div);
   },
   
-  get:function(type){
-    var entry = null;
+  
+  findRuleByName:function(name){
+     var entry = null;
      $.each(this.container.children,function(i, node){
-        if(node.type == type){
+        if(node && node.name == name ){
           entry = node;
         }
      });
-     return entry;
+       return entry;
   },
   
-  set:function(object){
-     var self = this;
-     $.each(this.container.children,function(i, node){
-        if(node.type == object.type){
-          self.container.removeChild(node)
-        }
-     });
-     this.container.add(object);
-  }
+  findRuleByType:function(type){
+    var entry = null;
+      $.each(this.container.children,function(i, node){
+          if(node && node.type == type ){
+            entry = node;
+          }
+       });
+       return entry;
+  },
   
+  _update:function(){
+     this.container.clear();
+     if(this.vitalSignRule){this.container.add(this.vitalSignRule)};
+     if(this.allergyRule){this.container.add(this.allergyRule);}
+
+  },
+
   
 });

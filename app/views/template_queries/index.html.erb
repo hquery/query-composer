@@ -1,11 +1,7 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {template_queries: true}}%>
+<div id="mainPanel" >
 
-<div id="dashboardPeriod" >
-
-  <br style="clear:left"/>
-  <div class="simpleTableContainer">
-
-<h1><b>Query Template Administration</b></h1>
+<h1>Query Template Administration</h1>
 
 <table class="simpleTable">
 <tr><td></td></tr>
@@ -13,7 +9,8 @@
   <tr><b>
     <th>Title</th>
     <th>Description</th>
-  </b></tr>
+    <th>&nbsp;</th>
+  </tr>
 <% end %>
 <% @template_queries.each do |query| %>
 <tr><td></td></tr>
@@ -24,8 +21,6 @@
   </tr>
 <% end %>
 </table>
-  <%= link_to(new_template_query_path, class: "bluebutton") do %><span>Add Template</span><% end if current_user.admin?%>
-</div>
-</div>
 
-
+<%= link_to(new_template_query_path, class: "bluebutton") do %><span>Add Template</span><% end if current_user.admin?%>
+</div>

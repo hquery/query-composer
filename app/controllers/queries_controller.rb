@@ -27,14 +27,6 @@ class QueriesController < ApplicationController
   end
   
   def edit
-    if (@query.generated?)
-      redirect_to action: 'builder_simple'
-    else
-      redirect_to action: 'edit_code'
-    end
-  end
-  
-  def edit_code
     if (@query.generated?) 
       @query = @query.clone
       @query.title = "#{@query.title} (cloned)"
@@ -49,7 +41,11 @@ class QueriesController < ApplicationController
   end
   
   def after_create
-    redirect_to edit_query_path(@query)
+    if @query.generated?
+      redirect_to builder_query_path(@query)
+    else
+      redirect_to edit_query_path(@query)
+    end
   end
   
   def before_update
@@ -66,9 +62,6 @@ class QueriesController < ApplicationController
   
   def result
     @presenter = @query.result_presenter
-  end
-
-  def builder_simple
   end
 
   def execute

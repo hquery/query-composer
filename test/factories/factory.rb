@@ -64,16 +64,14 @@ Factory.define :generated_query, :parent => :query do |q|
   q.query_structure ({
     "find" =>
       { "and" => [
-        { "or" => [ 
-          { "name" => "demographics",
-            "and" => [ 
-              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "18", "comparator" => ">" } ] } ] } ] },
+        { "name" => "demographics",
+          "and" => [ 
+            { "category" => "demographics", "title" => "age", "field" => "age", "value" => "18", "comparator" => ">" } ] } ] },
     "filter" =>
       { "and" => [ 
-        { "or" => [ 
-          { "name" => "demographics",
-            "and" => [ 
-              { "category" => "demographics", "title" => "age", "field" => "age", "value" => "65", "comparator" => "<" } ] } ] } ] },
+        { "name" => "demographics",
+          "and" => [ 
+            { "category" => "demographics", "title" => "age", "field" => "age", "value" => "65", "comparator" => "<" } ] } ] },
     "extract" => 
       { "selections" => [ 
           { "title" => "age", "callstack" => "age", "aggregation" => [ "sum" ] } ],
@@ -102,6 +100,24 @@ end
 Factory.define :generated_query_with_completed_results, :parent => :generated_query do |query|
   query.executions { 
     [] << Factory.build(:completed_execution_for_generated_query)
+  }
+end
+
+Factory.define :generated_query_with_odd_result_count, :parent => :generated_query do |query|
+  query.executions {
+    [] << Factory.build(:execution_with_generated_odd_result_count)
+  }
+end
+
+Factory.define :generated_query_with_single_result, :parent => :generated_query do |query|
+  query.executions {
+    [] << Factory.build(:execution_with_generated_single_result)
+  }
+end
+
+Factory.define :generated_query_with_no_results, :parent => :generated_query do |query|
+  query.executions {
+    [] << Factory.build(:execution)
   }
 end
 
@@ -138,6 +154,22 @@ Factory.define :completed_execution_for_generated_query, :parent => :execution d
   e.after_build do |ex|
     Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
     Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+  end
+end
+
+Factory.define :execution_with_generated_odd_result_count, :parent => :execution do |e|
+  e.after_build do |ex|
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+  end
+end
+
+Factory.define :execution_with_generated_single_result, :parent => :execution do |e|
+  e.after_build do |ex|
+    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
   end
 end
 
@@ -170,7 +202,30 @@ Factory.define :result_with_value_from_generated_query, :parent => :result_with_
     "type_group_gender_F" => {
       "values" => {
         "age" => 0,
-        "age_sum" => 6000
+        "age_sum" => 6000,
+        "age_frequency" => {
+          "18" => 65,
+          "65" => 18
+        },
+        "age_mean" => 28.193,
+        "age_mean_count" => 83,
+        "median" => 18,
+        "median_list" => [
+          18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+          18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+          18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+          18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+          18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+          18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+          18, 18, 18, 18, 18,
+          65, 65, 65, 65, 65, 65, 65, 65, 65, 65,
+          65, 65, 65, 65, 65, 65, 65, 65
+        ],
+        "mode" => 18,
+        "mode_frequency" => {
+          "18" => 65,
+          "65" => 18
+        }
       },
       "rereduced" => true
     },

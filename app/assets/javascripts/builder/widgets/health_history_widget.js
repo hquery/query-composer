@@ -6,7 +6,7 @@ $.widget("ui.HistoryEditor",{
     this.div = $("<div>");
     this.element.append(this.div);
     
-    this.div.append("History ... comming soon")
+    this.div.append("History ... coming soon")
     
   }
   
