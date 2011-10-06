@@ -1,1 +1,7 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {}}%>
+<div id="mainPanel" >
+<%= link_to "Add" , new_code_set_path({type: params[:type]}) %>
 <%= render :partial=> "code_sets/entry.html", :collection=>@code_sets%>
+<%= link_to "Add" , new_code_set_path({type: params[:type]})  %>
+
+</div>

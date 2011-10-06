@@ -27,7 +27,7 @@
   }
   
   
-  $("body, #pageContent, #container").droppable({
+  $("body, #displayWrapper, #iconWrapper").droppable({
     greedy:true,
     accept:function(ui){
       return $(ui).data().ItemUI || $(ui).data().AndContainerUI || $(ui).data().OrContainerUI || $(ui).data().ExtractItemUI;

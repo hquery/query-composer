@@ -2,10 +2,13 @@ class CodeSetsController < ApplicationController
   load_and_authorize_resource
   
   def index
-    @code_sets = CodeSet.all
+    @code_sets = CodeSet.asc(:type,:name)
   end
   
   
+  def new
+    @code_set.type=params[:type]
+  end
 
   def create
     @code_set.set_properties(params[:code_set])
@@ -19,7 +22,7 @@ class CodeSetsController < ApplicationController
   end
   
   def by_type
-    @code_sets = CodeSet.where(type:params[:type])
+    @code_sets = CodeSet.where(type:params[:type]).asc(:name)
     respond_to do |format|
        format.html {render :template=>"code_sets/index.html"}
        format.json {render :json=>@code_sets}
