@@ -18,10 +18,10 @@ class reducer.Value
       key = ('' + element.values[title]).replace('.', '~') # Mongo doesn't seem to accept hash keys with decimals in our rereducable values.
       element.values[title + '_frequency'][key] = 1
     for k, v of element.values[title + '_frequency']
-      if @values[title + '_frequency'][key]?
-        @values[title + '_frequency'][key] += 1
+      if @values[title + '_frequency'][k]?
+        @values[title + '_frequency'][k] += v
       else
-        @values[title + '_frequency'][key] = 1
+        @values[title + '_frequency'][k] = v
   
   mean: (title, element) ->
     if (!@rereduced)
