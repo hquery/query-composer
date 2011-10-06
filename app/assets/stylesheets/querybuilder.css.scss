@@ -15,8 +15,11 @@ div#search_box input {
     font-size:10pt;
 }
 
+div#search_box {
+	margin: 20px 0 -26px 20px;
+}
 div#search_box .searchfield {
-    margin: -20px 0 5px 0;
+    margin: 0 0 20px 0;
     background: #fff;
     padding: 6px 6px 6px 8px;
     width: 170px;
@@ -32,6 +35,11 @@ div#icons.fixed {
   position: fixed;
   top: 0;
 }  
+
+div#icons.variable {
+	position: relative;
+	bottom: 0px;
+}
 	
 div#icons {
   margin:20px 20px 20px 0;
@@ -53,6 +61,7 @@ div#icons {
     list-style-type: none;
     font-size: 10pt;
   }
+  
   li {
     margin:0 0 10px 0;
     width: $paletteWidth - 20;
@@ -63,14 +72,23 @@ div#icons {
   }
 }
 
+div#find-filter-extract {
+	
+}
+
+
+div#iconsWrapper {
+	position: relative;
+}
+
 div#displayWrapper {
 
-  margin: 20px;
+  margin: -20px 20px 40px 20px;
   clear: both;
-  position: absolute;
+  position: relative;
   float: left;
   width: $paletteWidth;
-  top: 808px;
+  top: 0px;
   /* just used to show how to include the margin in the effect */
   
   h1 { 
@@ -127,10 +145,50 @@ div#variables, div#display {
 
 }
 
+#heading { 
+	margin-top: 0;
+	margin-left: 280px;
+}
+
+div#iconsWrapper {
+	margin-top: 0;
+}
 
 div#workspace {
+  margin: -60px 30px 20px 280px;
+  padding-top: 0;
+  min-width: 700px;
+  max-width: 100%;
+  // to change to support full-width trees that do not wrap, uncomment below
+  // and remove max-width above.
+  /*
+    width:100%;
+    padding-right:30px;
+  */
+  h1 { 
+    position:absolute;
+    top:50px;
+    left:0;
+    width:1em;
+    height:1em;
+    font-size: 18pt;
+    font-weight: normal;
+    -moz-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+  }
+  h2 {
+  	margin: 20px 0 10px 0;
+  }
+  .querySection {
+     position:relative;
+     min-height:200px;
+     padding-bottom: 30px;
+  }
+}
+
+div#analyze_workspace {
   margin: 20px 30px 20px 280px;
-  padding-top: 32px;
+  padding-top: 0px;
   min-width: 700px;
   max-width: 100%;
   // to change to support full-width trees that do not wrap, uncomment below
