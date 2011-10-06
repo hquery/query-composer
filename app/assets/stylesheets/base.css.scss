@@ -110,6 +110,11 @@ div#chart {
   td.good_status {color:green}
   td.fail_status {color:red}
   pre {font-family:Consolas,Monaco,"Courier New";}
+  .expander { cursor:pointer;
+    background:url(/assets/closed.gif) 0 25% no-repeat;
+    padding-left:12px;
+    &.open {background:url(/assets/open.gif) 0 25% no-repeat;}
+  }
 }
 
 td.subTable {padding:0 10px 0 0}
