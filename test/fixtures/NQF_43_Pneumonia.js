@@ -41,15 +41,15 @@ function map(patient) {
   
   function denominator(patient) {
     var encounters = patient.encounters().match(
-      outpatientEncounterCodes, start, end);
+      outpatientEncounterCodes, start, end).length;
     return (encounters>0);
   }
   
   function numerator(patient) {
     var medication = patient.medications().match(
-      pneumococcalMedicationCodes, null, end);
+      pneumococcalMedicationCodes, null, end).length;
     var procedure = patient.procedures().match(
-      pneumococcalProcedureCodes, null, end);
+      pneumococcalProcedureCodes, null, end).length;
     return medication || procedure;
   }
   
