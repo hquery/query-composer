@@ -63,6 +63,7 @@
 });
 </script>
 
+<%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
 
 <div id="query_builder">
   
@@ -125,6 +126,7 @@
 
 
   <div id="workspace"> <!-- div id=workspace was here -->
+    <button id="execute-button">Execute</button>
   <div id="find-filter-extract">
     <div class="top_border">
       <div class="top_border_lower">
