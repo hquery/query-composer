@@ -38,10 +38,9 @@
     }
   });
 
-</script>
+
 
  
- <script> 
 $(document).ready(function () {
   // variable with IE 6+ fix 
 	var icons_offsetTop = $("#icons").offset().top - parseFloat($("#icons").css("margin-top").replace(/auto/,0));
@@ -59,22 +58,31 @@ $(document).ready(function () {
    
  	}); 
  });
- </script>
- 
- <script>
+
  $(document).ready(function () {
   
-    // whether that's below the form
-    	if (y >= top && y < bottom) {
-      // if so, ad the fixed class
-     	 $('#icons').addClass('fixed');
-   	 } else {
-      // otherwise remove it
-      $('#icons').removeClass('fixed');
-    }
-  });
-});
-</script>
+  		$(window).scroll(function () {
+ // what the offset from the top wrapper is 
+		var icons_scroll_offset = $(document).scrollTop();
+		var document_height = $("#query_builder").height();
+
+	 	if (icons_scroll_offset >= document_height) {
+	 	$("#icons").removeClass("fixed").addClass("variable");
+ // if not, remove it
+ 		} else {
+ 			$("#icons").removeClass("variable");
+ 	}
+  
+ 
+ // what is the bottom offset from the bottom wrapper is
+ 
+ // whether that's greater than zero
+ 
+ // if so change to position: relative
+ 
+ 	}); 
+ });
+ </script>
 
 <%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
 
@@ -120,6 +128,7 @@ $(document).ready(function () {
 
   <div id="workspace"> <!-- div id=workspace was here -->
     <button id="execute-button">Execute</button>
+
   <div id="find-filter-extract">
   	  <h2 id="heading">Create New Query</h2>
     <div id="top_margin" class="top_border">
