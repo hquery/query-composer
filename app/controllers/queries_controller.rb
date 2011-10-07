@@ -58,6 +58,7 @@ class QueriesController < ApplicationController
   end
 
   def builder
+     @endpoints = Endpoint.all
   end
   
   def result

@@ -2,9 +2,10 @@
 
 
 class queryStructure.Rule
-  constructor: (@type, @data) ->
+  constructor: (@name, @data) ->
+    @type = this.constructor.name
   toJson: ->
-    return { "type" : @type, "data" : @data }
+    return { "name": @name, "type" : @type, "data" : @data }
     
 
 class queryStructure.Range
