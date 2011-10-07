@@ -2,18 +2,18 @@
 
 <div id="mainPanel">
 
-  <h1>Query Event Log</h1>
+  <h1>Query Execution Log</h1>
   <h2>Query: <%= link_to @query.title, query_path %></h2>
 
   <table class="simpleTable">
     <tr>
     <th>Time</th>
-    <th>Message</th>
+    <th>Result</th>
   </tr>
-  <% @events.each do |event| %>
+  <% @query.executions.each do |event| %>
     <tr>
-      <td><%= event.time %></td>
-      <td><%= event.message %></td>
+      <td><%= Time.at(event.time).to_s %></td>
+      <td><pre><%= JSON.pretty_generate(event.aggregate_result) %></pre></td>
     </tr>
   <% end %>
   </table>
