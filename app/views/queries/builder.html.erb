@@ -49,6 +49,7 @@
     var icons_bot = $vi.height() - icons_offsetTop;
 
     $(window).scroll(function () {
+      var icons_bot = $vi.height() - icons_offsetTop;
       var scrollTop = $(document).scrollTop();
       var delta = $ffe.height()  - scrollTop;
       if (scrollTop >= icons_offsetTop) {
@@ -64,7 +65,6 @@
       }
     }); 
   });
-
 
  </script>
 
