@@ -1,5 +1,5 @@
 @import "mixins";
-$paletteWidth  : 200px;
+$paletteWidth  : 180px;
 $paletteBorderWidth  : 18px;
 $paletteRadius : 18px;
 
@@ -11,44 +11,51 @@ $variablesBorderColor  : #B7E0E1;
 $displayBorderColor : #8FC1D3;
 
 
-div#search_box input {
+input.searchfield {
+    display:block;
     font-size:10pt;
-}
-
-div#search_box {
-	margin: 20px 0 -26px 20px;
-}
-div#search_box .searchfield {
-    margin: 0 0 20px 0;
+    margin: 0 35px 20px 0;
     background: #fff;
     padding: 6px 6px 6px 8px;
     width: 170px;
     border: solid 1px #bcbbbb;
+    float:left;
     outline: none;
     @include rounded(2em);
     -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
     -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
     box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
 }
-
-div#icons.fixed {
+div#queryInfo {
+  margin-bottom:20px;
+  a.ctrl, span.sep {float:right;line-height:2.1em}
+  .bluebutton {float:right;margin-right:0;}
+  h1, h2  {
+    display:block;
+  }
+  h1 {font-size:1.3em;}
+  h2 {color:#999}
+}
+  
+div#ffeWrapper {
+  position:relative;
+  clear:left;
+}
+  
+div#variablesIcons.fixed {
   position: fixed;
-  top: 0;
+  top:0;
 }  
 
-div#icons.variable {
-	position: relative;
-	bottom: 0px;
+div#variablesIcons.bottom {
+	position: absolute;
+	bottom: 0;
 }
-	
-div#icons {
-  margin:20px 20px 20px 0;
+
+div.palette {
   position: relative;
-  float: left;
-  width: $paletteWidth;
-  top: 0;
-  /* just used to show how to include the margin in the effect */
-  padding-top: 5px;
+  width: $paletteWidth + $paletteBorderWidth;
+  float:left;
   
   h1 { 
     font-weight:normal;
@@ -72,50 +79,7 @@ div#icons {
   }
 }
 
-div#find-filter-extract {
-	
-}
-
-
-div#iconsWrapper {
-	position: relative;
-}
-
-div#displayWrapper {
-
-  margin: -20px 20px 40px 20px;
-  clear: both;
-  position: relative;
-  float: left;
-  width: $paletteWidth;
-  top: 0px;
-  /* just used to show how to include the margin in the effect */
-  
-  h1 { 
-    font-weight:normal;
-    font-size: 16pt;
-    margin:10px $paletteBorderWidth*2 0 0;
-  }
-  
-  ul {
-    margin-top:10px;
-    list-style-type: none;
-    font-size: 10pt;
-  }
-  li {
-    margin:0 0 10px 0;
-    width: $paletteWidth - 20;
-    img {
-      margin: 0 10px 0 0;
-      vertical-align:-12px;
-    } 
-  }
-}
-
-div#display_border_color,
-div#display_border_edge,
-div#variables_border_color,
-div#variables_border_edge {
+div.border_color, div.border_edge {
   border-radius: 0 $paletteRadius $paletteRadius 0;
   border-style: solid;
   border-width: 0 $paletteBorderWidth 0 0;
@@ -123,42 +87,32 @@ div#variables_border_edge {
 
 }
 
-div#display_border_edge,
-div#variables_border_edge {
+div.border_edge {
   background-color: white;
   border-color: white;
   width: $paletteWidth - $paletteBorderWidth;
 }
 
-div#variables_border_color {
+div#variablesIcons .border_color {
   background-color: $variablesBorderColor;
   border-color: $variablesBorderColor;
 }
-div#display_border_color {
+div#displayIcons .border_color {
   margin-top:20px;
   background-color: $displayBorderColor;
   border-color:  $displayBorderColor;
 }
 
-div#variables, div#display {
-  padding: 0 0 30px 0;
+div.icons {
+  padding: 0 0 20px 0;
 
 }
 
-#heading { 
-	margin-top: 0;
-	margin-left: 280px;
-}
-
-div#iconsWrapper {
-	margin-top: 0;
-}
-
-div#workspace {
-  margin: -60px 30px 20px 280px;
+div#workspace, div#analyze_workspace {
   padding-top: 0;
   min-width: 700px;
   max-width: 100%;
+  margin-left:220px;
   // to change to support full-width trees that do not wrap, uncomment below
   // and remove max-width above.
   /*
@@ -186,35 +140,6 @@ div#workspace {
   }
 }
 
-div#analyze_workspace {
-  margin: 20px 30px 20px 280px;
-  padding-top: 0px;
-  min-width: 700px;
-  max-width: 100%;
-  // to change to support full-width trees that do not wrap, uncomment below
-  // and remove max-width above.
-  /*
-    width:100%;
-    padding-right:30px;
-  */
-  h1 { 
-    position:absolute;
-    top:50px;
-    left:0;
-    width:1em;
-    height:1em;
-    font-size: 18pt;
-    font-weight: normal;
-    -moz-transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-  }
-  .querySection {
-     position:relative;
-     min-height:200px;
-     padding-bottom: 30px;
-  }
-}
-
 div#filter h1 {
   top:70px;
 }
@@ -225,11 +150,7 @@ div#analyze h1 {
   top:120px;
 }
 
-div#stats {
-}
 
-div#trash {
-}
 
 .top_border, .top_border_lower, .bottom_border, .bottom_border_lower {
   width:100%;

@@ -1,13 +1,14 @@
-<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}} %>
 
-  <script>
+<script>
   var query = new queryStructure.Query();
 
   query.rebuildFromJson(<%= (@query.query_structure || {}).to_json.html_safe %>);
+
   $(document).ready(function(){
     $("#icon_demo").draggable({helper:"clone",opacity:"1", refreshPostions:true , start:function(){$(this).data("item",new queryStructure.And(null, [], "demographics"))}});
   // $("#icon_history").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "history"))}});
-  //  $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
+  // $("#icon_conditions").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "conditions"))}});
     $("#icon_observations").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "observations"))}});
     $("#icon_treatments").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "treatments"))}});
     $("#icon_raw_javascript").draggable({helper:"clone",opacity:"1", start:function(){$(this).data("item",new queryStructure.And(null, [], "rawJavascript"))}});
@@ -16,8 +17,8 @@
     $("#filter > .conditional_editor").AndContainerUI({container:query.filter});
     $("#extract").ExtractUI();
   });
-  
-  
+
+
   function updateQuery(){
     $.ajax(
      {type:"PUT", 
@@ -25,8 +26,8 @@
       data:{"query":{"query_structure":JSON.stringify(query.toJson()), "id":"<%= @query._id %>"}}, 
       success:function(data){}})
   }
-  
-  
+
+
   $("body, #displayWrapper, #iconWrapper").droppable({
     greedy:true,
     accept:function(ui){
@@ -40,178 +41,159 @@
 
 
 
- 
-$(document).ready(function () {
-  // variable with IE 6+ fix 
-	var icons_offsetTop = $("#icons").offset().top - parseFloat($("#icons").css("margin-top").replace(/auto/,0));
-  		$(window).scroll(function () {
- // what the offset from the top wrapper is 
-		var icons_scroll_offset = $(document).scrollTop();
- // whether the scroll point is over icons top
-		if (icons_scroll_offset >= icons_offsetTop) {
- // if so, change to add class :fixed
-	 	$("#icons").addClass("fixed");
- // if not, remove it
- 		} else {
- 			$("#icons").removeClass("fixed");
- 	}
-   
- 	}); 
- });
 
- $(document).ready(function () {
-  
-  		$(window).scroll(function () {
- // what the offset from the top wrapper is 
-		var icons_scroll_offset = $(document).scrollTop();
-		var document_height = $("#query_builder").height();
+  $(document).ready(function () {
+    var $vi = $("#variablesIcons");
+    var icons_offsetTop = $vi.offset().top - parseFloat($vi.css("margin-top").replace(/auto/,0));
+    var $ffe = $("#ffeWrapper");
+    var icons_bot = $vi.height() - icons_offsetTop;
 
-	 	if (icons_scroll_offset >= document_height) {
-	 	$("#icons").removeClass("fixed").addClass("variable");
- // if not, remove it
- 		} else {
- 			$("#icons").removeClass("variable");
- 	}
-  
- 
- // what is the bottom offset from the bottom wrapper is
- 
- // whether that's greater than zero
- 
- // if so change to position: relative
- 
- 	}); 
- });
+    $(window).scroll(function () {
+      var scrollTop = $(document).scrollTop();
+      var delta = $ffe.height()  - scrollTop;
+      if (scrollTop >= icons_offsetTop) {
+        if (delta - icons_bot < 1 ) {
+          $vi.addClass("bottom");
+          $vi.removeClass("fixed");
+        } else {
+          $vi.addClass("fixed"); 
+          $vi.removeClass("bottom");
+        }
+      } else {
+        $vi.removeClass("fixed");
+      }
+    }); 
+  });
+
+
  </script>
 
 <%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
 
-<div id="query_builder">
-	<div id="fffWrapper"> 
-	  <div id="search_box">
-	    <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
-	  </div>
-	<div id="iconsWrapper">  
-		<div id="icons">
+<div id="queryInfo">
+  <%= link_to("#", id: "execute-button", class: "bluebutton") do %><span>Execute</span><% end %>
+  <span class="sep">|</span> <%= link_to("Query Definition", query_path, class:"ctrl") %>
+  <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+  <h1><%= @query.title %></h1>
+  <h2><%= @query.description %></h2>
+</div>
 
-
-	  <div id="variables_border_color">
-    	<div id="variables_border_edge">
-    	  <div id="variables" class="icons">
-    	    <h1 title="Drag the variables into “find”, filter, or “extract” to create a query">variables</h1>
-    	    <ul>
-    	      <li title="Drag this variable to query by demographic information including: Age, Race, Gender, Martial Status, Religious Affiliation, Occupation, Social history, and Insurance">
-				 <%= image_tag("icon_demo.png",{class:"demo", id:"icon_demo"}) %>demographics
-          	  </li>
-	          <li title="Drag this variable to query by health history including: Advanced directives, Support, and Family History">
-   	         	 <%= image_tag("icon_history.png",{class:"demo", id:"icon_history"}) %>health history
-    	      </li>
-       	      <li title="Drag this variable to query by conditions including: Diagnosis Results and Conditions">
-        	     <%= image_tag("icon_conditions.png",{class:"demo", id:"icon_conditions"}) %>conditions
-       	      </li>
-     	      <li title="Drag this variable to query by observations including: Functional status, Allergies, and Vital Signs">
-     	     	 <%= image_tag("icon_observations.png",{class:"demo", id:"icon_observations"}) %>observations
-     	      </li>
-        	  <li title="Drag this variable to query by treatments including: Medications, Immunizations, Medical Equipment, Procedures, and Encounters">
-        	   <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
-        	  </li>
-        	  <li>
-               <%= image_tag("icon_rawJavascript.png",{class:"demo", id:"icon_raw_javascript"}) %>treatments
+<div id="ffeWrapper">
+  <div id="variablesIcons" class="palette">
+    <div class="border_color">
+      <div class="border_edge">
+        <div class="icons">
+          <h1 title="Drag the variables into 'find', 'filter', or 'extract' to create a query">variables</h1>
+          <ul>
+            <li title="Drag this variable to query by demographic information including: Age, Race, Gender, Martial Status, Religious Affiliation, Occupation, Social history, and Insurance">
+              <%= image_tag("icon_demo.png",{class:"demo", id:"icon_demo"}) %>demographics
             </li>
-	        </ul>
-    	  </div>
- 	   </div>
-
-  </div>
-</div>
-</div>
-
-  <div id="workspace"> <!-- div id=workspace was here -->
-    <button id="execute-button">Execute</button>
-
-  <div id="find-filter-extract">
-  	  <h2 id="heading">Create New Query</h2>
-    <div id="top_margin" class="top_border">
-      <div class="top_border_lower">
+            <li title="Drag this variable to query by health history including: Advanced directives, Support, and Family History">
+              <%= image_tag("icon_history.png",{class:"demo", id:"icon_history"}) %>health history
+            </li>
+            <li title="Drag this variable to query by conditions including: Diagnosis Results and Conditions">
+              <%= image_tag("icon_conditions.png",{class:"demo", id:"icon_conditions"}) %>conditions
+            </li>
+            <li title="Drag this variable to query by observations including: Functional status, Allergies, and Vital Signs">
+              <%= image_tag("icon_observations.png",{class:"demo", id:"icon_observations"}) %>observations
+            </li>
+            <li title="Drag this variable to query by treatments including: Medications, Immunizations, Medical Equipment, Procedures, and Encounters">
+              <%= image_tag("icon_treatments.png",{class:"demo", id:"icon_treatments"}) %>treatments
+            </li>
+            <li>
+              <%= image_tag("icon_rawJavascript.png",{class:"demo", id:"icon_raw_javascript"}) %>javascript
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div title="Drag variables in this field to establish a target population for the query" id="find" class="querySection">   
-          <h1>find</h1>
-          <div class="conditional_editor"></div>
-          <div class="bottom_border_lower">
-            <div class="bottom_border">
-            </div>
+  </div><!-- end #variablesPalette -->
+  
+  <div id="workspace">
+  
+    <div id="find-filter-extract">
+      <div class="top_border">
+        <div class="top_border_lower">
+        </div>
+      </div>
+      <div title="Drag variables in this field to establish a target population for the query" id="find" class="querySection">
+        <h1>find</h1>
+        <div class="conditional_editor"></div>
+        <div class="bottom_border_lower">
+          <div class="bottom_border">
           </div>
-    </div>
+        </div>
+      </div>
 
-    <div title="Drag variables to filter the results of the query" id="filter" class="querySection">
-          <h1>filter</h1>
-           <div class="conditional_editor"></div>
-          <div class="bottom_border_lower">
-            <div class="bottom_border">
-            </div>
+      <div title="Drag variables to filter the results of the query" id="filter" class="querySection">
+        <h1>filter</h1>
+        <div class="conditional_editor"></div>
+        <div class="bottom_border_lower">
+          <div class="bottom_border">
           </div>
-    </div>
+        </div>
+      </div>
 
-    <div title="Drag variables here to pull specific information from the records" id="extract" class="querySection">
-          <h1>extract</h1>
-          <div class="extract_editor"></div>
-          <div class="bottom_border_lower">
-            <div class="bottom_border">
-            </div>
+      <div title="Drag variables here to pull specific information from the records" id="extract" class="querySection">
+        <h1>extract</h1>
+        <div class="extract_editor"></div>
+        <div class="bottom_border_lower">
+          <div class="bottom_border">
           </div>
-    </div>
-	</div>
+        </div>
+      </div>
+    </div><!-- end #find-filter-extract -->
 
+  </div><!-- end #workspace -->
 </div>
-</div>
-	<div id="analyzeWrapper">
-	<div id="displayWrapper">
-  	<div id="display_border_color">
- 	   <div id="display_border_edge">
- 	     <div id="display" class="icons">
-    	    <h1 title="Drag the display variables to specify how the query results are displayed">display</h1>
-        	<ul>
-       	   <li title="Drag this variable to display the query results by frequency">
-       	      <%= image_tag("icon_freq.png") %>frequency
-        	  </li>
-        	<li title="Drag this variable to display the query results by location">
-           <%= image_tag("icon_location.png") %>location
-          </li>
-  	        <li title="Drag this variable to display the query results over time">
-    	       <%= image_tag("icon_time.png") %>time
-    	      </li>
-    	    </ul>
-    	  </div>
-	    </div>
-	  </div>
-	</div>
-	<div title="Drag display variables here to specify how to display the results" id="analyze_workspace">
-    <div id="analyze" class="querySection">
-        <h1>analyze</h1>
-        	<div class="conditional_editor">
-       		</div>
-          <div class="bottom_border_lower">
-            <div class="bottom_border">
-            </div>
-          </div>
-		</div>
- 
-</div>
-  <div id="otherside">
-    <div id="stats">
-      <h1></h1>
-    </div>
 
-    <div id="trash">
+<div id="displayIcons" class="palette">
+  <div class="border_color">
+    <div class="border_edge">
+      <div class="icons">
+        <h1 title="Drag the display variables to specify how the query results are displayed">display</h1>
+          <ul>
+            <li title="Drag this variable to display the query results by frequency">
+              <%= image_tag("icon_freq.png") %>frequency
+            </li>
+            <li title="Drag this variable to display the query results by location">
+              <%= image_tag("icon_location.png") %>location
+            </li>
+            <li title="Drag this variable to display the query results over time">
+              <%= image_tag("icon_time.png") %>time
+            </li>
+          </ul>
+      </div>
     </div>
+  </div>
+</div><!-- end #displayPalette -->
 
-    <div id="connectors">
-      <h1></h1>
+
+<div id="analyze_workspace" title="Drag display variables here to specify how to display the results" >
+  <div id="analyze" class="querySection">
+    <h1>analyze</h1>
+    <div class="conditional_editor">
     </div>
+    <div class="bottom_border_lower">
+      <div class="bottom_border">
+      </div>
+    </div>
+  </div>
 </div>
+
+<div id="otherside">
+  <div id="stats">
+    <h1></h1>
+  </div>
+
+  <div id="trash">
+  </div>
+
+  <div id="connectors">
+    <h1></h1>
+  </div>
 </div>
-</div>
+
 
 
 
