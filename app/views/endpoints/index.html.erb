@@ -1,10 +1,10 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {endpoints: true}}%>
 
 <div id="mainPanel" >
-  <h1>Endpoint Status</h1>
+  <h1>Gateway Status</h1>
   
   <%= render :partial => 'endpoint_statuses' %>
 
-  <%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Endpoint</span><% end if current_user.admin? %>
+  <%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Gateway</span><% end if current_user.admin? %>
   <%= link_to({ :controller => 'endpoints', :action => 'refresh_endpoint_statuses' }, :class => "bluebutton", :remote => true) do %><span>Refresh Endpoints</span><% end %>
 </div>
