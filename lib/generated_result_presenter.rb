@@ -8,8 +8,8 @@ class GeneratedResultPresenter < ResultPresenter
       # Reset the work done in super
       @keys = []
       @values = []
-      # Ugly hack for now
-      result_hash['Results'].values.first.values.first.each_pair do |key, value|
+      
+      find_bottom_hash(result_hash['Results']).each_pair do |key, value|
         @keys << key
         @values << value
       end
@@ -20,5 +20,15 @@ class GeneratedResultPresenter < ResultPresenter
     end
   end
 
-
+  private
+  # Results from generated queries will come back as hashes that can be
+  # nested to arbitrary depths. This method will attempt to find the 
+  # deepest hash, which is where the results should be.
+  def find_bottom_hash(result_hash)
+    if result_hash.values.first.kind_of? Hash
+      find_bottom_hash(result_hash.values.first)
+    else
+      result_hash
+    end
+  end
 end
