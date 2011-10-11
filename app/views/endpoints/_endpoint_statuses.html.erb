@@ -22,7 +22,9 @@
     <td class="<%= status_class %>"><%= @endpoint_server_statuses[endpoint.id]['backend_status'] %></td>
     <td><%= @endpoint_server_statuses[endpoint.id]['running'] %></td>
     <td><%= @endpoint_server_statuses[endpoint.id]['queued'].to_i %></td>
-    <td><%= "%0.2f" % @endpoint_server_statuses[endpoint.id]['avg_runtime'] %></td>
+    <% avg_runtime = @endpoint_server_statuses[endpoint.id]['avg_runtime'] %>
+    <% avg_runtime = "%0.2f" % avg_runtime if avg_runtime.class==Float  %>
+    <td><%= avg_runtime %></td>
     <td><%= button_to 'Delete', endpoint, confirm: 'Are you sure you wish to delete this endpoint?', method: :delete, title:"Delete" if current_user.admin?  %></td>
   </tr>
   <% end %>
