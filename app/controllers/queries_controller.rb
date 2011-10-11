@@ -19,7 +19,6 @@ class QueriesController < ApplicationController
   end
 
   def log
-    #@events = Event.all(:conditions => {:query_id => params[:id]})
   end
 
   def show
@@ -58,6 +57,7 @@ class QueriesController < ApplicationController
   end
 
   def builder
+     @endpoints = Endpoint.all
   end
   
   def result

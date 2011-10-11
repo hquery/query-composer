@@ -14,6 +14,19 @@
     }
   })
   }, 5000);
+  $(document).ready(function() {
+    $("#mapFunction, #reduceFunction").toggle(function() {
+      $(this).next(".msg").fadeOut();
+      $(this).slideDown(2000);
+      },function(){$(this).slideUp(1000,function() {$(this).next(".msg").fadeIn(1000);});});
+   
+    $(".expander, .clickme").click(function() {
+      var codeElem = $(this).data('code');
+      $("#"+codeElem).trigger('click');
+      $(this).toggleClass("open");
+    });
+   });
+
   </script>
   <% end -%>
   <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
@@ -42,8 +55,15 @@
       <tr><th>Title</th><td><%= @query.title %></td></tr>
       <tr><th>Description</th><td><%= @query.description %></td></tr>
       <tr><th>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
-      <tr><th>Map Function</th><td><%= raw(CodeRay.scan(@query.map, :javascript).div) %></td></tr>
-      <tr><th>Reduce Function</th><td><%= raw(CodeRay.scan(@query.reduce, :javascript).div) %></td></tr>
+      <tr>
+        <th><span class="expander" data-code="mapFunction" title="Expand to see Javascript code">Map Function</span></th>
+        <td><div id="mapFunction" style="display:none"><%= raw(CodeRay.scan(@query.map, :javascript).div) %></div><span data-code="mapFunction" class="clickme msg" title="Expand to see Javascript code">
+         <% if (@query.generated?) %>[ Generated Javascript ]<% else %>[ Custom Javascript ]<% end %></span></td>
+      </tr>
+      <tr>
+        <th><span class="expander" data-code="reduceFunction" title="Expand to see Javascript code">Reduce Function</span></th>
+        <td><div id="reduceFunction" style="display:none"><%= raw(CodeRay.scan(@query.reduce, :javascript).div) %></div><span data-code="reduceFunction" class="clickme msg" title="Expand to see Javascript code">
+        <% if (@query.generated?) %>[ Generated Javascript ]<% else %>[ Custom Javascript ]<% end %></span></td></tr>
       <tr>
         <th>Endpoints</th>
         <td class="subTable"><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
@@ -68,5 +88,5 @@
       </tr>
     </table>
 
-    <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Event Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
+    <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Execution Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
   </div>

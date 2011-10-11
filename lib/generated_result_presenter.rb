@@ -1,43 +1,34 @@
 class GeneratedResultPresenter < ResultPresenter
-  attr_reader :group_order
+  attr_reader :target_population, :filtered_population, :total_population
 
   def initialize(title, result_hash)
     super(title, result_hash)
-    @group_order = []
-    @grouped_values = {}
-    groupify
-  end
 
-  def key_javascript_array
-    @grouped_values.keys.to_json
-  end
+    if result_hash.present?
+      # Reset the work done in super
+      @keys = []
+      @values = []
+      
+      find_bottom_hash(result_hash['Results']).each_pair do |key, value|
+        @keys << key
+        @values << value
+      end
 
-  def value_javascript_array
-    @grouped_values.values.to_json
-  end
-
-  private
-  def population_free_each_pair
-    each_pair do |key, value|
-      next if key.eql? 'Populations'
-      yield key, value
+      @target_population = result_hash['Populations']['Target Population']
+      @filtered_population = result_hash['Populations']['Filtered Population']
+      @total_population = result_hash['Populations']['Total Population']
     end
   end
 
-  # Populates the group_order and grouped_values instance variables
-  # grouped_values is a hash. The key will be an attribute of a patient 
-  # and its grouping, such as "age_mean".
-  # The value will be an array of values for that group. Following from the example
-  # above, age_mean would contain a list of mean ages 
-  def groupify
-    population_free_each_pair do |population_group, value|
-      @group_order << population_group
-      value.each_pair do |population_attribute, inner_value|
-        inner_value.each_pair do |math_function, resulting_value|
-          @grouped_values[population_attribute + '_' + math_function] ||= []
-          @grouped_values[population_attribute + '_' + math_function] << resulting_value
-        end
-      end
+  private
+  # Results from generated queries will come back as hashes that can be
+  # nested to arbitrary depths. This method will attempt to find the 
+  # deepest hash, which is where the results should be.
+  def find_bottom_hash(result_hash)
+    if result_hash.values.first.kind_of? Hash
+      find_bottom_hash(result_hash.values.first)
+    else
+      result_hash
     end
   end
 end

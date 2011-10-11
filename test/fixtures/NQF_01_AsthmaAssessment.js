@@ -82,8 +82,8 @@ function map(patient) {
 	function population(patient) {
 		return (
 			patient.age(start) >= 5 && patient.age(start) <= 40 &&
-			patient.conditions().match(asthmaCodes, null, end) &&
-			patient.encounters().match(encounterOfficeOutpatientConsultCodes, null, end) >= 2
+			patient.conditions().match(asthmaCodes, null, end).length &&
+			patient.encounters().match(encounterOfficeOutpatientConsultCodes, null, end).length >= 2
 		);
 	}
 	
@@ -94,15 +94,15 @@ function map(patient) {
 	function numerator(patient) {
 		return (
 			(
-				patient.conditions().match(asthmaDaytimeSymptomsQuantifiedCodes, null, end) &&
-				patient.conditions().match(asthmaNighttimeSymptomsQuantifiedCodes, null, end)
+				patient.conditions().match(asthmaDaytimeSymptomsQuantifiedCodes, null, end).length &&
+				patient.conditions().match(asthmaNighttimeSymptomsQuantifiedCodes, null, end).length
 			) ||
 			(
-				patient.conditions().match(asthmaDaytimeSymptomsCodes, null, end) &&
-				patient.conditions().match(asthmaNighttimeSymptomsCodes, null, end)
+				patient.conditions().match(asthmaDaytimeSymptomsCodes, null, end).length &&
+				patient.conditions().match(asthmaNighttimeSymptomsCodes, null, end).length
 			) ||
 			(
-				patient.procedures().match(asthmaSymptomAssessmentToolCodes, null, end)
+				patient.procedures().match(asthmaSymptomAssessmentToolCodes, null, end).length
 			)
 		);
 	}

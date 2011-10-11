@@ -7,7 +7,7 @@
     </tr>
     <tr>
       <th>Type</th>
-      <td><%= entry.type %></td>
+      <td><%= link_to entry.type, :action=>'by_type', :type=>entry.type %></td>
     </tr>
     
     <tr>

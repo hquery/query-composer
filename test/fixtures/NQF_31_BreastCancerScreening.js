@@ -92,19 +92,19 @@ function map(patient) {
 	
 	function denominator(patient) {
 		return (
-			patient.encounters().match(encounterOutpatientCodes, addDate(end, -2), end) &&
+			patient.encounters().match(encounterOutpatientCodes, addDate(end, -2), end).length &&
 			(
-				!patient.procedures().match(bilateralMastectomyCodes, null, end) ||
+				!patient.procedures().match(bilateralMastectomyCodes, null, end).length ||
 				(
-					patient.procedures().match(unilateralMastectomyCodes, null, end) <= 1 &&
-					!patient.procedures().match(bilateralMastectomyModifierCodes, null, end)
+					patient.procedures().match(unilateralMastectomyCodes, null, end).length <= 1 &&
+					!patient.procedures().match(bilateralMastectomyModifierCodes, null, end).length
 				)
 			)
 		);
 	}
 	
 	function numerator(patient) {
-		return patient.procedures().match(breastCancerScreeningCodes, addDate(end, -2), end);
+		return patient.procedures().match(breastCancerScreeningCodes, addDate(end, -2), end).length;
 	}
 	
 	function exclusion(patient) {

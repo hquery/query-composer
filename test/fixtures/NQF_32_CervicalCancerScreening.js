@@ -94,14 +94,14 @@ function map(patient) {
 	
 	function denominator(patient) {
 		return (
-				patient.encounters().match(encounterOutpatientCodes, addDate(end, -2), end) ||
-				patient.encounters().match(encounterObGynCodes, addDate(end, -2), end)
+				patient.encounters().match(encounterOutpatientCodes, addDate(end, -2), end).length ||
+				patient.encounters().match(encounterObGynCodes, addDate(end, -2), end).length
 			) &&
-			!patient.procedures().match(hysterectomyCodes, null, null);
+			!patient.procedures().match(hysterectomyCodes, null, null).length;
 	}
 	
 	function numerator(patient) {
-		return patient.results().match(papTestCodes, addDate(end, -3), end);
+		return patient.results().match(papTestCodes, addDate(end, -3), end).length;
 	}
 	
 	function exclusion(patient) {

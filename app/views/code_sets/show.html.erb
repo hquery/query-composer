@@ -1,3 +1,4 @@
+<%= render partial: 'shared/tab_menu', locals: { selected: {}}%>
 <div>
 
   <table class="simpleTable">
@@ -7,7 +8,7 @@
     </tr>
     <tr>
       <th>Type</th>
-      <td><%=  @code_set.type %></td>
+      <td><%= link_to @code_set.type, :action=>'by_type', :type=>@code_set.type %></td>
     </tr>
     
     <tr>
