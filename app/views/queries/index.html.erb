@@ -25,12 +25,12 @@
           <% end %>
         <% end %>
       </td>
-      <td><%= button_to 'X', {:action=>'destroy', :id=>query.id}, :method=>:delete, :confirm=>'are you sure?' %></td>
+      <td><%= button_to '×', {:action=>'destroy', :id=>query.id}, :class=>"btn alert", :method=>:delete, :confirm=>'are you sure?'  %></td>
     </tr>
     <% end %>
   </table>
 
-  <%= link_to(new_query_path, class: "bluebutton") do %><span>Add Query</span><% end %>
+  <%= link_to(new_query_path, class: "btn") do %><span>Add Query</span><% end %>
 
 </div>
 
