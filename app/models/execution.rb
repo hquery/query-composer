@@ -125,12 +125,10 @@ NON_GENERATED_MAP
     end
     
     reducer_code = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
-    user_code = js_to_localize_user_functions(query.user)
     
     <<GENERATED_MAP
     function() {
       #{reducer_code}
-      #{user_code}
       if (this.status == "#{Result::COMPLETE}") {
         for(var key in this.value) {
           if (key != "_id" && key != "created_at" && key != "query_id") {
