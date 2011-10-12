@@ -52,13 +52,19 @@
       var icons_bot = $vi.height() - icons_offsetTop;
       var scrollTop = $(document).scrollTop();
       var delta = $ffe.height()  - scrollTop;
+      var scrollLeft = $(document).scrollLeft();
+        
+
+      
+
       if (scrollTop >= icons_offsetTop) {
         if (delta - icons_bot < 1 ) {
-          $vi.addClass("bottom");
-          $vi.removeClass("fixed");
+            $vi.addClass("bottom");
+            $vi.removeClass("fixed");
         } else {
           $vi.addClass("fixed"); 
           $vi.removeClass("bottom");
+          
         }
       } else {
         $vi.removeClass("fixed");
