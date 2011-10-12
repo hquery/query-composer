@@ -9,7 +9,8 @@ class GeneratedResultPresenter < ResultPresenter
       @keys = []
       @values = []
       
-      find_bottom_hash(result_hash['Results']).each_pair do |key, value|
+      results = result_hash['Results'] || {}
+      find_bottom_hash(results).each_pair do |key, value|
         @keys << key
         @values << value
       end
