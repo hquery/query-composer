@@ -5,6 +5,6 @@
   
   <%= render :partial => 'endpoint_statuses' %>
 
-  <%= link_to(new_endpoint_path, class: "bluebutton") do %><span>Add Gateway</span><% end if current_user.admin? %>
-  <%= link_to({ :controller => 'endpoints', :action => 'refresh_endpoint_statuses' }, :class => "bluebutton", :remote => true) do %><span>Refresh Endpoints</span><% end %>
+  <%= link_to(new_endpoint_path, class: "btn") do %><span>Add Gateway</span><% end if current_user.admin? %>
+  <%= link_to({ :controller => 'endpoints', :action => 'refresh_endpoint_statuses' }, :class => "btn", :remote => true) do %><span>Refresh Endpoints</span><% end %>
 </div>

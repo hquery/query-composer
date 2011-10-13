@@ -103,7 +103,7 @@ div#chart {
 .simpleTable {
   margin:10px 0 20px 0;
   td, th {
-    padding:3px 15px 3px 0px;
+    padding:0px 15px 3px 0px;
     vertical-align:top;
   }
   th {
@@ -119,11 +119,6 @@ div#chart {
   }
 }
 
-td.subTable {padding:0 10px 0 0}
-
-#execution_results td ,th {
-  padding: 2px;
-}
 #queryExecutionHistory tr td:first-child {padding-right:5px;}
 div.ctrl input[type=button],div.ctrl input[type=submit] {margin-right:15px}
 span.ctrl {margin-left:50px}  

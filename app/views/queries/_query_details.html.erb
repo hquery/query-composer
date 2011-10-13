@@ -34,7 +34,7 @@
     <%= f.button :submit if !@disabled %>
     <%= link_to 'cancel', @query %>
     <span class="ctrl">  
-      <input id="debug" type="button" value="Debug" disabled="disabled"> <input id="records" type="button" value="Records">
+      <input id="debug" type="button" value="Debug" disabled="disabled" class="btn"> <input id="records" type="button" value="Records">
     </span>
   <% else %>
     <%= f.button :submit, 'Continue' if !@disabled %>

@@ -121,27 +121,13 @@ class ExecutionTest < ActiveSupport::TestCase
 
   test "query with library functions should log exception saving functions" do
   
-    # alias the method so that we can restore it... mocha should do this but turn is causing issues currently
-    class Net::HTTP
-      class << self
-        alias unmocked_start start
-      end
-    end
-    
-    Net::HTTP.expects(:start).raises(SocketError, 'getaddrinfo: nodename nor servname provided, or not known')
+    Net::HTTP.expects(:start).twice().raises(SocketError, 'getaddrinfo: nodename nor servname provided, or not known')
     
     query = Query.find(@user_with_functions.queries[3].id)
   
     endpoint = Factory.create(:endpoint)
     query.execute([endpoint])
   
-    # restore original method
-    class Net::HTTP
-    class << self
-      alias start unmocked_start
-    end
-    end
-    
     assert_equal "user functions failed: getaddrinfo: nodename nor servname provided, or not known", endpoint.endpoint_logs[0].message
     assert_equal "Exception submitting endpoint: getaddrinfo: nodename nor servname provided, or not known", endpoint.endpoint_logs[1].message
     
