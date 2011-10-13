@@ -17,10 +17,10 @@
   <tr>
     <td><%= link_to query.title, template_query_path(query.id) %></td>
     <td><%= query.description %></td>
-    <td><%= button_to 'Edit', {:action=>'edit', :id=>query.id}, :method=>:get if current_user.admin?%></td>
+    <td><%= button_to 'Edit', {:action=>'edit', :id=>query.id}, :class=>'btn', :method=>:get if current_user.admin?%></td>
   </tr>
 <% end %>
 </table>
 
-<%= link_to(new_template_query_path, class: "bluebutton") do %><span>Add Template</span><% end if current_user.admin?%>
+<%= link_to(new_template_query_path, class: "btn") do %><span>Add Template</span><% end if current_user.admin?%>
 </div>

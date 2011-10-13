@@ -6,7 +6,7 @@
 <%= render :partial=>"query_details" %>
 
 <table>
-<tr><td><%= button_to 'Delete Query Template', {:action=>'destroy', :id=>@template_query.id}, :method=>:delete %></td>
+<tr><td><%= button_to 'Delete Query Template', {:action=>'destroy', :id=>@template_query.id}, :class=>'btn', :method=>:delete %></td>
 </tr>
 </table>
 </div>
