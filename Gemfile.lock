@@ -71,7 +71,7 @@ GEM
     delayed_job (2.1.4)
       activesupport (~> 3.0)
       daemons
-    devise (1.4.7)
+    devise (1.4.8)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
       warden (~> 1.0.3)
@@ -96,6 +96,7 @@ GEM
     jquery-rails (1.0.14)
       railties (~> 3.0)
       thor (~> 0.14)
+    json (1.6.1)
     json_pure (1.6.1)
     kramdown (0.13.3)
     libv8 (3.3.10.2)
@@ -107,11 +108,12 @@ GEM
     method_source (0.6.6)
       ruby_parser (~> 2.0.5)
     mime-types (1.16)
+    minitest (2.6.1)
     mocha (0.10.0)
       metaclass (~> 0.0.1)
     mongo (1.4.0)
       bson (= 1.4.0)
-    mongoid (2.3.0)
+    mongoid (2.3.1)
       activemodel (~> 3.1)
       mongo (~> 1.4)
       tzinfo (~> 0.3.22)
@@ -154,7 +156,8 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.6)
     rake (0.9.2)
-    rdoc (3.9.4)
+    rdoc (3.10)
+      json (~> 1.4)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
@@ -194,8 +197,8 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    turn (0.8.2)
-      ansi (>= 1.2.2)
+    turn (0.8.3)
+      ansi
     tzinfo (0.3.30)
     uglifier (1.0.3)
       execjs (>= 0.3.0)
@@ -223,6 +226,7 @@ DEPENDENCIES
   jasmine
   jquery-rails
   kramdown
+  minitest
   mocha
   mongoid
   mongoid_rails_migrations
