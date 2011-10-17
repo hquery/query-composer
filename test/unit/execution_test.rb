@@ -1,11 +1,12 @@
 require 'test_helper'
+require 'webrick'
+require 'logger'
 include GatewayUtils
-
 class ExecutionTest < ActiveSupport::TestCase
 
   setup do
     dump_database
-    
+    @logger = Logger.new('log/rake')
     @user_with_functions = Factory(:user_with_queries_and_library_functions)
     
     library_function = @user_with_functions.library_functions[0]
@@ -52,6 +53,21 @@ class ExecutionTest < ActiveSupport::TestCase
     query = Factory.create(:query, user: user)
     endpoint = Factory.create(:endpoint)
     query.execute([endpoint])
+    
+    
+    req =  FakeWeb.last_request  
+    
+    #check the request and make sure it was a multipart request
+    # and that the map, reduce and filter if given are all file 
+    # type parts
+    assert req.kind_of?  Net::HTTP::Post::Multipart
+    params = req.p
+    assert params["map"].kind_of? UploadIO
+    assert params["reduce"].kind_of? UploadIO
+    if params["filter"]
+      assert params["filter"].kind_of? UploadIO
+    end
+    
     result = query.last_execution.results[0]
     assert result
     assert_equal "http://127.0.0.1:3001/query/1234", result.query_url
@@ -65,6 +81,16 @@ class ExecutionTest < ActiveSupport::TestCase
     execution = Execution.new
     assert_equal 0, endpoint.endpoint_logs.count
     execution.post_library_function(endpoint, user)
+    
+    req =  FakeWeb.last_request  
+    
+    #check the request and make sure it was a multipart request
+    # and that the functions are sent over as a file type part
+    assert req.kind_of?  Net::HTTP::Post::Multipart
+    params = req.p
+    assert params["functions"].kind_of? UploadIO
+    
+    
     assert_equal 1, endpoint.endpoint_logs.count
     el = endpoint.endpoint_logs.first
     assert el
@@ -140,4 +166,7 @@ class ExecutionTest < ActiveSupport::TestCase
     execution_with_complete_results = Factory.create(:query_with_completed_results).executions.first
     assert execution_with_complete_results.finished?
   end
+  
+
+  
 end
