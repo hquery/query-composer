@@ -131,6 +131,9 @@ $colorstop: #cccccc;
   background-color: #fff;
   padding: 2px;
   background: none;
+  font-size: 1em;
+  padding: 0;
+  border-color: white;
 }
 
 .btn.alert:hover {
@@ -140,13 +143,22 @@ $colorstop: #cccccc;
   background-repeat-y: no-repeat;
   border-color: #C43C35 #C43C35 #882A25;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  float: right;
-  color: black;
-  line-height: 13.5px;
-  text-shadow: 0 1px 0 white;
+  color: white;
+  font-size: 1em;
+  padding: 0;
+  text-shadow: 0 1px 0 black;
 }
 
 #execute-button.btn {
   float: right;
+}
+
+#add_code_system {
+  float: right;
+  margin-right: 0px;
+}
+
+.m {
+  margin: 0 0 20px 20px;
 }
  

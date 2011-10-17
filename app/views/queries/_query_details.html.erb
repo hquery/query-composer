@@ -10,6 +10,10 @@
 %>
 
 <table class="simpleTable">
+    <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+      </div>
+    </div>
   <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
   <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
   <% if not is_new %>
@@ -33,13 +37,17 @@
   <% if (not is_new) %>
     <%= f.button :submit if !@disabled %>
     <%= link_to 'cancel', @query %>
-    <span class="ctrl btn">  
-      <input id="debug" type="button" value="Debug" disabled="disabled" class="btn"> <input id="records" type="button" value="Records">
+    <span>  
+      <input id="debug" type="button" value="Debug" disabled="disabled"> <input id="records" type="button" value="Records">
     </span>
   <% else %>
     <%= f.button :submit, 'Continue' if !@disabled %>
     <%= link_to 'cancel', queries_path %>
   <% end %> 
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>
 <% end %>
 

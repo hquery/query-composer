@@ -51,6 +51,10 @@
   <div id="mainPanel">
 
     <h1>Query Definition</h1>
+      <div class="top_border">
+        <div class="top_border_lower">
+        </div>
+      </div>
     <table class="simpleTable">
       <tr><th>Title</th><td><%= @query.title %></td></tr>
       <tr><th>Description</th><td><%= @query.description %></td></tr>
@@ -81,12 +85,16 @@
                 <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :class => "btn primary", :method => :get %></td>
               <% end %>
               <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :class => "btn snd", :method => :get, id: 'edit' %></td>
-              <td><button id="execute-button" class = "btn snd">Execute</button></td>
+              <td><button id="execute-button" class = "btn snd m">Execute</button></td>
             </tr>
           </table>
         </td>
       </tr>
     </table>
+      <div class="bottom_border_lower relative">
+        <div class="bottom_border">
+        </div>
+      </div>
 
     <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Execution Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
   </div>

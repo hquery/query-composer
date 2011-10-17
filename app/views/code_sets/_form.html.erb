@@ -1,11 +1,16 @@
+
+
 <%= simple_form_for(@code_set) do |f| %>
 
 <%= f.error_notification %>
 
 <%= f.hidden_field :id %>
 
-
   <table class="simpleTable">
+    <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+      </div>
+    </div>
     <tr>
       <th>Name</th>
       <td><%= f.input_field :name %></td>
@@ -35,10 +40,9 @@
          <% 
           index = index + 1
          end %>
-         <a id="add_code_system">Add</a>
+         <a id="add_code_system" class="btn">Add</a>
       </td>
       </tr>
-    
   </table>
 
 <script>
@@ -54,6 +58,11 @@
  });
 </script>  
 <div class="actions">
-  <%= f.button :submit, :class=>"btn" %>
+  <%= f.button :submit, :class=>"btn primary m" %>
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>
 <% end %>
+
