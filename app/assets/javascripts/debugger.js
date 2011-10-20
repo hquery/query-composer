@@ -1,21 +1,22 @@
 //= require patient
-String.prototype.toFunction = function(){
-	return eval("(function(){ return "+ this + ";})()");
-}
-
 var hDebugger = {
 	patients: [],
 	
+	// Convenience function to quickly initialize editors on the queries/edit page for mocking MapReduce jobs.
+	// Individual ace_editors can be created by directly calling initializeEditor
 	initialize: function() {
+	  var editorList = ['map', 'reduce'];
+	  
 	  // Initialize the ace editors
-	  this.initializeEditor('map');
-	  this.initializeEditor('reduce');
-    this.debug();
+	  this.initializeEditor('map', editorList);
+	  this.initializeEditor('reduce', editorList);
+    this.debug(editorList);
     
     $("#debug_button").click(hDebugger.execute);
 	},
 	
-	initializeEditor: function(elementId, initialValue) {
+	// Converts a textarea to an ace_editor with an error panel to the right
+	initializeEditor: function(elementId, editorList) {
 	  // Grab onto DOM elements we'll use frequently in this function
 	  var elements = {
 	    'container' : $('#' + elementId + '_container'),
@@ -39,7 +40,7 @@ var hDebugger = {
 		
 		// Debug whenever editor text changes. Store the value in our textarea that submits with the form
 		aceEditor.getSession().on('change', function() {
-		  hDebugger.debug();
+		  hDebugger.debug(editorList);
 		  elements['functionText'].val(aceEditor.getSession().getValue());
 		});
 		
@@ -47,7 +48,7 @@ var hDebugger = {
 		elements['container'].resizable();
 		elements['container'].resize(function() {
 		  // Don't allow the editor to resize so far that there isn't room for the error panel
-		  var maximumWidth = $('#pageContent').outerWidth(true);
+		  var maximumWidth = $('body').outerWidth(true);
   		maximumWidth -= elements['editor'].offset().left;
   		maximumWidth -= elements['errorPanel'].outerWidth(true);
   		maximumWidth -= 40; // A bit of a hack - Accounting for random little padding amounts etc
@@ -64,38 +65,49 @@ var hDebugger = {
   	});
 	},
 	
-	debug: function() {
-	  // We'll debug both editors
-		var elements = ['map', 'reduce'];
+	debug: function(editorList) {
 		var allCodeIsValid = true;
 		
-		for (var element in elements) {
+		for (var i in editorList) {
 		  // Clear any previous error messages
-		  var elementId = elements[element];
+		  var elementId = editorList[i];
 		  $('#' + elementId + '_error_panel_text').empty();
 		  try {
 		    // Check to see that we have defined map and reduce functions.
 		    // If we don't, throw an error that we catch below. Otherwise, hide the error panel.
   			eval(this[elementId + '_ace_editor'].getSession().getValue());
-  			if (typeof eval(elementId) != "function")
+  			// If we're debugging a map or reduce function, it must be named exactly that to be compliant
+  			if ((elementId == 'map' || elementId == 'reduce') && typeof eval(elementId) != "function")
   				throw 'Syntax Error';
   			else
   			  $('#' + elementId + '_error_panel').hide();
   		} catch (e) {
   		  // If there is not a map/reduce function, show error text and disable the debug button
   		  allCodeIsValid = false;
-  		  var errorMessage = elementId + ' function is invalid: ' + e.message;
+  		  var errorMessage = elementId + ' is invalid: ' + e.message;
     	  $('#' + elementId + '_error_panel_text').text(errorMessage);
-  		  $('#debug_button').attr('disabled', 'disabled');
   			$('#' + elementId + '_error_panel').show();
+  			this.showCodeIsInvalid();
   		}
 		}
 		
 		// Allow the user to run their code if it is all valid
 		if (allCodeIsValid)
-		  $('#debug_button').removeAttr('disabled');
+		  this.showCodeIsValid();
 	},
 	
+	// The above initialization and syntax checking is reuseable, but the UI outside of the ace editor varies by page.
+	// By default, this function works for queries/edit for mocking MapReduce jobs. It should be overwritten on
+	// other pages so context specific UI elements can be altered.
+	showCodeIsValid: function() {
+	  $('#debug_button').removeAttr('disabled');
+	},
+	
+	showCodeIsInvalid: function() {
+	  $('#debug_button').attr('disabled', 'disabled');
+	},
+	
+	// This execute function is specific to queries/edit for mocking MapReduce jobs
 	execute: function() {
 	  // Disable the debug button until we finish calculating
 		$('#debug_button').attr('disabled', 'disabled');

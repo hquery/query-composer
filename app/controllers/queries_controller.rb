@@ -32,6 +32,13 @@ class QueriesController < ApplicationController
       @query.generated = false;
       @query.save!
     end
+    
+    if (@query.map.nil?)
+      @query.map = "function map(patient) {\r\n  \r\n}"
+    end
+    if (@query.reduce.nil?)
+      @query.reduce = "function reduce(key, values) {\r\n  \r\n}"
+    end
   end
 
   def before_create
