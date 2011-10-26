@@ -27,9 +27,11 @@ class Result
   end
   
   def check
+    logger.debug("Checking query url #{query_url}")
     url = URI.parse(query_url)
     response = Net::HTTP.start(url.host, url.port) do |http|
-      http.get(url.path, 'If-Modified-Since' => updated_at.to_formatted_s(:rfc822))
+      http.get(url.path, 'If-Modified-Since' => updated_at.to_formatted_s(:rfc822),
+                          'Accept' => 'application/json')
     end
     
     case response
@@ -39,6 +41,7 @@ class Result
       if query_status == COMPLETE
         self.status = FETCHING_RESULT
         self.result_url = response_json['result_url']
+        logger.debug("Got complete result. Will fetch #{self.result_url}")
         save!
         fetch_result
       else
@@ -58,8 +61,11 @@ class Result
   end
   
   def fetch_result
-    response = Net::HTTP.get(URI.parse(self.result_url))
-    self.value = JSON.parse(response)
+    url = URI.parse(self.result_url)
+    response = Net::HTTP.start(url.host, url.port) do |http|
+      http.get(url.path, 'Accept' => 'application/json')
+    end
+    self.value = JSON.parse(response.body)
     self.status = COMPLETE
     save!
   end

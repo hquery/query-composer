@@ -12,15 +12,10 @@ FactoryGirl.find_definitions
 class ActiveSupport::TestCase
 
   def dump_database
-    User.all.each {|x| x.destroy}
-    BaseQuery.all.each {|x| x.destroy}
-    Query.all.each {|x| x.destroy}
-    Endpoint.all.each {|x| x.destroy}
-    EndpointLog.all.each {|x| x.destroy}
-    LibraryFunction.all.each {|x| x.destroy}
-    Result.all.each {|x| x.destroy}
-    db = Mongoid::Config.master
-    db['system.js'].remove({})
+    Mongoid::Config.master.collections.each do |collection|
+      collection.drop unless collection.name.include?('system.')
+    end
+    Mongoid::Config.master['system.js'].remove({})
   end
 
   def dump_jobs

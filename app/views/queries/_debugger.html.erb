@@ -1,0 +1,24 @@
+<tr><td>Map Function</td>
+  <td>
+    <div id="map_container" class="debug_container">
+      <div id="map_editor" class="debug_editor"></div>
+      <textarea id="map_text" name="query[map]" class="hidden"><%= @query.map %></textarea>
+    </div>
+    <div id="map_error_panel" class="debug_error_panel">
+      <p id="map_error_panel_text"></p>
+    </div>
+  </td>
+</tr>
+<tr><td>Reduce Function</td>
+  <td>
+    <div id="reduce_container" class="debug_container">
+      <div id="reduce_editor" class="debug_editor"></div>
+      <textarea id="reduce_text" name="query[reduce]" class="hidden"><%= @query.reduce %></textarea>
+    </div>
+    <div id="reduce_error_panel" class="debug_error_panel">
+      <p id="reduce_error_panel_text"></p>
+    </div>
+  </td>
+</tr>
+<tr class="debug_output"><td>Map Output</td><td><table id="map_output"></table></td></tr>
+<tr class="debug_output"><td>Reduce Output</td><td><table id="reduce_output"></table></td></tr>
