@@ -19,11 +19,7 @@ class Execution
 
   def execute(endpoints)
     endpoints.each do |endpoint|
-      if query.user.library_functions.present?
-        query.user.save_library_functions_locally
-        post_library_function(endpoint, query.user)
-      end
-      
+
       query_url = submit(endpoint)
       if query_url
         Result.create(endpoint: endpoint, query_url: query_url,

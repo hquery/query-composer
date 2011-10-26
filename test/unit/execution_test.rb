@@ -74,90 +74,23 @@ class ExecutionTest < ActiveSupport::TestCase
     assert_equal Result::QUEUED, result.status
   end
   
-  test "posting library functions" do
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "complete")
-    endpoint = Factory.create(:endpoint)
-    user = Factory.create(:user_with_library_functions)
-    execution = Execution.new
-    assert_equal 0, endpoint.endpoint_logs.count
-    execution.post_library_function(endpoint, user)
-    
-    req =  FakeWeb.last_request  
-    
-    #check the request and make sure it was a multipart request
-    # and that the functions are sent over as a file type part
-    assert req.kind_of?  Net::HTTP::Post::Multipart
-    params = req.p
-    assert params["functions"].kind_of? UploadIO
-    
-    
-    assert_equal 1, endpoint.endpoint_logs.count
-    el = endpoint.endpoint_logs.first
-    assert el
-    assert_equal :user_functions, el.status
-    assert_equal "user functions inserted", el.message
-  end
   
-  test "query should execute properly with library functions" do
-    
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "complete")
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :body => "{\"foo\" : \"bar\"}")
-    query = Query.find(@user_with_functions.queries[3].id)
+
   
-    query.execute([Factory.create(:endpoint)])
   
-    db = Mongoid::Config.master
-    assert_equal 'hquery_user_functions', db['system.js'].find({}).first['_id']
-    assert_not_nil db['system.js'].find({}).first['value']['f'+COMPOSER_ID]['f'+@user_with_functions.id.to_s]['sum']
-  end
-  
-  test "query should execute properly with exiting library functions defined" do
-    
-    # add some existing data at the composer level
-    db = Mongoid::Config.master
-    user_namespace = "hquery_user_functions = {}; hquery_user_functions['foobar'] = {};"
-    db.eval(user_namespace)
-    db.eval("db.system.js.save({_id:'hquery_user_functions', value : hquery_user_functions })")
-    
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "complete")
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :body => "{\"foo\" : \"bar\"}")
-    query = Query.find(@user_with_functions.queries[3].id)
-  
-    query.execute([Factory.create(:endpoint)])
-  
-    db = Mongoid::Config.master
-    assert_equal 'hquery_user_functions', db['system.js'].find({}).first['_id']
-    # make sure we have not blown away the existing data
-    assert_not_nil db['system.js'].find({}).first['value']['foobar']
-    # make sure the new stuff is there as well
-    assert_not_nil db['system.js'].find({}).first['value']['f'+COMPOSER_ID]['f'+@user_with_functions.id.to_s]['sum']
-  end
-  
-  test "query should log failures for endpoint and library function on failure" do
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :status => ["500", "Internal Server Error"])
+  test "query should log failures for endpoint  on failure" do
+
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :status => ["500", "Internal Server Error"])
 
     query = Query.find(@user_with_functions.queries[3].id)
     endpoint = Factory.create(:endpoint)
     query.execute([endpoint])
-    assert_equal "user functions failed", endpoint.endpoint_logs[0].message
-    assert_equal "Did not understand the response: 500 : Internal Server Error", endpoint.endpoint_logs[1].message
+
+    assert_equal "Did not understand the response: 500 : Internal Server Error", endpoint.endpoint_logs[0].message
     
   end
 
-  test "query with library functions should log exception saving functions" do
-  
-    Net::HTTP.expects(:start).twice().raises(SocketError, 'getaddrinfo: nodename nor servname provided, or not known')
-    
-    query = Query.find(@user_with_functions.queries[3].id)
-  
-    endpoint = Factory.create(:endpoint)
-    query.execute([endpoint])
-  
-    assert_equal "user functions failed: getaddrinfo: nodename nor servname provided, or not known", endpoint.endpoint_logs[0].message
-    assert_equal "Exception submitting endpoint: getaddrinfo: nodename nor servname provided, or not known", endpoint.endpoint_logs[1].message
-    
-  end
+
   
   test "executions should only be finished if there are no queued results" do
     execution_with_incomplete_results = Factory.create(:query_with_queued_results).executions.first

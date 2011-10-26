@@ -19,19 +19,7 @@ module GatewayUtils
     Net::HTTP::Post::Multipart.new(query_url.path, payload)
   end
   
-  # javascript that takes the namespaced user functions and creates non-namespaced aliases in the current scope
-  # then redefines hquery_user_functions in the local scope so that users cannot access other users functions
-  def js_to_localize_user_functions(user)
-    composer_id = COMPOSER_ID
-    "if (typeof hquery_user_functions != 'undefined' 
-         && null != hquery_user_functions['f#{composer_id}'] 
-         && null != hquery_user_functions['f#{composer_id}']['f#{user.id.to_s}']) { 
-           for(var key in hquery_user_functions.f#{composer_id}.f#{user.id.to_s}) { 
-             eval(key+'=hquery_user_functions.f#{composer_id}.f#{user.id.to_s}.'+key) 
-           } 
-           hquery_user_functions = {}; 
-     } \r\n"
-  end
+ 
   
   def full_map query
     query.map
@@ -95,24 +83,5 @@ module GatewayUtils
     query_url
   end
   
-  def post_library_function(endpoint, user)
-    functions = UploadIO.new(StringIO.new(user.library_function_definitions), 'application/javascript')
 
-    url = endpoint.functions_url
-    request = Net::HTTP::Post::Multipart.new(url.path, {'functions'=>functions, 'user_id'=> user.id, 'composer_id'=>COMPOSER_ID})
-
-    begin
-      Net::HTTP.start(url.host, url.port) do |http|
-        response = http.request(request)
-        case response
-        when Net::HTTPSuccess
-          EndpointLog.create(status: :user_functions, message: "user functions inserted", endpoint: endpoint)
-        else
-          EndpointLog.create(status: :user_functions, message: "user functions failed", endpoint: endpoint)
-        end
-      end
-    rescue Exception => ex
-      EndpointLog.create(status: :user_functions, message: "user functions failed: #{ex}", endpoint: endpoint)
-    end
-  end
 end
