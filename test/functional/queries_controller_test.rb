@@ -8,7 +8,7 @@ class QueriesControllerTest < ActionController::TestCase
     dump_database
     
     @user = Factory(:user_with_queries)
-    @ids = @user.queries.map {|q| q.id}
+    @ids = @user.queries.order_by([[:created_at, :desc]]).map {|q| q.id}
     @user_ids = [] << @user.id
     
     @new_endpoint = Factory(:endpoint)
