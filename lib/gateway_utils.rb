@@ -1,9 +1,13 @@
 module GatewayUtils
-  def query_request(map, reduce, filter, query_url)
+  def query_request(map, reduce, functions, filter, query_url)
     # build the multi-part elements for the request
     # need to do this inside the loop since UploadIO is single-use
     filter_io = if filter
       UploadIO.new(StringIO.new(filter), 'application/json')
+    end
+    
+    function_io = if functions
+      UploadIO.new(StringIO.new(functions), 'application/json')
     end
     map_io = UploadIO.new(StringIO.new(map), 'application/javascript')
     reduce_io = UploadIO.new(StringIO.new(reduce), 'application/javascript')
@@ -11,6 +15,7 @@ module GatewayUtils
     # get the endpoint url and build the request
     payload = {'map' => map_io, 'reduce' => reduce_io}
     payload['filter'] = filter_io if filter
+    payload['functions'] = function_io if function_io
     Net::HTTP::Post::Multipart.new(query_url.path, payload)
   end
   
@@ -29,11 +34,7 @@ module GatewayUtils
   end
   
   def full_map query
-    if (query.generated?)
-      builder_map_javascript_library + query.map
-    else
-      js_to_localize_user_functions(query.user) + query.map
-    end
+    query.map
   end
   
   # The reduce function is only allowed to be exactly one function, so we stuff everything inside
@@ -62,10 +63,22 @@ module GatewayUtils
   end
   
   
+  def build_library_functions(query)
+    if (query.generated?)
+      functions = builder_map_javascript_library 
+      functions += query.user.library_function_definitions if query.user
+      functions
+    else
+      functions = query.user.library_function_definitions if query.user
+    end
+    return functions
+  end
+  
+  
   def submit(endpoint)
     query_url = nil
     query_url = endpoint.submit_url
-    request = query_request(full_map(query), full_reduce(query), query.filter, query_url)
+    request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter, query_url)
     begin
       Net::HTTP.start(query_url.host, query_url.port) do |http|
         response = http.request(request)

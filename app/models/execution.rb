@@ -112,7 +112,7 @@ class Execution
     if (not self.query.generated?)
       return <<NON_GENERATED_MAP
         function() {
-          #{js_to_localize_user_functions(query.user)}
+          #{build_library_functions(query)}
           if (this.status == "#{Result::COMPLETE}") {
             for(var key in this.value) {
               if (key != "_id" && key != 'created_at' && key != 'query_id') {

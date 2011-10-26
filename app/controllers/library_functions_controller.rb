@@ -15,9 +15,9 @@ class LibraryFunctionsController < ApplicationController
   end
 
   def new
-    @library_function.definition = "this.custom_function = function(param) {\r\n  \r\n};\r\n"+
-   "this.some_value = 123;\r\n"+
-   "this.another_value = this.some_value + 10;"
+    @library_function.definition = "function<name>(<params>) {
+    
+    }\r\n"
   end
 
   def before_create
