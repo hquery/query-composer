@@ -7,16 +7,16 @@
     <table class="simpleTable">
       <tr>
         <th>Name</th>
-        <td><%= f.input_field :name %></td>
+        <td><%= f.input_field :name, :class=>"queryField" %></td>
       </tr>
       <tr>
         <th>URL</th>
-        <td><%= f.input_field :base_url %></td>
+        <td><%= f.input_field :base_url, :class=>"queryField" %></td>
       </tr>
     </table>
 
 
   <div class="actions">
-    <%= f.button :submit, :class => "btn snd" %>
+    <%= f.button :submit, :class => "btn primary snd m" %>
   </div>
 <% end %>

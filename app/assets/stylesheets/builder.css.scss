@@ -1,9 +1,15 @@
 @import "mixins";
 /* Define styles for drag and drop query builder */
 
+
+@import "mixins";
+$paletteWidth  : 180px;
+$paletteBorderWidth  : 18px;
+$paletteRadius : 18px;
 $activeBackground : #CCF2F7;
 $activeBorderWidth : 2px;
 $depTypeName : #AAAAAA;  // 'AND' and 'OR' in the tree
+$LinksBorderColor: #ccc;
 
 $itemBorderRadius : 7px;
 
@@ -255,13 +261,42 @@ div.extract_editor {
   margin: 20px 0 10px 18px;
 }
 
-.form_top_border {
-  margin-top: 40px;
+div#links .border_color {
+  margin-top: 55px;
+  background-color: $LinksBorderColor;
+  border-color: $LinksBorderColor;
 }
 
-.form_lower_border {
+div.paletteLink {
+  position: relative;
+  width: $paletteWidth + $paletteBorderWidth;
+  float:left;
+  h1 { 
+    font-weight:normal;
+    font-size: 16pt;
+    margin:10px $paletteBorderWidth*2 0 0;
+  }
+  
+  ul {
+    margin-top:10px;
+    list-style-type: none;
+    font-size: 10pt;
+  }
+  
+  li {
+    margin:0 0 10px 0;
+    width: $paletteWidth - 20;
+    img {
+      margin: 0 10px 0 0;
+      vertical-align: -8px;
+    } 
+  }
+}
+
+#mainPanel {
   position: relative;
 }
+
 
 
 .string .optional {

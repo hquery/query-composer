@@ -13,16 +13,16 @@
     </div>
     <tr>
       <th>Name</th>
-      <td><%= f.input_field :name %></td>
+      <td><%= f.input_field :name, :class=> "entryField" %></td>
     </tr>
     <tr>
       <th>type</th>
-      <td><%= f.input_field :type %></td>
+      <td><%= f.input_field :type, :class=> "entryField" %></td>
     </tr>
     
     <tr>
       <th>Description</th>
-      <td><%= f.input_field :description %></td>
+      <td><%= f.input_field :description, :class=> "entryField" %></td>
     </tr>
     
     
@@ -34,13 +34,13 @@
          index = 0
           (@code_set.codes || {}).each_pair do |k,v| %>
             <div>
-             <span> <%=  text_field_tag  "code_set[codes][][code_system]", k %></span> <span><%=  text_field_tag  "code_set[codes][][codes]",  v.join(", ")%></span>  
+             <span> <%=  text_field_tag "code_set[codes][][code_system]", k %></span> <span><%=  text_field_tag  "code_set[codes][][codes]",  v.join(", ")%></span>  
             </div>
             
          <% 
           index = index + 1
          end %>
-         <a id="add_code_system" class="btn">Add</a>
+         <a id="add_code_system" class="btn second">Add</a>
       </td>
       </tr>
   </table>

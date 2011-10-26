@@ -133,20 +133,21 @@ $colorstop: #cccccc;
   background: none;
   font-size: 1em;
   padding: 0;
-  border-color: white;
+  border-color: white; 
 }
-
 .btn.alert:hover {
-  background-color: #ECA15F;
+  color: #ECA15F;
   background-repeat: repeat-x;
   background-repeat-x: repeat;
   background-repeat-y: no-repeat;
-  border-color: #C43C35 #C43C35 #882A25;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  color: white;
   font-size: 1em;
   padding: 0;
   text-shadow: 0 1px 0 black;
+
+}
+
+#form, .form {
+  @include rounded();
 }
 
 #execute-button.btn {
@@ -159,6 +160,19 @@ $colorstop: #cccccc;
 }
 
 .m {
-  margin: 0 0 20px 20px;
+  position: absolute;
+  right: 10px;
+  bottom: 30px;
+  margin-top: 40px;
+}
+
+.second {
+  margin-top: 40px;
+  position: absolute;
+  left: 100px;
+  bottom: 30px;
 }
  
+.edit {
+  margin-left: 105px;
+}

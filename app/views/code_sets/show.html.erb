@@ -2,6 +2,10 @@
 <div>
 
   <table class="simpleTable">
+     <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+      </div>
+    </div>
     <tr>
       <th>Name</th>
       <td><%= link_to @code_set.name, url_for(@code_set)  %></td>
@@ -28,5 +32,9 @@
       </td>
       </tr>
   </table>
-  <%= link_to "Edit", edit_code_set_url(@code_set)%>
+  <%= link_to "Edit", edit_code_set_url(@code_set), :class=>"edit" %>
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>

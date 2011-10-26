@@ -1,8 +1,15 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+ <div> 
+  <%= render :partial=> "queries/sidebar" %>
+</div>
+
 <div id="mainPanel" >
 
 <h1>Query Template Administration</h1>
-
+    <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+       </div>
+    </div>
 <table class="simpleTable">
 <tr><td></td></tr>
 <% if @template_queries.size %>
@@ -17,10 +24,14 @@
   <tr>
     <td><%= link_to query.title, template_query_path(query.id) %></td>
     <td><%= query.description %></td>
-    <td><%= button_to 'Edit', {:action=>'edit', :id=>query.id}, :class=>'btn', :method=>:get if current_user.admin?%></td>
+    <td><%= button_to 'Edit', {:action=>'edit', :id=>query.id}, :class=>'btn second', :method=>:get if current_user.admin?%></td>
   </tr>
 <% end %>
 </table>
 
-<%= link_to(new_template_query_path, class: "btn") do %><span>Add Template</span><% end if current_user.admin?%>
+<%= link_to(new_template_query_path, class: "btn primary m") do %><span>Add Template</span><% end if current_user.admin?%>
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>

@@ -1,5 +1,7 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
-
+ <div> 
+  <%= render :partial=> "sidebar" %>
+</div>
 <div id="mainPanel">
   <h1>Execution History</h1>
   <h2>Query: <%= link_to @query.title, query_path %></h2>

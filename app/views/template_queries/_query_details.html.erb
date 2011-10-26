@@ -1,4 +1,7 @@
-
+    <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+       </div>
+    </div>
 <%= javascript_include_tag "validator/src/ace" %>
 <%= javascript_include_tag "validator/src/mode-javascript" %>
 <%= javascript_include_tag "validator/validator" %>
@@ -6,11 +9,11 @@
 
 <table class="simpleTable">
 <%= simple_form_for @template_query do |f| %>
-  <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
-  <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
-  <tr><td>Filter</td><td><%= f.input_field :filter, :disabled => @disabled %></td></tr>
-  <tr><td>Map Function</td><td><%= f.input_field :map, :as => :text, :disabled => @disabled %></td></tr>
-  <tr><td>Reduce Function</td><td><%= f.input_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
+  <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled, :class=>"queryField" %></td></tr>
+  <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled, :class=>"queryField" %></td></tr>
+  <tr><td>Filter</td><td><%= f.input_field :filter, :disabled => @disabled, :class=>"queryField" %></td></tr>
+  <tr><td>Map Function</td><td><%= f.input_field :map, :as => :text, :disabled => @disabled, :class=>"queryField" %></td></tr>
+  <tr><td>Reduce Function</td><td><%= f.input_field :reduce, :as => :text, :disabled => @disabled, :class=>"queryField" %></td></tr>
  </table>
   
  <table>
@@ -20,4 +23,8 @@
   </td></tr>
   </table>
 <% end %>
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 

@@ -1,8 +1,14 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
-
+ <div> 
+  <%= render :partial=> "queries/sidebar" %>
+</div>
 <div id="mainPanel">
 
   <h1>Template Query Definition</h1>
+    <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+       </div>
+    </div>
   <table class="simpleTable">
     <tr><th>Title</th><td><%= @template_query.title %></td></tr>
     <tr><th>Description</th><td><%= @template_query.description %></td></tr>
@@ -22,6 +28,8 @@
       </td>
     </tr>
   </table>
-
-  <p><%= link_to 'Template Query List', template_queries_path %></p>
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>

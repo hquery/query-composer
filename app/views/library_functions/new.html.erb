@@ -1,9 +1,20 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {library_functions: true}} %>
-
+ <div> 
+  <%= render :partial=> "queries/sidebar" %>
+</div>
 <div id="mainPanel">
   <h1>Create New Library Function</h1>
+    <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+      </div>
+    </div>
+
 
   <%= render 'form' %>
   
   <%= link_to 'Back', library_functions_path %>
+     <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>
