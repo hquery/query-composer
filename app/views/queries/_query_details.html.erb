@@ -11,6 +11,8 @@
   </script>
 <% end %>
 
+<%= link_to 'Browse API', '/patientapi/index', :target => '_blank', :class => 'btn' %>
+
 <% is_new = @query.title.nil? %>
 
 <%= simple_form_for @query do |f| %>

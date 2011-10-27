@@ -36,7 +36,7 @@ class Execution
   end
 
   def unfinished_results
-    results.where(status: Result::QUEUED)
+    results.where( "this.status != '" + Result::COMPLETE + "' && this.status != '" + Result::FAILED + "'")
   end
 
   def cancel

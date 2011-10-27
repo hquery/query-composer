@@ -46,6 +46,9 @@ class Result
         fetch_result
       else
         if self.status != query_status
+          if response_json['error_message'].present?
+            self.error_msg = response_json['error_message']
+          end
           self.status = query_status
           save!
         else
