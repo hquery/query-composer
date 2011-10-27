@@ -1,6 +1,26 @@
+<SCRIPT TYPE="text/javascript">
+<!--
+function popup(mylink, windowname)
+{
+if (! window.focus)return true;
+var href;
+if (typeof(mylink) == 'string')
+   href=mylink;
+else
+   href=mylink.href;
+window.open(href, windowname, 'width=400,height=200,scrollbars=yes');
+return false;
+}
+//-->
+</SCRIPT>
+
+
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}} %>
 
 <div id="mainPanel">
   <h1>Editing Query</h1>
   <%= render :partial => "query_details" %>
+  <A 
+   HREF="http://localhost:3000/patientapi/index.html" 
+   onClick="return popup(this, 'Patient API')">API Documentation</A>
 </div>

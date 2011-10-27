@@ -218,27 +218,36 @@ In a browser open the URL: http://localhost:3000/queries/
 
 ###7w. WINDOWS - Starting the Application
 
+ Open a terminal and start mongo. (if you do not have mongo in your PATH settings
+ you will have to migrate to the mongo bin directory):
+    mongod
  
 In a terminal, change directory to the query-composer directory
 run:
 
     Add the directory /tmp/pids to the query-composer directory
-   
+
+    bundle update
     bundle install
     bundle exec ruby script/delayed_job run
+    
+In a new terminal run:
     bundle exec rails server
 
-In a second terminal, change directory to the query-gateway directory
+In a third terminal, change directory to the query-gateway directory
 run:
    
    Add the directory /tmp/pids to the query-gateway directory
    
+    bundle update
     bundle install
    
    
-Finish starting the application by running:
+Finish starting the application by running the following:
     bundle exec rake db:seed
     bundle exec ruby script/delayed_job run
+    
+Run the following in a different terminal:
     bundle exec rails server -p 3001
      
  In a browser open the URL: http://localhost:3000/queries/
