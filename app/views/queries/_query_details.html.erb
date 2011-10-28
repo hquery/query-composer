@@ -1,14 +1,27 @@
-<%= stylesheet_link_tag "validator/styles.css"%>
-<%= javascript_include_tag "validator/src/ace" %>
-<%= javascript_include_tag "validator/src/mode-javascript" %>
-<%= javascript_include_tag "validator/validator" %>
-<%= javascript_include_tag "validator/records" %>
+<% content_for :head do -%>
+  <%= stylesheet_link_tag "debugger.css"%>
+  <%= javascript_include_tag "ace_editor/ace" %>
+  <%= javascript_include_tag "ace_editor/mode-javascript" %>
+  <%= javascript_include_tag "debugger/records" %>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      hDebugger.initialize();
+    });
+    
+    <% library_functions = ""
+    @query.user.library_functions.each do |library_function|
+      library_functions << library_function.definition
+    end %>
+    hDebugger.setLibraryFunctions(<%= raw library_functions.to_json %>);
+  </script>
+<% end %>
+
+<%= link_to 'Browse API', '/patientapi/index', :target => '_blank', :class => 'btn' %>
+
+<% is_new = @query.title.nil? %>
+
 <%= simple_form_for @query do |f| %>
-
-<%
-  is_new = @query.title.nil?
-%>
-
 <table class="simpleTable">
     <div class="top_border form_top_border">
       <div class="top_border_lower form_border_lower">
@@ -18,11 +31,9 @@
   <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
   <% if not is_new %>
     <tr><td>Filter</td><td><%= f.input_field :filter, :disabled => @disabled %></td></tr>
-    <tr><td>Map Function</td><td><%= f.input_field :map, :as => :text, :disabled => @disabled %></td></tr>
-    <tr><td>Reduce Function</td><td><%= f.input_field :reduce, :as => :text, :disabled => @disabled %></td></tr>
+    <%= render :partial => "debugger" %>
   <% else %>
-    <tr>
-      <td>Mode</td>
+    <tr><td>Mode</td>
       <td>
         <%= f.radio_button :generated, true, :checked => true %> Graphical Builder
         <%= f.radio_button :generated, false, :checked => false %> Handwritten JavaScript (Advanced)
@@ -31,17 +42,17 @@
   <% end %>
 </table>
 
-
-
 <div class="ctrl"> 
   <% if (not is_new) %>
-    <%= f.button :submit if !@disabled %>
-    <%= link_to 'cancel', @query %>
     <span>  
       <input id="debug" type="button" value="Debug" disabled="disabled"> <input id="records" type="button" value="Records">
+    <span class="ctrl">
+      <input id="debug_button" type="button" value="Debug" disabled="disabled" class="btn"></input>
     </span>
+    <%= f.button :submit, :class => "btn" if !@disabled %>
+    <%= link_to 'cancel', @query %>
   <% else %>
-    <%= f.button :submit, 'Continue' if !@disabled %>
+    <%= f.button :submit, 'Continue', :class => "btn" if !@disabled %>
     <%= link_to 'cancel', queries_path %>
   <% end %> 
     <div class="bottom_border_lower relative">
@@ -50,4 +61,3 @@
     </div>
 </div>
 <% end %>
-

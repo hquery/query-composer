@@ -10,12 +10,14 @@
     </div>
 
   <%= render 'form' %>
-  
+ 
 </div>
     <div class="bottom_border_lower relative">
       <div class="bottom_border">
       </div>
     </div>
-
-
-
+  <div style="margin-top:20px">
+    <%= link_to 'Show', @library_function %> <span class="sep">|</span>
+    <%= link_to 'List Library Functions', library_functions_path %>
+  </div>
+</div>

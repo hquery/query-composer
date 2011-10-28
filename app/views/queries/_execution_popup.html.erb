@@ -42,7 +42,7 @@
       
       <% for endpoint in endpoints %>
       <tr>
-        <td><%= check_box_tag "endpoint_ids[]", endpoint.id, false %></td>
+        <td><%= check_box_tag "endpoint_ids[]", endpoint.id, endpoints.length == 1 ? true : false %></td>
         <td><%= endpoint.name %></td>
         <td><%= endpoint.base_url %></td>
       </tr> 

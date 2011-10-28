@@ -123,8 +123,18 @@ $colorstop: #cccccc;
   @include buttongradient($ltblue, $bluemed, $blue);
   @include IE-gradient($ltblue, $blue);
 }
+.btn.primary:active { 
+  outline: none;
+  @include buttongradient($blue, $bluemed, $blue);
+  @include IE-gradient($blue, $bluemed);
+}
 
-.btn:active { outline: none;position:relative;top:1px;left:1px }
+.btn:active { 
+  outline: none;
+  @include buttongradient(#CCC, #E0E0E0, #CCC);
+  @include IE-gradient(#CCC, #E0E0E0);
+
+}
 
 .btn.alert {
   color: #939598;
@@ -142,7 +152,6 @@ $colorstop: #cccccc;
   background-repeat-y: no-repeat;
   font-size: 1em;
   padding: 0;
-  text-shadow: 0 1px 0 black;
 
 }
 
@@ -164,6 +173,9 @@ $colorstop: #cccccc;
   right: 10px;
   bottom: 30px;
   margin-top: 40px;
+  .m:active {
+    position: absolute;
+  }
 }
 
 .second {

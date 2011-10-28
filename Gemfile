@@ -21,8 +21,10 @@ gem 'mongoid_rails_migrations'
 gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
-gem 'delayed_job_mongoid', :git => 'https://github.com/cyrilpic/delayed_job_mongoid.git', :branch => 'nil_error'
+#gem 'delayed_job_mongoid', :git => 'https://github.com/cyrilpic/delayed_job_mongoid.git', :branch => 'nil_error'
+gem 'delayed_job_mongoid', :git => 'https://github.com/collectiveidea/delayed_job_mongoid.git'
 gem 'hquery-patient-api', :git=>'http://github.com/hquery/patientapi.git', :branch=> 'develop'
+#gem 'hquery-patient-api', :git=>'http://github.com/hquery/patientapi.git', :tag=> 'V0.1'
 gem 'devise'
 gem 'cancan'
 gem 'pry'
@@ -38,6 +40,7 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
   gem 'cover_me', '>= 1.0.0.rc6'
+  gem 'minitest'
   gem 'fakeweb'
   gem 'therubyracer', :platforms => :ruby
   gem 'therubyrhino', :platforms => :jruby

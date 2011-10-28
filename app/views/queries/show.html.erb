@@ -1,100 +1,102 @@
 <% content_for :head do -%>
   <script type="text/javascript">
-  var refreshFailCount = 0;
-  var queryInfoRefreshInterval = setInterval(function() {
-  $.ajax({
-    type: "GET",
-    url: "/queries/<%= @query.id %>/refresh_execution_results",
-    datatype: "script",
-    error: function(jqXHR, exception) {
-      refreshFailCount++;
-      if (refreshFailCount >= 10) {
-        clearInterval(queryInfoRefreshInterval);
-      }
-    }
-  })
-  }, 5000);
-  $(document).ready(function() {
-    $("#mapFunction, #reduceFunction").toggle(function() {
-      $(this).next(".msg").fadeOut();
-      $(this).slideDown(2000);
-      },function(){$(this).slideUp(1000,function() {$(this).next(".msg").fadeIn(1000);});});
-   
-    $(".expander, .clickme").click(function() {
-      var codeElem = $(this).data('code');
-      $("#"+codeElem).trigger('click');
-      $(this).toggleClass("open");
-    });
-   });
-
-  </script>
-  <% end -%>
-  <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
-  <%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
-
-  <!-- needs to be below execution_popup so that execution popup is not visible during alert -->
-  <% content_for :head do -%>
-    <script type="text/javascript">
-      $(document).ready(function() {
-        <% if (alert) %>
-          alert('<%= alert %>')
-        <% end %>
-        
-        $('#advanced_edit').click(function() {
-          value = confirm('Advanced editing of a standard query will create a cloned copy of this query.  The cloned version will not be editable via the standard query builder.  The original query will remain unmodified and can still be edited with the builder, but changes to the cloned query will not be reflected in the original. Do you want to clone this query for advanced editing?');
-          return value;
+    var refreshFailCount = 0;
+    var queryInfoRefreshInterval = setInterval(function() {
+      $.ajax({
+        type: "GET",
+        url: "/queries/<%= @query.id %>/refresh_execution_results",
+        datatype: "script",
+        error: function(jqXHR, exception) {
+          refreshFailCount++;
+          if (refreshFailCount >= 10) {
+            clearInterval(queryInfoRefreshInterval);
+          }
+        }
+      })
+    }, 4000);
+    
+    $(document).ready(function() {
+      $(".expander").toggle(
+        function() {
+          $(this).addClass('open');
+          var codeElement = $(this).data('code');
+          $('#' + codeElement).next(".msg").fadeOut();
+          $('#' + codeElement).slideDown(2000);
+        },
+        function() {
+          $(this).removeClass('open');
+          var codeElement = $(this).data('code');
+          $('#' + codeElement).slideUp(1000);
+          $('#' + codeElement).next(".msg").fadeIn(1000);
         });
-      });
-    </script>
-  <% end -%>
-  
-  <div id="mainPanel">
+     });
+  </script>
+<% end -%>
 
-    <h1>Query Definition</h1>
-      <div class="top_border">
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+<%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
+
+<!-- needs to be below execution_popup so that execution popup is not visible during alert -->
+<% content_for :head do -%>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      <% if (alert) %>
+        alert('<%= alert %>')
+      <% end %>
+      
+      $('#advanced_edit').click(function() {
+        value = confirm('Advanced editing of a standard query will create a cloned copy of this query.  The cloned version will not be editable via the standard query builder.  The original query will remain unmodified and can still be edited with the builder, but changes to the cloned query will not be reflected in the original. Do you want to clone this query for advanced editing?');
+        return value;
+      });
+    });
+  </script>
+<% end -%>
+
+<div id="mainPanel">
+  <h1>Query Definition</h1>
+        <div class="top_border">
         <div class="top_border_lower">
         </div>
       </div>
-    <table class="simpleTable">
-      <tr><th>Title</th><td><%= @query.title %></td></tr>
-      <tr><th>Description</th><td><%= @query.description %></td></tr>
-      <tr><th>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
-      <tr>
-        <th><span class="expander" data-code="mapFunction" title="Expand to see Javascript code">Map Function</span></th>
-        <td><div id="mapFunction" style="display:none"><%= raw(CodeRay.scan(@query.map, :javascript).div) %></div><span data-code="mapFunction" class="clickme msg" title="Expand to see Javascript code">
-         <% if (@query.generated?) %>[ Generated Javascript ]<% else %>[ Custom Javascript ]<% end %></span></td>
-      </tr>
-      <tr>
-        <th><span class="expander" data-code="reduceFunction" title="Expand to see Javascript code">Reduce Function</span></th>
-        <td><div id="reduceFunction" style="display:none"><%= raw(CodeRay.scan(@query.reduce, :javascript).div) %></div><span data-code="reduceFunction" class="clickme msg" title="Expand to see Javascript code">
-        <% if (@query.generated?) %>[ Generated Javascript ]<% else %>[ Custom Javascript ]<% end %></span></td></tr>
-      <tr>
-        <th>Endpoints</th>
-        <td class="subTable"><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
-      </tr>
-      <tr>
-        <th>Aggregate Result</th>
-        <td class="subTable"><%= render :partial => 'aggregate_results', :locals => { :query => @query } %></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="subTable">
-          <table>
-            <tr>
-              <% if (@query.generated?) %>
-                <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :class => "btn primary", :method => :get %></td>
-              <% end %>
-              <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :class => "btn snd", :method => :get, id: 'edit' %></td>
-              <td><button id="execute-button" class = "btn snd m">Execute</button></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-      <div class="bottom_border_lower relative">
-        <div class="bottom_border">
-        </div>
+  <table class="simpleTable">
+    <tr><th>Title</th><td><%= @query.title %></td></tr>
+    <tr><th>Description</th><td><%= @query.description %></td></tr>
+    <tr><th>Filter</th><td><pre><%= @query.filter %></pre></td></tr>
+    <tr>
+      <th><span class="expander" data-code="mapFunction" title="Expand to see Javascript code">Map Function</span></th>
+      <td><div id="mapFunction" style="display:none"><%= raw(CodeRay.scan(@query.map, :javascript).div) %></div><span data-code="mapFunction" class="msg" title="Expand to see Javascript code">
+       <% if (@query.generated?) %>[ Generated Javascript ]<% else %>[ Custom Javascript ]<% end %></span></td>
+    </tr>
+    <tr>
+      <th><span class="expander" data-code="reduceFunction" title="Expand to see Javascript code">Reduce Function</span></th>
+      <td><div id="reduceFunction" style="display:none"><%= raw(CodeRay.scan(@query.reduce, :javascript).div) %></div><span data-code="reduceFunction" class="msg" title="Expand to see Javascript code">
+      <% if (@query.generated?) %>[ Generated Javascript ]<% else %>[ Custom Javascript ]<% end %></span></td></tr>
+    <tr>
+      <th>Endpoints</th>
+      <td class="subTable"><%= render :partial => 'execution_results', :locals => { :query => @query } %></td>
+    </tr>
+    <tr>
+      <th>Aggregate Result</th>
+      <td class="subTable"><%= render :partial => 'aggregate_results', :locals => { :query => @query } %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="subTable">
+        <table>
+          <tr>
+            <% if (@query.generated?) %>
+              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :class => "btn primary", :method => :get %></td>
+            <% end %>
+            <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :class => "btn snd", :method => :get, id: 'edit' %></td>
+            <td><button id="execute-button" class = "btn snd m">Execute</button></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
       </div>
-
-    <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Execution Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
-  </div>
+    </div>
+  </table>
+  <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Execution Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
+</div>
