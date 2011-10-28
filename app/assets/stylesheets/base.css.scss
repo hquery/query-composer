@@ -111,8 +111,9 @@ div#chart {
 }
 
 
-.queryField {
+.queryField, .entryField {
   @include rounded();
+  width: 100%;
 }
 .simpleTable {
   margin:10px 0 20px 0;

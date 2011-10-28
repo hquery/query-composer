@@ -3,7 +3,7 @@
   <%= javascript_include_tag "ace_editor/ace" %>
   <%= javascript_include_tag "ace_editor/mode-javascript" %>
 
-    <%= f.button :submit, :class=>"btn m" %>
+   
 
   <script type="text/javascript">
     $(document).ready(function() {
@@ -28,13 +28,13 @@
   <table class="simpleTable">
     <tr>
       <th>Name</th>
-      <td><%= f.input_field :name %></td>
+      <td><%= f.input_field :name, :class=> "entryField" %></td>
     </tr>
     <tr>
       <th>Definition</th>
       <td>
-        <div id="library_function_container" class="debug_container">
-          <div id="library_function_editor" class="debug_editor"></div>
+        <div id="library_function_container" class="debug_container entryField">
+          <div id="library_function_editor" class="debug_editor entryField"></div>
           <textarea id="library_function_text" name="library_function[definition]" class="hidden"><%= @library_function[:definition] %></textarea>
         </div>
         <div id="library_function_error_panel" class="debug_error_panel">
@@ -44,5 +44,5 @@
     </tr>
   </table>
   
-  <%= f.button :submit, :id => 'submit_button', :class => 'btn' %>
+  <%= f.button :submit, :id => 'submit_button', :class => 'btn primary m' %>
 <% end %>

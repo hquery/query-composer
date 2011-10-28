@@ -257,8 +257,12 @@ div.extract_editor {
   margin: 20px;
 }
 
-#mainPanel h1 {
+#mainPanel {
+  display: block;
+
+h1 {
   margin: 20px 0 10px 18px;
+  }
 }
 
 div#links .border_color {

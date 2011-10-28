@@ -1,4 +1,5 @@
 <% content_for :head do -%>
+
   <script type="text/javascript">
     var refreshFailCount = 0;
     var queryInfoRefreshInterval = setInterval(function() {
@@ -52,6 +53,10 @@
   </script>
 <% end -%>
 
+ <div> 
+  <%= render :partial=> "sidebarQ" %>
+</div>
+
 <div id="mainPanel">
   <h1>Query Definition</h1>
         <div class="top_border">
@@ -88,15 +93,17 @@
               <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :class => "btn primary", :method => :get %></td>
             <% end %>
             <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :class => "btn snd", :method => :get, id: 'edit' %></td>
-            <td><button id="execute-button" class = "btn snd m">Execute</button></td>
+            <td><button id="execute-button" class = "btn snd primary m">Execute</button></td>
           </tr>
         </table>
       </td>
     </tr>
-    <div class="bottom_border_lower relative">
+  </table>
+
+     <div class="bottom_border_lower relative">
       <div class="bottom_border">
       </div>
     </div>
-  </table>
-  <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Execution Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
 </div>
+     
+

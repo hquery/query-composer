@@ -20,13 +20,13 @@
     <% @library_functions.each do |library_function| %>
       <tr>
         <td><%= link_to library_function.name, library_function %></td>
-        <td><%= link_to 'Edit', edit_library_function_path(library_function) %></td>
-        <td><%= link_to 'Destroy', library_function, confirm: 'Are you sure?', method: :delete %></td>
+        <td><%= link_to 'Edit', edit_library_function_path(library_function), :class=> "btn tbbtn" %></td>
+        <td><%= link_to '×', library_function, confirm: 'Are you sure?', method: :delete, :class=> "btn alert" %></td>
       </tr>
     <% end %>
     </table>
 
-  <%= link_to new_library_function_path, do %><span>New Library function</span><% end %>
+  <%= link_to new_library_function_path, :class=> "btn primary m" do %><span>New Library function</span><% end %>
     <div class="bottom_border_lower relative">
       <div class="bottom_border">
         </div>

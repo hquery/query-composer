@@ -1,6 +1,25 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {}}%>
-<div id="mainPanel" >
-<%= link_to "Add", new_code_set_path({type: params[:type]}) %>
-<%= render :partial=> "code_sets/entry.html", :collection=>@code_sets %>
+ <div> 
+  <%= render :partial=> "queries/sidebar" %>
+</div>
 
+<div id="mainPanel" >
+  <h1>Code Sets</h1>
+	<div class="top_border form_top_border">
+	  <div class="top_border_lower form_border_lower">
+	  </div>
+	</div>
+<%= link_to "Add", new_code_set_path({type: params[:type]}), :class=> "btn primary m" %> 
+  <table class="simpleTable">
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+<%= render :partial=> "code_sets/entry.html", :collection=>@code_sets %>
+ </table>
+  <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+  </div>
 </div>

@@ -1,6 +1,9 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {}}%>
-<div>
-
+ <div> 
+  <%= render :partial=> "queries/sidebar" %>
+</div>
+<div id="mainPanel" >
+  <h1>Code Entry</h1>
   <table class="simpleTable">
      <div class="top_border form_top_border">
       <div class="top_border_lower form_border_lower">
@@ -8,20 +11,14 @@
     </div>
     <tr>
       <th>Name</th>
-      <td><%= link_to @code_set.name, url_for(@code_set)  %></td>
-    </tr>
-    <tr>
       <th>Type</th>
-      <td><%= link_to @code_set.type, :action=>'by_type', :type=>@code_set.type %></td>
-    </tr>
-    
-    <tr>
       <th>Description</th>
-      <td><%=  @code_set.description %></td>
+      <th>Codes
     </tr>
-    
     <tr>
-      <th>Codes</th>
+      <td><%= link_to @code_set.name, url_for(@code_set)  %></td>
+      <td><%= link_to @code_set.type, :action=>'by_type', :type=>@code_set.type %></td>
+      <td><%=  @code_set.description %></td>
       <td>
          <% @code_set.codes.each_pair do |k,v| %>
             <div>
@@ -30,9 +27,12 @@
         
          <% end %>
       </td>
+      <td>
+        <%= link_to "Edit", edit_code_set_url(@code_set), :class=>"btn" %>
+      </td>
       </tr>
   </table>
-  <%= link_to "Edit", edit_code_set_url(@code_set), :class=>"edit" %>
+
     <div class="bottom_border_lower relative">
       <div class="bottom_border">
       </div>

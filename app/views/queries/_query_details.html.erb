@@ -10,14 +10,12 @@
     });
     
     <% library_functions = ""
-    @query.user.library_functions.each do |library_function|
+    @current_user.library_functions.each do |library_function|
       library_functions << library_function.definition
     end %>
     hDebugger.setLibraryFunctions(<%= raw library_functions.to_json %>);
   </script>
 <% end %>
-
-<%= link_to 'Browse API', '/patientapi/index', :target => '_blank', :class => 'btn' %>
 
 <% is_new = @query.title.nil? %>
 
@@ -27,8 +25,8 @@
       <div class="top_border_lower form_border_lower">
       </div>
     </div>
-  <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled %></td></tr>
-  <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled %></td></tr>
+  <tr><td>Title</td><td><%= f.input_field :title, :disabled => @disabled, :class=> "entryField" %></td></tr>
+  <tr><td>Description</td><td><%= f.input_field :description, :disabled => @disabled, :class=> "entryField" %></td></tr>
   <% if not is_new %>
     <tr><td>Filter</td><td><%= f.input_field :filter, :disabled => @disabled %></td></tr>
     <%= render :partial => "debugger" %>
@@ -41,7 +39,6 @@
     </tr>
   <% end %>
 </table>
-
 <div class="ctrl"> 
   <% if (not is_new) %>
     <span>  
@@ -49,11 +46,12 @@
     <span class="ctrl">
       <input id="debug_button" type="button" value="Debug" disabled="disabled" class="btn"></input>
     </span>
-    <%= f.button :submit, :class => "btn" if !@disabled %>
+    <%= f.button :submit, :class => "btn m" if !@disabled %>
     <%= link_to 'cancel', @query %>
   <% else %>
-    <%= f.button :submit, 'Continue', :class => "btn" if !@disabled %>
-    <%= link_to 'cancel', queries_path %>
+    <%= f.button :submit, 'Continue', :class => "btn primary m" if !@disabled %>
+    <%= link_to 'Browse API', '/patientapi/index', :target => '_blank', :class => 'btn top' %>
+    <%= link_to 'cancel', queries_path, :class=> "btn second" %>
   <% end %> 
     <div class="bottom_border_lower relative">
       <div class="bottom_border">
