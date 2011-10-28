@@ -7,3 +7,4 @@ coverage/
 .sass-cache/
 public/assets
 spec/javascripts/generated/*
+log/
