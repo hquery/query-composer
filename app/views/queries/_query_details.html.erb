@@ -8,6 +8,12 @@
     $(document).ready(function() {
       hDebugger.initialize();
     });
+    
+    <% library_functions = ""
+    @query.user.library_functions.each do |library_function|
+      library_functions << library_function.definition
+    end %>
+    hDebugger.setLibraryFunctions(<%= raw library_functions.to_json %>);
   </script>
 <% end %>
 
