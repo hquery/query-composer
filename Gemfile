@@ -29,9 +29,15 @@ gem 'devise'
 gem 'cancan'
 gem 'pry'
 gem 'kramdown'
-gem 'jasmine', :group => [:development, :test]
+#gem 'jasmine', :group => [:development, :test]
+gem 'jasmine',
+  :git        => 'https://github.com/hjdivad/jasmine-gem.git',
+  :submodules => true,
+  :branch     => 'jscoverage'
 gem 'headless', :group => [:development, :test]
 gem 'coderay'
+
+
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
