@@ -21,11 +21,6 @@ class Endpoint
     @parsed_base ||= URI.parse(base_url)
     @parsed_base.merge(SUBMIT_PATH)
   end
-
-  def functions_url
-    @parsed_base ||= URI.parse(base_url)
-    @parsed_base.merge(FUNCTIONS_PATH)
-  end
   
   def status_url
     @parsed_base ||= URI.parse(base_url)

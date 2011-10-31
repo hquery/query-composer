@@ -11,12 +11,16 @@ class GatewayUtilsTest < ActiveSupport::TestCase
     query.generate_map_reduce
     
     full_map = full_map(query)
-    assert full_map.include? "function map(patient)"
-    assert full_map.include? "var queryStructure = queryStructure || {}"
-    assert full_map.include? "reducer = this.reducer || {};"
+    assert full_map.include?("function map(patient)"), "does not include map "
+   
+    
     
     full_reduce = full_reduce(query)
     assert full_reduce.include? "function reduce(key, values)"
     assert full_reduce.include? "reducer = this.reducer || {};"
+    
+    functions = build_library_functions(query)
+    assert functions.include?( "var queryStructure = queryStructure || {}"), "does not include query structure "
+    assert functions.include?( "reducer = this.reducer || {};"), "does not include reducer "
   end
 end

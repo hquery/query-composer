@@ -1,5 +1,6 @@
 //= require patient
 var hDebugger = {
+	libraryFunctions: '',
 	patients: [],
 	
 	// Convenience function to quickly initialize editors on the queries/edit page for mocking MapReduce jobs.
@@ -107,6 +108,10 @@ var hDebugger = {
 	  $('#debug_button').attr('disabled', 'disabled');
 	},
 	
+	setLibraryFunctions: function(libraryFunctions) {
+	  this.libraryFunctions = libraryFunctions;
+	},
+	
 	// This execute function is specific to queries/edit for mocking MapReduce jobs
 	execute: function() {
 	  // Disable the debug button until we finish calculating
@@ -122,6 +127,9 @@ var hDebugger = {
   		else
   	    mapEmits[key] = [value];
   	};
+		
+		// Define all of the user's library functions
+		eval(hDebugger.libraryFunctions);
 		
 		// Define map and reduce from the editors and run each patient through the process
     eval(hDebugger['map_ace_editor'].getSession().getValue());

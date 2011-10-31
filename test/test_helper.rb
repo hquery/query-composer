@@ -30,3 +30,29 @@ class ActiveSupport::TestCase
   end
 
 end
+
+# used to make sure items are posted as multipart requests properly
+module Net
+  class HTTP
+    class Post
+      class Multipart
+        attr_reader :p
+        def initialize_with_pset(path, params, headers={}, boundary = DEFAULT_BOUNDARY)
+          @p = params
+          initialize_without_pset(path, params, headers, boundary)
+        end
+        alias_method_chain :initialize, :pset
+      end
+    end
+    class Put
+      class Multipart
+        attr_reader :p
+        def initialize_with_pset(path, params, headers={}, boundary = DEFAULT_BOUNDARY)
+          @p = params
+          initialize_without_pset(path, params, headers, boundary)
+        end
+        alias_method_chain :initialize, :pset
+      end
+    end
+  end
+end

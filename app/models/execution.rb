@@ -19,11 +19,7 @@ class Execution
 
   def execute(endpoints)
     endpoints.each do |endpoint|
-      if query.user.library_functions.present?
-        query.user.save_library_functions_locally
-        post_library_function(endpoint, query.user)
-      end
-      
+
       query_url = submit(endpoint)
       if query_url
         Result.create(endpoint: endpoint, query_url: query_url,
@@ -40,7 +36,7 @@ class Execution
   end
 
   def unfinished_results
-    results.where({ :status => { '$ne' => Result::COMPLETE } }).and({ :status => { '$ne' => Result::FAILED } })
+    results.where( "this.status != '" + Result::COMPLETE + "' && this.status != '" + Result::FAILED + "'")
   end
 
   def cancel
@@ -112,7 +108,7 @@ class Execution
     if (not self.query.generated?)
       return <<NON_GENERATED_MAP
         function() {
-          #{js_to_localize_user_functions(query.user)}
+          #{build_library_functions(query)}
           if (this.status == "#{Result::COMPLETE}") {
             for(var key in this.value) {
               if (key != "_id" && key != 'created_at' && key != 'query_id') {

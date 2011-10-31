@@ -82,10 +82,10 @@
         <table>
           <tr>
             <% if (@query.generated?) %>
-              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get %></td>
+              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get, :class => 'btn' %></td>
             <% end %>
-            <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'edit' %></td>
-            <td><button id="execute-button">Execute</button></td>
+            <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'edit', :class => 'btn' %></td>
+            <td><button id="execute-button" class="btn">Execute</button></td>
           </tr>
         </table>
       </td>

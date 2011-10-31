@@ -8,8 +8,16 @@
     $(document).ready(function() {
       hDebugger.initialize();
     });
+    
+    <% library_functions = ""
+    @current_user.library_functions.each do |library_function|
+      library_functions << library_function.definition
+    end %>
+    hDebugger.setLibraryFunctions(<%= raw library_functions.to_json %>);
   </script>
 <% end %>
+
+<%= link_to 'Browse API', '/patientapi/index', :target => '_blank', :class => 'btn' %>
 
 <% is_new = @query.title.nil? %>
 
