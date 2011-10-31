@@ -1,4 +1,5 @@
 /* base.css.scss hQuery SASS Stylesheet file */
+@import "mixins";
 $defaultLinkColor:#56a6d4;
 $defaultLinkHover : #267f88;
 $defaultTopMargin:0;
@@ -89,9 +90,18 @@ header {
 }
 
 #mainPanel {
+  position: relative;
   min-width: 720px;
   h1 {font-size:1.5em;}
   h2 {font-size:1.3em;}
+  padding-top: 0;
+  min-width: 700px;
+  max-width: 100%;
+  margin-left:220px;
+  /*
+    width:100%;
+    padding-right:30px;
+  */
 }
 
 div#chart {
@@ -100,6 +110,17 @@ div#chart {
   height: 480px;
 }
 
+.codeField {
+  @include rounded();
+  border: 1px solid #CCC;
+  padding: 5px;
+}
+.queryField, .entryField {
+  @include rounded();
+  width: 100%;
+  border: 1px solid #CCC;
+  padding: 5px;
+}
 .simpleTable {
   margin:10px 0 20px 0;
   td, th {
@@ -134,3 +155,7 @@ div.field_with_errors {
 }
 
 p#notice {margin-bottom:20px;}
+
+#new_code_set {
+  position: relative;
+}

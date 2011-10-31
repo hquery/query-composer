@@ -25,7 +25,7 @@
     <% avg_runtime = @endpoint_server_statuses[endpoint.id]['avg_runtime'] %>
     <% avg_runtime = "%0.2f" % avg_runtime if avg_runtime.class==Float  %>
     <td><%= avg_runtime %></td>
-    <td><%= button_to 'Delete', endpoint, confirm: 'Are you sure you wish to delete this endpoint?', method: :delete, title:"Delete" if current_user.admin?  %></td>
+    <td><%= button_to '×', endpoint, :class=>"btn alert", confirm: 'Are you sure you wish to delete this endpoint?', method: :delete, title:"×" if current_user.admin? %></td>
   </tr>
   <% end %>
 </table>

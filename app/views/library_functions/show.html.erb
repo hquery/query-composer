@@ -1,10 +1,17 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {library_functions: true}} %>
-
+ <div> 
+  <%= render :partial=> "queries/sidebar" %>
+</div>
 <div id="mainPanel">
   <h1>Library Function Definition</h1>
+
   <p id="notice"><%= notice %></p>
 
   <table class="simpleTable">
+    <div class="top_border form_top_border">
+      <div class="top_border_lower form_border_lower">
+      </div>
+    </div>
     <tr>
       <th>Name</th>
       <td><%= @library_function.name %></td>
@@ -14,7 +21,8 @@
       <td><pre><%= @library_function.definition %></pre></td>
     </tr>
   </table>
-
-<%= link_to 'Edit', edit_library_function_path(@library_function) %> <span class="sep">|</span>
-<%= link_to 'Back', library_functions_path %>
+    <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>

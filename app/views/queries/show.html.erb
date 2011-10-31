@@ -1,4 +1,5 @@
 <% content_for :head do -%>
+
   <script type="text/javascript">
     var refreshFailCount = 0;
     var queryInfoRefreshInterval = setInterval(function() {
@@ -52,9 +53,16 @@
   </script>
 <% end -%>
 
-<div id="mainPanel">
+ <div> 
+  <%= render :partial=> "sidebarQ" %>
+</div>
 
+<div id="mainPanel">
   <h1>Query Definition</h1>
+        <div class="top_border">
+        <div class="top_border_lower">
+        </div>
+      </div>
   <table class="simpleTable">
     <tr><th>Title</th><td><%= @query.title %></td></tr>
     <tr><th>Description</th><td><%= @query.description %></td></tr>
@@ -82,9 +90,9 @@
         <table>
           <tr>
             <% if (@query.generated?) %>
-              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get, :class => 'btn' %></td>
+              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get, :class => 'btn primary' %></td>
             <% end %>
-            <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'edit', :class => 'btn' %></td>
+            <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'edit', :class => 'btn snd' %></td>
             <td><button id="execute-button" class="btn">Execute</button></td>
           </tr>
         </table>
@@ -92,5 +100,10 @@
     </tr>
   </table>
 
-  <p><%= link_to 'Query List', queries_path %> <span class="sep">|</span> <%= link_to 'Execution Log', log_query_path %> <span class="sep">|</span> <%= link_to 'Execution History', execution_history_query_path %></p>
+     <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 </div>
+     
+

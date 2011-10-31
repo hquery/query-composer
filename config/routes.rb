@@ -42,6 +42,7 @@ QueryComposer::Application.routes.draw do
   end
   
   root :to => 'queries#index'
+
   
 
   # The priority is based upon order of creation:
