@@ -29,11 +29,11 @@ gem 'devise'
 gem 'cancan'
 gem 'pry'
 gem 'kramdown'
-#gem 'jasmine', :group => [:development, :test]
-gem 'jasmine',
-  :git        => 'https://github.com/hjdivad/jasmine-gem.git',
-  :submodules => true,
-  :branch     => 'jscoverage'
+gem 'jasmine', :group => [:development, :test]
+#gem 'jasmine',
+#  :git        => 'https://github.com/hjdivad/jasmine-gem.git',
+#  :submodules => true,
+#  :branch     => 'jscoverage'
 gem 'headless', :group => [:development, :test]
 gem 'coderay'
 
