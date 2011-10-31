@@ -41,7 +41,13 @@ class EndpointTest < ActiveSupport::TestCase
   end
   
   test "monitoring queries with incomprehensible responses" do
-    
+    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queries", :body => 'bacon is delicious')
+    endpoint = Factory.create(:endpoint)
+    endpoint.check
+    assert_equal 2, endpoint.endpoint_logs.count
+    el = endpoint.endpoint_logs[1]
+    assert el
+    assert_equal :error, el.status
   end
   
   test "check if there are active queries" do
@@ -53,18 +59,12 @@ class EndpointTest < ActiveSupport::TestCase
   end
   
   test "should gracefully handle errors in check" do
-    
-  end
-  
-  test "should update last check time" do
-    
-  end
-  
-  test "should return an execution given a result" do
-    
-  end
-  
-  test "should aggregate results upon query completion" do
-
+    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queries", :exception => Net::HTTPError)
+    endpoint = Factory.create(:endpoint)
+    endpoint.check
+    assert_equal 1, endpoint.endpoint_logs.count
+    el = endpoint.endpoint_logs.first
+    assert el
+    assert_equal :error, el.status
   end
 end

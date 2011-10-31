@@ -90,10 +90,10 @@
         <table>
           <tr>
             <% if (@query.generated?) %>
-              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :class => "btn primary", :method => :get %></td>
+              <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get, :class => 'btn primary' %></td>
             <% end %>
-            <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :class => "btn snd", :method => :get, id: 'edit' %></td>
-            <td><button id="execute-button" class = "btn snd primary m">Execute</button></td>
+            <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'edit', :class => 'btn snd' %></td>
+            <td><button id="execute-button" class="btn">Execute</button></td>
           </tr>
         </table>
       </td>
