@@ -165,7 +165,7 @@ $colorstop: #cccccc;
 
 #add_code_system {
   float: right;
-  margin-right: 0px;
+  margin-right: -10px;
 }
 
 .m {
@@ -191,6 +191,14 @@ $colorstop: #cccccc;
 }
 tbbtn {
   margin-top: 10px;
+  right: -10px;
+}
+
+.first {
+  margin-top: 40px;
+  position: absolute;
+  left: 20px;
+  bottom: 30px;
 }
 .second {
   margin-top: 40px;

@@ -110,10 +110,16 @@ div#chart {
   height: 480px;
 }
 
-
+.codeField {
+  @include rounded();
+  border: 1px solid #CCC;
+  padding: 5px;
+}
 .queryField, .entryField {
   @include rounded();
   width: 100%;
+  border: 1px solid #CCC;
+  padding: 5px;
 }
 .simpleTable {
   margin:10px 0 20px 0;

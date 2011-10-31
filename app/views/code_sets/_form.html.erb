@@ -29,9 +29,8 @@
          <%
          index = 0
           (@code_set.codes || {}).each_pair do |k,v| %>
-            <div>
-             <span> <%=  text_field_tag "code_set[codes][][code_system]", k %></span> <span><%=  text_field_tag  "code_set[codes][][codes]",  v.join(", ")%></span>  
-            </div>
+             <%=  text_field_tag "code_set[codes][][code_system]", k, :class=> "codeField" %>
+             <%=  text_field_tag  "code_set[codes][][codes]", v.join(", "), :class=> "codeField" %> 
             
          <% 
           index = index + 1
