@@ -73,6 +73,7 @@ div.conditional_editor {
   li.resource_dep {
   	padding: $itemPadding;
 	  cursor: pointer;
+	  width:10em;
 	  &:hover {@include resourceHover}
   }
   // this is a collection inside of a dependency group (e.g. and OR inside of an AND)
@@ -113,6 +114,7 @@ div.extract_editor {
   border: $activeBorderWidth dashed darken($activeBackground, 20%);
   @include rounded(7px);
 }
+
 
 .or > ul {
   display: table-cell;
@@ -176,9 +178,16 @@ div.extract_editor {
   font-size:0.9em;
   h2 {font-weight:bold}
   label {width:7em; display:inline-block;}
-  .ui-slider-handle {
-    width:0.5em;
+  .ui-slider .ui-slider-handle {
+    border:1px solid #999;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+   // width:0.5em;
   }
+  .ui-slider-horizontal .ui-slider-range.ui-widget-header {background:#80cacd;}
   p {margin:5px 0}
   
 }
