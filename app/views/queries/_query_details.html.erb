@@ -13,7 +13,8 @@
     @current_user.library_functions.each do |library_function|
       library_functions << library_function.definition
     end %>
-    hDebugger.setLibraryFunctions(<%= raw library_functions.to_json %>);
+    hDebugger.addLibraryFunctions(<%= raw library_functions.to_json %>);
+    hDebugger.addLibraryFunctions("");
   </script>
 <% end %>
 
@@ -41,17 +42,15 @@
 </table>
 <div class="ctrl"> 
   <% if (not is_new) %>
-    <span>  
-      <input id="debug" type="button" value="Debug" disabled="disabled"> <input id="records" type="button" value="Records">
     <span class="ctrl">
       <input id="debug_button" type="button" value="Debug" disabled="disabled" class="btn"></input>
     </span>
     <%= f.button :submit, :class => "btn m" if !@disabled %>
-    <%= link_to 'cancel', @query %>
+    <%= link_to 'Browse API', '/patientapi/index', :target => '_blank', :class => 'btn top' %>
+    <%= link_to 'Debug', @query, :class => "btn" %>
   <% else %>
     <%= f.button :submit, 'Continue', :class => "btn primary m" if !@disabled %>
-    <%= link_to 'Browse API', '/patientapi/index', :target => '_blank', :class => 'btn top' %>
-    <%= link_to 'cancel', queries_path, :class=> "btn second" %>
+    <%= link_to 'cancel', queries_path, :class => "btn second" %>
   <% end %> 
     <div class="bottom_border_lower relative">
       <div class="bottom_border">

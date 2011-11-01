@@ -19,8 +19,6 @@ module GatewayUtils
     Net::HTTP::Post::Multipart.new(query_url.path, payload)
   end
   
- 
-  
   def full_map query
     query.map
   end
@@ -50,18 +48,16 @@ module GatewayUtils
     return CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
   end
   
-  
   def build_library_functions(query)
     if (query.generated?)
       functions = builder_map_javascript_library 
       functions += query.user.library_function_definitions if query.user
-      functions
     else
       functions = query.user.library_function_definitions if query.user
     end
+    
     return functions
   end
-  
   
   def submit(endpoint)
     query_url = nil
@@ -82,6 +78,4 @@ module GatewayUtils
     end    
     query_url
   end
-  
-
 end
