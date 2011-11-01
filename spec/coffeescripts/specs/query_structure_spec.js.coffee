@@ -43,7 +43,7 @@ describe "Generated Query Structure", ->
         'title' : 'gender'
         'callstack' : 'gender'
       ]
-  
+###  
   it "should create a blank query", ->
     query = new queryStructure.Query()
     
@@ -87,4 +87,4 @@ describe "Generated Query Structure", ->
     expect(query.getContainerType(orContainer.toJson())).toEqual('Or')
     expect(query.getContainerType(comparison.toJson())).toBeNull()
     expect(query.getRuleType(comparison.toJson())).toEqual('Comparison')
-  
+###

@@ -1,0 +1,212 @@
+@import "mixins";
+
+/* common CSS mixin functions */
+@mixin buttongradient($startcolor: #ffffff, $endcolor: #E0E0E0, $colorstop: #CCCCCC) { 
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from($startcolor), color-stop(25%, $colorstop), to($endcolor));
+  background-image: -webkit-linear-gradient($startcolor, $colorstop 25%, $endcolor);
+  background-image: -moz-linear-gradient(top, $startcolor, $colorstop 25%, $endcolor);
+  background-image: -o-linear-gradient($startcolor, $colorstop 25%, $endcolor);
+  background-image: linear-gradient($startcolor, $colorstop 25%, $endcolor);
+  }
+ 
+
+
+@mixin IE-gradient($startcolor: #ffffff, $endcolor: #E0E0E0) {
+  filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr='#{$startcolor}', endColorstr='#{$endcolor}');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$startcolor}', endColorstr='#{$endcolor}')";
+}
+
+@mixin boxshadow() {
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+@mixin transition() {
+  -webkit-transition: 0.1s linear all;
+  -moz-transition: 0.1s linear all;
+  -ms-transition: 0.1s linear all;
+  -o-transition: 0.1s linear all;
+  transition: 0.1s linear all;
+}
+
+@mixin textshadow($r: 255, $g: 255, $b: 255, $a: 0.75) {
+    text-shadow: 0 1px 1px rgba($r, $g, $b, $a);
+}
+
+@mixin btntextsize() {
+  font-size: 0.7em;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+$blue: #4996B9;
+$ltblue: #92C0D5;
+$bluemed: #75B4CF;
+$radius: 10px;
+$startcolor: #ffffff;
+$endcolor: #E0E0E0;
+$colorstop: #cccccc;
+
+.foobutton {
+@include buttongradient(#ccc, #fff, #000);
+}
+
+.whitebutton {
+  @include rounded($radius);
+  @include buttongradient();
+  @include IE-gradient();
+  @include boxshadow();
+  @include textshadow();
+  @include btntextsize();
+  margin-right: 10px;
+  background: no-repeat scroll top right;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: inline-block;
+  background-color: #4996B9;
+  background-repeat: no-repeat;
+  z-index: 100;
+  padding: 5px 14px 6px;
+  color: #333;
+  line-height: normal;
+  border: 1px solid #ccc;
+  border-bottom-color: #bbb;
+}
+
+.btn {
+  @include buttongradient();
+  @include rounded($radius);
+  @include boxshadow();
+  @include textshadow();
+  @include btntextsize();
+  margin-right: 10px;
+  background: no-repeat scroll top right;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: inline-block;
+  background-color: #ccc;
+  background-repeat: no-repeat;
+  z-index: 100;
+  padding: 5px 8px 6px;
+  color: #333;
+  line-height: normal;
+  border: 1px solid #ccc;
+  border-bottom-color: #bbb;
+}
+
+.btn:hover {
+  @include buttongradient();
+  @include IE-gradient();
+  background-repeat: no-repeat;
+  color: #000;
+}
+
+.btn.primary {
+  @include rounded($radius);
+  background-color: $blue;
+  @include boxshadow();
+  @include textshadow(120, 120, 120, 0.75);
+  @include btntextsize();
+  @include buttongradient($blue, $blue, $blue);
+  @include IE-gradient($blue, $blue);
+  color: #F1F2F2;
+  background-repeat: repeat-x;
+  border-color: #C0C0D0 #C0C0D0 #7D82A1;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.btn.primary:hover {
+  color: #fff;
+  background-color: $ltblue;
+  background-repeat: no-repeat;
+  @include buttongradient($ltblue, $bluemed, $blue);
+  @include IE-gradient($ltblue, $blue);
+}
+.btn.primary:active { 
+  outline: none;
+  @include buttongradient($blue, $bluemed, $blue);
+  @include IE-gradient($blue, $bluemed);
+}
+
+.btn:active { 
+  outline: none;
+  @include buttongradient(#CCC, #E0E0E0, #CCC);
+  @include IE-gradient(#CCC, #E0E0E0);
+
+}
+
+.btn.alert {
+  color: #939598;
+  background-color: #fff;
+  padding: 2px;
+  background: none;
+  font-size: 1em;
+  padding: 0;
+  border-color: white; 
+}
+.btn.alert:hover {
+  color: #ECA15F;
+  background-repeat: repeat-x;
+  background-repeat-x: repeat;
+  background-repeat-y: no-repeat;
+  font-size: 1em;
+  padding: 0;
+
+}
+
+#form, .form {
+  @include rounded();
+}
+
+#execute-button.btn {
+  float: right;
+}
+
+#add_code_system {
+  float: right;
+  margin-right: -10px;
+}
+
+.m {
+  position: absolute;
+  right: 10px;
+  bottom: 30px;
+  margin-top: 40px;
+  .m:active {
+    position: absolute;
+  }
+}
+
+.top {
+  position: absolute;
+  right: 10px;
+  top: 70px;
+}
+
+.form {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+}
+tbbtn {
+  margin-top: 10px;
+  right: -10px;
+}
+
+.first {
+  margin-top: 40px;
+  position: absolute;
+  left: 20px;
+  bottom: 30px;
+}
+.second {
+  margin-top: 40px;
+  position: absolute;
+  left: 100px;
+  bottom: 30px;
+}
+ 
+.edit {
+  margin-left: 105px;
+}

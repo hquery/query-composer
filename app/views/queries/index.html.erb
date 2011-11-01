@@ -1,7 +1,13 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
-
+ <div> 
+  <%= render :partial=> "sidebar" %>
+</div>
 <div id="mainPanel" >
   <h1>Queries</h1>
+    <div class="top_border">
+      <div class="top_border_lower">
+        </div>
+    </div>
   <table class="simpleTable"> 
     <% if @queries.size %>
     <tr>
@@ -36,11 +42,10 @@
     <% end %>
   </table>
 
-  <%= link_to(new_query_path, class: "btn") do %><span>Add Query</span><% end %>
+  <%= link_to(new_query_path, class: "btn primary m") do %><span>Add Query</span><% end %>
+        <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+    </div>
 
-</div>
-
-<div style="margin-top:20px">
-  <%= link_to "Template Queries", template_queries_path %> <span class="sep">|</span>
-  <%= link_to "Library Functions", library_functions_path %>
 </div>

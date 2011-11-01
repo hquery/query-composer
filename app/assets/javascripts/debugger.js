@@ -1,6 +1,6 @@
 //= require patient
 var hDebugger = {
-	libraryFunctions: '',
+	libraryFunctions: [],
 	patients: [],
 	
 	// Convenience function to quickly initialize editors on the queries/edit page for mocking MapReduce jobs.
@@ -49,10 +49,10 @@ var hDebugger = {
 		elements['container'].resizable();
 		elements['container'].resize(function() {
 		  // Don't allow the editor to resize so far that there isn't room for the error panel
-		  var maximumWidth = $('body').outerWidth(true);
+		  var maximumWidth = $('#mainPanel').outerWidth(true);
   		maximumWidth -= elements['editor'].offset().left;
   		maximumWidth -= elements['errorPanel'].outerWidth(true);
-  		maximumWidth -= 40; // A bit of a hack - Accounting for random little padding amounts etc
+  		maximumWidth -= 30; // A bit of a hack - Accounting for random little padding amounts etc
   		elements['container'].resizable("option", "maxWidth", maximumWidth);
 		  
 		  // Resize the editor and the error panel along with the editor
@@ -108,8 +108,8 @@ var hDebugger = {
 	  $('#debug_button').attr('disabled', 'disabled');
 	},
 	
-	setLibraryFunctions: function(libraryFunctions) {
-	  this.libraryFunctions = libraryFunctions;
+	addLibraryFunctions: function(libraryFunctions) {
+	  this.libraryFunctions.push(libraryFunctions);
 	},
 	
 	// This execute function is specific to queries/edit for mocking MapReduce jobs
@@ -129,7 +129,8 @@ var hDebugger = {
   	};
 		
 		// Define all of the user's library functions
-		eval(hDebugger.libraryFunctions);
+		for (var i in hDebugger.libraryFunctions)
+		  eval(hDebugger.libraryFunctions[i]);
 		
 		// Define map and reduce from the editors and run each patient through the process
     eval(hDebugger['map_ace_editor'].getSession().getValue());

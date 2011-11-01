@@ -12,7 +12,3 @@
  *= require buttons
  *= require jquery-ui-1.8.16.custom
 */
-
-div#search_box {
-	margin-left: -40px;
-}

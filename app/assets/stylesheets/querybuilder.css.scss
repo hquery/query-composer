@@ -185,7 +185,7 @@ div.bottom_border_lower {
   border-radius: 0 0 $workspaceBorderRadius $workspaceBorderRadius;
   border-width: 0 0 $workspaceBorderWidth*2 0;
   height: 0px;
-  position:absolute;
+  position: absolute;
   bottom:0;
 }
 
@@ -196,6 +196,12 @@ div.bottom_border {
   border-width: 0 0 $workspaceBorderWidth 0;
   height: 0;
 }
+
+div.relative {      
+  position: relative;
+}
+
+
 
 
 	

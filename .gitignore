@@ -8,3 +8,4 @@ coverage/
 public/assets
 spec/javascripts/generated/*
 log/
+spec/generated

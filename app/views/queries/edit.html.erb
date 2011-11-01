@@ -1,4 +1,8 @@
-<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}} %>
+
+<%= render partial: 'shared/tab_menu', locals: { selected: {queries: true}}%>
+ <div> 
+  <%= render :partial=> "sidebar" %>
+</div>
 
 <div id="mainPanel">
   <h1>Editing Query</h1>

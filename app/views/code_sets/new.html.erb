@@ -1,4 +1,16 @@
 <%= render partial: 'shared/tab_menu', locals: { selected: {}}%>
-<div>
+ <div> 
+  <%= render :partial=> "queries/sidebar" %>
+</div>
+<div id="mainPanel" >
+  <h1>Code Sets</h1>
+	<div class="top_border form_top_border">
+	  <div class="top_border_lower form_border_lower">
+	  </div>
+	</div>
 <%= render :partial=>"code_sets/form.html" %>
+  <div class="bottom_border_lower relative">
+      <div class="bottom_border">
+      </div>
+  </div>
 </div>

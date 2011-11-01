@@ -4,49 +4,55 @@
 
 <%= f.hidden_field :id %>
 
-
   <table class="simpleTable">
     <tr>
       <th>Name</th>
-      <td><%= f.input_field :name %></td>
+      <td><%= f.input_field :name, :class=> "entryField" %></td>
     </tr>
     <tr>
+      <% type_list = ["Race","Gender","Marital Status","Religious Affiliation",
+                      "Occupation","Social History","Insurance",
+                      "Functional Status","Allergies","Vital Signs",
+                      "Medications","Immunization","Medical Equip.","Procedures","Encounters",
+                      "Conditions","Diagnosis Results",
+                      "Advanced Directives","Support","Family History"] %>
       <th>type</th>
-      <td><%= f.input_field :type %></td>
+      <td><%= f.input_field :type, :collection => type_list %></td>
     </tr>
     
     <tr>
       <th>Description</th>
-      <td><%= f.input_field :description %></td>
+      <td><%= f.input_field :description, :class=> "entryField" %></td>
     </tr>
     
     
     <tr>
+      <% code_set_list = [ "" ] + QME::Importer::CodeSystemHelper.code_systems.values.uniq %>
       <th>Codes</th>
       <td id="codes">
         
-         <%
-         index = 0
-          (@code_set.codes || {}).each_pair do |k,v| %>
+         <% (@code_set.codes || {}).each_pair do |k,v| %>
             <div>
-             <span> <%=  text_field_tag  "code_set[codes][][code_system]", k %></span> <span><%=  text_field_tag  "code_set[codes][][codes]",  v.join(", ")%></span>  
+             <span> <%= select_tag "code_set[codes][][code_system]", options_for_select(code_set_list, k) %></span>
+             <span><%=  text_field_tag  "code_set[codes][][codes]",  v.join(", ")%></span>  
             </div>
             
-         <% 
-          index = index + 1
-         end %>
+         <% end %>
          <a id="add_code_system">Add</a>
       </td>
       </tr>
-    
   </table>
 
 <script>
- var current_index = <%= index %>;
  $(document).ready(function(){
+   var code_set_list = <%= array_or_string_for_javascript(code_set_list) %>;
    $("#add_code_system").click(function(){
      var div = $("<div>");
-     var span = $("<span>").append($("<input>",{"type":"text", "name":"code_set[codes][][code_system]"}));
+     var select = $("<select>",{"name":"code_set[codes][][code_system]"});
+     $.each(code_set_list, function(index, value) {
+       select.append($("<option>",{"value":value}).append(value));
+     });
+     var span = $("<span>").append(select);
      var span2 = $("<span>").append($("<input>",{"type":"text", "name":"code_set[codes][][codes]"}));
      div.append(span).append(" ").append(span2);
      $(this).before(div);
@@ -54,6 +60,7 @@
  });
 </script>  
 <div class="actions">
-  <%= f.button :submit, :class=>"btn" %>
+  <%= f.button :submit, :class=>"btn primary form" %>
+
 </div>
 <% end %>
