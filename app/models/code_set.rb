@@ -31,28 +31,29 @@ class CodeSet
     codes[code_system] ||= []
   end
   
-  def set_properties(h)
-   puts h
-   self.name = h['name'] || name
-   self.type = h['type'] || type
-   self.description = h['description'] || description
-   _codes = h['codes']
+  def set_properties(saved_code_set)
+    self.name = saved_code_set['name'] || self.name
+    self.type = saved_code_set['type'] || self.type
+    self.description = saved_code_set['description'] || self.description
+    
+    saved_codes = saved_code_set['codes']
   
-   if _codes.kind_of? Array
-     c = {}
-   
-     _codes.each do |code|
-       n = code['code_system'].strip
-       a = code['codes'].split(",").collect{|x| x.strip }
-       puts n, a
-       unless n.empty? 
-         c[n] = a
-       end
-     end 
-     _codes = c   
-   end 
-   self.codes =  _codes || codes
-   save
+    if saved_codes.kind_of? Array
+      updated_codes = {}
+      
+      saved_codes.each do |item|
+        code_system = item['code_system'].strip
+        code = item['codes'].split(",").collect{ |x| x.strip }
+
+        updated_codes[code_system] ||= []
+        updated_codes[code_system] += code
+      end
+      
+      saved_codes = updated_codes
+    end 
+    
+    self.codes = saved_codes || self.codes
+    self.save!
   end
   
 end
