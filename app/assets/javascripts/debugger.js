@@ -122,10 +122,10 @@ var hDebugger = {
 		var mapEmits = {};
 		var reduceResults = {};
 		var emit = function(key, value) {
-  		if (mapEmits[key])
-  		  mapEmits[key].push(value);
+  		if (JSON.stringify(key) in mapEmits)
+  		  mapEmits[JSON.stringify(key)].push(value);
   		else
-  	    mapEmits[key] = [value];
+  	    mapEmits[JSON.stringify(key)] = [value];
   	};
 		
 		// Define all of the user's library functions
@@ -134,23 +134,26 @@ var hDebugger = {
 		
 		// Define map and reduce from the editors and run each patient through the process
     eval(hDebugger['map_ace_editor'].getSession().getValue());
-		for (var i in hDebugger.patients)
+		for (var i in hDebugger.patients) {
 		  map(hDebugger.patients[i]);
-
+		}
 		eval(hDebugger['reduce_ace_editor'].getSession().getValue());
-		for (var i in mapEmits)
-			reduceResults[i] = reduce(i, mapEmits[i]);
+		$.each(mapEmits, function(key, value) {
+		  reduceResults[key] = reduce($.parseJSON(key), value);
+		});
 		
 		// Format results from all the emits
 		var output = '<tr><td>Key</td><td>Emitted Values</td></tr>';
-		for (var i in mapEmits)
-		  output += '<tr><td>' + i + '</td><td>' + mapEmits[i] + '</td>';
+		$.each(mapEmits, function(key, value) {
+		  output += '<tr><td>' + key + '</td><td>' + JSON.stringify(value) + '</td>';
+		});
 		$('#map_output').html(output);
 		
 		// Format the reduced results
 		output = '<tr><td>Key</td><td>Reduced Value</td></tr>';
-		for (var i in reduceResults)
-		  output += '<tr><td>' + i + '</td><td>' + reduceResults[i] + '</td>';
+    $.each(reduceResults, function(key, value) {
+		  output += '<tr><td>' + key + '</td><td>' + JSON.stringify(value) + '</td>';
+		});
 		$('#reduce_output').html(output);
 		
 		// Close up shop - Reactivate the debug button, show the results

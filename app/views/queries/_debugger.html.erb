@@ -1,3 +1,31 @@
+<% content_for :head do -%>
+  <%= stylesheet_link_tag "debugger.css"%>
+  <%= javascript_include_tag "ace_editor/ace" %>
+  <%= javascript_include_tag "ace_editor/mode-javascript" %>
+  <%= javascript_include_tag "debugger/records" %>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      hDebugger.initialize();
+    });
+    
+    <%
+      container = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/container.js.coffee').read, :bare=>true)
+      reducer = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/reducer.js.coffee').read, :bare=>true)
+      rules = CoffeeScript.compile(Rails.root.join('app/assets/javascripts/builder/rules.js.coffee').read, :bare=>true)
+      generated_query_library_functions = "var queryStructure = queryStructure || {}; " + container + reducer + rules
+    
+      user_library_functions = ""
+      @current_user.library_functions.each do |library_function|
+        user_library_functions << library_function.definition
+      end
+    %>
+    
+    hDebugger.addLibraryFunctions(<%= raw generated_query_library_functions.to_json %>);
+    hDebugger.addLibraryFunctions(<%= raw user_library_functions.to_json %>);
+  </script>
+<% end %>
+
 <tr><td>Map Function</td>
   <td>
     <div id="map_container" class="debug_container">
