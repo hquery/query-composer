@@ -2,7 +2,6 @@
 /* Define styles for drag and drop query builder */
 
 
-@import "mixins";
 $paletteWidth  : 180px;
 $paletteBorderWidth  : 18px;
 $paletteRadius : 18px;
@@ -191,7 +190,15 @@ div.extract_editor {
    // width:0.5em;
   }
   .ui-slider-horizontal .ui-slider-range.ui-widget-header {background:#80cacd;}
-  p {margin:5px 0}
+  p {
+    margin:5px 0;
+    div.optLink {
+      text-align:right;
+      font-size:0.9em;
+      line-height:1em;
+      a.sel {font-weight:bold;color:orange}
+    }
+  }
 }
 
 .popup-arrow-border {
@@ -311,3 +318,46 @@ div.paletteLink {
 .string .optional {
     margin: 20px;
 }
+
+
+div#detailDialog { 
+  border:2px solid #666;
+  background-color:$popupBackground;
+  border-radius:10px;
+  display:inline-table;
+  padding:10px;
+  z-index:200;
+  div {
+    margin:10px 0;
+  }
+  label {margin:0 5px 0 0 }
+  select {margin:0 5px 0 0;}
+  div.dateFieldset {
+    vertical-align:middle;
+  }
+  span.date {display:inline-block;}
+  span.date label {display:block;font-size:0.85em;color:#666;}
+
+  a.dp-choose-date {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0 10px 0 5px;
+    display: inline-block;
+    text-indent: -2000px;
+    overflow: hidden;
+    background: url(cal20.png) no-repeat; 
+    vertical-align:middle;
+  }
+  
+  a.dp-choose-date.dp-disabled {
+    background-position: 0 -20px;
+    cursor: default;
+  }
+  div.dlgButtons {
+    text-align:right;
+  }
+  div.dlgButtons input {margin-left:10px;}
+  img.ui-datepicker-trigger {vertical-align:bottom;margin:0 15px 0 5px;padding-bottom:1px}
+}
+  

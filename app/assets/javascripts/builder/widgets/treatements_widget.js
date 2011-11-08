@@ -20,6 +20,8 @@ $.widget("ui.TreatmentsEditor",{
     this.encounterRule = this.findRuleByName("encounters");
     var code = (this.encounterRule )? this.encounterRule.data.code : null;
     this.div = $("<div>");
+    $("<h2>").text("Treatments").appendTo(this.div);
+
     this.encountersDiv = $("<div>").CodeList({title:"Encounters",type:"encounter", selected:code, onChange:function(code,event){self.encounterRule = new queryStructure.CodeSetRule({type:"encounters",code:code}); self._update();}});
     
     
