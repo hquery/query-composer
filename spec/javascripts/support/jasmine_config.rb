@@ -41,7 +41,6 @@ module Jasmine
     # Convenience method for compiling coffeescript to all the places we need it
     def compile_coffeescript source_path, destination_path
       # Jasmine testing directories
-      #puts "Source - #{source_path} \n Destination - #{destination_path}"
       Dir.mkdir(File.dirname(File.expand_path(destination_path, __FILE__))) unless File.exists?(File.dirname(File.expand_path(destination_path, __FILE__)))
       
       # Compile coffee script from the project into the test directory
@@ -58,10 +57,6 @@ module Jasmine
 
     # This method compiles all of the spec files into js files that Jasmine can run
     def prepare_jasmine_coffeescript
-      #puts File.dirname(File.expand_path("../../../../app/assets/javascripts/builder/fdafsdf/awfwefew", __FILE__))
-      #puts File.dirname(File.expand_path("../../generated/", __FILE__))
-      #puts File.dirname(File.expand_path("../../../../coverage/javascripts/uninstrumented/public/javascripts/", __FILE__))
-      
       # Remove previously compiled project coffeescript and spec coffeescript
       delete_coffeescript("../../../generated/")
       

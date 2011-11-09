@@ -21,21 +21,16 @@ gem 'mongoid_rails_migrations'
 gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
-#gem 'delayed_job_mongoid', :git => 'https://github.com/cyrilpic/delayed_job_mongoid.git', :branch => 'nil_error'
 gem 'delayed_job_mongoid', :git => 'https://github.com/collectiveidea/delayed_job_mongoid.git'
-gem 'hquery-patient-api', :git=>'http://github.com/hquery/patientapi.git', :branch=> 'develop'
-#gem 'hquery-patient-api', :git=>'http://github.com/hquery/patientapi.git', :tag=> 'V0.1'
+gem 'hquery-patient-api', :git => 'http://github.com/hquery/patientapi.git', :branch => 'develop'
 gem 'devise'
 gem 'cancan'
 gem 'pry'
 gem 'kramdown'
-#gem 'jasmine', :group => [:development, :test]
-gem 'jasmine',
-  :git        => 'https://github.com/hjdivad/jasmine-gem.git',
-  :submodules => true,
-  :branch     => 'jscoverage'
+gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
 gem 'coderay'
+gem 'quality-measure-engine', :git => 'http://github.com/pophealth/quality-measure-engine.git', :branch => 'develop'
 
 
 
