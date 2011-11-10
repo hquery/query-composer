@@ -12,10 +12,11 @@
 <%= link_to "Add", new_code_set_path({type: params[:type]}), :class=> "btn primary m" %> 
   <table class="simpleTable">
     <tr>
-	<td> <h2>Type</h2> </td>
-	<td> <h2>Coded Concepts</h2> </td>
+      <th><h2>Concept Type</h2></th>
+      <th></th>
     </tr>
-<%= render :partial=> "code_sets/entry.html" %>
+    <tr><td><!--akling: would like to display type here-->  </td></tr>
+   <%= render :partial=> "code_sets/entry2.html", :collection => @code_sets %>
  </table>
   <div class="bottom_border_lower relative">
       <div class="bottom_border">

@@ -22,12 +22,15 @@ class CodeSetsController < ApplicationController
   end
   
   def by_type
+    #@code_sets = CodeSet.group_by(&:type)
     @code_sets = CodeSet.where(type:params[:type]).asc(:name)
     respond_to do |format|
-       format.html {render :template=>"code_sets/index.html"}
+       format.html {render :template=>"code_sets/index2.html"}
        format.json {render :json=>@code_sets}
       end
   end
+  
+
   
 
 end

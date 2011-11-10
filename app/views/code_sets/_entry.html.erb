@@ -1,5 +1,8 @@
 <tr>
-  <td><%= link_to entry.name, url_for(entry)  %></td>
-  <td><%= link_to entry.type, :action=>'by_type', :type=>entry.type %></td>
-  <td><%= entry.description %></td>
+
+<% @code_sets.group_by(&:type).each do |type, name| %>
+  <td><%= link_to type, :action=>'by_type', :type=>type %></td>
+  <td><%= name.map(&:name).join(', ') %></td>
+  <!--akling: would like to have had the names linked -->
 </tr>
+<%end%>
