@@ -53,8 +53,8 @@ $.widget("ui.ObservationsEditor",{
                       minValue:100,
                       maxValue:250},
       dateDescriptor : "recorded from",
-      startDate: "05/11/2011",
-      endDate : "09/18/2011"
+      startDate: "11/11/2011",
+      endDate : "11/18/2011"
       }
     },
   _create:function(){
@@ -85,35 +85,48 @@ $.widget("ui.ObservationsEditor",{
   _appendOptions:function(e) {
     var dataType = $(e).data("type");
     var _self = this;
-        var dpOptions = {showOn: "button",
-			buttonImage: "/assets/cal20.png",
-			buttonText: "Select date",
-			buttonImageOnly: true};
+    var dpOptions = {
+      showOn: "button",
+      buttonImage: "/assets/cal20.png",
+      buttonText: "Select date",
+      buttonImageOnly: true
+    };
 			
     var showDetails = function(e) {
       var toggleVariabilityFields = function(d) {
-      $(d).find("#variabilityLabel").change(function() {
-        if ($(this).val() != "bt") {
-          $("#variabilityMin").show().siblings("span.sep").hide();
-          $("#variabilityMax").hide();
-        } else {
-          $("#variabilityMin,#variabilityMax,span.sep").show();
-        }
-      });
-      
-      $("#variabilityLabel").trigger("change");
-      
-    } // end toggleVariabilityFields
-    $(".optLink a").removeClass("sel");
-    $(this).addClass("sel");
+        $(d).find("#variabilityLabel").change(function() {
+          if ($(this).val() != "bt") {
+            $("#variabilityMin").show().siblings("span.sep").hide();
+            $("#variabilityMax").hide();
+          } else {
+            $("#variabilityMin,#variabilityMax,span.sep").show();
+          }
+        });
+        
+        $("#variabilityLabel").trigger("change");
+        
+      } // end toggleVariabilityFields
     
-      var dlg = $("#detailsDialogTemplate").tmpl(_self._detailsFields[$(this).data("type")]);
+      var update = function(e) {
+        _self.updateDetails(this);
+      };
+      var cancel = function(e) {
+        _self.cancelDetails(this);
+      };
+      
+      $(".optLink a").removeClass("sel");
+      $(this).addClass("sel");
+      
+      var dlg = $("#detailsDialogTemplate").tmpl(_self._detailsFields[$(this).data("type")],_self._updateDetails);
       $(dlg).find("input.datePicker").datepicker(dpOptions).end();
-      $("#detailDialog").html(dlg);
+      $(dlg).find("#detailsSaveBtn").click(update);
+      $(dlg).find("#detailsCancelBtn").click(_self.cancelDetails);
+      $("#detailDialog").html(dlg).show();
       toggleVariabilityFields(dlg);
       
       $("#detailDialog").position({of:$(this),my:"left bottom",at:"right bottom",offset:"5 10"});
-    }
+    };
+    
     var a = $("<a>").text("options").attr("href","#").css("display","inline").data("type",dataType).click(showDetails);
     var optLink = $("<div>").addClass("optLink").append(a);
     
@@ -145,6 +158,18 @@ $.widget("ui.ObservationsEditor",{
      if(this.allergyRule){this.container.add(this.allergyRule);}
 
   },
-
+  updateDetails : function(e) {
+    console.log(this.vitalSignRule);
+    if (this.vitalSignRule === null) {this.vitalSignRule = new queryStructure.VitalSignRule({code:""});};
+    var details = $(e).closest("form").serializeObject();
+    $.extend(this.vitalSignRule.data,details);
+    console.log(this.vitalSignRule);
+    this._update();
+    this.cancelDetails();
+  },
+  cancelDetails : function() {
+    $("#detailDialog").empty().hide();
+    $(".popup-content").find(".optLink a").removeClass("sel");
+    }
   
 });
