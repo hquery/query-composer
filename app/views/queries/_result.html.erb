@@ -3,7 +3,7 @@
     <% next if key=='_id' %>
     <tr>
       <td><code><%= key %>:</code></td>
-      <td><code><%= jsonify(value) %></code></td>
+      <td><pre><%= jsonify(value) %></pre></td>
     </tr>
   <% end if result.value %>
 </table>

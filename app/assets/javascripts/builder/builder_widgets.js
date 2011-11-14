@@ -119,12 +119,11 @@ $.widget("ui.popup",{
           arrowDiv.addClass("popup-arrow-"+direction);
           arrowBorder.addClass("popup-arrow-border-"+direction);
         }
+        var width = div.outerWidth();
+        var height = div.outerHeight();
         
-        var width = div.width();
-        var height = div.height();
-        
-        var arrowWidth = arrowDiv.width();
-        var arrowHeight = arrowDiv.height();
+        var arrowWidth = arrowDiv.outerWidth();
+        var arrowHeight = arrowDiv.outerHeight();
         location = (location == "center") ? ".5" : location;
         var fLoc = parseFloat(location);
         if(!isNaN(fLoc)){
@@ -281,7 +280,7 @@ $.widget("ui.ContainerUI", {
 
              if(oldParent && oldParent != this.parent &&
                 (oldParent.container instanceof queryStructure.And)){
-                oldParent._collapsIfSingleChild();
+                oldParent._collapseIfSingleChild();
 
               }
         }
@@ -365,12 +364,12 @@ $.widget("ui.ContainerUI", {
         widget.destroy();
         
         if(!sameParent && otherParent && (otherParent.container instanceof queryStructure.And)){
-          otherParent._collapsIfSingleChild();
+          otherParent._collapseIfSingleChild();
         }
         updateQuery();
     },
     
-    _collapsIfSingleChild: function(){
+    _collapseIfSingleChild: function(){
       if(this.container && this.container.children.length == 1 && this.parent && this.container.parent){
         var child = this.container.children[0];
         var childui = this.parent._createItemUI( - 1, child);
@@ -581,7 +580,7 @@ $.widget("ui.ExtractUI", {
       }
     } else {
       droppedWidget.closePopup();
-      droppedWidget._remove();
+    //  droppedWidget._remove();
     }
   },
   

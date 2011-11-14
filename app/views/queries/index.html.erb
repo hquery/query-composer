@@ -13,6 +13,7 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
+      <th></th>
       <th>Status</th>
     </tr>
     <% end %>
@@ -20,6 +21,11 @@
     <tr>
       <td><%= link_to query.title, query_path(query.id) %></td>
       <td><%= query.description %></td>
+      <td><% if (query.generated?) %>
+      <%= link_to 'Builder', builder_query_path(query.id) %>
+      <% else %>
+      <%= link_to 'Advanced Edit', { :action => 'edit', :id => query.id }, :method => :get, id: 'edit' %>
+      <% end %>
       <td>
         <% if (not query.last_execution) %>
           no executions
@@ -31,7 +37,7 @@
           <% end %>
         <% end %>
       </td>
-      <td><%= button_to '×', {:action=>'destroy', :id=>query.id}, :class=>"btn alert", :method=>:delete, :confirm=>'are you sure?'  %></td>
+      <td><%= button_to '×', {:action=>'destroy', :id=>query.id}, :class=>"btn alert", :method=>:delete, :confirm=>'Are you sure you wish to delete the query ' + query.title %></td>
     </tr>
     <% end %>
   </table>

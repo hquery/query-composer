@@ -73,7 +73,61 @@
   });
 
  </script>
+  
+  
+  <script id="dateDetailsTemplate" type="text/x-jquery-tmpl"> 
+    <div class="dateFieldset">
+      <label>${$data.dateDescriptor || "recorded from"}</label>
+      <span class="date">
+        <label>Start</label>
+        <input type="text" class="datePicker" size="11" value="${startDate}" name="startDate"/> 
+      </span>
+     <!-- <span class="sep">-</span> -->
+      <span class="date">
+        <label>End</label>
+        <input type="text" class="datePicker" size="11" value="${endDate}" name="endDate"/>
+      </span>
+    </div>
+  </script> 
+  
+  <script id="detailsDialogTemplate" type="text/x-jquery-tmpl">
+    <form>  
+    <div>
 
+    {{if descriptor && descriptor.options}}
+    <select name="descriptorLabel">
+      {{each(index,item) descriptor.options}}
+        <option value="${item.value}">${item.label}</option>
+      {{/each}}
+    </select>
+    {{/if}}
+    <label>${descriptor.valueText}</label>
+
+    
+    {{if variability && variability.options }}
+      <select name="variabilityLabel" id="variabilityLabel">
+      {{each(index,item) variability.options}}
+        <option value="${item.value}">${item.label}</option>
+      {{/each}}
+      </select>
+    {{/if}}
+    {{if variability && variability.minValue}}
+    <input type="text" size="5" value="${variability.minValue}" name="variabilityMin" id="variabilityMin" />
+    <span class="sep">-</span>
+    <input type="text" size="5" value="${variability.maxValue}" name="variabilityMax" id="variabilityMax" />
+    {{/if}}
+    </div>
+    {{tmpl "#dateDetailsTemplate"}}
+    <div class="dlgButtons">
+      <input type="button" value="save" id="detailsSaveBtn"/>
+      <input type="button" value="cancel" id="detailsCancelBtn"/>
+    </div>
+    </form>
+    
+  </script>
+  
+  
+  
 <%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
 
 <div id="queryInfo">
@@ -184,7 +238,8 @@
     </div>
   </div>
 </div>
-
+<div id="detailDialog" style="position:absolute;display:none">
+</div>
 <div id="otherside">
   <div id="stats">
     <h1></h1>

@@ -2,7 +2,6 @@
 /* Define styles for drag and drop query builder */
 
 
-@import "mixins";
 $paletteWidth  : 180px;
 $paletteBorderWidth  : 18px;
 $paletteRadius : 18px;
@@ -80,6 +79,7 @@ div.conditional_editor {
   li.resource_dep {
   	padding: $itemPadding;
 	  cursor: pointer;
+	  width:10em;
 	  &:hover {@include resourceHover}
   }
   // this is a collection inside of a dependency group (e.g. and OR inside of an AND)
@@ -119,6 +119,7 @@ div.extract_editor {
   border: $activeBorderWidth dashed darken($activeBackground, 20%);
   @include rounded(7px);
 }
+
 
 .or > ul {
   display: table-cell;
@@ -179,10 +180,25 @@ div.extract_editor {
   font-size:0.9em;
   h2 {font-weight:bold}
   label {width:7em; display:inline-block;}
-  .ui-slider-handle {
-    width:0.5em;
+  .ui-slider .ui-slider-handle {
+    border:1px solid #999;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+   // width:0.5em;
   }
-  p {margin:5px 0}
+  .ui-slider-horizontal .ui-slider-range.ui-widget-header {background:#80cacd;}
+  p {
+    margin:5px 0;
+    div.optLink {
+      text-align:right;
+      font-size:0.9em;
+      line-height:1em;
+      a.sel {font-weight:bold;color:black}
+    }
+  }
 }
 
 .popup-arrow-border {
@@ -302,3 +318,46 @@ div.paletteLink {
 .string .optional {
     margin: 20px;
 }
+
+
+div#detailDialog { 
+  border:2px solid #666;
+  background-color:$popupBackground;
+  border-radius:10px;
+  display:inline-table;
+  padding:10px;
+  z-index:200;
+  div {
+    margin:10px 0;
+  }
+  label {margin:0 5px 0 0 }
+  select {margin:0 5px 0 0;}
+  div.dateFieldset {
+    vertical-align:middle;
+  }
+  span.date {display:inline-block;}
+  span.date label {display:block;font-size:0.85em;color:#666;}
+
+  a.dp-choose-date {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0 10px 0 5px;
+    display: inline-block;
+    text-indent: -2000px;
+    overflow: hidden;
+    background: url(cal20.png) no-repeat; 
+    vertical-align:middle;
+  }
+  
+  a.dp-choose-date.dp-disabled {
+    background-position: 0 -20px;
+    cursor: default;
+  }
+  div.dlgButtons {
+    text-align:right;
+  }
+  div.dlgButtons input {margin-left:10px;}
+  img.ui-datepicker-trigger {vertical-align:bottom;margin:0 15px 0 5px;padding-bottom:1px}
+}
+  
