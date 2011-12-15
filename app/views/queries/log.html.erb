@@ -15,7 +15,11 @@
   <% @query.executions.each do |event| %>
     <tr>
       <td><%= Time.at(event.time).to_s %></td>
+      <% begin %>
       <td><pre><%= JSON.pretty_generate(event.aggregate_result) %></pre></td>
+      <% rescue %>
+      <td><pre><%= event.aggregate_result %></pre></td>
+      <% end %>
     </tr>
   <% end %>
   </table>
