@@ -20,12 +20,13 @@ function reduce(key, values) {
       rereduced = false
     );
     
-    for (var i in values) {
-      result.sum('target_pop', values[i]);
-      result.sum('filtered_pop', values[i]);
-      result.sum('unfound_pop', values[i]);
-      result.sum('total_pop', values[i]);
-      values[i].rereduced = true;
+    while(values.hasNext()) {
+      var _val = values.next();
+      result.sum('target_pop', _val);
+      result.sum('filtered_pop', _val);
+      result.sum('unfound_pop', _val);
+      result.sum('total_pop', _val);
+      _val.rereduced = true;
       result.rereduced = true;
     }
   } else if (key.type == 'group') {
@@ -45,7 +46,8 @@ function reduce(key, values) {
       rereduced = false
     );
     
-    for (var i in values) {
+    while(values.hasNext()) {
+      var _val = values.next();
       <% aggregates = []
       query_structure['extract']['selections'].each do |select|
         # TODO - We need to decide on a default action when no aggregate is defined. For now, we'll just sum.
@@ -53,7 +55,7 @@ function reduce(key, values) {
           select['aggregation'] << 'sum'
         end
         select['aggregation'].each do |aggregate|
-          aggregates << "result.#{aggregate}('#{select['title']}', values[i]);"
+          aggregates << "result.#{aggregate}('#{select['title']}', _val);"
         end
       end
       aggregation = aggregates.join("\n") %>
@@ -61,7 +63,7 @@ function reduce(key, values) {
       <%= aggregation %>
 
       result.rereduced = true;
-      values[i].rereduced = true;
+      _val.rereduced = true;
     }
   }
   

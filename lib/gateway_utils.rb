@@ -26,9 +26,10 @@ module GatewayUtils
   # The reduce function is only allowed to be exactly one function, so we stuff everything inside
   def full_reduce query
     if (query.generated?)
-      reduce = "function(key, values) {"
-      reduce += query.reduce + builder_reduce_javascript_library
-      reduce += "return reduce(key, values);}"
+      # reduce = "function(key, values) {"
+     
+      reduce = query.reduce + builder_reduce_javascript_library
+      # reduce += "return reduce(key, values);}"
     else
       reduce = query.reduce
     end
