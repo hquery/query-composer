@@ -94,8 +94,17 @@ class EndpointsControllerTest < ActionController::TestCase
   end
   
   test "should refresh endpoint statuses" do
-    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queues/server_status", :body => 
-      "{\"queued\":0,\"running\":0,\"successful\":331,\"failed\":0,\"retried\":0,\"avg_runtime\":4.54074623361455,\"backend_status\":\"good\"}")
+    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queries", :body => 
+     %{<?xml version="1.0" encoding="UTF-8"?>
+     <feed xmlns="http://www.w3.org/2005/Atom" xmlns:md="http://projecthdata.org/hdata/schemas/2009/11/metadata">
+       <title>Distributed Queries</title>
+       <link href="http://localhost:3001/hdata/index"/>
+       <updated>2011-12-15T16:02:13-05:00</updated>
+       <author>
+         <name>hQuery Gateway</name>
+       </author>
+       <id>http://localhost:3001/queries</id>
+     </feed>})
     get :refresh_endpoint_statuses
 
     assert_equal "GET", FakeWeb.last_request.method
