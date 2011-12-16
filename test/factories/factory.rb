@@ -55,8 +55,8 @@ Factory.define :query do |q|
   q.sequence(:title) { |n| "title #{n}" }
   q.description "description"
   q.filter ""
-  q.map "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
-  q.reduce "function(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
+  q.map "function map(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
+  q.reduce "function reduce(patient) {\r\n  emit(null, {\"count\":1});\r\n}"
   q.user Factory.build(:user)
 end
 
@@ -82,7 +82,7 @@ Factory.define :generated_query, :parent => :query do |q|
 end
 
 Factory.define :query_with_queued_results, :parent => :query do |query|
-  query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
+  query.reduce "function reduce(key, values) {\r\n  var result = 0; \r\n while(values.hasNext()){ result += values.next(); }\r\nreturn result; \r\n}"
   
   query.executions { 
     [] << Factory.build(:queued_execution)
@@ -90,7 +90,7 @@ Factory.define :query_with_queued_results, :parent => :query do |query|
 end
 
 Factory.define :query_with_completed_results, :parent => :query do |query|
-  query.reduce "function(key, values) {\r\n  var result = 0; \r\n values.forEach(function(value) {\r\nresult += value;\r\n});\r\nreturn result; \r\n}"
+  query.reduce "function reduce(key, values) {\r\n  var result = 0; \r\n while(values.hasNext()){ result += values.next(); }\r\nreturn result; \r\n}"
   
   query.executions { 
     [] << Factory.build(:completed_execution)

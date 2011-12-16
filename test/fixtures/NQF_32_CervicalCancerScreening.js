@@ -125,6 +125,6 @@ function map(patient) {
 
 function reduce(criteria, counts) {
 	var sum = 0;
-	for(var i in counts) sum += counts[i];
+	while(counts.hasNext()){sum += counts.next();}
 	return sum;
-};
+}

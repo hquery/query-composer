@@ -47,7 +47,8 @@ class Execution
   # = Aggregation =
   # ===============
   def aggregate
-    response = Result.collection.map_reduce(self.map_fn(), self.query.reduce, :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
+    
+    response = Result.collection.map_reduce(self.map_fn(), _reduce(), :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
     results = response['results']
     if results
       self.aggregate_result = {}
@@ -157,4 +158,27 @@ NON_GENERATED_MAP
     }
 GENERATED_MAP
   end
+  
+  private 
+  
+  def _reduce
+     "function(k,v){
+
+         var iter = function(x){
+           this.index = 0;
+           this.arr = (x==null)? [] : x;
+
+           this.hasNext = function(){
+             return this.index < this.arr.length;
+           };
+
+           this.next = function(){
+             return this.arr[this.index++];
+           }
+         };
+
+         #{full_reduce(self.query)}
+         return reduce(k,new iter(v));
+      }"
+    end
 end
