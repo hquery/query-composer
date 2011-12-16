@@ -7,7 +7,7 @@ module Jobs
     end
 
     def perform_with_schedule
-      Delayed::Job.enqueue self, 0, self.class.schedule.from_now.getutc
+      Delayed::Job.enqueue self, :run_at => self.class.schedule.from_now.getutc
       perform_without_schedule
     end
 

@@ -3,23 +3,26 @@ module EndpointsHelper
     @endpoint_server_statuses = {}
     @endpoints.each do |endpoint|
       url = endpoint.status_url
-      request = Net::HTTP::Get.new(url.path + "/server_status")
       begin
-        Net::HTTP.start(url.host, url.port) do |http|
-          response = http.request(request)
-          if Net::HTTPSuccess
-            @endpoint_server_statuses[endpoint.id] = JSON.parse(response.body)
-          end
+        response = Net::HTTP.start(url.host, url.port) do |http|
+          headers = {}
+          headers['Accept'] = 'application/atom+xml'
+          http.get(url.path, headers)
         end
-        
+      
+        case response
+        when Net::HTTPSuccess
+          @endpoint_server_statuses[endpoint.id] = {
+            'backend_status' => 'good'
+          }
+        else
+          @endpoint_server_statuses[endpoint.id] = {
+            'backend_status' => 'unreachable'
+          }
+        end
+
       rescue Exception => ex
         @endpoint_server_statuses[endpoint.id] = {
-          'queued' => 'unknown',
-          'running' => 'unknown',
-          'successful' => 'unknown',
-          'failed' => 'unknown',
-          'retried' => 'unknown',
-          'avg_runtime' => 'unknown',
           'backend_status' => 'unreachable'
         }
       end

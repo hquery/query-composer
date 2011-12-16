@@ -6,7 +6,7 @@ class Endpoint
 
   SUBMIT_PATH = 'queries'
   FUNCTIONS_PATH = 'library_functions'
-  STATUS_PATH = 'queues'
+  STATUS_PATH = 'queries'
 
   has_many :endpoint_logs
   has_many :results
