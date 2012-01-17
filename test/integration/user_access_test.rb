@@ -9,7 +9,6 @@ class UserAccessTest < ActionDispatch::IntegrationTest
     @admin = Factory(:admin)
     @user = Factory(:user_with_queries)
     
-    @new_endpoint = Factory(:endpoint)
     @unattached_query = Factory(:query)
     
   end
@@ -20,10 +19,6 @@ class UserAccessTest < ActionDispatch::IntegrationTest
     assert_equal path, '/unauthenticated'
     
     get "/queries"
-    assert_response :redirect
-    assert_equal path, '/unauthenticated'
-
-    get "/endpoints"
     assert_response :redirect
     assert_equal path, '/unauthenticated'
 
@@ -82,26 +77,6 @@ class UserAccessTest < ActionDispatch::IntegrationTest
 
     get "/queries/#{@unattached_query.id}"
     assert_response :success
-  end
-
-  test "users should not be able to edit endpoints" do
-    login @user
-    put "/endpoints/#{@new_endpoint.id}", 'endpoint[name]' => 'new name', 'endpoint[base_url]' => 'http://example.com/'
-    assert_response :redirect
-    endpoint_updated = Endpoint.find(@new_endpoint.id);
-    assert_equal @new_endpoint.id, endpoint_updated.id
-    assert_equal @new_endpoint.name, endpoint_updated.name
-    assert_equal @new_endpoint.submit_url, endpoint_updated.submit_url
-  end
-
-  test "admin should be able to edit endpoints" do
-    login @admin
-    put "/endpoints/#{@new_endpoint.id}", 'endpoint[name]' => 'new name', 'endpoint[base_url]' => 'http://example.com/'
-    assert_response :redirect
-    endpoint_updated = Endpoint.find(@new_endpoint.id)
-    assert_equal @new_endpoint.id, endpoint_updated.id
-    assert_equal 'new name', endpoint_updated.name
-    assert_equal 'http://example.com/queries', endpoint_updated.submit_url.to_s
   end
 
   def login(user)

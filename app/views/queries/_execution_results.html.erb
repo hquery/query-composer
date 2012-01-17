@@ -3,24 +3,20 @@
   if (execution) %>
   <table id='execution_results'>
     <tr>
-      <th align='left'>Query URL</th>
-      <th align='left'>Status</th>
-      <th align='left'>Poll URL</th>
+      <th align='left'>Source</th>
       <th align='left'>Result</th>
       <th></th>
     </tr>
     <% 
-      execution.results.each do |result| 
+      execution.results.each_with_index do |result, index| 
     %>
       <tr valign='top'>
-        <td><%= result.endpoint.base_url %></td>
-        <td><%= result.status %><%= result.error_msg if result.status == Result::FAILED %></td>
-        <td><%= result.result_url %></td>
+        <td><%= index %></td>
         <td>
           <% # This call uses /queries because this whole partial is called from an ActionMailer and it needs absolute paths%>
           <%= render :partial => '/queries/result', :locals => { :result => result } %>
         </td>
-        <td> <% if result.status == Result::QUEUED %> <%= link_to "Cancel", {:action=>:cancel,:id=>query, :result_id=>result.id, :execution_id=>execution.id}%> <% end %></td>
+        <td> <% if execution.status == Execution::QUEUED %> <%= link_to "Cancel", {:action=>:cancel,:id=>query, :result_id=>result.id, :execution_id=>execution.id}%> <% end %></td>
       </tr>
     <% end %>
   </table>

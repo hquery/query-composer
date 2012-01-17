@@ -16,14 +16,10 @@
       <tr>
         <td><%= Time.at(execution.time).strftime("%m/%d/%Y") %></td>
         <td><%= Time.at(execution.time).strftime("%I:%M%p") %></td>
-        <td>
-          <% execution.status.each_pair do |key, value| %>
-            <%= key %>: <%= value %> of <%= execution.results.length %><br/>
-          <% end %>
+        <td><%= execution.status %>
         </td>
         <td>
           <% execution.results.each do |result| %>
-            <%= result.endpoint.name %>
             <%= render :partial => 'result', :locals => { :result => result } %>
             <% if (!result.value) %>
               <code class="no_result">no result<code>

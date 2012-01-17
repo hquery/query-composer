@@ -11,12 +11,6 @@ class QueriesControllerTest < ActionController::TestCase
     @ids = @user.queries.order_by([[:created_at, :desc]]).map {|q| q.id}
     @user_ids = [] << @user.id
     
-    @new_endpoint = Factory(:endpoint)
-    
-    @endpoints_for_execution = []
-    @endpoints_for_execution << Factory(:endpoint)
-    @endpoints_for_execution << Factory(:endpoint, base_url: 'http://127.0.0.1:3002')
-    
     @unattached_query = Factory(:query)
     
     @admin = Factory(:admin)
@@ -128,114 +122,6 @@ class QueriesControllerTest < ActionController::TestCase
     assert (not Query.exists? :conditions => {id: @ids[0]})
     assert_redirected_to(queries_url)
   end
-
-  test "should execute query with notification" do
-    sign_in @user
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :body => "FORCE ERROR")
-    query_from_db = Query.find(@ids[2])
-    
-    endpoint_ids = [@endpoints_for_execution[0].id.to_s]
-    
-    post :execute, id: @ids[2], endpoint_ids: endpoint_ids, notification: false
-    query = assigns(:query)
-    assert_not_nil query
-    assert !query.last_execution.notification
-    query_from_db = Query.find(@ids[2])
-    
-    # check that the query has an execution, and the execution has a result for each endpoint
-    assert_not_nil query.executions
-    assert_equal 1, query.executions.length
-    assert_equal endpoint_ids.length, query.executions[0].results.length
-    
-    assert_equal "POST", FakeWeb.last_request.method
-    assert_equal "multipart/form-data", FakeWeb.last_request.content_type
-    
-    multipart_data = FakeWeb.last_request.body_stream.read
-    
-    assert_equal 1, (multipart_data.scan /name="map"/).length
-    assert_equal 1, (multipart_data.scan /name="reduce"/).length
-    assert_equal 1, (multipart_data.scan /name="filter"/).length
-    
-    assert_redirected_to(query_path(query.id))
-  end
-  
-  test "should execute query without notification" do
-    sign_in @user
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :body => "FORCE ERROR")
-    query_from_db = Query.find(@ids[2])
-    
-    endpoint_ids = [@endpoints_for_execution[0].id.to_s]
-    
-    post :execute, id: @ids[2], endpoint_ids: endpoint_ids, notification: true
-    query = assigns(:query)
-    assert_not_nil query
-    assert query.last_execution.notification
-    query_from_db = Query.find(@ids[2])
-    
-    # check that the query has an execution, and the execution has a result for each endpoint
-    assert_not_nil query.executions
-    assert_equal 1, query.executions.length
-    assert_equal endpoint_ids.length, query.executions[0].results.length
-    
-    assert_equal "POST", FakeWeb.last_request.method
-    assert_equal "multipart/form-data", FakeWeb.last_request.content_type
-    
-    multipart_data = FakeWeb.last_request.body_stream.read
-    
-    assert_equal 1, (multipart_data.scan /name="map"/).length
-    assert_equal 1, (multipart_data.scan /name="reduce"/).length
-    assert_equal 1, (multipart_data.scan /name="filter"/).length
-    
-    assert_redirected_to(query_path(query.id))
-  end
-  
-  test "executing without endpoints should warn" do
-    sign_in @user
-    query = Query.find(@ids[2])
-
-    post :execute, id: @ids[2], notification: true
-    assert_redirected_to(query_path(query.id))
-  end
-  
-  # test "log displays query log" do
-  #   sign_in @user
-  #   query_from_db = Query.find(@ids[1])
-  #   query_logger = QueryLogger.new
-  #   query_logger.add query_from_db, "test message"
-  #   
-  #   get :log, id: @ids[1]
-  #   
-  #   events = assigns[:events]
-  #   assert_not_nil events
-  #   assert "test message", events.last[:message]
-  # end
-  
-  test "should check all queries completed" do
-    sign_in @user
-    get :show, id: @ids[0]
-    query = assigns(:query)
-    
-    assert_equal @ids[0], query.id
-    assert_response :success
-  end
-  
-  test "should refresh execution with 0 pending" do
-    sign_in @user
-    # With no running queries, update_query_info should successfully return unfinished_query_count == 0
-    query = Query.find(@ids[0])
-    get :refresh_execution_results, id: query.id
-    assert_equal false, assigns(:incomplete_results)
-  end
-  
-  test "should refresh execution with 1 pending" do
-    sign_in @user
-    # One result's status will be 'Queued', so we should find that unfinished_query_count == 1
-    query = Query.find(@ids[3])
-    query.last_execution.results[0].status = Result::QUEUED
-    query.save!
-    get :refresh_execution_results, id: query.id
-    assert_equal true, assigns(:incomplete_results)
-  end
   
   test "should get execution history" do
     sign_in @user
@@ -244,59 +130,6 @@ class QueriesControllerTest < ActionController::TestCase
     assigned_query = assigns(:query)
     assert_not_nil assigned_query
     assert_response :success
-  end
-  
-  
-  test "should cancel endpoint results" do
-    sign_in @user
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :body => "{}", :status => ["304"], :location=>"http://localhost:3001/queries")
-    query_from_db = Query.find(@ids[2])
-    
-    endpoint_ids = [@endpoints_for_execution[0].id.to_s]
-    
-    # why is all of this here you ask, well becuse calling the method to post the execution actaully 
-    # trys to call all of the endpoints which results in 
-    post :execute, id: @ids[2], endpoint_ids: endpoint_ids, notification: true
-    query = assigns(:query)
-    assert_not_nil query
-    assert query.last_execution.notification
-    query_from_db = Query.find(@ids[2])
-    
-    # check that the query has an execution, and the execution has a result for each endpoint
-    assert_not_nil query.executions
-    assert_equal 1, query.executions.length
-    assert_equal endpoint_ids.length, query.executions[0].results.length
-    res_id = query.last_execution.results[0].id
-    delete :cancel, id: @ids[2], execution_id: query.last_execution.id, result_id:res_id
-    assert_equal Result::CANCELED, query.reload().last_execution.results.find(res_id).status
-    assert_redirected_to(query_path(query.id))
-
-  end
-  
-  test "should cancel execution" do
-    sign_in @user
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :body => "{}", :status => ["304"], :location=>"http://localhost:3001/queries")
-    query_from_db = Query.find(@ids[2])
-
-    endpoint_ids = [@endpoints_for_execution[0].id.to_s]
-    
-    # why is all of this here you ask, well becuse calling the method to post the execution actaully 
-    # trys to call all of the endpoints which results in 
-    post :execute, id: @ids[2], endpoint_ids: endpoint_ids, notification: true
-    query = assigns(:query)
-    assert_not_nil query
-    assert query.last_execution.notification
-    query_from_db = Query.find(@ids[2])
-    
-    # check that the query has an execution, and the execution has a result for each endpoint
-    assert_not_nil query.executions
-    assert_equal 1, query.executions.length
-    assert_equal endpoint_ids.length, query.executions[0].results.length
-    res_id = query.last_execution.results[0].id
-    delete :cancel_execution, id: @ids[2], execution_id: query.last_execution.id
-    assert_equal Result::CANCELED, query.reload().last_execution.results.find(res_id).status
-    assert_redirected_to(query_path(query.id))
-
   end
   
   test "should clone template to query" do

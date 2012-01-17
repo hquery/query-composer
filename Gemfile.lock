@@ -17,14 +17,6 @@ GIT
       resque-status (~> 0.2.3)
       rubyzip (~> 0.9.4)
 
-GIT
-  remote: https://github.com/collectiveidea/delayed_job_mongoid.git
-  revision: c8816d7eecb3e2ba61b878d45b90625a63cbc0d4
-  specs:
-    delayed_job_mongoid (1.0.7)
-      delayed_job (~> 3.0.0.pre)
-      mongoid (>= 2.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -82,10 +74,6 @@ GEM
     cover_me (1.2.0)
       configatron
       hashie
-    daemons (1.0.10)
-    delayed_job (3.0.0.pre4)
-      activesupport (~> 3.0)
-      daemons (= 1.0.10)
     devise (1.5.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -281,8 +269,6 @@ DEPENDENCIES
   coderay
   coffee-rails
   cover_me (>= 1.0.0.rc6)
-  delayed_job
-  delayed_job_mongoid!
   devise
   factory_girl
   fakeweb

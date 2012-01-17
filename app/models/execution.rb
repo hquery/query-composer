@@ -4,43 +4,30 @@ class Execution
   include Mongoid::Document
   include GatewayUtils
 
+  QUEUED = 'queued'
+  FAILED = 'failed'
+  COMPLETE = 'complete'
+  CANCELED = 'canceled'
+
   embedded_in :query
   has_many :results
 
   field :time, type: Integer              # execution time
   field :aggregate_result, type: Hash     # final aggregated result
   field :notification, type: Boolean      # if the user wants to be notified by email when the result is ready
-
-  def status
-    result_statuses = {}
-    results.each{|result| result_statuses[result.status] ||= 0; result_statuses[result.status]+=1;}
-    result_statuses
-  end
+  field :status, type: String
 
   def execute(endpoints)
-    endpoints.each do |endpoint|
-
-      query_url = submit(endpoint)
-      if query_url
-        Result.create(endpoint: endpoint, query_url: query_url,
-                      status: Result::QUEUED, execution: self)
-      else
-        Result.create(endpoint: endpoint,
-                      status: Result::FAILED, execution: self)
-      end
-    end
   end
 
   def finished?
-    unfinished_results.empty?
-  end
-
-  def unfinished_results
-    results.where( "this.status != '" + Result::COMPLETE + "' && this.status != '" + Result::FAILED + "'")
+    status != QUEUED
   end
 
   def cancel
-    results.each {|result| result.cancel}
+    if self.status.nil? || self.status == QUEUED
+      update_attribute(:status, CANCELED)
+    end
   end
   
   # ===============
@@ -110,11 +97,9 @@ class Execution
       return <<NON_GENERATED_MAP
         function() {
           #{build_library_functions(query)}
-          if (this.status == "#{Result::COMPLETE}") {
-            for(var key in this.value) {
-              if (key != "_id" && key != 'created_at' && key != 'query_id') {
-                emit(key, this.value[key]);
-              }
+          for(var key in this.value) {
+            if (key != "_id" && key != 'created_at' && key != 'query_id') {
+              emit(key, this.value[key]);
             }
           }
         }
@@ -126,33 +111,31 @@ NON_GENERATED_MAP
     <<GENERATED_MAP
     function() {
       #{reducer_code}
-      if (this.status == "#{Result::COMPLETE}") {
-        for(var key in this.value) {
-          if (key != "_id" && key != "created_at" && key != "query_id") {
-            if ((key.match(new RegExp("type_population")) || key.match(new RegExp("type_group")))) {
-              var hashifiedKey = {};
-              if (key.match(new RegExp("type_population"))) {
-                hashifiedKey['type'] = 'population';
-              } else {
-                hashifiedKey['type'] = 'group';
+      for(var key in this.value) {
+        if (key != "_id" && key != "created_at" && key != "query_id") {
+          if ((key.match(new RegExp("type_population")) || key.match(new RegExp("type_group")))) {
+            var hashifiedKey = {};
+            if (key.match(new RegExp("type_population"))) {
+              hashifiedKey['type'] = 'population';
+            } else {
+              hashifiedKey['type'] = 'group';
+            }
+            if (hashifiedKey.type == 'group') {
+              var queryStructure = #{self.query.query_structure.to_json}
+              for (var group in queryStructure['extract']['groups']) {
+                var match = RegExp(queryStructure['extract']['groups'][group]['title'] + "_(.*)", '');
+                var results = key.match(match);
+                hashifiedKey[queryStructure['extract']['groups'][group]['title']] = results[1];
               }
-              if (hashifiedKey.type == 'group') {
-                var queryStructure = #{self.query.query_structure.to_json}
-                for (var group in queryStructure['extract']['groups']) {
-                  var match = RegExp(queryStructure['extract']['groups'][group]['title'] + "_(.*)", '');
-                  var results = key.match(match);
-                  hashifiedKey[queryStructure['extract']['groups'][group]['title']] = results[1];
-                }
-              }
-              
-              this.value[key] = new reducer.Value(this.value[key]['values'], this.value[key]['rereduced']);
             }
             
-            var originalKey = key;
-            key = hashifiedKey;
-            
-            emit(key, this.value[originalKey]);
+            this.value[key] = new reducer.Value(this.value[key]['values'], this.value[key]['rereduced']);
           }
+          
+          var originalKey = key;
+          key = hashifiedKey;
+          
+          emit(key, this.value[originalKey]);
         }
       }
     }

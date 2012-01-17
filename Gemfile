@@ -20,8 +20,6 @@ gem "mongoid"
 gem 'mongoid_rails_migrations'
 gem 'simple_form'
 gem 'multipart-post'
-gem 'delayed_job'
-gem 'delayed_job_mongoid', :git => 'https://github.com/collectiveidea/delayed_job_mongoid.git'
 gem 'hquery-patient-api', :git => 'http://github.com/hquery/patientapi.git', :tag => 'V0.2'
 gem 'devise'
 gem 'cancan'

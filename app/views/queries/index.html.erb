@@ -30,11 +30,7 @@
         <% if (not query.last_execution) %>
           no executions
         <% else %>
-          <% query.last_execution.status.each_pair do |status, count| %>
-            <% if (status != query.last_execution.status.keys.first) %>,<% end %>
-            <%= status %>
-            (<%= count.to_s + " of " + query.last_execution.results.length.to_s%>)
-          <% end %>
+          <%= query.last_execution.status %>
         <% end %>
       </td>
       <td><%= button_to '×', {:action=>'destroy', :id=>query.id}, :class=>"btn alert", :method=>:delete, :confirm=>'Are you sure you wish to delete the query ' + query.title %></td>

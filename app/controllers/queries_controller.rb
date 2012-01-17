@@ -22,7 +22,7 @@ class QueriesController < ApplicationController
   end
 
   def show
-    @endpoints = Endpoint.all
+    @endpoints = []
   end
   
   def edit
@@ -64,7 +64,7 @@ class QueriesController < ApplicationController
   end
 
   def builder
-     @endpoints = Endpoint.all
+     @endpoints = []
   end
   
   def result

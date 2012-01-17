@@ -121,14 +121,6 @@ Factory.define :generated_query_with_no_results, :parent => :generated_query do 
   }
 end
 
-# =============
-# = Endpoints =
-# =============
-Factory.define :endpoint do |e| 
-  e.sequence(:name) {|n| "Endpoint#{n}"}
-  e.base_url 'http://127.0.0.1:3001' 
-end
-
 # ==============
 # = Executions =
 # ==============
@@ -139,37 +131,37 @@ end
 
 Factory.define :queued_execution, :parent => :execution do |e|
   e.after_build do |ex|
-    Factory.create(:result_waiting, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_waiting, :execution => ex)
   end
 end
 
 Factory.define :completed_execution, :parent => :execution do |e|
   e.after_build do |ex|
-    Factory.create(:result_with_value, :endpoint => Factory(:endpoint), :execution => ex)
-    Factory.create(:result_with_value, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value, :execution => ex)
+    Factory.create(:result_with_value, :execution => ex)
   end
 end
 
 Factory.define :completed_execution_for_generated_query, :parent => :execution do |e|
   e.after_build do |ex|
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
   end
 end
 
 Factory.define :execution_with_generated_odd_result_count, :parent => :execution do |e|
   e.after_build do |ex|
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
   end
 end
 
 Factory.define :execution_with_generated_single_result, :parent => :execution do |e|
   e.after_build do |ex|
-    Factory.create(:result_with_value_from_generated_query, :endpoint => Factory(:endpoint), :execution => ex)
+    Factory.create(:result_with_value_from_generated_query, :execution => ex)
   end
 end
 
@@ -179,22 +171,16 @@ end
 
 Factory.define :result do |r|
   r.value nil
-  r.result_url nil
-  r.status nil
 end
 
 Factory.define :result_waiting, :parent => :result do |r|
   r.value nil
-  r.result_url nil
-  r.status Result::QUEUED
-  r.query_url 'http://localhost:3000/queries/4e4c08b5431a5f5dc1000001'
   r.created_at Time.new(2011, 1, 1)
   r.updated_at Time.new(2011, 1, 1)
 end
 
 Factory.define :result_with_value, :parent => :result do |result| 
   result.value ({"M" => 50, "F" => 30})
-  result.status Result::COMPLETE
 end
 
 Factory.define :result_with_value_from_generated_query, :parent => :result_with_value do |result|
