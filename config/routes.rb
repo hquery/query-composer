@@ -8,10 +8,8 @@ QueryComposer::Application.routes.draw do
   post "admin/approve"
   post "admin/disable"
   
-  get "endpoints/refresh_endpoint_statuses"
   post 'queries/generate_query'
 
-  resources :endpoints
   resources :library_functions
   resources :template_queries
 
