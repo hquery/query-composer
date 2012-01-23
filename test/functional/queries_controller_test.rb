@@ -123,15 +123,6 @@ class QueriesControllerTest < ActionController::TestCase
     assert_redirected_to(queries_url)
   end
   
-  test "should get execution history" do
-    sign_in @user
-    query = Query.find(@ids[4])
-    get :execution_history, id: query.id
-    assigned_query = assigns(:query)
-    assert_not_nil assigned_query
-    assert_response :success
-  end
-  
   test "should clone template to query" do
     sign_in @user
     post :clone_template, template_id: @template_query.id

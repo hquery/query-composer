@@ -9,8 +9,8 @@ class QueriesController < ApplicationController
 
   # add breadcrumbs
   add_breadcrumb 'Queries', :queries_url
-  add_breadcrumb_for_resource :query, :title, only: %w{edit show log execution_history builder builder_simple}
-  add_breadcrumb_for_actions only: %w{edit new log execution_history builder builder_simple}
+  add_breadcrumb_for_resource :query, :title, only: %w{edit show log builder builder_simple}
+  add_breadcrumb_for_actions only: %w{edit new log builder builder_simple}
 
   creates_updates_destroys :query
 

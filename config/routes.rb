@@ -9,6 +9,8 @@ QueryComposer::Application.routes.draw do
   post "admin/disable"
   
   post 'queries/generate_query'
+  
+  get 'pmn/query'
 
   resources :library_functions
   resources :template_queries
@@ -20,7 +22,6 @@ QueryComposer::Application.routes.draw do
       delete 'destroy'
       get 'log'
       get 'refresh_execution_results'
-      get 'execution_history'
       get 'cancel'
       get 'cancel_execution'
       get 'builder'
