@@ -16,8 +16,11 @@ class Execution
   field :aggregate_result, type: Hash     # final aggregated result
   field :notification, type: Boolean      # if the user wants to be notified by email when the result is ready
   field :status, type: String
+  field :pmn_session_id, type: String     # identifies the PopMedNet session that created the query execution
 
   def execute(endpoints)
+    update_attribute(:status, QUEUED)
+    # send query to PopMedNet
   end
 
   def finished?
@@ -34,7 +37,6 @@ class Execution
   # = Aggregation =
   # ===============
   def aggregate
-    
     response = Result.collection.map_reduce(self.map_fn(), _reduce(), :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
     results = response['results']
     if results

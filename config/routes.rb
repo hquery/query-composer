@@ -12,6 +12,7 @@ QueryComposer::Application.routes.draw do
   post 'queries/generate_query'
   
   get 'pmn/query'
+  get 'pmn/result'
 
   resources :endpoints
   resources :library_functions

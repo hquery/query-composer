@@ -16,7 +16,7 @@ class Query < BaseQuery
 
   def execute(endpoints, should_notify = false)
     # add an execution to the query with the current run time and if the user wants to be notified by email on completion
-    execution = Execution.new(time: Time.now.to_i, notification: should_notify)
+    execution = Execution.new(time: Time.now.to_i, notification: should_notify, pmn_session_id: session[:pmn_session_id])
     self.executions << execution
     self.save!
 

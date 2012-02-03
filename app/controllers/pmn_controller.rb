@@ -10,7 +10,16 @@ class PmnController < ApplicationController
   
   def query
     session[:pmn_session_id] = params[:pmn_session_id]
+    session[:pmn_service_url] = params[:pmn_service_url]
+    flash[:notice] = "Url: #{params[:pmn_service_url]}, Token: #{params[:pmn_session_id]}"
     redirect_to :controller => 'queries', :action => 'index'
+  end
+  
+  def result
+    session[:pmn_session_id] = params[:pmn_session_id]
+    session[:pmn_service_url] = params[:pmn_service_url]
+    # pull the results from PopMedNet and update the query
+    redirect_to :controller => 'queries', :action => 'show', :id => query.id
   end
 
 end
