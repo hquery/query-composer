@@ -60,6 +60,66 @@ module GatewayUtils
     return functions
   end
   
-  def submit(endpoint)
+  def submit(execution)
+    proxy_addr = '127.0.0.1'
+    proxy_port = 8888
+  
+    # First add the serialized query
+    service_url = execution.pmn_service_url
+    session_id = execution.pmn_session_id
+    url = URI.parse("#{service_url}/#{session_id}/Document")
+    request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter, url)
+    content_type = request['content-type']
+    body = request.body_stream.read
+    request = Net::HTTP::Post.new(url.path)
+    request.body = post_document(execution.query.title, content_type, false, Base64.encode64(body))
+    request.content_type = 'application/xml'
+    response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+      http.request(request)
+    end
+    # Next add a human readable version
+    url = URI.parse("#{service_url}/#{session_id}/Document")
+    request = Net::HTTP::Post.new(url.path)
+    request.body = post_document(execution.query.title, 'text/plain', false, 'This is a hQuery')
+    request.content_type = 'application/xml'
+    response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+      http.request(request)
+    end
+    # Now commit the query
+    url = URI.parse("#{service_url}/#{session_id}/Commit")
+    request = Net::HTTP::Post.new(url.path)
+    request.body = finish_request(execution.query.title, execution.query.description, '', '', '', '')
+    request.content_type = 'application/xml'
+    response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+      http.request(request)
+    end
   end
+  
+  def post_document(name, content_type, viewable, body)
+    xml = Builder::XmlMarkup.new(:indent => 2)
+    xml.PostDocument("xmlns" => "http://lincolnpeak.com/schemas/DNS4/API") do
+      xml.Name(name)
+      xml.MimeType(content_type)
+      xml.Viewable(viewable)
+      xml.Body(body)
+    end
+    xml.target!
+  end
+  
+  def finish_request(name, description, activity, activity_description, due_date, priority)
+    xml = Builder::XmlMarkup.new(:indent => 2)
+    xml.RequestCreated("xmlns" => "http://lincolnpeak.com/schemas/DNS4/API") do
+      xml.Header do
+        xml.Name(name)
+        xml.Description(description)
+        xml.Activity(activity)
+        xml.ActivityDescription(activity_description)
+        xml.DueDate(due_date)
+        xml.Priority(priority)
+      end
+      xml.ApplicableDataMarts
+    end
+    xml.target!
+  end
+  
 end

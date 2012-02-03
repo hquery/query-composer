@@ -17,10 +17,12 @@ class Execution
   field :notification, type: Boolean      # if the user wants to be notified by email when the result is ready
   field :status, type: String
   field :pmn_session_id, type: String     # identifies the PopMedNet session that created the query execution
+  field :pmn_service_url, type: String     # identifies the PopMedNet service url
 
-  def execute(endpoints)
+  def execute()
     update_attribute(:status, QUEUED)
     # send query to PopMedNet
+    submit(self)
   end
 
   def finished?

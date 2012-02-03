@@ -72,21 +72,13 @@ class QueriesController < ApplicationController
   end
 
   def execute
-    endpoint_ids = params[:endpoint_ids]
-    if (endpoint_ids && !endpoint_ids.empty?) 
-      endpoint_ids = endpoint_ids.map! {|id| BSON::ObjectId(id)}
-      endpoints = Endpoint.criteria.for_ids(endpoint_ids)
-
-      notify = params[:notification]
+    notify = params[:notification]
       
-      # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
-      @query.execute(endpoints, notify)
+    # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
+    @query.execute(session, notify)
 
-      redirect_to :action => 'show'
-    else
-      flash[:alert] = "Cannot execute a query if no endpoints are provided."
-      redirect_to :action => 'show'
-    end
+    # redirect to the PopMedNet portal
+    redirect_to :action => 'show'
   end
 
   def cancel

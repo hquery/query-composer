@@ -14,13 +14,13 @@ class Query < BaseQuery
     executions.desc(:time).first
   end
 
-  def execute(endpoints, should_notify = false)
+  def execute(session, should_notify = false)
     # add an execution to the query with the current run time and if the user wants to be notified by email on completion
-    execution = Execution.new(time: Time.now.to_i, notification: should_notify, pmn_session_id: session[:pmn_session_id])
+    execution = Execution.new(time: Time.now.to_i, notification: should_notify, pmn_session_id: session[:pmn_session_id], pmn_service_url: session[:pmn_service_url])
     self.executions << execution
     self.save!
 
-    execution.execute(endpoints)
+    execution.execute()
   end
   
   def generate_map_reduce
