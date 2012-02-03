@@ -1,4 +1,11 @@
 GIT
+  remote: http://github.com/hquery/patientapi.git
+  revision: e26c6c7e0679987f2afbb5e4a7693fd025c0d61f
+  tag: V0.2
+  specs:
+    hquery-patient-api (0.1.0)
+
+GIT
   remote: http://github.com/projectcypress/health-data-standards.git
   revision: 064222ff9fe42247d41a74d8f5b3632b596a551c
   branch: master
@@ -244,6 +251,7 @@ DEPENDENCIES
   fakeweb
   headless
   health-data-standards!
+  hquery-patient-api!
   jasmine
   jquery-rails
   kramdown

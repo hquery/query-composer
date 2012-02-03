@@ -20,6 +20,7 @@ gem "mongoid"
 gem 'mongoid_rails_migrations'
 gem 'simple_form'
 gem 'multipart-post'
+gem 'hquery-patient-api', :git => 'http://github.com/hquery/patientapi.git', :tag => 'V0.2'
 gem 'health-data-standards', :git => 'http://github.com/projectcypress/health-data-standards.git', :branch => 'master'
 gem 'devise'
 gem 'cancan'
@@ -28,8 +29,6 @@ gem 'kramdown'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
 gem 'coderay'
-#gem 'quality-measure-engine', :git => 'http://github.com/pophealth/quality-measure-engine.git', :branch => 'develop'
-
 
 
 # To use debugger
