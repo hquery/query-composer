@@ -61,26 +61,26 @@ module GatewayUtils
   end
   
   def submit(execution)
-    proxy_addr = '127.0.0.1'
-    proxy_port = 8888
+    proxy_addr = 'gatekeeper.mitre.org'
+    proxy_port = 80
   
     # First add the serialized query
     service_url = execution.pmn_service_url
     session_id = execution.pmn_session_id
-    url = URI.parse("#{service_url}/#{session_id}/Document")
-    request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter, url)
-    content_type = request['content-type']
-    body = request.body_stream.read
-    request = Net::HTTP::Post.new(url.path)
-    request.body = post_document(execution.query.title, content_type, false, Base64.encode64(body))
-    request.content_type = 'application/xml'
-    response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
-      http.request(request)
-    end
+#     url = URI.parse("#{service_url}/#{session_id}/Document")
+#     request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter, url)
+#     content_type = request['content-type']
+#     body = request.body_stream.read
+#     request = Net::HTTP::Post.new(url.path)
+#     request.body = post_document(execution.query.title, content_type, false, body)
+#     request.content_type = 'application/xml'
+#     response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+#       http.request(request)
+#     end
     # Next add a human readable version
     url = URI.parse("#{service_url}/#{session_id}/Document")
     request = Net::HTTP::Post.new(url.path)
-    request.body = post_document(execution.query.title, 'text/plain', false, 'This is a hQuery')
+    request.body = post_document(execution.query.title, 'text/plain', true, 'This is a hQuery')
     request.content_type = 'application/xml'
     response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
       http.request(request)
@@ -88,7 +88,7 @@ module GatewayUtils
     # Now commit the query
     url = URI.parse("#{service_url}/#{session_id}/Commit")
     request = Net::HTTP::Post.new(url.path)
-    request.body = finish_request(execution.query.title, execution.query.description, '', '', '', '')
+    request.body = finish_request(execution.query.title, execution.query.description, '', '', '2012-05-05T12:00:00', 'Low')
     request.content_type = 'application/xml'
     response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
       http.request(request)
@@ -101,7 +101,7 @@ module GatewayUtils
       xml.Name(name)
       xml.MimeType(content_type)
       xml.Viewable(viewable)
-      xml.Body(body)
+      xml.Body(Base64.encode64(body))
     end
     xml.target!
   end
