@@ -78,7 +78,7 @@ class QueriesController < ApplicationController
     @query.execute(session, notify)
 
     # redirect to the PopMedNet portal
-    redirect_to :action => 'show'
+    redirect_to session[:pmn_return_url]
   end
 
   def cancel

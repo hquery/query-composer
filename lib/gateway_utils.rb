@@ -1,5 +1,7 @@
+require 'net/http'
+
 module GatewayUtils
-  def query_request(map, reduce, functions, filter, query_url)
+  def query_request(map, reduce, functions, filter)
     # build the multi-part elements for the request
     # need to do this inside the loop since UploadIO is single-use
     filter_io = if filter
@@ -16,7 +18,7 @@ module GatewayUtils
     payload = {'map' => map_io, 'reduce' => reduce_io}
     payload['filter'] = filter_io if filter
     payload['functions'] = function_io if function_io
-    Net::HTTP::Post::Multipart.new(query_url.path, payload)
+    Net::HTTP::Post::Multipart.new('/', payload)
   end
   
   def full_map query
@@ -61,41 +63,47 @@ module GatewayUtils
   end
   
   def submit(execution)
+    # first add the serialized JS query package
+    request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter)
+    content_type = request['content-type']
+    body = post_document_xml(execution.query.title, content_type, false, request.body_stream.read)
+    post_request(execution, 'Document', body)
+    # Next add a human readable version
+    body = post_document_xml(execution.query.title, 'text/plain', true, execution.query.description)
+    post_request(execution, 'Document', body)
+    # Now commit the query
+    body = finish_request_xml(execution.query.title, execution.query.description, '', '', '2012-05-05T12:00:00', 'Low')
+    post_request(execution, 'Commit', body)
+  end
+  
+  def post_request(execution, action, body)
     proxy_addr = 'gatekeeper.mitre.org'
     proxy_port = 80
-  
-    # First add the serialized query
-    service_url = execution.pmn_service_url
-    session_id = execution.pmn_session_id
-#     url = URI.parse("#{service_url}/#{session_id}/Document")
-#     request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter, url)
-#     content_type = request['content-type']
-#     body = request.body_stream.read
-#     request = Net::HTTP::Post.new(url.path)
-#     request.body = post_document(execution.query.title, content_type, false, body)
-#     request.content_type = 'application/xml'
-#     response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
-#       http.request(request)
-#     end
-    # Next add a human readable version
-    url = URI.parse("#{service_url}/#{session_id}/Document")
+    url = URI.parse("#{execution.pmn_service_url}/#{execution.pmn_session_id}/#{action}")
     request = Net::HTTP::Post.new(url.path)
-    request.body = post_document(execution.query.title, 'text/plain', true, 'This is a hQuery')
-    request.content_type = 'application/xml'
-    response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
-      http.request(request)
-    end
-    # Now commit the query
-    url = URI.parse("#{service_url}/#{session_id}/Commit")
-    request = Net::HTTP::Post.new(url.path)
-    request.body = finish_request(execution.query.title, execution.query.description, '', '', '2012-05-05T12:00:00', 'Low')
+    request.body = body
     request.content_type = 'application/xml'
     response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
       http.request(request)
     end
   end
   
-  def post_document(name, content_type, viewable, body)
+  def get_return_url(service_url, session_id)
+    proxy_addr = 'gatekeeper.mitre.org'
+    proxy_port = 80
+    url = URI.parse("#{service_url}/#{session_id}/Session")
+    return_url = ''
+    request = Net::HTTP::Get.new(url.path)
+    result = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+      response = http.request(request)
+      doc = Nokogiri::XML(response.body)
+      doc.root.add_namespace_definition('pmn', 'http://lincolnpeak.com/schemas/DNS4/API')
+      return_url = doc.at_xpath('/SessionMetadata/ReturnUrl').inner_text
+    end
+    return_url
+  end    
+  
+  def post_document_xml(name, content_type, viewable, body)
     xml = Builder::XmlMarkup.new(:indent => 2)
     xml.PostDocument("xmlns" => "http://lincolnpeak.com/schemas/DNS4/API") do
       xml.Name(name)
@@ -106,7 +114,7 @@ module GatewayUtils
     xml.target!
   end
   
-  def finish_request(name, description, activity, activity_description, due_date, priority)
+  def finish_request_xml(name, description, activity, activity_description, due_date, priority)
     xml = Builder::XmlMarkup.new(:indent => 2)
     xml.RequestCreated("xmlns" => "http://lincolnpeak.com/schemas/DNS4/API") do
       xml.Header do
