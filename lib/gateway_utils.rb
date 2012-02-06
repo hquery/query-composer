@@ -92,16 +92,42 @@ module GatewayUtils
     proxy_addr = 'gatekeeper.mitre.org'
     proxy_port = 80
     url = URI.parse("#{service_url}/#{session_id}/Session")
-    return_url = ''
     request = Net::HTTP::Get.new(url.path)
-    result = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
-      response = http.request(request)
-      doc = Nokogiri::XML(response.body)
-      doc.root.add_namespace_definition('pmn', 'http://lincolnpeak.com/schemas/DNS4/API')
-      return_url = doc.at_xpath('/SessionMetadata/ReturnUrl').inner_text
+    response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+      http.request(request)
     end
-    return_url
-  end    
+    doc = Nokogiri::XML(response.body)
+    doc.root.add_namespace_definition('pmn', 'http://lincolnpeak.com/schemas/DNS4/API')
+    doc.at_xpath('/SessionMetadata/ReturnUrl').inner_text
+  end
+  
+  def get_results(execution, service_url, session_id)
+    proxy_addr = 'gatekeeper.mitre.org'
+    proxy_port = 80
+    url = URI.parse("#{service_url}/#{session_id}/Session")
+    request = Net::HTTP::Get.new(url.path)
+    response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+      http.request(request)
+    end
+    doc = Nokogiri::XML(response.body)
+    doc.root.add_namespace_definition('pmn', 'http://lincolnpeak.com/schemas/DNS4/API')
+    result_doc_urls = doc.xpath('//pmn:Document[pmn:MimeType="application/json"]').collect do |result_doc|
+      result_doc.at_xpath('./pmn:LiveUrl').inner_text
+    end
+    
+    result_doc_urls.each do |result_doc_url|
+      # fetch data and add to execution as new result
+      url = URI.parse(result_doc_url)
+      request = Net::HTTP::Get.new(url.path)
+      response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
+        http.request(request)
+      end
+      json = JSON.parse(response.body)
+      execution.results << Result.new({:value => json, :aggregated => false})
+    end
+    execution.save!
+    execution.aggregate
+  end
   
   def post_document_xml(name, content_type, viewable, body)
     xml = Builder::XmlMarkup.new(:indent => 2)
