@@ -131,7 +131,9 @@
 <%= render partial: 'execution_popup', locals: { endpoints: @endpoints, button_id: 'execute-button' } %>
 
 <div id="queryInfo">
+  <% if session[:pmn_session_data] %>
   <%= link_to("#", id: "execute-button", class: "btn primary") do %><span>Execute</span><% end %>
+  <% end %>
   <span class="sep">|</span> <%= link_to("Query Definition", query_path, class:"ctrl") %>
   <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
   <h1><%= @query.title %></h1>

@@ -72,13 +72,13 @@ class QueriesController < ApplicationController
   end
 
   def execute
-    notify = params[:notification]
-      
     # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
-    @query.execute(session, notify)
+    @query.execute(session, :priority => params[:priority], :due_date => as_time(params[:due_date]), :activity_name => params[:activity_name], :activity_description => params[:activity_description])
+    return_url = session[:pmn_session_data][:return_url]
+    session[:pmn_session_data] = nil
 
     # redirect to the PopMedNet portal
-    redirect_to session[:pmn_return_url]
+    redirect_to return_url
   end
 
   def cancel
@@ -113,6 +113,11 @@ class QueriesController < ApplicationController
   end
 
   private
+  
+  def as_time(str)
+    return (Time.now + 7*24*60*60) if str==nil || str.length != 10 # one week from today
+    return Time.local(str[6,4].to_i, str[0,2].to_i, str[3,2].to_i)
+  end
 
   def convert_to_hash(field)
     params[:query][field] = JSON.parse(params[:query][field]) if params[:query][field]

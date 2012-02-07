@@ -62,24 +62,26 @@ module GatewayUtils
     return functions
   end
   
-  def submit(execution)
+  def submit(execution, options)
     # first add the serialized JS query package
     request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter)
     content_type = request['content-type']
     body = post_document_xml(execution.query.title, content_type, false, request.body_stream.read)
     post_request(execution, 'Document', body)
     # Next add a human readable version
-    body = post_document_xml(execution.query.title, 'text/plain', true, execution.query.description)
+    body = post_document_xml(execution.query.title, 'text/plain', true, "#{execution.query.title}: #{execution.query.description}\n\n#{execution.query.map}")
     post_request(execution, 'Document', body)
     # Now commit the query
-    body = finish_request_xml(execution.query.title, execution.query.description, '', '', '2012-05-05T12:00:00', 'Low')
+    body = finish_request_xml(execution.query.title, execution.query.description, 
+      options[:activity_name], options[:activity_description], options[:due_date].strftime("%Y-%m-%dT%H:%M:%S"),
+      options[:priority].capitalize)
     post_request(execution, 'Commit', body)
   end
   
   def post_request(execution, action, body)
     proxy_addr = 'gatekeeper.mitre.org'
     proxy_port = 80
-    url = URI.parse("#{execution.pmn_service_url}/#{execution.pmn_session_id}/#{action}")
+    url = URI.parse("#{execution.pmn_session_data.service_url}/#{execution.pmn_session_data.session_token}/#{action}")
     request = Net::HTTP::Post.new(url.path)
     request.body = body
     request.content_type = 'application/xml'
@@ -88,23 +90,28 @@ module GatewayUtils
     end
   end
   
-  def get_return_url(service_url, session_id)
+  def get_session_data(service_url, session_token)
     proxy_addr = 'gatekeeper.mitre.org'
     proxy_port = 80
-    url = URI.parse("#{service_url}/#{session_id}/Session")
+    url = URI.parse("#{service_url}/#{session_token}/Session")
     request = Net::HTTP::Get.new(url.path)
     response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
       http.request(request)
     end
     doc = Nokogiri::XML(response.body)
     doc.root.add_namespace_definition('pmn', 'http://lincolnpeak.com/schemas/DNS4/API')
-    doc.at_xpath('/SessionMetadata/ReturnUrl').inner_text
+    {
+      :return_url => doc.at_xpath('/SessionMetadata/ReturnUrl').inner_text,
+      :session_token => session_token,
+      :service_url => service_url,
+      :request_id => doc.at_xpath('/SessionMetadata/RequestId').inner_text
+    }
   end
   
-  def get_results(execution, service_url, session_id)
+  def get_results(service_url, session_token)
     proxy_addr = 'gatekeeper.mitre.org'
     proxy_port = 80
-    url = URI.parse("#{service_url}/#{session_id}/Session")
+    url = URI.parse("#{service_url}/#{session_token}/Session")
     request = Net::HTTP::Get.new(url.path)
     response = Net::HTTP::Proxy(proxy_addr, proxy_port).start(url.host, url.port) do |http|
       http.request(request)
@@ -114,6 +121,8 @@ module GatewayUtils
     result_doc_urls = doc.xpath('//pmn:Document[pmn:MimeType="application/json"]').collect do |result_doc|
       result_doc.at_xpath('./pmn:LiveUrl').inner_text
     end
+    
+    execution = Execution.from_result_id(doc.at_xpath('//pmn:Session/RequestId').inner_text)
     
     result_doc_urls.each do |result_doc_url|
       # fetch data and add to execution as new result
@@ -125,8 +134,10 @@ module GatewayUtils
       json = JSON.parse(response.body)
       execution.results << Result.new({:value => json, :aggregated => false})
     end
+    execution.status = Execution.COMPLETE
     execution.save!
     execution.aggregate
+    execution.query
   end
   
   def post_document_xml(name, content_type, viewable, body)

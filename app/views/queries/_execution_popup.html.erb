@@ -4,7 +4,7 @@
   $(document).ready(function() {
     $( "#execution-popup" ).dialog({
       autoOpen: false,
-      height: 300,
+      height: 375,
       width: 450,
       modal: true,
       buttons: {
@@ -20,34 +20,27 @@
 
     $( "#<%= button_id %>" ).click(function() {
       $( "#execution-popup" ).dialog( "open" );
-    });        
+    }); 
+    
+    $( "#due_date" ).datepicker();       
   });
 </script>
 <% end -%>
 
 <div id="execution-popup" title="Execution Options">
   <%= simple_form_for @query, :url => url_for(:action => 'execute'), :method => 'post', :html => {id: 'execution-popup-form'} do |f| %>
-  <h1>Notification:</h1>
-  <%= check_box_tag "notification", true, false %> Send email notification when query completes
-  <h1>Endpoints:</h1>
-  <table id="endpoints" class="simpleTable">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Title</th>
-        <th>Url</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <% for endpoint in endpoints %>
-      <tr>
-        <td><%= check_box_tag "endpoint_ids[]", endpoint.id, endpoints.length == 1 ? true : false %></td>
-        <td><%= endpoint.name %></td>
-        <td><%= endpoint.base_url %></td>
-      </tr> 
-      <% end %>
-    </tbody>
+  <h1>Priority:</h1>
+  <table>
+  <tr><td>Low</td><td><%= radio_button_tag 'priority', 'low', true %></td></tr>
+  <tr><td>Normal</td><td><%= radio_button_tag 'priority', 'normal', false %></td></tr>
+  <tr><td>High</td><td><%= radio_button_tag 'priority', 'high', false %></td></tr>
+  </table>
+  <h1>Due Date:</h1>
+  <%= text_field_tag 'due_date', '', :size => 11 %>
+  <h1>Activity:</h1>
+  <table>
+  <tr><td>Name</td><td><%= text_field_tag 'activity_name', '', :size => 20 %></td></tr>
+  <tr><td>Description</td><td><%= text_area_tag 'activity_description', '', :size => '40x3' %></td></tr>
   </table>
   <% end %>
 </div>

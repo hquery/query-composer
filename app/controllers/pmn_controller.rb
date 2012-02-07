@@ -12,17 +12,13 @@ class PmnController < ApplicationController
   skip_authorization_check
   
   def query
-    session[:pmn_session_id] = params[:pmn_session_id]
-    session[:pmn_service_url] = params[:pmn_service_url]
-    session[:pmn_return_url] = get_return_url(params[:pmn_service_url], params[:pmn_session_id])
-    flash[:notice] = "Url: #{params[:pmn_service_url]}, Token: #{params[:pmn_session_id]}"
+    session[:pmn_session_data] = get_session_data(params[:pmn_service_url], params[:pmn_session_id])
     redirect_to :controller => 'queries', :action => 'index'
   end
   
   def result
-    session[:pmn_session_id] = params[:pmn_session_id]
-    session[:pmn_service_url] = params[:pmn_service_url]
-    # pull the results from PopMedNet and update the query
+    # pull the results from PopMedNet and add to the query execution
+    query = get_results(params[:pmn_service_url], params[:pmn_session_id])
     redirect_to :controller => 'queries', :action => 'show', :id => query.id
   end
 

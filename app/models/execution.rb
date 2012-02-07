@@ -10,19 +10,24 @@ class Execution
   CANCELED = 'canceled'
 
   embedded_in :query
+  embeds_one :pmn_session_data, class_name: 'PmnSession', inverse_of: :execution
   has_many :results
 
   field :time, type: Integer              # execution time
   field :aggregate_result, type: Hash     # final aggregated result
   field :notification, type: Boolean      # if the user wants to be notified by email when the result is ready
   field :status, type: String
-  field :pmn_session_id, type: String     # identifies the PopMedNet session that created the query execution
-  field :pmn_service_url, type: String     # identifies the PopMedNet service url
 
-  def execute()
+  def self.from_request_id(request_id)
+    q = Query.where({'executions.pmn_session_data.request_id' => request_id}).first
+    e = q.executions.where({'pmn_session_data.request_id' => request_id}).first
+    e
+  end
+  
+  def execute(options)
     update_attribute(:status, QUEUED)
     # send query to PopMedNet
-    submit(self)
+    submit(self, options)
   end
 
   def finished?

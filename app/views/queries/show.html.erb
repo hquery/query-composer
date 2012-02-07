@@ -93,8 +93,10 @@
               <td><%= button_to 'Builder', { :action => 'builder', :id => @query.id }, :method => :get, :class => 'btn primary' %></td>
             <% end %>
             <td><%= button_to 'Advanced Edit', { :action => 'edit', :id => @query.id }, :method => :get, id: 'edit', :class => 'btn snd' %></td>
+            <% if session[:pmn_session_data] %>
             <td><button id="execute-button" class="btn">Execute</button></td>
-          </tr>
+            <% end %>
+            </tr>
         </table>
       </td>
     </tr>
