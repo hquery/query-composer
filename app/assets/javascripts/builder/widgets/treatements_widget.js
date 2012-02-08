@@ -5,7 +5,7 @@ $.widget("ui.EncountersEditor",{
   _create:function(){
     var self = this;
     var parent = this.options.parent;
-    $(this.element).CodeList({title:"Encounters",type:"encounter", onChange:function(code,event){parent.set(new queryStructure.CodeSetRule({type:"encounters",code:code}))}});
+    $(this.element).CodeList({title:"Encounters",type:"Encounters", onChange:function(code,event){parent.set(new queryStructure.CodeSetRule({type:"encounters",code:code}))}});
     
   }
 });
@@ -22,7 +22,7 @@ $.widget("ui.TreatmentsEditor",{
     this.div = $("<div>");
     $("<h2>").text("Treatments").appendTo(this.div);
 
-    this.encountersDiv = $("<div>").CodeList({title:"Encounters",type:"encounter", selected:code, onChange:function(code,event){self.encounterRule = new queryStructure.CodeSetRule({type:"encounters",code:code}); self._update();}});
+    this.encountersDiv = $("<div>").CodeList({title:"Encounters",type:"Encounters", selected:code, onChange:function(code,event){self.encounterRule = new queryStructure.CodeSetRule({type:"encounters",code:code}); self._update();}});
     
     
    

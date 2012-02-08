@@ -6,7 +6,7 @@ $.widget("ui.VitalsEditor",{
     var self = this;
     var parent = this.options.parent;
     var selected = (this.options.rule && this.options.rule.data.code) ? this.options.rule.data.code._id : "";
-    $(this.element).CodeList({title:"Vital Signs",type:"vital_sign",selected:selected, onChange:function(code,event){parent.vitalSignRule = new queryStructure.VitalSignRule({code:code}); parent._update();}});
+    $(this.element).CodeList({title:"Vital Signs",type:"Vital Signs",selected:selected, onChange:function(code,event){parent.vitalSignRule = new queryStructure.VitalSignRule({code:code}); parent._update();}});
     
   }
 });
@@ -71,7 +71,7 @@ $.widget("ui.ObservationsEditor",{
     this.vitalsDiv = $("<p>").VitalsEditor({parent:this, rule:this.vitalSignRule});
     $(this.vitalsDiv).data("type","vitals");
     this._appendOptions(this.vitalsDiv);
-    this.allergiesDiv = $("<p>").CodeList({title:"Allergies",type:"allergy",selected:code, onChange:function(code,event){self.allergyRule = new queryStructure.CodeSetRule({type:"allergies",code:code}); self._update();}});
+    this.allergiesDiv = $("<p>").CodeList({title:"Allergies",type:"Allergies",selected:code, onChange:function(code,event){self.allergyRule = new queryStructure.CodeSetRule({type:"allergies",code:code}); self._update();}});
     $(this.allergiesDiv).data("type","allergies");
     this._appendOptions(this.allergiesDiv);
     //this.funcionalStatusDiv = $("<div>").CodeList({title:"Race",type:"functional_status",selected:this.functionalStatusCode, onChange:function(code,event){self.functionalStatusCode = code; self.set(new queryStructure.CodeSetRule({type:"functional_status",code:code}))}});
