@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Model xmlns="http://lincolnpeak.com/schemas/DNS4/ModelConfiguration" 
+       Id="{B43BC315-4B1A-4EC5-BA10-D3A4A3BB055B}" 
+       ModelProcessorId="{55C48A42-B800-4A55-8134-309CC9954D4C}"
+       Name="hQuery" Version="1.0">
+  <Description>hQuery Model</Description>
+  <RequestType Id="{74E6B4DB-E0F8-4636-AB01-56F1188BDA35}" Name="hQuery">
+    <Description>hQuery Request</Description>
+    <CreateRequestUrl>http://localhost:3000/pmn/query?pmn_session_id={0}&amp;pmn_service_url={1}</CreateRequestUrl>
+    <RetrieveResponseUrl>http://localhost:3000/pmn/result?pmn_session_id={0}&amp;pmn_service_url={1}</RetrieveResponseUrl>
+  </RequestType>
+</Model>

@@ -95,7 +95,7 @@ class QueriesController < ApplicationController
   # This function is used to re-fetch the value of a query. Used to check the status of a query's execution results
   def refresh_execution_results
     if (@query.last_execution)
-      @incomplete_results = @query.last_execution.unfinished_results.count > 0
+      @incomplete_results = nil
       @incomplete_results ||= @query.last_execution.results.where(aggregated: false).count > 0
     else
       @incomplete_results = false
