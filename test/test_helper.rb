@@ -7,7 +7,7 @@ require 'factory_girl'
 require 'mocha'
 require 'pry'
 
-FactoryGirl.find_definitions
+Factory.find_definitions
 
 class ActiveSupport::TestCase
 

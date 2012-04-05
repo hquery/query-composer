@@ -82,8 +82,7 @@ GEM
     erubis (2.7.0)
     execjs (1.2.12)
       multi_json (~> 1.0)
-    factory_girl (2.3.2)
-      activesupport
+    factory_girl (1.3.3)
     fakeweb (1.3.0)
     ffi (1.0.11)
     ffi (1.0.11-java)
@@ -247,7 +246,7 @@ DEPENDENCIES
   coffee-rails
   cover_me (>= 1.0.0.rc6)
   devise
-  factory_girl
+  factory_girl (~> 1.3.3)
   fakeweb
   headless
   health-data-standards!

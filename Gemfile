@@ -42,6 +42,6 @@ group :test do
   gem 'fakeweb'
   gem 'therubyracer', :platforms => :ruby
   gem 'therubyrhino', :platforms => :jruby
-  gem 'factory_girl'
+  gem 'factory_girl', '~> 1.3.3'
   gem 'mocha', :require => false
 end
