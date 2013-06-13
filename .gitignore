@@ -9,3 +9,4 @@ public/assets
 spec/javascripts/generated/*
 log/
 spec/generated
+.idea
