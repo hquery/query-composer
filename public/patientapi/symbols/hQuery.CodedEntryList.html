@@ -217,7 +217,11 @@ ul.inheritsList
 	
 	<li><a href="../symbols/hQuery.Encounter.html">hQuery.Encounter</a></li>
 	
+	<li><a href="../symbols/hQuery.Facility.html">hQuery.Facility</a></li>
+	
 	<li><a href="../symbols/hQuery.Fulfillment.html">hQuery.Fulfillment</a></li>
+	
+	<li><a href="../symbols/hQuery.FunctionalStatus.html">hQuery.FunctionalStatus</a></li>
 	
 	<li><a href="../symbols/hQuery.Immunization.html">hQuery.Immunization</a></li>
 	
@@ -238,6 +242,8 @@ ul.inheritsList
 	<li><a href="../symbols/hQuery.Patient.html">hQuery.Patient</a></li>
 	
 	<li><a href="../symbols/hQuery.Person.html">hQuery.Person</a></li>
+	
+	<li><a href="../symbols/hQuery.PhysicalQuantity.html">hQuery.PhysicalQuantity</a></li>
 	
 	<li><a href="../symbols/hQuery.Pregnancy.html">hQuery.Pregnancy</a></li>
 	
@@ -299,7 +305,7 @@ entries based on codes and date ranges
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/hQuery.CodedEntryList.html#constructor">hQuery.CodedEntryList</a></b>()
+								<b><a href="../symbols/hQuery.CodedEntryList.html#constructor">hQuery.CodedEntryList</a></b>(_super)
 							</div>
 							<div class="description"></div>
 						</td>
@@ -337,10 +343,55 @@ entries based on codes and date ranges
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntryList.html#match">match</a></b>(codeSet, start, end)
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntryList.html#concat">concat</a></b>(otherEntries)
+								</div>
+								<div class="description">Return a new list of entries that is the result of concatenating the passed in entries with this list</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntryList.html#match">match</a></b>(codeSet, start, end, includeNegated)
 								</div>
 								<div class="description">Return the number of entries that match the
   supplied code set where those entries occur between the supplied time bounds</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntryList.html#pushIfUsable">pushIfUsable</a></b>(a)
+								</div>
+								<div class="description">Push the supplied entry onto this list if it is usable</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntryList.html#withNegation">withNegation</a></b>(codeSet)
+								</div>
+								<div class="description">Filter entries based on negation</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntryList.html#withoutNegation">withoutNegation</a></b>()
+								</div>
+								<div class="description">Filter entries based on negation</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntryList.html#withStatuses">withStatuses</a></b>(statuses, includeUndefined)
+								</div>
+								<div class="description">Match entries with the specified statuses</div>
 							</td>
 						</tr>
 					
@@ -361,7 +412,7 @@ entries based on codes and date ranges
 				</div>
 				
 				<div class="fixedFont">
-						<b>hQuery.CodedEntryList</b>()
+						<b>hQuery.CodedEntryList</b>(_super)
 				</div>
 				
 				<div class="description">
@@ -372,6 +423,17 @@ entries based on codes and date ranges
 				
 				
 				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								 <b>_super</b>
+								
+							</dt>
+								<dd></dd>
+						
+						</dl>
 					
 					
 					
@@ -417,11 +479,54 @@ entries based on codes and date ranges
 
 					<hr />
 				
+					<a name="concat"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedEntryList}</span>
+					<b>concat</b>(otherEntries)
+					
+					</div>
+					<div class="description">
+						Return a new list of entries that is the result of concatenating the passed in entries with this list
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>otherEntries</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedEntryList}</span> the set of concatenated entries</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="match"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{Array[CodedEntry]}</span>
-					<b>match</b>(codeSet, start, end)
+					<span class="light">{CodedEntryList}</span>
+					<b>match</b>(codeSet, start, end, includeNegated)
 					
 					</div>
 					<div class="description">
@@ -455,6 +560,12 @@ entries based on codes and date ranges
 								</dt>
 								<dd>the end of the period during which the entry must occur, a null value will match all times</dd>
 							
+								<dt>
+									<span class="light fixedFont">{boolean}</span> <b>includeNegated</b>
+									
+								</dt>
+								<dd>whether the returned list of entries should include those that have been negated</dd>
+							
 							</dl>
 						
 						
@@ -464,7 +575,167 @@ entries based on codes and date ranges
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Array[CodedEntry]}</span> the matching entries</dd>
+								<dd><span class="light fixedFont">{CodedEntryList}</span> the matching entries</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="pushIfUsable"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>pushIfUsable</b>(a)
+					
+					</div>
+					<div class="description">
+						Push the supplied entry onto this list if it is usable
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{CodedEntry}</span> <b>a</b>
+									
+								</dt>
+								<dd>coded entry that should be added to the list if it is usable</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="withNegation"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedEntryList}</span>
+					<b>withNegation</b>(codeSet)
+					
+					</div>
+					<div class="description">
+						Filter entries based on negation
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>codeSet</b>
+									
+								</dt>
+								<dd>a hash with code system names as keys and an array of codes as values</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedEntryList}</span> negated entries</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="withoutNegation"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedEntryList}</span>
+					<b>withoutNegation</b>()
+					
+					</div>
+					<div class="description">
+						Filter entries based on negation
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedEntryList}</span> non-negated entries</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="withStatuses"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedEntryList}</span>
+					<b>withStatuses</b>(statuses, includeUndefined)
+					
+					</div>
+					<div class="description">
+						Match entries with the specified statuses
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>statuses</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>includeUndefined</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedEntryList}</span> the matching entries</dd>
 							
 							</dl>
 						
@@ -485,7 +756,7 @@ entries based on codes and date ranges
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Oct 28 2011 09:44:47 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Jun 13 2013 11:35:46 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>

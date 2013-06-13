@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - hQuery.TypeOfMedication</title>
+		<title>JsDoc Reference - hQuery.FunctionalStatus</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -274,7 +274,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class hQuery.TypeOfMedication
+				Class hQuery.FunctionalStatus
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -284,8 +284,7 @@ ul.inheritsList
 					<a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>.<br />
 				
 			
-				TypeOfMedication - describes whether a medication is prescription or
-       over the counter
+				
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/tmp_patient.js.html">patient.js</a>.
@@ -294,7 +293,7 @@ ul.inheritsList
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class hQuery.TypeOfMedication.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class hQuery.FunctionalStatus.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -307,11 +306,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/hQuery.TypeOfMedication.html#constructor">hQuery.TypeOfMedication</a></b>(_super)
+								<b><a href="../symbols/hQuery.FunctionalStatus.html#constructor">hQuery.FunctionalStatus</a></b>(_super)
 							</div>
-							<div class="description">TypeOfMedication as defined by value set 2.16.840.1.113883.3.88.12.3221.8.19
-which pulls two values from SNOMED to describe whether a medication is
-prescription or over the counter</div>
+							<div class="description">This class can be used to represnt a functional status for a patient.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -325,7 +322,7 @@ prescription or over the counter</div>
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class hQuery.TypeOfMedication.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class hQuery.FunctionalStatus.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -336,29 +333,29 @@ prescription or over the counter</div>
 					<tbody>
 					
 						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.TypeOfMedication.html#isOverTheCounter">isOverTheCounter</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.TypeOfMedication.html#isPrescription">isPrescription</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.TypeOfMedication.html#-TypeOfMedication">TypeOfMedication</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/hQuery.FunctionalStatus.html#-FunctionalStatus">FunctionalStatus</a></b>(json)
 								</div>
 								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.FunctionalStatus.html#source">source</a></b>()
+								</div>
+								<div class="description">A coded value.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.FunctionalStatus.html#type">type</a></b>()
+								</div>
+								<div class="description">Either "condition" or "result"</div>
 							</td>
 						</tr>
 					
@@ -368,7 +365,7 @@ prescription or over the counter</div>
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a>, <a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a>, <a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a>, <a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a>, <a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a>, <a href="../symbols/hQuery.CodedEntry.html#status">status</a>, <a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a>, <a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a>, <a href="../symbols/hQuery.CodedEntry.html#type">type</a>, <a href="../symbols/hQuery.CodedEntry.html#values">values</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a>, <a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a>, <a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a>, <a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a>, <a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a>, <a href="../symbols/hQuery.CodedEntry.html#status">status</a>, <a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a>, <a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a>, <a href="../symbols/hQuery.CodedEntry.html#values">values</a></dd>
 				</dl>
 				
 			
@@ -383,13 +380,29 @@ prescription or over the counter</div>
 				</div>
 				
 				<div class="fixedFont">
-						<b>hQuery.TypeOfMedication</b>(_super)
+						<b>hQuery.FunctionalStatus</b>(_super)
 				</div>
 				
 				<div class="description">
-					TypeOfMedication as defined by value set 2.16.840.1.113883.3.88.12.3221.8.19
-which pulls two values from SNOMED to describe whether a medication is
-prescription or over the counter
+					This class can be used to represnt a functional status for a patient. Currently,
+it is not a very close representation of functional status as it is represented
+in the HL7 CCD, HITSP C32 or Consolidated CDA.
+
+In the previously mentioned specifications, functional status may represented
+using either a condition or result. Having "mixed" types of entries in a section
+is currently not well supported in the existing Record class
+
+Additionally, there is a mismatch between the data needed to calculate Stage 2
+Meaningful Use Quailty Measures and the data contained in patient summary
+standards. The CQMs are checking to see if a functional status represented by
+a result was patient supplied. Right now, results do not have a source, and
+even if we were to use Provider as a source, it would need to be extended
+to support patients.
+
+To avoid this, the patient sumamry style functional status has been "flattened"
+into this class. This model supports the information needed to calculate
+Stage 2 MU CQMs. If importers are created from C32 or CCDA, the information
+can be stored here, but it will be a lossy transformation.
 					
 				</div>
 				
@@ -427,75 +440,11 @@ prescription or over the counter
 					Method Detail
 				</div>
 				
-					<a name="isOverTheCounter"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Boolean}</span>
-					<b>isOverTheCounter</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Boolean}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="isPrescription"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Boolean}</span>
-					<b>isPrescription</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Boolean}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-TypeOfMedication"> </a>
+					<a name="-FunctionalStatus"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
 					
-					<b>TypeOfMedication</b>()
+					<b>FunctionalStatus</b>(json)
 					
 					</div>
 					<div class="description">
@@ -507,9 +456,84 @@ prescription or over the counter
 					
 					
 						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>json</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
 						
 						
 						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="source"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/hQuery.CodedValue.html">hQuery.CodedValue</a>}</span>
+					<b>source</b>()
+					
+					</div>
+					<div class="description">
+						A coded value. Like a code for patient supplied.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.CodedValue.html">hQuery.CodedValue</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="type"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>type</b>()
+					
+					</div>
+					<div class="description">
+						Either "condition" or "result"
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
 						
 						
 						
@@ -528,7 +552,7 @@ prescription or over the counter
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Jun 13 2013 11:35:47 GMT-0700 (PDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Jun 13 2013 11:35:46 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>

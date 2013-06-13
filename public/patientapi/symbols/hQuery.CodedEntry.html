@@ -217,7 +217,11 @@ ul.inheritsList
 	
 	<li><a href="../symbols/hQuery.Encounter.html">hQuery.Encounter</a></li>
 	
+	<li><a href="../symbols/hQuery.Facility.html">hQuery.Facility</a></li>
+	
 	<li><a href="../symbols/hQuery.Fulfillment.html">hQuery.Fulfillment</a></li>
+	
+	<li><a href="../symbols/hQuery.FunctionalStatus.html">hQuery.FunctionalStatus</a></li>
 	
 	<li><a href="../symbols/hQuery.Immunization.html">hQuery.Immunization</a></li>
 	
@@ -238,6 +242,8 @@ ul.inheritsList
 	<li><a href="../symbols/hQuery.Patient.html">hQuery.Patient</a></li>
 	
 	<li><a href="../symbols/hQuery.Person.html">hQuery.Person</a></li>
+	
+	<li><a href="../symbols/hQuery.PhysicalQuantity.html">hQuery.PhysicalQuantity</a></li>
 	
 	<li><a href="../symbols/hQuery.Pregnancy.html">hQuery.Pregnancy</a></li>
 	
@@ -345,6 +351,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a></b>()
+								</div>
+								<div class="description">Date and time at which the coded entry ended</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a></b>()
 								</div>
 								<div class="description">A free text description of the type of coded entry</div>
@@ -354,18 +369,82 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#id">id</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a></b>(codeSet)
 								</div>
-								<div class="description">Unique identifier for this coded entry</div>
+								<div class="description">Returns true if any of this entry codes match a code in the supplied codeSet.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a></b>(codeSet)
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a></b>()
 								</div>
-								<div class="description">Returns true if any of this entry's codes match a code in the supplied codeSet.</div>
+								<div class="description">Determines whether the entry specifies a time range or not</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a></b>()
+								</div>
+								<div class="description">Determines whether a coded entry contains sufficient information (code and at least 
+  one time stamp) to be usable</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a></b>()
+								</div>
+								<div class="description">Indicates the reason an entry was negated.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a></b>()
+								</div>
+								<div class="description">Date and time at which the coded entry started</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#status">status</a></b>()
+								</div>
+								<div class="description">Status for this coded entry</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a></b>()
+								</div>
+								<div class="description">Status for this coded entry</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a></b>()
+								</div>
+								<div class="description">Tries to find a single point in time for this entry.</div>
 							</td>
 						</tr>
 					
@@ -375,6 +454,15 @@ ul.inheritsList
 								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#type">type</a></b>()
 								</div>
 								<div class="description">An Array of CodedValues which describe what kind of coded entry took place</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.CodedEntry.html#values">values</a></b>()
+								</div>
+								<div class="description">Returns the values of the result.</div>
 							</td>
 						</tr>
 					
@@ -494,6 +582,38 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="endDate"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Date}</span>
+					<b>endDate</b>()
+					
+					</div>
+					<div class="description">
+						Date and time at which the coded entry ended
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Date}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="freeTextType"> </a>
 					<div class="fixedFont">
 					
@@ -526,38 +646,6 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="id"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{String}</span>
-					<b>id</b>()
-					
-					</div>
-					<div class="description">
-						Unique identifier for this coded entry
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{String}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
 					<a name="includesCodeFrom"> </a>
 					<div class="fixedFont">
 					
@@ -566,7 +654,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Returns true if any of this entry's codes match a code in the supplied codeSet.
+						Returns true if any of this entry codes match a code in the supplied codeSet.
 						
 						
 					</div>
@@ -593,6 +681,264 @@ ul.inheritsList
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isTimeRange"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>isTimeRange</b>()
+					
+					</div>
+					<div class="description">
+						Determines whether the entry specifies a time range or not
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isUsable"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>isUsable</b>()
+					
+					</div>
+					<div class="description">
+						Determines whether a coded entry contains sufficient information (code and at least 
+  one time stamp) to be usable
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="negationInd"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>negationInd</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> whether the entry was negated</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="negationReason"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/hQuery.CodedValue.html">hQuery.CodedValue</a>}</span>
+					<b>negationReason</b>()
+					
+					</div>
+					<div class="description">
+						Indicates the reason an entry was negated.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.CodedValue.html">hQuery.CodedValue</a>}</span> Used to indicate reason an immunization was not administered.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="startDate"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Date}</span>
+					<b>startDate</b>()
+					
+					</div>
+					<div class="description">
+						Date and time at which the coded entry started
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Date}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="status"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>status</b>()
+					
+					</div>
+					<div class="description">
+						Status for this coded entry
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="statusCode"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Hash}</span>
+					<b>statusCode</b>()
+					
+					</div>
+					<div class="description">
+						Status for this coded entry
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Hash}</span> keys are code systems, values are arrays of codes</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="timeStamp"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Date}</span>
+					<b>timeStamp</b>()
+					
+					</div>
+					<div class="description">
+						Tries to find a single point in time for this entry. Will first return date if it is present,
+  then fall back to startDate and finally endDate
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Date}</span> </dd>
 							
 							</dl>
 						
@@ -631,6 +977,39 @@ ul.inheritsList
 						
 						
 
+					<hr />
+				
+					<a name="values"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>values</b>()
+					
+					</div>
+					<div class="description">
+						Returns the values of the result. This will return an array that contains
+  PhysicalQuantity or CodedValue objects depending on the result type.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> containing either PhysicalQuantity and/or CodedValues</dd>
+							
+							</dl>
+						
+						
+						
+
 					
 				
 			
@@ -645,7 +1024,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Oct 28 2011 09:44:47 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Jun 13 2013 11:35:46 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>
