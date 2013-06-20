@@ -1,4 +1,4 @@
-source :rubygems
+source "https://rubygems.org"
 
 gem 'rails'
 
@@ -16,13 +16,15 @@ end
 gem 'jquery-rails'
 gem 'sprockets'
 gem 'bson_ext', :platforms => :mri
+gem 'daemons'
+gem 'mongo'
 gem "mongoid"
 gem 'mongoid_rails_migrations'
 gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
-gem 'delayed_job_mongoid', :git => 'https://github.com/collectiveidea/delayed_job_mongoid.git'
-gem 'hquery-patient-api', :git => 'http://github.com/scoophealth/patientapi.git', :tag => 'V0.2'
+gem 'delayed_job_mongoid' #, :git => 'https://github.com/collectiveidea/delayed_job_mongoid.git'
+gem 'hquery-patient-api', :git => 'http://github.com/scoophealth/patientapi.git' #, :tag => 'V0.2'
 gem 'devise'
 gem 'cancan'
 gem 'pry'
@@ -30,7 +32,7 @@ gem 'kramdown'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
 gem 'coderay'
-gem 'quality-measure-engine', :git => 'http://github.com/scoophealth/quality-measure-engine.git', :branch => 'develop'
+gem 'quality-measure-engine', :git => 'http://github.com/pophealth/quality-measure-engine.git' #, :branch => 'develop'
 
 
 
@@ -41,7 +43,7 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
   gem 'cover_me', '>= 1.0.0.rc6'
-  gem 'minitest'
+  gem 'minitest', '< 5.0.0'
   gem 'fakeweb'
   gem 'therubyracer', :platforms => :ruby
   gem 'therubyrhino', :platforms => :jruby

@@ -4,7 +4,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'fakeweb'
 require 'factory_girl'
-require 'mocha'
+require 'mocha/setup'
 require 'pry'
 
 FactoryGirl.find_definitions

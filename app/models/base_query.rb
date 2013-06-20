@@ -1,6 +1,6 @@
 class BaseQuery
   include Mongoid::Document
-  store_in :queries
+  store_in collection: 'queries'
   
   field :title, type: String
   field :description, type: String
