@@ -21,8 +21,8 @@ class EndpointCronTest < ActiveSupport::TestCase
                      :body => File.read(File.expand_path('../../fixtures/query_feed.xml', __FILE__)))
     FakeWeb.register_uri(:get, "http://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
                      :body => '{"status": "queued"}')
-    endpoint = Factory.create(:endpoint)
-    result = Factory.create(:result_waiting, endpoint: endpoint)
+    endpoint = FactoryGirl.create(:endpoint)
+    result = FactoryGirl.create(:result_waiting, endpoint: endpoint)
     result_updated_at = result.updated_at
     assert_equal 0, endpoint.endpoint_logs.count
     assert ! endpoint.last_check

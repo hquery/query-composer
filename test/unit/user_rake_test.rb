@@ -8,9 +8,9 @@ class UserRakeTest < ActiveSupport::TestCase
     
     dump_database
     
-    @unapproved_user = Factory(:unapproved_user)
-    @user = Factory(:user)
-    @admin = Factory(:admin)
+    @unapproved_user = FactoryGirl(:unapproved_user)
+    @user = FactoryGirl(:user)
+    @admin = FactoryGirl(:admin)
     
 
     if (!@@rake)

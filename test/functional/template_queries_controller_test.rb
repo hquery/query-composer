@@ -5,11 +5,11 @@ class TemplateQueriesControllerTest < ActionController::TestCase
   setup do
     
     dump_database
-    @user = Factory(:user)
-    @admin = Factory(:admin)
+    @user = FactoryGirl(:user)
+    @admin = FactoryGirl(:admin)
     
-    @template_query = Factory(:template_query)
-    @template_query_unsaved = Factory.build(:template_query)
+    @template_query = FactoryGirl(:template_query)
+    @template_query_unsaved = FactoryGirl.build(:template_query)
 
   end
 

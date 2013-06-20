@@ -12,10 +12,14 @@ FactoryGirl.find_definitions
 class ActiveSupport::TestCase
 
   def dump_database
-    Mongoid::Config.master.collections.each do |collection|
+    #Mongoid::Config.master.collections.each do |collection|
+    #  collection.drop unless collection.name.include?('system.')
+    #end
+    #Mongoid::Config.master['system.js'].remove({})
+    Mongoid.session(:default).collections.each do |collection|
       collection.drop unless collection.name.include?('system.')
     end
-    Mongoid::Config.master['system.js'].remove({})
+    Mongoid.default_session['system.js'].where({}).remove
   end
 
   def dump_jobs

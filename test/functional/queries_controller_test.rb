@@ -7,23 +7,23 @@ class QueriesControllerTest < ActionController::TestCase
     
     dump_database
     
-    @user = Factory(:user_with_queries)
+    @user = FactoryGirl(:user_with_queries)
     @ids = @user.queries.order_by([[:created_at, :desc]]).map {|q| q.id}
     @user_ids = [] << @user.id
     
-    @new_endpoint = Factory(:endpoint)
+    @new_endpoint = FactoryGirl(:endpoint)
     
     @endpoints_for_execution = []
-    @endpoints_for_execution << Factory(:endpoint)
-    @endpoints_for_execution << Factory(:endpoint, base_url: 'http://127.0.0.1:3002')
+    @endpoints_for_execution << FactoryGirl(:endpoint)
+    @endpoints_for_execution << FactoryGirl(:endpoint, base_url: 'http://127.0.0.1:3002')
     
-    @unattached_query = Factory(:query)
+    @unattached_query = FactoryGirl(:query)
     
-    @admin = Factory(:admin)
+    @admin = FactoryGirl(:admin)
     
-    @unapproved_user = Factory(:unapproved_user)
+    @unapproved_user = FactoryGirl(:unapproved_user)
     
-    @template_query = Factory(:template_query)
+    @template_query = FactoryGirl(:template_query)
     
   end
   

@@ -7,12 +7,12 @@ class AdminControllerTest < ActionController::TestCase
     
     dump_database
     
-    @admin = Factory(:admin)
-    @user = Factory(:user)
-    @user2 = Factory(:user)
-    @unapproved_user = Factory(:unapproved_user)
+    @admin = FactoryGirl(:admin)
+    @user = FactoryGirl(:user)
+    @user2 = FactoryGirl(:user)
+    @unapproved_user = FactoryGirl(:unapproved_user)
 
-    @admin2 = Factory(:admin)
+    @admin2 = FactoryGirl(:admin)
 
     @user_ids = [] << @user.id
     

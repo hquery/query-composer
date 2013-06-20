@@ -6,7 +6,7 @@ class QueryAggregation < ActionDispatch::IntegrationTest
   setup do
     dump_database
     
-    @query = Factory(:generated_query_with_completed_results)
+    @query = FactoryGirl(:generated_query_with_completed_results)
     @query.generate_map_reduce
     @query.reduce = full_reduce(@query)
     
@@ -26,7 +26,7 @@ class QueryAggregation < ActionDispatch::IntegrationTest
     assert_equal 24000, @execution_to_aggregate.aggregate_result['Gender: F']['age']['sum']
     
     # 1 result
-    single_result = Factory.create(:generated_query_with_single_result)
+    single_result = FactoryGirl.create(:generated_query_with_single_result)
     single_result.executions.first.aggregate
     assert_equal 4000, single_result.executions.first.aggregate_result['Gender: M']['age']['sum']
     assert_equal 6000, single_result.executions.first.aggregate_result['Gender: F']['age']['sum']
