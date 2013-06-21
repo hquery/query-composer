@@ -30,24 +30,24 @@ end
 
 FactoryGirl.define do
   factory :user_with_queries, :parent => :user do |user|
-    user.after_create { |u| FactoryGirl(:query, :user => u) }
-    user.after_create { |u| FactoryGirl(:query, :user => u) }
-    user.after_create { |u| FactoryGirl(:query, :user => u) }
-    user.after_create { |u| FactoryGirl(:query_with_queued_results, :user => u) }
-    user.after_create { |u| FactoryGirl(:query_with_completed_results, :user => u) }
-    user.after_create { |u| FactoryGirl(:generated_query_with_completed_results, :user => u) }
+    user.after_create { |u| FactoryGirl.create(:query, :user => u) }
+    user.after_create { |u| FactoryGirl.create(:query, :user => u) }
+    user.after_create { |u| FactoryGirl.create(:query, :user => u) }
+    user.after_create { |u| FactoryGirl.create(:query_with_queued_results, :user => u) }
+    user.after_create { |u| FactoryGirl.create(:query_with_completed_results, :user => u) }
+    user.after_create { |u| FactoryGirl.create(:generated_query_with_completed_results, :user => u) }
   end
 end
 
 FactoryGirl.define do
   factory :user_with_library_functions, :parent => :user do |user|
-    user.after_create {|u| FactoryGirl(:library_function, :user => u)}
+    user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
   end
 end
 
 FactoryGirl.define do
   factory :user_with_queries_and_library_functions, :parent => :user_with_queries do |user|
-    user.after_create {|u| FactoryGirl(:library_function, :user => u)}
+    user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
   end
 end
 
@@ -174,7 +174,7 @@ end
 FactoryGirl.define do
   factory :queued_execution, :parent => :execution do |e|
     e.after_build do |ex|
-      FactoryGirl.create(:result_waiting, :endpoint => FactoryGirl(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_waiting, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
     end
   end
 end
@@ -182,8 +182,8 @@ end
 FactoryGirl.define do
   factory :completed_execution, :parent => :execution do |e|
     e.after_build do |ex|
-      FactoryGirl.create(:result_with_value, :endpoint => FactoryGirl(:endpoint), :execution => ex)
-      FactoryGirl.create(:result_with_value, :endpoint => FactoryGirl(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
     end
   end
 end
@@ -191,10 +191,10 @@ end
 FactoryGirl.define do
   factory :completed_execution_for_generated_query, :parent => :execution do |e|
     e.after_build do |ex|
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
     end
   end
 end
@@ -202,9 +202,9 @@ end
 FactoryGirl.define do
   factory :execution_with_generated_odd_result_count, :parent => :execution do |e|
     e.after_build do |ex|
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
     end
   end
 end
@@ -212,7 +212,7 @@ end
 FactoryGirl.define do
   factory :execution_with_generated_single_result, :parent => :execution do |e|
     e.after_build do |ex|
-      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
     end
   end
 end

@@ -7,7 +7,7 @@ class ExecutionTest < ActiveSupport::TestCase
   setup do
     dump_database
     @logger = Logger.new('log/rake')
-    @user_with_functions = FactoryGirl(:user_with_queries_and_library_functions)
+    @user_with_functions = FactoryGirl.create(:user_with_queries_and_library_functions)
     
     library_function = @user_with_functions.library_functions[0]
     library_function.definition = library_function.definition.gsub(/username/,@user_with_functions.username)

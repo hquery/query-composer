@@ -7,13 +7,13 @@ class CodeSetsControllerTest < ActionController::TestCase
   setup do
     dump_database
     
-    @admin = FactoryGIrl(:admin)
+    @admin = FactoryGirl.create(:admin)
     
-    @code_set = FactoryGIrl(:annulled_marital_status_code)
+    @code_set = FactoryGirl.create(:annulled_marital_status_code)
     
     sign_in @admin
     
-    @user = FactoryGIrl(:user_with_queries)
+    @user = FactoryGirl.create(:user_with_queries)
     @ids = @user.queries.map {|q| q.id}
     
   end

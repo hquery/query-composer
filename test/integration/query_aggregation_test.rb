@@ -6,7 +6,7 @@ class QueryAggregation < ActionDispatch::IntegrationTest
   setup do
     dump_database
     
-    @query = FactoryGirl(:generated_query_with_completed_results)
+    @query = FactoryGirl.create(:generated_query_with_completed_results)
     @query.generate_map_reduce
     @query.reduce = full_reduce(@query)
     

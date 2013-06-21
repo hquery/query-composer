@@ -7,7 +7,7 @@ class CodeSetTest < ActiveSupport::TestCase
    end
    
   test "Should be able to add codes to a code_set" do
-    cs = FactoryGirl(:annulled_marital_status_code)
+    cs = FactoryGirl.create(:annulled_marital_status_code)
     cs.reload
     full_codes = cs.codes
     assert_equal full_codes.keys.length , 1
@@ -26,7 +26,7 @@ class CodeSetTest < ActiveSupport::TestCase
   end
 
   test "Should be able to Remove codes from a set " do
-    cs = FactoryGirl(:annulled_marital_status_code)
+    cs = FactoryGirl.create(:annulled_marital_status_code)
     cs.reload
     full_codes = cs.codes
     assert_equal full_codes.keys.length , 1
@@ -40,7 +40,7 @@ class CodeSetTest < ActiveSupport::TestCase
   end
 
   test "Should be able to Remove all codes from a code system from a code set" do
-    cs = FactoryGirl(:annulled_marital_status_code)
+    cs = FactoryGirl.create(:annulled_marital_status_code)
     cs.reload
     full_codes = cs.codes
     assert_equal full_codes.keys.length , 1

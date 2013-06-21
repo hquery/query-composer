@@ -6,13 +6,13 @@ class UserTest < ActiveSupport::TestCase
     
     dump_database
     
-    user = FactoryGirl(:user_with_queries)
+    user = FactoryGirl.create(:user_with_queries)
     @user_ids = [] << user.id
     @ids = user.queries.map {|q| q.id}
 
-    @ids_not_owned = [] << FactoryGirl(:query).id
-    @ids_not_owned << FactoryGirl(:query).id
-    @ids_not_owned << FactoryGirl(:query).id
+    @ids_not_owned = [] << FactoryGirl.create(:query).id
+    @ids_not_owned << FactoryGirl.create(:query).id
+    @ids_not_owned << FactoryGirl.create(:query).id
     
   end
   

@@ -5,9 +5,9 @@ class LibraryFunctionsControllerTest < ActionController::TestCase
   setup do
     
     dump_database
-    @user = FactoryGirl(:user_with_library_functions)
-    @another_user = FactoryGirl(:user_with_library_functions)
-    @admin = FactoryGirl(:admin)
+    @user = FactoryGirl.create(:user_with_library_functions)
+    @another_user = FactoryGirl.create(:user_with_library_functions)
+    @admin = FactoryGirl.create(:admin)
     
     @library_function = @user.library_functions[0]
     @library_function_unsaved = FactoryGirl.build(:library_function)

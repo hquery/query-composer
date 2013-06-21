@@ -5,10 +5,10 @@ class TemplateQueriesControllerTest < ActionController::TestCase
   setup do
     
     dump_database
-    @user = FactoryGirl(:user)
-    @admin = FactoryGirl(:admin)
+    @user = FactoryGirl.create(:user)
+    @admin = FactoryGirl.create(:admin)
     
-    @template_query = FactoryGirl(:template_query)
+    @template_query = FactoryGirl.create(:template_query)
     @template_query_unsaved = FactoryGirl.build(:template_query)
 
   end
