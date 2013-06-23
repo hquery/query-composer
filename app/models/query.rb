@@ -27,12 +27,12 @@ class Query < BaseQuery
     if (self.generated?)
       map_function = ""
       map_template = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
-      map_template = map_template.render(:template => "queries/builder/_map_function.js.erb", locals: { :query_structure => self.query_structure })
+      map_template = map_template.render(:template => "queries/builder/_map_function", :handlers => [:erb], :formats => [:js], locals: { :query_structure => self.query_structure })
       self.map = prettify_generated_function(map_template)
     
       reduce_function = ""
       reduce_template = ActionView::Base.new(QueryComposer::Application.paths['app/views'])
-      reduce_template = reduce_template.render(:template => "queries/builder/_reduce_function.js.erb", locals: { :query_structure => self.query_structure })
+      reduce_template = reduce_template.render(:template => "queries/builder/_reduce_function", :handlers => [:erb], :formats => [:js], locals: { :query_structure => self.query_structure })
       self.reduce = prettify_generated_function(reduce_template)
     end
   end
