@@ -15,9 +15,9 @@ end
 
 gem 'jquery-rails'
 gem 'sprockets'
-gem 'bson_ext', :platforms => :mri
+#gem 'bson_ext', :platforms => :mri
 gem 'daemons'
-gem 'mongo'
+#gem 'mongo'
 gem "mongoid"
 gem 'mongoid_rails_migrations'
 gem 'simple_form'
