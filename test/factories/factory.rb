@@ -30,24 +30,39 @@ end
 
 FactoryGirl.define do
   factory :user_with_queries, :parent => :user do |user|
-    user.after_create { |u| FactoryGirl.create(:query, :user => u) }
-    user.after_create { |u| FactoryGirl.create(:query, :user => u) }
-    user.after_create { |u| FactoryGirl.create(:query, :user => u) }
-    user.after_create { |u| FactoryGirl.create(:query_with_queued_results, :user => u) }
-    user.after_create { |u| FactoryGirl.create(:query_with_completed_results, :user => u) }
-    user.after_create { |u| FactoryGirl.create(:generated_query_with_completed_results, :user => u) }
+    after(:create) do |user, evaluator|
+      FactoryGirl.create(:query, user: user)
+      FactoryGirl.create(:query, user: user)
+      FactoryGirl.create(:query, user: user)
+      FactoryGirl.create(:query_with_queued_results, user: user)
+      FactoryGirl.create(:query_with_completed_results, user: user)
+      FactoryGirl.create(:generated_query_with_completed_results, user: user)
+    end
+    #user.after_create { |u| FactoryGirl.create(:query, :user => u) }
+    #user.after_create { |u| FactoryGirl.create(:query, :user => u) }
+    #user.after_create { |u| FactoryGirl.create(:query, :user => u) }
+    #user.after_create { |u| FactoryGirl.create(:query_with_queued_results, :user => u) }
+    #user.after_create { |u| FactoryGirl.create(:query_with_completed_results, :user => u) }
+    #user.after_create { |u| FactoryGirl.create(:generated_query_with_completed_results, :user => u) }
   end
 end
 
 FactoryGirl.define do
   factory :user_with_library_functions, :parent => :user do |user|
-    user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
+    after(:create) do |user, evaluator|
+      FactoryGirl.create(:library_function, user: user)
+    end
+
+    #user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
   end
 end
 
 FactoryGirl.define do
   factory :user_with_queries_and_library_functions, :parent => :user_with_queries do |user|
-    user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
+    after(:crate) do |user, evaluator|
+      FactoryGirl.create(:library_function, user:user)
+    end
+    #user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
   end
 end
 
