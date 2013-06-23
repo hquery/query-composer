@@ -46,10 +46,10 @@ class User
   # ==========
 
   def self.find_by_username(username)
-    User.first(:conditions => {:username => username})
+    User.where(username: username).first
   end
   def self.find_by_email(email)
-    User.first(:conditions => {:email => email})
+    User.where(email: email).first
   end
 
   # =============

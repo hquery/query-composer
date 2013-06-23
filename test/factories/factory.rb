@@ -52,15 +52,14 @@ FactoryGirl.define do
     after(:create) do |user, evaluator|
       FactoryGirl.create(:library_function, user: user)
     end
-
     #user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
   end
 end
 
 FactoryGirl.define do
   factory :user_with_queries_and_library_functions, :parent => :user_with_queries do |user|
-    after(:crate) do |user, evaluator|
-      FactoryGirl.create(:library_function, user:user)
+    after(:create) do |user, evaluator|
+      FactoryGirl.create(:library_function, user: user)
     end
     #user.after_create {|u| FactoryGirl.create(:library_function, :user => u)}
   end

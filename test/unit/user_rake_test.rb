@@ -54,8 +54,8 @@ class UserRakeTest < ActiveSupport::TestCase
     
     @unapproved_user.reload
     
-    assert @unapproved_user.approved?
-    assert @unapproved_user.admin?
+    assert(@unapproved_user.approved?, msg="Was not approved")
+    assert(@unapproved_user.admin?, msg="Was not admin")
     
   end
 
