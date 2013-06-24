@@ -45,6 +45,13 @@ class User
   field :last_sign_in_ip, :type => String
   field :sign_in_count, :type => Integer
 
+  :remember_created_at
+  :sign_in_count
+  :current_sign_in_at
+  :last_sign_in_at
+  :current_sign_in_ip
+  :last_sign_in_ip
+
   def active_for_authentication? 
     super && approved? && !disabled?
   end
@@ -54,10 +61,10 @@ class User
   # ==========
 
   def self.find_by_username(username)
-    User.where(username: username).first
+    where(username: username).first
   end
   def self.find_by_email(email)
-    User.where(email: email).first
+    where(email: email).first
   end
 
   # =============
