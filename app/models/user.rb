@@ -17,7 +17,7 @@ class User
   field :email, type: String
   field :company, type: String
   field :company_url, type: String
-  field :encrypted_password, :type => String, :default => ""
+  field :encrypted_password, :type => String
 
   field :agree_license, type: Boolean
 
@@ -35,7 +35,15 @@ class User
 
   validates :email, presence: true, length: {minimum: 3, maximum: 254}, format: {with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
   validates :username, :presence => true, length: {minimum: 3, maximum: 254}
-  validates_presence_of :encrypted_password
+  #validates_presence_of :encrypted_password
+
+  # Trackable
+  field :current_sign_in_at, :type => Time
+  field :remember_created_at, :type => Time
+  field :last_sign_in_at, :type => Time
+  field :current_sign_in_ip, :type => String
+  field :last_sign_in_ip, :type => String
+  field :sign_in_count, :type => Integer
 
   def active_for_authentication? 
     super && approved? && !disabled?
