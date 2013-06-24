@@ -230,6 +230,7 @@ FactoryGirl.define do
       FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
       FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
       FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
+      FactoryGirl.create(:result_with_value_from_generated_query, :endpoint => FactoryGirl.create(:endpoint), :execution => ex)
     end
   end
 end
