@@ -125,7 +125,7 @@ class QueriesControllerTest < ActionController::TestCase
     delete :destroy, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
-    assert (not Query.exists? :conditions => {id: @ids[0]})
+    assert (not Query.where(id: @ids[0]).exists?)
     assert_redirected_to(queries_url)
   end
 
