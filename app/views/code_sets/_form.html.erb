@@ -27,7 +27,7 @@
     
     
     <tr>
-      <% code_set_list = [ "" ] + QME::Importer::CodeSystemHelper.code_systems.values.uniq %>
+      <% code_set_list = [ "" ] + CodeSystemHelper::CodeSysHelper.code_systems.values.uniq %>
       <th>Codes</th>
       <td id="codes">
         
