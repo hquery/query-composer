@@ -32,7 +32,7 @@ gem 'kramdown'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
 gem 'coderay'
-gem 'quality-measure-engine', :git => 'http://github.com/pophealth/quality-measure-engine.git' #, :branch => 'develop'
+#gem 'quality-measure-engine', :git => 'http://github.com/pophealth/quality-measure-engine.git' #, :branch => 'develop'
 
 
 
