@@ -13,7 +13,7 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '=1.0.19'
 gem 'sprockets'
 #gem 'bson_ext', :platforms => :mri
 gem 'daemons'
