@@ -9,5 +9,4 @@ public/assets
 spec/javascripts/generated/*
 log/
 spec/generated
-Gemfile.lock
 .idea
