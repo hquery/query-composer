@@ -17,7 +17,11 @@ Dependencies
 * Ruby = 1.9.3
 * Rails 3.2.13
 * MongoDB >= 2.4.1
+
+Dependencies on old gems (to be remedied in future)
+---------------------------------------------------
 * jquery-rails 1.0.19 and jQuery UI 1.8.16
+* minitest < 5.0.0
 
 Install Instructions
 --------------------
