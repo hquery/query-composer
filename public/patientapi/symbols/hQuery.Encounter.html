@@ -311,7 +311,7 @@ practitioner
 							</div>
 							<div class="description">An Encounter is an interaction, regardless of the setting, between a patient and a
 practitioner who is vested with primary responsibility for diagnosing, evaluating,
-or treating the patient's condition.</div>
+or treating the patients condition.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -338,6 +338,15 @@ or treating the patient's condition.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#admitTime">admitTime</a></b>()
+								</div>
+								<div class="description">Date and time at which the patient was admitted for the encounter</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#admitType">admitType</a></b>()
 								</div>
 								<div class="description">A code indicating the priority of the admission (e.g.</div>
@@ -347,9 +356,18 @@ or treating the patient's condition.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#dischargeDisp">dischargeDisp</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#dischargeDisposition">dischargeDisposition</a></b>()
 								</div>
 								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#dischargeTime">dischargeTime</a></b>()
+								</div>
+								<div class="description">Date and time at which the patient was discharged for the encounter</div>
 							</td>
 						</tr>
 					
@@ -365,7 +383,7 @@ or treating the patient's condition.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#encounterDuration">encounterDuration</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#facility">facility</a></b>()
 								</div>
 								<div class="description"></div>
 							</td>
@@ -374,7 +392,25 @@ or treating the patient's condition.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#facility">facility</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#facilityArrival">facilityArrival</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#facilityDeparture">facilityDeparture</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#lengthOfStay">lengthOfStay</a></b>()
 								</div>
 								<div class="description"></div>
 							</td>
@@ -398,13 +434,31 @@ or treating the patient's condition.</div>
 							</td>
 						</tr>
 					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#transferFrom">transferFrom</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Encounter.html#transferTo">transferTo</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
 					</tbody>
 				</table>
 				
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a>, <a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a>, <a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a>, <a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a>, <a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a>, <a href="../symbols/hQuery.CodedEntry.html#status">status</a>, <a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a>, <a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a>, <a href="../symbols/hQuery.CodedEntry.html#type">type</a>, <a href="../symbols/hQuery.CodedEntry.html#values">values</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a>, <a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a>, <a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a>, <a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a>, <a href="../symbols/hQuery.CodedEntry.html#reason">reason</a>, <a href="../symbols/hQuery.CodedEntry.html#setTimestamp">setTimestamp</a>, <a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a>, <a href="../symbols/hQuery.CodedEntry.html#status">status</a>, <a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a>, <a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a>, <a href="../symbols/hQuery.CodedEntry.html#type">type</a>, <a href="../symbols/hQuery.CodedEntry.html#values">values</a></dd>
 				</dl>
 				
 			
@@ -425,7 +479,7 @@ or treating the patient's condition.</div>
 				<div class="description">
 					An Encounter is an interaction, regardless of the setting, between a patient and a
 practitioner who is vested with primary responsibility for diagnosing, evaluating,
-or treating the patient's condition. It may include visits, appointments, as well
+or treating the patients condition. It may include visits, appointments, as well
 as non face-to-face interactions. It is also a contact between a patient and a
 practitioner who has primary responsibility for assessing and treating the
 patient at a given contact, exercising independent judgment.
@@ -466,6 +520,38 @@ patient at a given contact, exercising independent judgment.
 					Method Detail
 				</div>
 				
+					<a name="admitTime"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Date}</span>
+					<b>admitTime</b>()
+					
+					</div>
+					<div class="description">
+						Date and time at which the patient was admitted for the encounter
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Date}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="admitType"> </a>
 					<div class="fixedFont">
 					
@@ -499,11 +585,11 @@ patient at a given contact, exercising independent judgment.
 
 					<hr />
 				
-					<a name="dischargeDisp"> </a>
+					<a name="dischargeDisposition"> </a>
 					<div class="fixedFont">
 					
 					<span class="light">{String}</span>
-					<b>dischargeDisp</b>()
+					<b>dischargeDisposition</b>()
 					
 					</div>
 					<div class="description">
@@ -523,6 +609,38 @@ patient at a given contact, exercising independent judgment.
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="dischargeTime"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Date}</span>
+					<b>dischargeTime</b>()
+					
+					</div>
+					<div class="description">
+						Date and time at which the patient was discharged for the encounter
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Date}</span> </dd>
 							
 							</dl>
 						
@@ -567,38 +685,6 @@ patient at a given contact, exercising independent judgment.
 
 					<hr />
 				
-					<a name="encounterDuration"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{<a href="../symbols/hQuery.DateRange.html">hQuery.DateRange</a>}</span>
-					<b>encounterDuration</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.DateRange.html">hQuery.DateRange</a>}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
 					<a name="facility"> </a>
 					<div class="fixedFont">
 					
@@ -623,6 +709,88 @@ patient at a given contact, exercising independent judgment.
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.Organization.html">hQuery.Organization</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="facilityArrival"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>facilityArrival</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="facilityDeparture"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>facilityDeparture</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="lengthOfStay"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Integer}</span>
+					<b>lengthOfStay</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Integer}</span> </dd>
 							
 							</dl>
 						
@@ -693,6 +861,70 @@ patient at a given contact, exercising independent judgment.
 						
 						
 
+					<hr />
+				
+					<a name="transferFrom"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedValue}</span>
+					<b>transferFrom</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedValue}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="transferTo"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedValue}</span>
+					<b>transferTo</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedValue}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
 					
 				
 			
@@ -707,7 +939,7 @@ patient at a given contact, exercising independent judgment.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 02 2013 10:50:22 GMT-0700 (PDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 02 2013 14:27:49 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>

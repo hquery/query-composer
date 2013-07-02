@@ -24,7 +24,7 @@ gem 'simple_form'
 gem 'multipart-post'
 gem 'delayed_job'
 gem 'delayed_job_mongoid' #, :git => 'https://github.com/collectiveidea/delayed_job_mongoid.git'
-gem 'hquery-patient-api', :git => 'http://github.com/scoophealth/patientapi.git' #, :tag => 'V0.2'
+gem 'hquery-patient-api', :git => 'http://github.com/scoophealth/patientapi.git', :branch => 'scoop-develop'
 gem 'devise'
 gem 'cancan'
 gem 'pry'
@@ -32,7 +32,6 @@ gem 'kramdown'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
 gem 'coderay'
-#gem 'quality-measure-engine', :git => 'http://github.com/pophealth/quality-measure-engine.git' #, :branch => 'develop'
 
 
 

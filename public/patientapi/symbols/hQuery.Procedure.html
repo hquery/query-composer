@@ -336,6 +336,24 @@ treatments pertinent to the patient.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Procedure.html#incisionTime">incisionTime</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Procedure.html#ordinality">ordinality</a></b>()
+								</div>
+								<div class="description">Ordinality</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/hQuery.Procedure.html#performer">performer</a></b>()
 								</div>
 								<div class="description"></div>
@@ -360,13 +378,22 @@ treatments pertinent to the patient.</div>
 							</td>
 						</tr>
 					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Procedure.html#source">source</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
 					</tbody>
 				</table>
 				
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a>, <a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a>, <a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a>, <a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a>, <a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a>, <a href="../symbols/hQuery.CodedEntry.html#status">status</a>, <a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a>, <a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a>, <a href="../symbols/hQuery.CodedEntry.html#type">type</a>, <a href="../symbols/hQuery.CodedEntry.html#values">values</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a>, <a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a>, <a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a>, <a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a>, <a href="../symbols/hQuery.CodedEntry.html#reason">reason</a>, <a href="../symbols/hQuery.CodedEntry.html#setTimestamp">setTimestamp</a>, <a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a>, <a href="../symbols/hQuery.CodedEntry.html#status">status</a>, <a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a>, <a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a>, <a href="../symbols/hQuery.CodedEntry.html#type">type</a>, <a href="../symbols/hQuery.CodedEntry.html#values">values</a></dd>
 				</dl>
 				
 			
@@ -423,6 +450,70 @@ treatments pertinent to the patient.
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name="incisionTime"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Date}</span>
+					<b>incisionTime</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Date}</span> The actual or intended start of an incision.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="ordinality"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedValue}</span>
+					<b>ordinality</b>()
+					
+					</div>
+					<div class="description">
+						Ordinality
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedValue}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
 				
 					<a name="performer"> </a>
 					<div class="fixedFont">
@@ -523,6 +614,38 @@ treatments pertinent to the patient.
 						
 						
 
+					<hr />
+				
+					<a name="source"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/hQuery.CodedValue.html">hQuery.CodedValue</a>}</span>
+					<b>source</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.CodedValue.html">hQuery.CodedValue</a>}</span> A SNOMED code indicating where the procedure was performed.</dd>
+							
+							</dl>
+						
+						
+						
+
 					
 				
 			
@@ -537,7 +660,7 @@ treatments pertinent to the patient.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 02 2013 10:50:23 GMT-0700 (PDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 02 2013 14:27:49 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>
