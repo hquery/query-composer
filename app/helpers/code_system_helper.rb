@@ -1,5 +1,9 @@
 module CodeSystemHelper
   # General helpers for working with codes and code systems
+  # Based on abandoned code from quality-measure-engine (1.0.4)
+  # http://github.com/pophealth/quality-measure-engine.git
+  # revision: 6573859d0d8ca8d76e6dc2f0d4d15181c8457c61
+  # branch: develop
   class CodeSysHelper
     CODE_SYSTEMS = {
         '2.16.840.1.113883.6.1' =>    'LOINC',

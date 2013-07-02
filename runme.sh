@@ -2,7 +2,7 @@
 # To start query-composer
 bundle install
 bundle exec script/delayed_job start
-bundle exec rails server
+bundle exec rails server -p 3002
 #
 # To start query-gateway
 # In a second terminal, change directory to the query-gateway directory
