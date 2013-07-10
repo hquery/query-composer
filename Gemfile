@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gem 'rails'
 # Gems used only for assets and not required
@@ -22,7 +22,7 @@ gem 'multipart-post'
 gem 'delayed_job'
 gem 'delayed_job_mongoid'
 
-gem 'hquery-patient-api', :git => 'https://github.com/scoophealth/patientapi.git', :tag => 'v1.0.0'
+gem 'hquery-patient-api', :git => 'https://github.com/scoophealth/patientapi.git', :branch => 'scoop-develop'
 
 gem 'coderay'
 
