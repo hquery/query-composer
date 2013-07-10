@@ -7,7 +7,7 @@ class ExecutionTest < ActiveSupport::TestCase
   setup do
     dump_database
     @logger = Logger.new('log/rake')
-    @user_with_functions = Factory(:user_with_queries_and_library_functions)
+    @user_with_functions = FactoryGirl.create(:user_with_queries_and_library_functions)
     
     library_function = @user_with_functions.library_functions[0]
     library_function.definition = library_function.definition.gsub(/username/,@user_with_functions.username)
@@ -16,7 +16,7 @@ class ExecutionTest < ActiveSupport::TestCase
   end
 
   test "aggregation" do
-    execution_to_aggregate = Factory.create(:query_with_completed_results).executions.first
+    execution_to_aggregate = FactoryGirl.create(:query_with_completed_results).executions.first
     assert_nil execution_to_aggregate.aggregate_result
     execution_to_aggregate.aggregate
     
@@ -26,7 +26,7 @@ class ExecutionTest < ActiveSupport::TestCase
   end
   
   test "aggregation for a generated query" do
-    query = Factory.create(:generated_query_with_completed_results)
+    query = FactoryGirl.create(:generated_query_with_completed_results)
     query.generate_map_reduce
     query.reduce = full_reduce(query)
     execution_to_aggregate = query.executions.first
@@ -49,9 +49,9 @@ class ExecutionTest < ActiveSupport::TestCase
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "yay",
                          :status => [200, "OK"])
 
-    user = Factory.create(:user)
-    query = Factory.create(:query, user: user)
-    endpoint = Factory.create(:endpoint)
+    user = FactoryGirl.create(:user)
+    query = FactoryGirl.create(:query, user: user)
+    endpoint = FactoryGirl.create(:endpoint)
     query.execute([endpoint])
     
     
@@ -83,7 +83,7 @@ class ExecutionTest < ActiveSupport::TestCase
     FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :status => ["500", "Internal Server Error"])
 
     query = Query.find(@user_with_functions.queries[3].id)
-    endpoint = Factory.create(:endpoint)
+    endpoint = FactoryGirl.create(:endpoint)
     query.execute([endpoint])
 
     assert_equal "Did not understand the response: 500 : Internal Server Error", endpoint.endpoint_logs[0].message
@@ -93,10 +93,10 @@ class ExecutionTest < ActiveSupport::TestCase
 
   
   test "executions should only be finished if there are no queued results" do
-    execution_with_incomplete_results = Factory.create(:query_with_queued_results).executions.first
+    execution_with_incomplete_results = FactoryGirl.create(:query_with_queued_results).executions.first
     assert !execution_with_incomplete_results.finished?
     
-    execution_with_complete_results = Factory.create(:query_with_completed_results).executions.first
+    execution_with_complete_results = FactoryGirl.create(:query_with_completed_results).executions.first
     assert execution_with_complete_results.finished?
   end
   

@@ -9,7 +9,7 @@ class CudActionsTest < ActionController::TestCase
     CudResource.all.each {|x| x.destroy}
     @controller = CudResourceController.new
     
-    @admin = Factory(:admin)
+    @admin = FactoryGirl.create(:admin)
     sign_in @admin
     
   end

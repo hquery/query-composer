@@ -7,7 +7,7 @@ class GatewayUtilsTest < ActiveSupport::TestCase
   end
   
   test "generated queries should fetch javascript libraries" do
-    query = Factory.create(:generated_query_with_completed_results)
+    query = FactoryGirl.create(:generated_query_with_completed_results)
     query.generate_map_reduce
     
     full_map = full_map(query)

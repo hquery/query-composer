@@ -14,9 +14,14 @@ hQuery will also run on Windows, however, there are some minor limitations to fu
 
 Dependencies
 ------------
-* Ruby = 1.9.2
-* Rails 3.1
-* MongoDB >= 1.8.1
+* Ruby = 1.9.3
+* Rails 3.2.13
+* MongoDB >= 2.4.1
+
+Dependencies on old gems (to be remedied in future)
+---------------------------------------------------
+* jquery-rails 1.0.19 and jQuery UI 1.8.16
+* minitest < 5.0.0
 
 Install Instructions
 --------------------
@@ -48,7 +53,7 @@ Install Instructions
   
 
 ###Common setup requirements for OSX and LINUX
-  install ruby 1.9.2 or later
+  install ruby 1.9.3 or later
   install bundler 1.0.14 or later
   
 
@@ -65,8 +70,8 @@ First you will need to install XCode see: [http://developer.apple.com/technologi
 Open a terminal and run
 
     bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
-    rvm install 1.9.2
-    rvm use 1.9.2
+    rvm install 1.9.3
+    rvm use 1.9.3
 
 ####LINUX
 
@@ -76,8 +81,8 @@ Open a terminal and run
     apt-get install build-essential curl file zlib1g-dev libreadline5-dev libxml2-dev libsqlite3-dev
     gem install rvm
     /var/lib/gems/1.8/bin/rvm-install
-    rvm install 1.9.2
-    rvm use 1.9.2
+    rvm install 1.9.3
+    rvm use 1.9.3
 
 ###Getting Ruby Directly
   Ruby can also be installed directly from the following without the use of RVM.  
@@ -96,8 +101,8 @@ Open a terminal and run
     
   [http://railsinstaller.org/](http://railsinstaller.org/)
   
-  Packages included in version 2.0.0 are: 
-    Ruby 1.9.2-p290
+  Packages included are (outdated information):
+    Ruby 1.9.2
     Rails 3.1
     Bundler 1.0.18
     Git 1.7.6
