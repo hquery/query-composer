@@ -25,7 +25,7 @@ Dependencies on old gems (to be remedied in future)
 
 Browser Issue with Firefox
 --------------------------
-When using the visual Query Builder in Firefox (but not with Chrome of IE), there is an issue with popups containing the message:
+When using the visual Query Builder in Firefox (but not with Chrome or IE), there is an issue with popups containing the message:
 
 "This web page is being redirected to a new location. Would you like to resend the form data you have typed to the new location?"
 
