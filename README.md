@@ -23,6 +23,19 @@ Dependencies on old gems (to be remedied in future)
 * jquery-rails 1.0.19 and jQuery UI 1.8.16
 * minitest < 5.0.0
 
+Browser Issue with Firefox
+--------------------------
+When using the visual Query Builder in Firefox (but not with Chrome or IE), there is an issue with popups containing the message:
+
+"This web page is being redirected to a new location. Would you like to resend the form data you have typed to the new location?"
+
+This message will continue to popup until "Cancel" is entered.  The builder works OK despite this irritating message.
+
+To eliminate these warnings from Firefox, the following configuration change can be applied (from https://support.mozilla.org/en-US/questions/792131 ): 
+
+* Type in your firefox url : about:config
+* Then toggle the following option : network.http.prompt-temp-redirect to false
+
 Install Instructions
 --------------------
 
