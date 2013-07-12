@@ -10,7 +10,7 @@ group :assets do
 end
 
 gem 'daemons'
-gem 'jquery-rails'
+gem 'jquery-rails', '=1.0.19'
 gem 'sprockets'
 gem 'webrick', '1.3.1'
 
