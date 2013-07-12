@@ -17,6 +17,10 @@ Dependencies
 * Ruby = 1.9.3
 * Rails 3.2.13
 * MongoDB >= 2.4.1
+* Webrick = 1.3.1 added to eliminate nuisance messages in log regarding:
+ WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true
+
+ Based on information gotten from http://stackoverflow.com/questions/9612618/warn-could-not-determine-content-length-of-response-body-set-content-length-of adding Webrick explicitely to Gemfile (even though it is the version already being used) resolves the problem.
 
 Dependencies on old gems (to be remedied in future)
 ---------------------------------------------------
