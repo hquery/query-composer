@@ -12,6 +12,7 @@ end
 gem 'daemons'
 gem 'jquery-rails'
 gem 'sprockets'
+gem 'webrick', '1.3.1'
 
 gem 'mongoid'
 gem 'mongoid_rails_migrations'

@@ -190,6 +190,7 @@ GEM
       multi_json (~> 1.0, >= 1.0.2)
     warden (1.2.1)
       rack (>= 1.0)
+    webrick (1.3.1)
     websocket (1.0.7)
     yamler (0.1.0)
 
@@ -226,3 +227,4 @@ DEPENDENCIES
   therubyrhino
   turn
   uglifier
+  webrick (= 1.3.1)
