@@ -14,9 +14,32 @@ hQuery will also run on Windows, however, there are some minor limitations to fu
 
 Dependencies
 ------------
-* Ruby = 1.9.2
-* Rails 3.1
-* MongoDB >= 1.8.1
+* Ruby = 1.9.3
+* Rails 3.2.7
+* MongoDB >= 2.4.1
+* Webrick = 1.3.1 added to eliminate nuisance messages in log regarding:
+ WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true
+
+ Based on information gotten from http://stackoverflow.com/questions/9612618/warn-could-not-determine-content-length-of-response-body-set-content-length-of adding Webrick explicitely to Gemfile (even though it is the version already being used) resolves the problem.
+
+Dependencies on old gems (to be remedied in future)
+---------------------------------------------------
+* rails 3.2.7 (later versions of rails escape single and double quotes with &#x27 and \" which causes mongoid queries to fail)
+* jquery-rails 1.0.19 and jQuery UI 1.8.16
+* minitest < 5.0.0
+
+Browser Issue with Firefox
+--------------------------
+When using the visual Query Builder in Firefox (but not with Chrome or IE), there is an issue with popups containing the message:
+
+"This web page is being redirected to a new location. Would you like to resend the form data you have typed to the new location?"
+
+This message will continue to popup until "Cancel" is entered.  The builder works OK despite this irritating message.
+
+To eliminate these warnings from Firefox, the following configuration change can be applied (from https://support.mozilla.org/en-US/questions/792131 ): 
+
+* Type in your firefox url : about:config
+* Then toggle the following option : network.http.prompt-temp-redirect to false
 
 Install Instructions
 --------------------
@@ -48,7 +71,7 @@ Install Instructions
   
 
 ###Common setup requirements for OSX and LINUX
-  install ruby 1.9.2 or later
+  install ruby 1.9.3 or later
   install bundler 1.0.14 or later
   
 
@@ -65,8 +88,8 @@ First you will need to install XCode see: [http://developer.apple.com/technologi
 Open a terminal and run
 
     bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
-    rvm install 1.9.2
-    rvm use 1.9.2
+    rvm install 1.9.3
+    rvm use 1.9.3
 
 ####LINUX
 
@@ -76,8 +99,8 @@ Open a terminal and run
     apt-get install build-essential curl file zlib1g-dev libreadline5-dev libxml2-dev libsqlite3-dev
     gem install rvm
     /var/lib/gems/1.8/bin/rvm-install
-    rvm install 1.9.2
-    rvm use 1.9.2
+    rvm install 1.9.3
+    rvm use 1.9.3
 
 ###Getting Ruby Directly
   Ruby can also be installed directly from the following without the use of RVM.  
@@ -96,8 +119,8 @@ Open a terminal and run
     
   [http://railsinstaller.org/](http://railsinstaller.org/)
   
-  Packages included in version 2.0.0 are: 
-    Ruby 1.9.2-p290
+  Packages included are (outdated information):
+    Ruby 1.9.2
     Rails 3.1
     Bundler 1.0.18
     Git 1.7.6

@@ -47,8 +47,8 @@ class Execution
   # = Aggregation =
   # ===============
   def aggregate
-    
-    response = Result.collection.map_reduce(self.map_fn(), _reduce(), :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
+    #response = Result.collection.map_reduce(self.map_fn(), _reduce(), :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
+    response = Result.where(execution_id: id).map_reduce(self.map_fn(), _reduce()).out(inline: true).raw()
     results = response['results']
     if results
       self.aggregate_result = {}
@@ -101,7 +101,7 @@ class Execution
     pretty_key = "Results" if pretty_key.empty?
     pretty_result['_id'] = pretty_key
     pretty_result['value'] = pretty_values
-    
+
     return pretty_result
   end
 

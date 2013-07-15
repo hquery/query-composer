@@ -6,11 +6,11 @@ class UserAccessTest < ActionDispatch::IntegrationTest
   setup do
     dump_database
 
-    @admin = Factory(:admin)
-    @user = Factory(:user_with_queries)
+    @admin = FactoryGirl.create(:admin)
+    @user = FactoryGirl.create(:user_with_queries)
     
-    @new_endpoint = Factory(:endpoint)
-    @unattached_query = Factory(:query)
+    @new_endpoint = FactoryGirl.create(:endpoint)
+    @unattached_query = FactoryGirl.create(:query)
     
   end
 

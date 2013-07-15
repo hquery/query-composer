@@ -4,7 +4,7 @@ class UserMailerTest < ActionMailer::TestCase
   setup do 
     dump_database
     
-    @user = Factory(:user_with_queries)
+    @user = FactoryGirl.create(:user_with_queries)
     @ids = @user.queries.map {|q| q.id}
   end
   

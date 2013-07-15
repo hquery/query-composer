@@ -217,7 +217,11 @@ ul.inheritsList
 	
 	<li><a href="../symbols/hQuery.Encounter.html">hQuery.Encounter</a></li>
 	
+	<li><a href="../symbols/hQuery.Facility.html">hQuery.Facility</a></li>
+	
 	<li><a href="../symbols/hQuery.Fulfillment.html">hQuery.Fulfillment</a></li>
+	
+	<li><a href="../symbols/hQuery.FunctionalStatus.html">hQuery.FunctionalStatus</a></li>
 	
 	<li><a href="../symbols/hQuery.Immunization.html">hQuery.Immunization</a></li>
 	
@@ -238,6 +242,8 @@ ul.inheritsList
 	<li><a href="../symbols/hQuery.Patient.html">hQuery.Patient</a></li>
 	
 	<li><a href="../symbols/hQuery.Person.html">hQuery.Person</a></li>
+	
+	<li><a href="../symbols/hQuery.PhysicalQuantity.html">hQuery.PhysicalQuantity</a></li>
 	
 	<li><a href="../symbols/hQuery.Pregnancy.html">hQuery.Pregnancy</a></li>
 	
@@ -304,7 +310,7 @@ number of treating providers for the particular condition can be supplied.
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/hQuery.Condition.html#constructor">hQuery.Condition</a></b>()
+								<b><a href="../symbols/hQuery.Condition.html#constructor">hQuery.Condition</a></b>(_super)
 							</div>
 							<div class="description"></div>
 						</td>
@@ -378,6 +384,15 @@ number of treating providers for the particular condition can be supplied.
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Condition.html#ordinality">ordinality</a></b>()
+								</div>
+								<div class="description">Ordinality</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/hQuery.Condition.html#problemStatus">problemStatus</a></b>()
 								</div>
 								<div class="description">problem status</div>
@@ -393,13 +408,22 @@ number of treating providers for the particular condition can be supplied.
 							</td>
 						</tr>
 					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Condition.html#severity">severity</a></b>()
+								</div>
+								<div class="description">This is a description of the level of the severity of the condition.</div>
+							</td>
+						</tr>
+					
 					</tbody>
 				</table>
 				
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#id">id</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#type">type</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/hQuery.CodedEntry.html">hQuery.CodedEntry</a>: </dt><dd><a href="../symbols/hQuery.CodedEntry.html#date">date</a>, <a href="../symbols/hQuery.CodedEntry.html#endDate">endDate</a>, <a href="../symbols/hQuery.CodedEntry.html#freeTextType">freeTextType</a>, <a href="../symbols/hQuery.CodedEntry.html#includesCodeFrom">includesCodeFrom</a>, <a href="../symbols/hQuery.CodedEntry.html#isTimeRange">isTimeRange</a>, <a href="../symbols/hQuery.CodedEntry.html#isUsable">isUsable</a>, <a href="../symbols/hQuery.CodedEntry.html#negationInd">negationInd</a>, <a href="../symbols/hQuery.CodedEntry.html#negationReason">negationReason</a>, <a href="../symbols/hQuery.CodedEntry.html#reason">reason</a>, <a href="../symbols/hQuery.CodedEntry.html#setTimestamp">setTimestamp</a>, <a href="../symbols/hQuery.CodedEntry.html#startDate">startDate</a>, <a href="../symbols/hQuery.CodedEntry.html#status">status</a>, <a href="../symbols/hQuery.CodedEntry.html#statusCode">statusCode</a>, <a href="../symbols/hQuery.CodedEntry.html#timeStamp">timeStamp</a>, <a href="../symbols/hQuery.CodedEntry.html#type">type</a>, <a href="../symbols/hQuery.CodedEntry.html#values">values</a></dd>
 				</dl>
 				
 			
@@ -414,7 +438,7 @@ number of treating providers for the particular condition can be supplied.
 				</div>
 				
 				<div class="fixedFont">
-						<b>hQuery.Condition</b>()
+						<b>hQuery.Condition</b>(_super)
 				</div>
 				
 				<div class="description">
@@ -425,6 +449,17 @@ number of treating providers for the particular condition can be supplied.
 				
 				
 				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								 <b>_super</b>
+								
+							</dt>
+								<dd></dd>
+						
+						</dl>
 					
 					
 					
@@ -609,6 +644,38 @@ number of treating providers for the particular condition can be supplied.
 
 					<hr />
 				
+					<a name="ordinality"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedValue}</span>
+					<b>ordinality</b>()
+					
+					</div>
+					<div class="description">
+						Ordinality
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedValue}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="problemStatus"> </a>
 					<div class="fixedFont">
 					
@@ -671,6 +738,38 @@ number of treating providers for the particular condition can be supplied.
 						
 						
 
+					<hr />
+				
+					<a name="severity"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{CodedValue}</span>
+					<b>severity</b>()
+					
+					</div>
+					<div class="description">
+						This is a description of the level of the severity of the condition.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{CodedValue}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
 					
 				
 			
@@ -685,7 +784,7 @@ number of treating providers for the particular condition can be supplied.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Oct 28 2011 09:44:47 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 02 2013 14:27:49 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>

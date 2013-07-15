@@ -217,7 +217,11 @@ ul.inheritsList
 	
 	<li><a href="../symbols/hQuery.Encounter.html">hQuery.Encounter</a></li>
 	
+	<li><a href="../symbols/hQuery.Facility.html">hQuery.Facility</a></li>
+	
 	<li><a href="../symbols/hQuery.Fulfillment.html">hQuery.Fulfillment</a></li>
+	
+	<li><a href="../symbols/hQuery.FunctionalStatus.html">hQuery.FunctionalStatus</a></li>
 	
 	<li><a href="../symbols/hQuery.Immunization.html">hQuery.Immunization</a></li>
 	
@@ -238,6 +242,8 @@ ul.inheritsList
 	<li><a href="../symbols/hQuery.Patient.html">hQuery.Patient</a></li>
 	
 	<li><a href="../symbols/hQuery.Person.html">hQuery.Person</a></li>
+	
+	<li><a href="../symbols/hQuery.PhysicalQuantity.html">hQuery.PhysicalQuantity</a></li>
 	
 	<li><a href="../symbols/hQuery.Pregnancy.html">hQuery.Pregnancy</a></li>
 	
@@ -300,7 +306,7 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/hQuery.Patient.html#constructor">hQuery.Patient</a></b>()
+								<b><a href="../symbols/hQuery.Patient.html#constructor">hQuery.Patient</a></b>(_super)
 							</div>
 							<div class="description"></div>
 						</td>
@@ -365,6 +371,24 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#careGoals">careGoals</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#clinicalTrialParticipant">clinicalTrialParticipant</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#conditions">conditions</a></b>()
 								</div>
 								<div class="description"></div>
@@ -410,6 +434,24 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#expired">expired</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#functionalStatuses">functionalStatuses</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#gender">gender</a></b>()
 								</div>
 								<div class="description"></div>
@@ -438,6 +480,15 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#maritalStatus">maritalStatus</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#medicalEquipment">medicalEquipment</a></b>()
 								</div>
 								<div class="description"></div>
 							</td>
@@ -518,7 +569,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#socialhistories">socialhistories</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/hQuery.Patient.html#socialHistories">socialHistories</a></b>()
 								</div>
 								<div class="description"></div>
 							</td>
@@ -563,7 +614,7 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>hQuery.Patient</b>()
+						<b>hQuery.Patient</b>(_super)
 				</div>
 				
 				<div class="description">
@@ -574,6 +625,17 @@ ul.inheritsList
 				
 				
 				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								 <b>_super</b>
+								
+							</dt>
+								<dd></dd>
+						
+						</dl>
 					
 					
 					
@@ -724,7 +786,71 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{Date}</span> containing the patient's birthdate</dd>
+								<dd><span class="light fixedFont">{Date}</span> containing the patients birthdate</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="careGoals"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/hQuery.CodedEntryList.html">hQuery.CodedEntryList</a>}</span>
+					<b>careGoals</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.CodedEntryList.html">hQuery.CodedEntryList</a>}</span> A list of CareGoal objects</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="clinicalTrialParticipant"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>clinicalTrialParticipant</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> returns true if the patient participated in a clinical trial</dd>
 							
 							</dl>
 						
@@ -895,6 +1021,70 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="expired"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>expired</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> returns true if the patient has died</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="functionalStatuses"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/hQuery.CodedEntryList.html">hQuery.CodedEntryList</a>}</span>
+					<b>functionalStatuses</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.CodedEntryList.html">hQuery.CodedEntryList</a>}</span> A list of FunctionalStatus objects</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="gender"> </a>
 					<div class="fixedFont">
 					
@@ -1026,6 +1216,38 @@ ul.inheritsList
   S  Never Married
   T  Domestic Partner
   W  Widowed</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="medicalEquipment"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/hQuery.CodedEntryList.html">hQuery.CodedEntryList</a>}</span>
+					<b>medicalEquipment</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/hQuery.CodedEntryList.html">hQuery.CodedEntryList</a>}</span> A list of MedicalEquipment objects</dd>
 							
 							</dl>
 						
@@ -1285,11 +1507,11 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="socialhistories"> </a>
+					<a name="socialHistories"> </a>
 					<div class="fixedFont">
 					
 					<span class="light">{<a href="../symbols/hQuery.CodedEntryList.html">hQuery.CodedEntryList</a>}</span>
-					<b>socialhistories</b>()
+					<b>socialHistories</b>()
 					
 					</div>
 					<div class="description">
@@ -1393,7 +1615,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Oct 28 2011 09:44:47 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Jul 02 2013 14:27:49 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>

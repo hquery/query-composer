@@ -36,12 +36,12 @@ function reduce(key, values) {
     end
     initial_values = ''
     if (selections.length > 0)
-      initial_values = selections.join(",\n")
+      initial_values = selections.join(',\n')
     end %>
-    
+
     result = new reducer.Value(
       {
-        <%= initial_values %>
+        <%= raw initial_values %>
       },
       rereduced = false
     );
@@ -60,7 +60,7 @@ function reduce(key, values) {
       end
       aggregation = aggregates.join("\n") %>
 
-      <%= aggregation %>
+      <%= raw aggregation %>
 
       result.rereduced = true;
       _val.rereduced = true;

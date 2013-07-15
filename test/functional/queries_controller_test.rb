@@ -7,23 +7,23 @@ class QueriesControllerTest < ActionController::TestCase
     
     dump_database
     
-    @user = Factory(:user_with_queries)
+    @user = FactoryGirl.create(:user_with_queries)
     @ids = @user.queries.order_by([[:created_at, :desc]]).map {|q| q.id}
     @user_ids = [] << @user.id
     
-    @new_endpoint = Factory(:endpoint)
+    @new_endpoint = FactoryGirl.create(:endpoint)
     
     @endpoints_for_execution = []
-    @endpoints_for_execution << Factory(:endpoint)
-    @endpoints_for_execution << Factory(:endpoint, base_url: 'http://127.0.0.1:3002')
+    @endpoints_for_execution << FactoryGirl.create(:endpoint)
+    @endpoints_for_execution << FactoryGirl.create(:endpoint, base_url: 'http://127.0.0.1:3002')
     
-    @unattached_query = Factory(:query)
+    @unattached_query = FactoryGirl.create(:query)
     
-    @admin = Factory(:admin)
+    @admin = FactoryGirl.create(:admin)
     
-    @unapproved_user = Factory(:unapproved_user)
+    @unapproved_user = FactoryGirl.create(:unapproved_user)
     
-    @template_query = Factory(:template_query)
+    @template_query = FactoryGirl.create(:template_query)
     
   end
   
@@ -125,7 +125,7 @@ class QueriesControllerTest < ActionController::TestCase
     delete :destroy, id: @ids[0]
     query = assigns(:query)
     assert_equal @ids[0], query.id
-    assert (not Query.exists? :conditions => {id: @ids[0]})
+    assert (not Query.where(id: @ids[0]).exists?)
     assert_redirected_to(queries_url)
   end
 

@@ -2,7 +2,7 @@ class User
   include Mongoid::Document
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,:recoverable, :rememberable, :trackable, :validatable,:authentication_keys => [:username]
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :authentication_keys => [:username]
 
   has_many :queries
   has_many :library_functions
@@ -13,6 +13,7 @@ class User
   field :email, type: String
   field :company, type: String
   field :company_url, type: String
+  field :encrypted_password, :type => String
 
   field :agree_license, type: Boolean
 
@@ -31,6 +32,21 @@ class User
   validates :email, presence: true, length: {minimum: 3, maximum: 254}, format: {with: /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
   validates :username, :presence => true, length: {minimum: 3, maximum: 254}
 
+  # Trackable
+  field :current_sign_in_at, :type => Time
+  field :remember_created_at, :type => Time
+  field :last_sign_in_at, :type => Time
+  field :current_sign_in_ip, :type => String
+  field :last_sign_in_ip, :type => String
+  field :sign_in_count, :type => Integer
+
+  :remember_created_at
+  :sign_in_count
+  :current_sign_in_at
+  :last_sign_in_at
+  :current_sign_in_ip
+  :last_sign_in_ip
+
   def active_for_authentication? 
     super && approved? && !disabled?
   end
@@ -40,10 +56,10 @@ class User
   # ==========
 
   def self.find_by_username(username)
-    User.first(:conditions => {:username => username})
+    where(username: username).first
   end
   def self.find_by_email(email)
-    User.first(:conditions => {:email => email})
+    where(email: email).first
   end
 
   # =============

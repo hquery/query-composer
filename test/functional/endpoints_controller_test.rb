@@ -5,14 +5,14 @@ class EndpointsControllerTest < ActionController::TestCase
   setup do
     dump_database
     
-    @admin = Factory(:admin)
+    @admin = FactoryGirl.create(:admin)
     
-    @endpoint = Factory(:endpoint)
-    @endpoint_unsaved = Factory.build(:endpoint)
+    @endpoint = FactoryGirl.create(:endpoint)
+    @endpoint_unsaved = FactoryGirl.build(:endpoint)
     
     sign_in @admin
     
-    @user = Factory(:user_with_queries)
+    @user = FactoryGirl.create(:user_with_queries)
     @ids = @user.queries.map {|q| q.id}
     
   end

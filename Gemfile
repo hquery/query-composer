@@ -1,10 +1,6 @@
-source :rubygems
+source 'https://rubygems.org'
 
-gem 'rails'
-
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
+gem 'rails', '=3.2.7'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -13,38 +9,42 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'jquery-rails'
+gem 'daemons'
+gem 'jquery-rails', '=1.0.19'
 gem 'sprockets'
-gem 'bson_ext', :platforms => :mri
-gem "mongoid"
+gem 'webrick', '1.3.1'
+
+gem 'mongoid'
 gem 'mongoid_rails_migrations'
+
 gem 'simple_form'
+
 gem 'multipart-post'
 gem 'delayed_job'
-gem 'delayed_job_mongoid', :git => 'https://github.com/collectiveidea/delayed_job_mongoid.git'
-gem 'hquery-patient-api', :git => 'http://github.com/hquery/patientapi.git', :tag => 'V0.2'
+gem 'delayed_job_mongoid'
+
+gem 'hquery-patient-api', :git => 'https://github.com/scoophealth/patientapi.git', :branch => 'scoop-develop'
+
+gem 'coderay'
+
 gem 'devise'
 gem 'cancan'
 gem 'pry'
 gem 'kramdown'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
-gem 'coderay'
-gem 'quality-measure-engine', :git => 'http://github.com/pophealth/quality-measure-engine.git', :branch => 'develop'
-
-
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :test do
   # Pretty printed test output
+  gem 'minitest', '< 5.0.0'
   gem 'turn', :require => false
-  gem 'cover_me', '>= 1.0.0.rc6'
-  gem 'minitest'
+  gem 'cover_me', '>= 1.0.0.rc6', :platforms => :ruby
+  gem 'factory_girl'
   gem 'fakeweb'
+  gem 'mocha', :require => false
   gem 'therubyracer', :platforms => :ruby
   gem 'therubyrhino', :platforms => :jruby
-  gem 'factory_girl'
-  gem 'mocha', :require => false
 end
