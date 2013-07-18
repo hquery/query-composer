@@ -1,3 +1,5 @@
+Note: Ongoing hQuery development is currently taking place in the [scoophealth fork](https://github.com/scoophealth/query-composer).
+
 hQuery
 =========
 
