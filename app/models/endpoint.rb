@@ -36,7 +36,8 @@ class Endpoint
     begin
       check_time = Time.now
       
-      response = Net::HTTP.start(url.host, url.port) do |http|
+      #use ssl
+      response = Net::HTTP.start(url.host, url.port, :use_ssl => true, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
         headers = {}
         if last_check
           headers['If-Modified-Since'] = last_check.to_formatted_s(:rfc822)

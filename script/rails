@@ -1,6 +1,36 @@
 #!/usr/bin/env ruby
 # This command will automatically be run when you run "rails" with Rails 3 gems installed from the root of your application.
 
+require 'rubygems'
+require 'rails/commands/server'
+require 'rack'
+require 'webrick'
+require 'webrick/https'
+
+
+#override default option of server to use SSL
+SERVER_CERT_PATH = "cert/composer.crt"
+SERVER_KEY_PATH = "cert/composer.key"
+CA_CERT_PATH = "cert/ca/LeadLab_root_cert_TEST.pem"
+
+SERVER_KEY = File.open(SERVER_KEY_PATH)
+SERVER_CERT = File.open(SERVER_CERT_PATH)
+
+module Rails
+     class Server < ::Rack::Server
+         def default_options
+             super.merge({
+                 :SSLEnable => true,
+                 :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
+                 :SSLPrivateKey => OpenSSL::PKey::RSA.new(SERVER_KEY.read),
+                 :SSLCertificate => OpenSSL::X509::Certificate.new(SERVER_CERT.read),
+		 :SSLCACertificateFile => CA_CERT_PATH,
+		 :SSLCertName => [["CN", WEBrick::Utils::getservername]],
+            	})
+		end
+	end
+end
+
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
 require File.expand_path('../../config/boot',  __FILE__)
 require 'rails/commands'
