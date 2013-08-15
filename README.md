@@ -1,4 +1,4 @@
-hQuery [![travis](https://secure.travis-ci.org/scoophealth/query-composer.png)](http://travis-ci.org/scoophealth/query-composer)
+hQuery [![travis](https://secure.travis-ci.org/scoophealth/query-composer.png?branch=master)](http://travis-ci.org/scoophealth/query-composer)
 =========
 
 The query composer is a web based application that provides the front end for creating, managing, and executing queries. 
