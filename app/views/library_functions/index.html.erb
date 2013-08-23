@@ -21,7 +21,7 @@
       <tr>
         <td><%= link_to library_function.name, library_function %></td>
         <td><%= link_to 'Edit', edit_library_function_path(library_function), :class=> "btn tbbtn" %></td>
-        <td><%= link_to '×', library_function, confirm: 'Are you sure?', method: :delete, :class=> "btn alert" %></td>
+        <td><%= link_to '×', library_function, :data => { :confirm => 'Are you sure?'}, method: :delete, :class=> "btn alert" %></td>
       </tr>
     <% end %>
     </table>
