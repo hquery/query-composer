@@ -44,9 +44,9 @@ class ExecutionTest < ActiveSupport::TestCase
   end
 
   test "query submission" do
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :body => "Query Created",
-                         :status => [201, "Created"], :location => "http://127.0.0.1:3001/query/1234")
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/library_functions", :body => "yay",
+    FakeWeb.register_uri(:post, "https://127.0.0.1:3001/queries", :body => "Query Created",
+                         :status => [201, "Created"], :location => "https://127.0.0.1:3001/query/1234")
+    FakeWeb.register_uri(:post, "https://127.0.0.1:3001/library_functions", :body => "yay",
                          :status => [200, "OK"])
 
     user = FactoryGirl.create(:user)
@@ -70,7 +70,7 @@ class ExecutionTest < ActiveSupport::TestCase
     
     result = query.last_execution.results[0]
     assert result
-    assert_equal "http://127.0.0.1:3001/query/1234", result.query_url
+    assert_equal "https://127.0.0.1:3001/query/1234", result.query_url
     assert_equal Result::QUEUED, result.status
   end
   
@@ -80,7 +80,7 @@ class ExecutionTest < ActiveSupport::TestCase
   
   test "query should log failures for endpoint  on failure" do
 
-    FakeWeb.register_uri(:post, "http://127.0.0.1:3001/queries", :status => ["500", "Internal Server Error"])
+    FakeWeb.register_uri(:post, "https://127.0.0.1:3001/queries", :status => ["500", "Internal Server Error"])
 
     query = Query.find(@user_with_functions.queries[3].id)
     endpoint = FactoryGirl.create(:endpoint)
