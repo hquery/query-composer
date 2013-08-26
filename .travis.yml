@@ -1,0 +1,11 @@
+language: ruby
+rvm:
+  - 1.9.3
+branches:
+  only:
+    - master
+services:
+  - mongodb
+notifications:
+  email: false
+script: bundle exec rake test:units test:functionals test:integration
