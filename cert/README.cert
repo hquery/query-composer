@@ -1,0 +1,16 @@
+mkdir ca
+# Generate 4096-bit long RSA key for our root CA
+openssl genrsa -out ca/LeadLab_root_cert_TEST.pem 4096
+# Create a self-signed root CA certificate
+openssl req -new -x509 -days 1826 -key ca/LeadLab_root_cert_TEST.pem -out ca/LeadLab_root_cert_TEST.crt
+# Create a subordinate CA used for actual signing
+openssl genrsa -out composer.key 4096
+# Request a certificate for this subordinate CA
+openssl req -new -key composer.key -out composer.csr
+# Process request for the subordinate CA and get it signed by the root CA
+openssl x509 -req -days 730 -in composer.csr -CA ca/LeadLab_root_cert_TEST.crt -CAkey ca/LeadLab_root_cert_TEST.pem -set_serial 5342365815382548354816354178354176 -out composer.crt
+# Make client credentials
+openssl genrsa -out client.key 4096
+openssl req -new -key client.key -out client.csr
+openssl x509 -req -days 730 -in client.csr -CA ca/LeadLab_root_cert_TEST.crt -CAkey ca/LeadLab_root_cert_TEST.pem -set_serial 5342365815382548354816354178354177 -out client.crt
+
