@@ -13,7 +13,7 @@ bundle exec rails server -p 3002
 #    bundle exec script/delayed_job start
 #    bundle exec rails server -p 3001
 #     
-#In a browser open the URL: http://localhost:3000/queries/
+#In a browser open the URL: https://localhost:3000/queries/
 #
 # Adding a User Account (one time operation)
 #

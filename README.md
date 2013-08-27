@@ -237,7 +237,7 @@ run:
     bundle exec script/delayed_job start
     sbundle exec rails server -p 3001
      
-In a browser open the URL: http://localhost:3000/queries/
+In a browser open the URL: https://localhost:3000/queries/
 
 ###7w. WINDOWS - Starting the Application
 
@@ -273,7 +273,7 @@ Finish starting the application by running the following:
 Run the following in a different terminal:
     bundle exec rails server -p 3001
      
- In a browser open the URL: http://localhost:3000/queries/
+ In a browser open the URL: https://localhost:3000/queries/
 
 ###8. Adding a User Account
 
