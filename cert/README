@@ -1,0 +1,51 @@
+# Change into the query-gateway root directory.  Make a cert subdirectory.
+cd $HOME/query-gateway && mkdir cert && cd cert
+#
+# Generate a self-signed certificate.  You need to answer some questions.
+# Most of them can be answered arbitrarily but it is important that the
+# Common Name be accurate.  For development and test purposes you can
+# use something like *.localdomain to cover all hosts in localdomain.
+# I used:
+# Country Name (2 letter code) [GB]:CA
+# State or Province Name (full name): British Columbia 
+# Locality Name (eg, city): Victoria
+# Organization Name (eg, company): University of Victoria 
+# Organizational Unit Name (eg, section): Island Medical Program
+# Common Name (eg, your name or your server's hostname): *.localdomain
+# Email Address: scoophealth@googlegroups.com
+#
+# This will generate the certificate and key in a file named server.pem:
+openssl req -new -x509 -keyout server.pem -out server.pem -nodes -days 365
+#
+# Copy the self-signed certificate to query-gateway/cert/ca
+# [The location and name can be changed but must match
+# the entries in query-gateway/script/secure_rails.]
+mkdir ca && cp server.pem ca/LeadLab_root_cert_TEST.pem && rm server.pem
+#
+# Note: We used *.localdomain for the "Common Name" when prompted
+# for that information.  For this to work, you will need an /etc/hosts
+# file that maps IP addresses to entries in the localdomain.  For instance,
+# $ cat /etc/hosts
+# 127.0.0.1	localhost localhost.localdomain
+# 127.0.1.1	query-composer query-composer.localdomain
+# 192.168.52.100 mysql-host mysql-host.localdomain
+# 192.168.52.101 query-gateway0 query-gateway0.localdomain
+# 192.168.52.102 query-composer query-composer.localdomain
+# 192.168.52.103 query-gateway1 query-gateway1.localdomain
+#
+# Now find the hash of the self-signed certificate
+# $ openssl x509 -hash -noout -in ../cert/ca/LeadLab_root_cert_TEST.pem
+#
+# 962a3564
+#
+# Create a symbolic link from the self-signed certicate to a file in
+# /etc/ssl/certs with name matching the hash with suffix '.0'.
+#
+# /etc/ssl/certs/962a3564.0 ->/home/vagrant/query-gateway/cert/ca/LeadLab_root_cert_TEST.pem 
+#
+# For this particular self-signed certificate's hash, I did this:
+# $ sudo ln -s /home/vagrant/query-gateway/cert/ca/LeadLab_root_cert_TEST.pem /etc/ssl/certs/962a3564.0
+#
+# To start up the SSL secured version of query-gateway on port 3002 use:
+# $ bundle exec script/delayed_job start
+# $ bundle exec rails server -p 3002
