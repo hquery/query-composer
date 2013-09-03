@@ -1,5 +1,5 @@
-# Change into the query-gateway root directory.  Make a cert subdirectory.
-cd $HOME/query-gateway && mkdir cert && cd cert
+# Change into the query-composer root directory.  Make a cert subdirectory.
+cd $HOME/query-composer && mkdir cert && cd cert
 #
 # Generate a self-signed certificate.  You need to answer some questions.
 # Most of them can be answered arbitrarily but it is important that the
@@ -41,10 +41,10 @@ mkdir ca && cp server.pem ca/LeadLab_root_cert_TEST.pem && rm server.pem
 # Create a symbolic link from the self-signed certicate to a file in
 # /etc/ssl/certs with name matching the hash with suffix '.0'.
 #
-# /etc/ssl/certs/962a3564.0 ->/home/vagrant/query-gateway/cert/ca/LeadLab_root_cert_TEST.pem 
+# /etc/ssl/certs/962a3564.0 ->/home/vagrant/query-composer/cert/ca/LeadLab_root_cert_TEST.pem
 #
 # For this particular self-signed certificate's hash, I did this:
-# $ sudo ln -s /home/vagrant/query-gateway/cert/ca/LeadLab_root_cert_TEST.pem /etc/ssl/certs/962a3564.0
+# $ sudo ln -s /home/vagrant/query-composer/cert/ca/LeadLab_root_cert_TEST.pem /etc/ssl/certs/962a3564.0
 #
 # To start up the SSL secured version of query-gateway on port 3002 use:
 # $ bundle exec script/delayed_job start
