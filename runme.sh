@@ -1,8 +1,14 @@
 #!/bin/sh
 # To start query-composer
+
+echo "Installing Dependencies"
 bundle install
+echo "Starting Delayed Job"
 bundle exec script/delayed_job start
+echo "Starting Composer"
 bundle exec rails server -p 3002
+echo "Stopping Delayed Job"
+bundle exec script/delayed_job stop
 #
 # To start query-gateway
 # In a second terminal, change directory to the query-gateway directory
