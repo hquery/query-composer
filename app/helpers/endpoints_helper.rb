@@ -5,7 +5,7 @@ module EndpointsHelper
       url = endpoint.status_url
       begin
 	#use ssl
-        response = Net::HTTP.start(url.host, url.port, :use_ssl => true, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
+        response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
           headers = {}
           headers['Accept'] = 'application/atom+xml'
           http.get(url.path, headers)

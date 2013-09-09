@@ -19,12 +19,13 @@ SERVER_KEY_PATH = "cert/ca/LeadLab_root_cert_TEST.pem"
 
 SERVER_KEY = File.open(SERVER_KEY_PATH)
 SERVER_CERT = File.open(SERVER_CERT_PATH)
+USE_SSL = true
 
 module Rails
   class Server < ::Rack::Server
     def default_options
       super.merge({
-                      :SSLEnable => true,
+                      :SSLEnable => USE_SSL,
                       :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
                       :SSLPrivateKey => OpenSSL::PKey::RSA.new(SERVER_KEY.read),
                       :SSLCertificate => OpenSSL::X509::Certificate.new(SERVER_CERT.read),
