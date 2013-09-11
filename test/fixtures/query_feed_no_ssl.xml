@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:md="http://projecthdata.org/hdata/schemas/2009/11/metadata">
+  <title>Distributed Queries</title>
+  <link href="https://localhost:3000/hdata/index"/>
+  <updated>2011-08-17T14:30:19-04:00</updated>
+  <author>
+    <name>hQuery Gateway</name>
+  </author>
+  <id>http://localhost:3000/queries</id>
+  <entry>
+    <title>Query Result</title>
+    <content type="xml">
+      <md:DocumentMetadata>
+        <md:DocumentId>http://localhost:3000/queries/4e4c08b5431a5f5dc1000001</md:DocumentId>
+        <md:Title>Query Result</md:Title>
+        <md:RecordDate>
+          <md:CreatedDateTime>2011-08-17T14:30:13-04:00</md:CreatedDateTime>
+          <md:Modified>
+            <md:ModifiedDateTime>2011-08-17T14:30:19-04:00</md:ModifiedDateTime>
+          </md:Modified>
+        </md:RecordDate>
+      </md:DocumentMetadata>
+    </content>
+    <link href="http://localhost:3000/queries/4e4c08b5431a5f5dc1000001"/>
+    <id>http://localhost:3000/queries/4e4c08b5431a5f5dc1000001</id>
+    <updated>2011-08-17T14:30:19-04:00</updated>
+  </entry>
+  <entry>
+    <title>Query Result</title>
+    <content type="xml">
+      <md:DocumentMetadata>
+        <md:DocumentId>http://localhost:3000/queries/4e4c0738431a5f5d14000001</md:DocumentId>
+        <md:Title>Query Result</md:Title>
+        <md:RecordDate>
+          <md:CreatedDateTime>2011-08-17T14:23:52-04:00</md:CreatedDateTime>
+          <md:Modified>
+            <md:ModifiedDateTime>2011-08-17T14:23:55-04:00</md:ModifiedDateTime>
+          </md:Modified>
+        </md:RecordDate>
+      </md:DocumentMetadata>
+    </content>
+    <link href="http://localhost:3000/queries/4e4c0738431a5f5d14000001"/>
+    <id>http://localhost:3000/queries/4e4c0738431a5f5d14000001</id>
+    <updated>2011-08-17T14:23:55-04:00</updated>
+  </entry>
+</feed>

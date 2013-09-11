@@ -94,7 +94,7 @@ class EndpointsControllerTest < ActionController::TestCase
   end
   
   test "should refresh endpoint statuses" do
-    FakeWeb.register_uri(:get, "https://127.0.0.1:3001/queries", :body =>
+    FakeWeb.register_uri(:get, HTTP_PROTO+"://127.0.0.1:3001/queries", :body =>
      %{<?xml version="1.0" encoding="UTF-8"?>
      <feed xmlns="http://www.w3.org/2005/Atom" xmlns:md="http://projecthdata.org/hdata/schemas/2009/11/metadata">
        <title>Distributed Queries</title>
@@ -114,7 +114,7 @@ class EndpointsControllerTest < ActionController::TestCase
   
   test "should gracefully refresh downed endpoint status" do
     Endpoint.all.each do |endpoint|
-      endpoint.base_url = "https://something.totally.invalid:9999"
+      endpoint.base_url = HTTP_PROTO+"://something.totally.invalid:9999"
       endpoint.save!
     end
     get :refresh_endpoint_statuses
