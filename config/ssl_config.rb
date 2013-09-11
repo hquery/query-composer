@@ -1,7 +1,7 @@
 module SslConfig
   #contains constants for certificate used for SSL
   #
-  USE_SSL = true
+  USE_SSL = false
   #SERVER_KEY_PATH_ = "cert/composer.key"
   #SERVER_CERT_PATH_ = "cert/composer.crt"
   SERVER_KEY_PATH_ = "cert/ca/LeadLab_root_cert_TEST.pem"
