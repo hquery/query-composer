@@ -29,7 +29,9 @@ class Result
   def check
     logger.debug("Checking query url #{query_url}")
     url = URI.parse(query_url)
-    response = Net::HTTP.start(url.host, url.port) do |http|
+    
+    #use ssl
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
       http.get(url.path, 'If-Modified-Since' => updated_at.to_formatted_s(:rfc822),
                           'Accept' => 'application/json')
     end
@@ -65,7 +67,8 @@ class Result
   
   def fetch_result
     url = URI.parse(self.result_url)
-    response = Net::HTTP.start(url.host, url.port) do |http|
+    #use ssl
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
       http.get(url.path, 'Accept' => 'application/json')
     end
     self.value = JSON.parse(response.body)

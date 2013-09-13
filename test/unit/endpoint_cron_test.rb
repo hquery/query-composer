@@ -17,9 +17,9 @@ class EndpointCronTest < ActiveSupport::TestCase
     job = Delayed::Job.enqueue payload_object: cronJob, run_at: 2.from_now
 
     
-    FakeWeb.register_uri(:get, "http://127.0.0.1:3001/queries",
+    FakeWeb.register_uri(:get, HTTP_PROTO+"://127.0.0.1:3001/queries",
                      :body => File.read(File.expand_path('../../fixtures/query_feed.xml', __FILE__)))
-    FakeWeb.register_uri(:get, "http://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
+    FakeWeb.register_uri(:get, HTTP_PROTO+"://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
                      :body => '{"status": "queued"}')
     endpoint = FactoryGirl.create(:endpoint)
     result = FactoryGirl.create(:result_waiting, endpoint: endpoint)

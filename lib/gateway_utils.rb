@@ -65,7 +65,8 @@ module GatewayUtils
     query_url = endpoint.submit_url
     request = query_request(full_map(query), full_reduce(query), build_library_functions(query),  query.filter, query_url)
     begin
-      Net::HTTP.start(query_url.host, query_url.port) do |http|
+      #use ssl
+      Net::HTTP.start(query_url.host, query_url.port, :use_ssl => USE_SSL, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
         response = http.request(request)
         if response.code == '201' 
           query_url = response['Location']

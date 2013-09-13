@@ -20,7 +20,7 @@ Dependencies
 * Webrick = 1.3.1 added to eliminate nuisance messages in log regarding:
  WARN Could not determine content-length of response body. Set content-length of the response or set Response#chunked = true
 
- Based on information gotten from http://stackoverflow.com/questions/9612618/warn-could-not-determine-content-length-of-response-body-set-content-length-of adding Webrick explicitely to Gemfile (even though it is the version already being used) resolves the problem.
+ Based on information gotten from http://stackoverflow.com/questions/9612618/warn-could-not-determine-content-length-of-response-body-set-content-length-of adding Webrick explicitly to Gemfile (even though it is the version already being used) resolves the problem.
 
 Dependencies on old gems (to be remedied in future)
 ---------------------------------------------------
@@ -44,7 +44,7 @@ To eliminate these warnings from Firefox, the following configuration change can
 Install Instructions
 --------------------
 
- Once you get a copy of the hQuery code from GitHub (http://github.com/hQuery), 
+ Once you get a copy of the hQuery code from GitHub (https://github.com/scoophealth),
  these are step-by-step instructions to get hQuery installed on your local machine.
  
  These steps are the steps required to get both the Query Composer and Query Gateway up and running
@@ -147,12 +147,12 @@ d) Install the ruby dev kit, also available at [http://rubyinstaller.org/downloa
    
         ruby dk.rb init
    
-   5. Veryify the new file config.yml contains a reference to Ruby192
+   5. Verify the new file config.yml contains a reference to Ruby192
    6. run
         
         ruby dk.rb install
         
-   7. Next you will want to run pi.bat in the postinstall directory 
+   7. Next you will want to run pi.bat in the post install directory
 
 ###1j. JRuby
   
@@ -183,7 +183,7 @@ command in the terminal once ruby has been installed.
 
 ###Getting the latest released version
 
-See: [http://github.com/hquery/](http://github.com/hquery/)
+See: [https://github.com/scoophealth](https://github.com/scoophealth)
   
 Getting the latest source code (skip to "Installing Mongo" if you are using the latest stable release)
 
@@ -237,7 +237,7 @@ run:
     bundle exec script/delayed_job start
     sbundle exec rails server -p 3001
      
-In a browser open the URL: http://localhost:3000/queries/
+In a browser open the URL: https://localhost:3000/queries/
 
 ###7w. WINDOWS - Starting the Application
 
@@ -273,7 +273,7 @@ Finish starting the application by running the following:
 Run the following in a different terminal:
     bundle exec rails server -p 3001
      
- In a browser open the URL: http://localhost:3000/queries/
+ In a browser open the URL: https://localhost:3000/queries/
 
 ###8. Adding a User Account
 
