@@ -6,12 +6,12 @@
   <author>
     <name>hQuery Gateway</name>
   </author>
-  <id>https://localhost:3000/queries</id>
+  <id>http://localhost:3000/queries</id>
   <entry>
     <title>Query Result</title>
     <content type="xml">
       <md:DocumentMetadata>
-        <md:DocumentId>https://localhost:3000/queries/4e4c08b5431a5f5dc1000001</md:DocumentId>
+        <md:DocumentId>http://localhost:3000/queries/4e4c08b5431a5f5dc1000001</md:DocumentId>
         <md:Title>Query Result</md:Title>
         <md:RecordDate>
           <md:CreatedDateTime>2011-08-17T14:30:13-04:00</md:CreatedDateTime>
@@ -21,15 +21,15 @@
         </md:RecordDate>
       </md:DocumentMetadata>
     </content>
-    <link href="https://localhost:3000/queries/4e4c08b5431a5f5dc1000001"/>
-    <id>https://localhost:3000/queries/4e4c08b5431a5f5dc1000001</id>
+    <link href="http://localhost:3000/queries/4e4c08b5431a5f5dc1000001"/>
+    <id>http://localhost:3000/queries/4e4c08b5431a5f5dc1000001</id>
     <updated>2011-08-17T14:30:19-04:00</updated>
   </entry>
   <entry>
     <title>Query Result</title>
     <content type="xml">
       <md:DocumentMetadata>
-        <md:DocumentId>https://localhost:3000/queries/4e4c0738431a5f5d14000001</md:DocumentId>
+        <md:DocumentId>http://localhost:3000/queries/4e4c0738431a5f5d14000001</md:DocumentId>
         <md:Title>Query Result</md:Title>
         <md:RecordDate>
           <md:CreatedDateTime>2011-08-17T14:23:52-04:00</md:CreatedDateTime>
@@ -39,8 +39,8 @@
         </md:RecordDate>
       </md:DocumentMetadata>
     </content>
-    <link href="https://localhost:3000/queries/4e4c0738431a5f5d14000001"/>
-    <id>https://localhost:3000/queries/4e4c0738431a5f5d14000001</id>
+    <link href="http://localhost:3000/queries/4e4c0738431a5f5d14000001"/>
+    <id>http://localhost:3000/queries/4e4c0738431a5f5d14000001</id>
     <updated>2011-08-17T14:23:55-04:00</updated>
   </entry>
 </feed>

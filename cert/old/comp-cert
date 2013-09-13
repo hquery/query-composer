@@ -1,0 +1,7 @@
+rm ./composer.crt
+rm ./composer.csr
+rm ./composer.key
+openssl genrsa -out composer.key 4096
+openssl req -new -key composer.key -out composer.csr
+openssl x509 -req -days 300 -in composer.csr -CA ./ca/LeadLab_root_cert_TEST.pem -CAkey ./ca/LeadLab_root_cert_TEST.key -set_serial 5342365815382548354816354178354176 -out composer.crt
+
