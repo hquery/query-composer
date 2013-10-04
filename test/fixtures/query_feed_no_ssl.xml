@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:md="http://projecthdata.org/hdata/schemas/2009/11/metadata">
   <title>Distributed Queries</title>
-  <link href="https://localhost:3000/hdata/index"/>
+  <link href="http://localhost:3000/hdata/index"/>
   <updated>2011-08-17T14:30:19-04:00</updated>
   <author>
     <name>hQuery Gateway</name>

@@ -15,7 +15,7 @@ class QueriesControllerTest < ActionController::TestCase
     
     @endpoints_for_execution = []
     @endpoints_for_execution << FactoryGirl.create(:endpoint)
-    @endpoints_for_execution << FactoryGirl.create(:endpoint, base_url: HTTP_PROTO+'://127.0.0.1:3002')
+    @endpoints_for_execution << FactoryGirl.create(:endpoint, base_url: HTTP_PROTO_CLIENT+'://127.0.0.1:3002')
     
     @unattached_query = FactoryGirl.create(:query)
     
@@ -131,7 +131,7 @@ class QueriesControllerTest < ActionController::TestCase
 
   test "should execute query with notification" do
     sign_in @user
-    FakeWeb.register_uri(:post, HTTP_PROTO+"://127.0.0.1:3001/queries", :body => "FORCE ERROR")
+    FakeWeb.register_uri(:post, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries", :body => "FORCE ERROR")
     query_from_db = Query.find(@ids[2])
     
     endpoint_ids = [@endpoints_for_execution[0].id.to_s]
@@ -161,7 +161,7 @@ class QueriesControllerTest < ActionController::TestCase
   
   test "should execute query without notification" do
     sign_in @user
-    FakeWeb.register_uri(:post, HTTP_PROTO+"://127.0.0.1:3001/queries", :body => "FORCE ERROR")
+    FakeWeb.register_uri(:post, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries", :body => "FORCE ERROR")
     query_from_db = Query.find(@ids[2])
     
     endpoint_ids = [@endpoints_for_execution[0].id.to_s]
@@ -249,7 +249,7 @@ class QueriesControllerTest < ActionController::TestCase
   
   test "should cancel endpoint results" do
     sign_in @user
-    FakeWeb.register_uri(:post, HTTP_PROTO+"://127.0.0.1:3001/queries", :body => "{}", :status => ["304"], :location=>HTTP_PROTO+"://localhost:3001/queries")
+    FakeWeb.register_uri(:post, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries", :body => "{}", :status => ["304"], :location=>HTTP_PROTO_CLIENT+"://localhost:3001/queries")
     query_from_db = Query.find(@ids[2])
     
     endpoint_ids = [@endpoints_for_execution[0].id.to_s]
@@ -275,7 +275,7 @@ class QueriesControllerTest < ActionController::TestCase
   
   test "should cancel execution" do
     sign_in @user
-    FakeWeb.register_uri(:post, HTTP_PROTO+"://127.0.0.1:3001/queries", :body => "{}", :status => ["304"], :location=>HTTP_PROTO+"://localhost:3001/queries")
+    FakeWeb.register_uri(:post, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries", :body => "{}", :status => ["304"], :location=>HTTP_PROTO_CLIENT+"://localhost:3001/queries")
     query_from_db = Query.find(@ids[2])
 
     endpoint_ids = [@endpoints_for_execution[0].id.to_s]

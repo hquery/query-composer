@@ -6,7 +6,7 @@ class EndpointTest < ActiveSupport::TestCase
   end
   
   test "monitoring queries that have not been modified" do
-    FakeWeb.register_uri(:get, HTTP_PROTO+"://127.0.0.1:3001/queries",
+    FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries",
                          :status => [304, "Not Modified"])
 
     endpoint = FactoryGirl.create(:endpoint)
@@ -21,14 +21,14 @@ class EndpointTest < ActiveSupport::TestCase
   end
   
   test "monitoring queries that have changed" do
-    if HTTP_PROTO == "https"
-      FakeWeb.register_uri(:get, HTTP_PROTO+"://127.0.0.1:3001/queries",
+    if HTTP_PROTO_CLIENT == "https"
+      FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries",
                            :body => File.read(File.expand_path('../../fixtures/query_feed.xml', __FILE__)))
     else
-      FakeWeb.register_uri(:get, HTTP_PROTO+"://127.0.0.1:3001/queries",
+      FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries",
                            :body => File.read(File.expand_path('../../fixtures/query_feed_no_ssl.xml', __FILE__)))
     end
-    FakeWeb.register_uri(:get, HTTP_PROTO+"://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
+    FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
                          :body => '{"status": "queued"}')
     endpoint = FactoryGirl.create(:endpoint)
     result = FactoryGirl.create(:result_waiting, endpoint: endpoint)
@@ -46,7 +46,7 @@ class EndpointTest < ActiveSupport::TestCase
   end
   
   test "monitoring queries with incomprehensible responses" do
-    FakeWeb.register_uri(:get, HTTP_PROTO+"://127.0.0.1:3001/queries", :body => 'bacon is delicious')
+    FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries", :body => 'bacon is delicious')
     endpoint = FactoryGirl.create(:endpoint)
     endpoint.check
     assert_equal 2, endpoint.endpoint_logs.count
@@ -64,7 +64,7 @@ class EndpointTest < ActiveSupport::TestCase
   end
   
   test "should gracefully handle errors in check" do
-    FakeWeb.register_uri(:get, HTTP_PROTO+"://127.0.0.1:3001/queries", :exception => Net::HTTPError)
+    FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries", :exception => Net::HTTPError)
     endpoint = FactoryGirl.create(:endpoint)
     endpoint.check
     assert_equal 1, endpoint.endpoint_logs.count

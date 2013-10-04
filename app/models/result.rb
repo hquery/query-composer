@@ -31,7 +31,7 @@ class Result
     url = URI.parse(query_url)
     
     #use ssl
-    response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL_CLIENT, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
       http.get(url.path, 'If-Modified-Since' => updated_at.to_formatted_s(:rfc822),
                           'Accept' => 'application/json')
     end
@@ -68,7 +68,7 @@ class Result
   def fetch_result
     url = URI.parse(self.result_url)
     #use ssl
-    response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL_CLIENT, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
       http.get(url.path, 'Accept' => 'application/json')
     end
     self.value = JSON.parse(response.body)

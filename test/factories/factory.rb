@@ -1,9 +1,17 @@
 require 'factory_girl'
 
-if SslConfig::getUseSsl
-  HTTP_PROTO='https'
+# server to hub web access
+if SslConfig::getUseSslServer
+  HTTP_PROTO_SERVER='https'
 else
-  HTTP_PROTO='http'
+  HTTP_PROTO_SERVER='http'
+end
+
+# hub is client of endpoints
+if SslConfig::getUseSslClient
+  HTTP_PROTO_CLIENT='https'
+else
+  HTTP_PROTO_CLIENT='http'
 end
 
 # ==========
@@ -196,7 +204,7 @@ end
 FactoryGirl.define do
   factory :endpoint do |e|
     e.sequence(:name) {|n| "Endpoint#{n}"}
-    e.base_url HTTP_PROTO+'://127.0.0.1:3001'
+    e.base_url HTTP_PROTO_CLIENT+'://127.0.0.1:3001'
   end
 end
 
@@ -278,7 +286,7 @@ FactoryGirl.define do
     r.value nil
     r.result_url nil
     r.status Result::QUEUED
-    r.query_url HTTP_PROTO+'://localhost:3000/queries/4e4c08b5431a5f5dc1000001'
+    r.query_url HTTP_PROTO_CLIENT+'://localhost:3000/queries/4e4c08b5431a5f5dc1000001'
     r.created_at Time.new(2011, 1, 1)
     r.updated_at Time.new(2011, 1, 1)
   end
