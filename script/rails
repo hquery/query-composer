@@ -9,7 +9,7 @@ require 'webrick/https'
 require File.expand_path('../../config/ssl_config', __FILE__)
 
 #override default option of server to use SSL
-USE_SSL = SslConfig::getUseSsl
+USE_SSL_SERVER = SslConfig::getUseSslServer
 CA_CERT_PATH =SslConfig::getServerKeyPath
 #
 SERVER_CERT_PATH = SslConfig::getServerCertPath
@@ -22,7 +22,7 @@ module Rails
   class Server < ::Rack::Server
     def default_options
       super.merge({
-                      :SSLEnable => USE_SSL,
+                      :SSLEnable => USE_SSL_SERVER,
                       :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
                       :SSLPrivateKey => OpenSSL::PKey::RSA.new(SERVER_KEY.read),
                       :SSLCertificate => OpenSSL::X509::Certificate.new(SERVER_CERT.read),

@@ -1,5 +1,8 @@
 #!/bin/sh
-# Toggle the USE_SSL variable in config/ssl_config.rb to enable/disable SSL support
+# Toggle the USE_SSL_SERVER and USE_SSL_CLEINT variables in config/ssl_config.rb to enable/disable SSL support.
+# The variable USE_SSL_SERVER configures encrypted browser access to the query-composer.
+# The variable USE_SSL_CLIENT configures whether traffic between composer and gateway is SSL encrypted.  If it is
+# being tunnelled through ssh, then is isn't necessary to also SSL encrypt it.
 
 echo "Installing Dependencies"
 bundle install
