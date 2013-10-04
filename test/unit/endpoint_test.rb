@@ -28,7 +28,7 @@ class EndpointTest < ActiveSupport::TestCase
       FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://127.0.0.1:3001/queries",
                            :body => File.read(File.expand_path('../../fixtures/query_feed_no_ssl.xml', __FILE__)))
     end
-    FakeWeb.register_uri(:get, HTTP_PROTO_SERVER+"://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
+    FakeWeb.register_uri(:get, HTTP_PROTO_CLIENT+"://localhost:3000/queries/4e4c08b5431a5f5dc1000001",
                          :body => '{"status": "queued"}')
     endpoint = FactoryGirl.create(:endpoint)
     result = FactoryGirl.create(:result_waiting, endpoint: endpoint)
