@@ -22,6 +22,7 @@ module Rails
   class Server < ::Rack::Server
     def default_options
       super.merge({
+                      :pid => File.expand_path("tmp/pids/server.pid"),
                       :SSLEnable => USE_SSL_SERVER,
                       :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
                       :SSLPrivateKey => OpenSSL::PKey::RSA.new(SERVER_KEY.read),
