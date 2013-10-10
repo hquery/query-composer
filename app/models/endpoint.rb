@@ -35,13 +35,13 @@ class Endpoint
     url = submit_url
     begin
       check_time = Time.now
-      
+
       #use ssl
       response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL_CLIENT, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
         headers = {}
-        if last_check
-          headers['If-Modified-Since'] = last_check.to_formatted_s(:rfc822)
-        end
+        #if last_check
+        #  headers['If-Modified-Since'] = last_check.to_formatted_s(:rfc822)
+        #end
         headers['Accept'] = 'application/atom+xml'
         http.get(url.path, headers)
       end
@@ -67,7 +67,8 @@ class Endpoint
     parsed_feed.entries.each do |atom_entry|
       query_url = atom_entry.id.try(:content)
       query_update_time = atom_entry.updated.try(:content)
-      result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
+      #result = active_results_for_this_endpoint.where(:query_url => query_url, :updated_at.lt => query_update_time).first
+      result = active_results_for_this_endpoint.where(:query_url => query_url).first
       if result
         result.check()
         if (result.status == Result::COMPLETE)

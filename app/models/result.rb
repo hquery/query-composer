@@ -32,8 +32,9 @@ class Result
     
     #use ssl
     response = Net::HTTP.start(url.host, url.port, :use_ssl => USE_SSL_CLIENT, :key => CLIENT_KEY, :cert => CLIENT_CERT) do |http|
-      http.get(url.path, 'If-Modified-Since' => updated_at.to_formatted_s(:rfc822),
-                          'Accept' => 'application/json')
+      #http.get(url.path, 'If-Modified-Since' => updated_at.to_formatted_s(:rfc822),
+      #                    'Accept' => 'application/json')
+      http.get(url.path, 'Accept' => 'application/json')
     end
     
     case response
@@ -54,7 +55,7 @@ class Result
           self.status = query_status
           save!
         else
-          self.update_attribute(:created_at, Time.now)          
+          self.update_attribute(:created_at, Time.now)
         end
       end
     when Net::HTTPNotModified
