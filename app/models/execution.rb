@@ -48,7 +48,7 @@ class Execution
   # ===============
   def aggregate
     #response = Result.collection.map_reduce(self.map_fn(), _reduce(), :raw => true, :out => {:inline => true}, :query => {:execution_id => id})
-    response = Result.where(execution_id: id).map_reduce(self.map_fn(), _reduce()).out(inline: true).raw()
+    response = Result.where(execution_id: id).map_reduce(self.map_fn(), self.query.reduce).out(inline: true).raw()
     results = response['results']
     if results
       self.aggregate_result = {}
@@ -161,7 +161,7 @@ GENERATED_MAP
   
   private 
   
-  def _reduce
+  def _reduce_deprecated #unwrapped reduce method;  its output datatype must match the values datatype exactly
      "function(k,v){
 
          var iter = function(x){

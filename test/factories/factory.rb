@@ -129,7 +129,7 @@ end
 
 FactoryGirl.define do
   factory :query_with_queued_results, :parent => :query do |query|
-    query.reduce "function reduce(key, values) {\r\n  var result = 0; \r\n while(values.hasNext()){ result += values.next(); }\r\nreturn result; \r\n}"
+    query.reduce "function reduce(key, values) {\r\n  return Array.sum(values); \r\n}"
 
     #after(:create) do |query, evaluator|
     #  FactoryGirl.create_list(:queued_execution, 1, query: query)
@@ -142,7 +142,7 @@ end
 
 FactoryGirl.define do
   factory :query_with_completed_results, :parent => :query do |query|
-    query.reduce "function reduce(key, values) {\r\n  var result = 0; \r\n while(values.hasNext()){ result += values.next(); }\r\nreturn result; \r\n}"
+    query.reduce "function reduce(key, values) {\r\n  return Array.sum(values); \r\n}"
 
     #after(:create) do |query, evaluator|
     #  FactoryGirl.create_list(:completed_execution, 1, query: query)
