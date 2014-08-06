@@ -14,8 +14,8 @@
   <% else %>
     <tr><td>Mode</td>
       <td>
-        <%= f.radio_button :generated, true, :checked => true %> Graphical Builder
-        <%= f.radio_button :generated, false, :checked => false %> Handwritten JavaScript (Advanced)
+        <%= f.radio_button :generated, true, :checked => false %> Graphical Builder
+        <%= f.radio_button :generated, false, :checked => true %> Handwritten JavaScript (Advanced)
       </td>
     </tr>
   <% end %>
