@@ -37,7 +37,7 @@ class QueriesController < ApplicationController
       @query.map = "function map(patient) {\r\n  \r\n}"
     end
     if (@query.reduce.nil?)
-      @query.reduce = "function reduce(key, values) {\r\n  \r\n}"
+      @query.reduce = "function reduce(key, values) {\r\n  return Array.sum(values); \r\n}"
     end
   end
 
