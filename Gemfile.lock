@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/scoophealth/patientapi.git
-  revision: 35340bb11c26115bd5e350ad270cb59ac1c3f56b
+  revision: 36a78993ee10c931f58d004a38b931790bcb0e80
   branch: scoop-develop
   specs:
     hquery-patient-api (1.0.0)
