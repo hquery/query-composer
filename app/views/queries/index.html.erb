@@ -17,7 +17,7 @@
       <th>Status</th>
     </tr>
     <% end %>
-    <% @queries.sort({description:1}).each do |query| %>
+    <% @queries.asc(:description).each do |query| %>
     <tr>
       <td><%= link_to query.title, query_path(query.id) %></td>
       <td><%= query.description %></td>
