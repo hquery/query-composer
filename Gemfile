@@ -23,7 +23,7 @@ gem 'multipart-post'
 gem 'delayed_job'
 gem 'delayed_job_mongoid'
 
-gem 'hquery-patient-api', :git => 'https://github.com/scoophealth/patientapi.git', :branch => 'scoop-develop'
+gem 'hquery-patient-api', :git => 'https://github.com/scoophealth/patientapi.git', :branch => 'master'
 
 gem 'coderay'
 
