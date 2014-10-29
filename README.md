@@ -280,7 +280,7 @@ Run the following in a different terminal:
 When the application opens, you should be presented with a login page.
 You should see a sign up Link, click it.
 Fill out the form to create a user.
-Next you need to approve the user and set the user as an admin
+Next you need to approve the user and set the user as an admin.
 In the root of the query-composer project run the command:
   
     bundle exec rake hquery:users:grant_admin USER_ID=<USERNAME>
@@ -292,12 +292,12 @@ where &lt;USERNAME&gt; is replaced with the username for the user you just creat
 When the application opens, the user will be presented with a login page.
 They will see a sign up Link which they should click.
 They then need to fill out the form to create their user account.
-Next you need to approve the user
+Next you need to approve the user.
 In the root of the query-composer project run the command:
 
     bundle exec rake hquery:users:approve USER_ID=<USERNAME>
 
-where &lt;USERNAME&gt; is replaced with the username for the user you just created.
+where &lt;USERNAME&gt; is replaced with the username for the user account that is being approved.
 
 License
 -------
