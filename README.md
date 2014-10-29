@@ -275,7 +275,7 @@ Run the following in a different terminal:
      
  In a browser open the URL: https://localhost:3000/queries/
 
-###8. Adding a User Account
+###8. Adding an Administrative User Account
 
 When the application opens, you should be presented with a login page.
 You should see a sign up Link, click it.
@@ -287,6 +287,17 @@ In the root of the query-composer project run the command:
   
 where &lt;USERNAME&gt; is replaced with the username for the user you just created.
 
+###9. Adding a Non-administrative User Account
+
+When the application opens, the user will be presented with a login page.
+They will see a sign up Link which they should click.
+They then need to fill out the form to create their user account.
+Next you need to approve the user
+In the root of the query-composer project run the command:
+
+    bundle exec rake hquery:users:approve USER_ID=<USERNAME>
+
+where &lt;USERNAME&gt; is replaced with the username for the user you just created.
 
 License
 -------
