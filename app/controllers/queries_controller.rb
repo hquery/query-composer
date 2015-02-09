@@ -91,7 +91,6 @@ class QueriesController < ApplicationController
 
 
   def execute_batch
-    logger.error "Called execute_batch0"
     endpoint_ids = params[:endpoint_ids]
 
     if (endpoint_ids && !endpoint_ids.empty?)
@@ -103,14 +102,12 @@ class QueriesController < ApplicationController
       Query.all.each do |eachQuery|
         # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
         eachQuery.execute(endpoints, notify)
-        logger.error "Executed query"
       end
 
-      logger.error "Finished queries, redirecting..."
       redirect_to :action => 'index'
     else
       flash[:alert] = "Cannot execute a query if no endpoints are provided."
-      redirect_to :action => 'show'
+      redirect_to :action => 'index'
     end
   end
 
