@@ -89,6 +89,42 @@ class QueriesController < ApplicationController
     end
   end
 
+
+  def execute_batch
+    logger.error "Called execute_batch0"
+    #endpoint_ids = params[:endpoint_ids]
+    #endpoints = Endpoint.all
+    endpoints = []
+    for endpoint in Endpoint.all
+      logger.error endpoint.name
+      if endpoint.name == 'pdc-test'
+        endpoints.push(endpoint)
+      end
+    end
+
+    if (endpoints && !endpoints.empty?)
+    #if (endpoint_ids && !endpoint_ids.empty?)
+
+      #endpoint_ids = endpoint_ids.map! {|id| Moped::BSON::ObjectId(id)}
+      #endpoint_ids = [Moped::BSON::ObjectId(endpoint_ids)]
+      #endpoints = Endpoint.criteria.for_ids(endpoint_ids)
+
+      notify = params[:notification]
+
+      Query.all.each do |eachQuery|
+        # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
+        eachQuery.execute(endpoints, notify)
+        logger.error "Executed query"
+      end
+
+      logger.error "Finished queries, redirecting..."
+      redirect_to :action => 'index'
+    else
+      flash[:alert] = "Cannot execute a query if no endpoints are provided."
+      redirect_to :action => 'show'
+    end
+  end
+
   def cancel
     execution = @query.executions.find(params[:execution_id])
     execution.results.find(params[:result_id]).cancel

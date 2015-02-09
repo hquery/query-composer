@@ -30,6 +30,9 @@ QueryComposer::Application.routes.draw do
       get 'edit_code'
       get 'result'
     end
+    collection do
+      get 'execute_batch'
+    end
   end
   
   
