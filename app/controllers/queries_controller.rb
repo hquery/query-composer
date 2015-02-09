@@ -92,22 +92,11 @@ class QueriesController < ApplicationController
 
   def execute_batch
     logger.error "Called execute_batch0"
-    #endpoint_ids = params[:endpoint_ids]
-    #endpoints = Endpoint.all
-    endpoints = []
-    for endpoint in Endpoint.all
-      logger.error endpoint.name
-      if endpoint.name == 'pdc-test'
-        endpoints.push(endpoint)
-      end
-    end
+    endpoint_ids = params[:endpoint_ids]
 
-    if (endpoints && !endpoints.empty?)
-    #if (endpoint_ids && !endpoint_ids.empty?)
-
-      #endpoint_ids = endpoint_ids.map! {|id| Moped::BSON::ObjectId(id)}
-      #endpoint_ids = [Moped::BSON::ObjectId(endpoint_ids)]
-      #endpoints = Endpoint.criteria.for_ids(endpoint_ids)
+    if (endpoint_ids && !endpoint_ids.empty?)
+      endpoint_ids = endpoint_ids.map! {|id| Moped::BSON::ObjectId(id)}
+      endpoints = Endpoint.criteria.for_ids(endpoint_ids)
 
       notify = params[:notification]
 

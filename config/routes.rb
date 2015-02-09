@@ -31,7 +31,7 @@ QueryComposer::Application.routes.draw do
       get 'result'
     end
     collection do
-      get 'execute_batch'
+      post 'execute_batch'
     end
   end
   

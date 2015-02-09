@@ -42,10 +42,14 @@
     <% end %>
   </table>
 
+  <%= render partial: 'execute_all_popup', locals: { endpoints: Endpoint.all, button_id: 'execute-all-button' } %>
+
   <%= link_to(new_query_path, class: "btn primary m") do %><span>Add Query</span><% end %>
-        <div class="bottom_border_lower relative">
-      <div class="bottom_border">
-      </div>
-    </div>
+  <button id="execute-all-button" class="btn primary">Execute All</button>
+
+  <div class="bottom_border_lower relative">
+    <div class="bottom_border">
+     </div>
+  </div>
 
 </div>
