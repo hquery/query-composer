@@ -50,45 +50,44 @@ def main():
     for query in queries:
         if not query['description'].startswith("STOPP Rule "):
             continue
-        print
         desc = query['description'].split()[2]
         print desc, query['title']
         executions = query['executions']
         for execution in executions:
             jstime = execution['time']
             dt = datetime.datetime.fromtimestamp(jstime)
-            #print dt
             execution_id = execution['_id']
-            #print id
-            keys = []
+
             try:
                 aggregate_result = execution['aggregate_result']
-                for key in aggregate_result:
-                    keys.append(key)
             except KeyError: continue
-            print "keys: ", keys
-            #sortedkeys = keys.sort()
-            #print "sortedkeys: ", sortedkeys
-            try:
-                aggregate_result = execution['aggregate_result']
-                print dt,
-                for key in keys:
-                    print key, aggregate_result[key],
-                print
-            except KeyError: continue
+            if aggregate_result:
+                    keys = []
+                    reportline = "  "
+                    reportline += str(dt)
+                    reportline += " aggregate:"
+                    for key in aggregate_result:
+                        reportline += ' '+str(key)+' '+str(int(aggregate_result[key]))
+                        keys.append(key)
+                    print reportline
 
-            for endpoint in endpoints:
-                endpoint_id = endpoint['_id']
-                result = select_result(execution_id, endpoint_id, results)
-                if result:
-                    try:
-                        print '  ', endpoint['name'],
-                        value = result['value']
-                        for key in value:
-                            if key in keys:
-                                print key, value[key],
-                        print
-                    except KeyError: continue
-
+                    for endpoint in endpoints:
+                        endpoint_id = endpoint['_id']
+                        result = select_result(execution_id, endpoint_id, results)
+                        if result:
+                            reportline = '    '+str(endpoint['name'])
+                            try:
+                                value = result['value']
+                            except KeyError: continue
+                            for key in keys:
+                                try:
+                                    reportline += ' '+ str(key)+' '+str(int(value[key]))
+                                except KeyError: continue
+                            if len(reportline) > 0:
+                                print reportline
+                            else:
+                                print "NO RESULT:"
+        print
+                    
 
 if __name__ == '__main__':main()
