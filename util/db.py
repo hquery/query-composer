@@ -36,6 +36,10 @@ class MongoDatabase(object):
         find_query = {}
         return list(self._get_results_collection().find(find_query))
 
+    def get_query(self,queryid):
+        find_query = {'_id': queryid}
+        return (list(self._get_queries_collection().find(find_query)))[0]
+
 def select_result(execution_id, endpoint_id, results):
     for result in results:
         if result['execution_id'] == execution_id:
@@ -47,9 +51,17 @@ def main():
     endpoints= db.get_endpoints()
     queries = db.get_queries()
     results = db.get_results()
+
+    querySet = {}
     for query in queries:
         if not query['description'].startswith("STOPP Rule "):
             continue
+        querySet[query['description']] = query['_id']
+    queryDesc = sorted(querySet)
+
+    for desc in queryDesc:  # want queries sorted by description
+        queryid = querySet[desc]
+        query = db.get_query(queryid)
         desc = query['description'].split()[2]
         print desc, query['title']
         executions = query['executions']
