@@ -95,10 +95,7 @@ def main():
                                 try:
                                     reportline += ' '+ str(key)+' '+str(int(value[key]))
                                 except KeyError: continue
-                            if len(reportline) > 0:
-                                print reportline
-                            else:
-                                print "NO RESULT:"
+                            print reportline
         print
                     
 
