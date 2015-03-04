@@ -68,6 +68,10 @@ def main():
         for execution in executions:
             jstime = execution['time']
             dt = datetime.datetime.fromtimestamp(jstime)
+	    if dt < datetime.datetime(2015,2,19,12,0,0):
+		#print "dt =", dt
+		#print "date =", datetime.datetime(2015,2,19,12,0,0)
+		continue
             execution_id = execution['_id']
 
             try:
