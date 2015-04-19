@@ -99,7 +99,7 @@ class QueriesController < ApplicationController
 
       notify = params[:notification]
 
-      Query.all.each do |eachQuery|
+      current_user.queries.each do |eachQuery|
         # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
         eachQuery.execute(endpoints, notify)
       end
