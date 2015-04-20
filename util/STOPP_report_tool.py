@@ -57,7 +57,8 @@ def main():
 
     query_set = {}
     for query in queries:
-        if not query['description'].startswith("STOPP Rule ").endswith(' v2'):
+        if not query['description'].startswith("STOPP Rule ") and\
+                query['description'].startswith("STOPP Rule ").endswith(' v2'):
             continue
         query_set[query['description']] = query['_id']
     query_desc = sorted(query_set)
