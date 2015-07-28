@@ -5,7 +5,6 @@ import pymongo
 
 
 class MongoDatabase(object):
-
     DEFAULT_DB_NAME = "query_composer_development"
 
     ENDPOINTS_COLLECTION = "endpoints"
@@ -57,23 +56,23 @@ def main():
 
     query_set = {}
     for query in queries:
-        if not query['description'].startswith("STOPP Rule ") and\
-                query['description'].startswith("STOPP Rule ").endswith(' v2'):
-            continue
-        query_set[query['description']] = query['_id']
+        if (query['description'].startswith("STOPP Rule ") or query['description'].startswith("xSTOPP Rule ")) and \
+                query['description'].endswith(' v2'):
+            query_set[query['description']] = query['_id']
     query_desc = sorted(query_set)
 
     for desc in query_desc:  # want queries sorted by description
         queryid = query_set[desc]
         query = db.get_query(queryid)
         desc = query['description'].split()[2]
-        print(str(desc), query['title'])
+        print(desc + ':'),
+        print(query['title'])
         executions = query['executions']
         for execution in executions:
             jstime = execution['time']
             dt = datetime.datetime.fromtimestamp(jstime)
             # if dt < datetime.datetime(2015, 2, 19, 12, 0, 0):
-            if dt < datetime.datetime(2015, 4, 19, 22, 0, 0):
+            if dt < datetime.datetime(2015, 4, 28, 10, 0, 0):
                 continue
             # print "dt =", dt
             # print "date =", datetime.datetime(2015,2,19,12,0,0)
@@ -84,32 +83,32 @@ def main():
             except KeyError:
                 continue
             if aggregate_result:
-                    keys = []
-                    reportline = "  "
-                    reportline += str(dt)
-                    reportline += " aggregate:"
-                    for key in aggregate_result:
-                        reportline += ' '+str(key)+' '+str(int(aggregate_result[key]))
-                        keys.append(key)
-                    print(reportline)
+                keys = []
+                reportline = "  "
+                reportline += str(dt)
+                reportline += " aggregate:"
+                for key in aggregate_result:
+                    reportline += ' ' + str(key) + ' ' + str(int(aggregate_result[key]))
+                    keys.append(key)
+                print(reportline)
 
-                    for endpoint in endpoints:
-                        endpoint_id = endpoint['_id']
-                        result = select_result(execution_id, endpoint_id, results)
-                        if result:
-                            reportline = '    '+str(endpoint['name'])
+                for endpoint in endpoints:
+                    endpoint_id = endpoint['_id']
+                    result = select_result(execution_id, endpoint_id, results)
+                    if result:
+                        reportline = '    ' + str(endpoint['name'])
+                        try:
+                            value = result['value']
+                        except KeyError:
+                            continue
+                        for key in keys:
                             try:
-                                value = result['value']
+                                reportline += ' ' + str(key) + ' ' + str(int(value[key]))
                             except KeyError:
                                 continue
-                            for key in keys:
-                                try:
-                                    reportline += ' ' + str(key)+' '+str(int(value[key]))
-                                except KeyError:
-                                    continue
-                            print(reportline)
-        print()
-                    
+                        print(reportline)
+        print("\n")
+
 
 if __name__ == '__main__':
     main()
