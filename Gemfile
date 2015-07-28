@@ -34,6 +34,8 @@ gem 'kramdown'
 gem 'jasmine', :group => [:development, :test]
 gem 'headless', :group => [:development, :test]
 
+gem 'parallel'
+
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 

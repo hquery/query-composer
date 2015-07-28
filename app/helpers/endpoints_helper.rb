@@ -1,7 +1,10 @@
+require 'parallel'
+
 module EndpointsHelper
   def fetch_endpoint_statuses
     @endpoint_server_statuses = {}
-    @endpoints.each do |endpoint|
+    #@endpoints.each do |endpoint|
+    Parallel.each(@endpoints, :in_threads=>10) do |endpoint|
       url = endpoint.status_url
       begin
 	#use ssl
