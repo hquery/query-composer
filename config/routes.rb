@@ -1,5 +1,7 @@
 QueryComposer::Application.routes.draw do
 
+  post "scheduled_jobs/batch_query", :constraints => {:ip => /127.0.0.1/}
+
   devise_for :users
 
   get "admin/users"
