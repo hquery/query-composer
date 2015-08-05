@@ -12,5 +12,10 @@ class BaseQuery
   field :generated, type: Boolean
   
   validates_presence_of :title
+
+  def self.find_by_description(desc)
+    where(description: desc).first
+  end
+
   
 end
