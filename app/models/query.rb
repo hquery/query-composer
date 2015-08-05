@@ -83,5 +83,4 @@ class Query < BaseQuery
     
     return pretty_function
   end
-  
 end

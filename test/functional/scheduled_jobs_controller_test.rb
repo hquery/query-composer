@@ -37,7 +37,7 @@ class ScheduledJobsControllerTest < ActionController::TestCase
     puts "endpoints: " + @endpoints_for_execution.inspect
 
     #STDERR.puts query_from_db.inspect
-    puts "DRUSK #{endpoint_ids}"
+    puts "ENDPOINT_IDS #{endpoint_ids}"
     puts "@ids[2]=" + @ids[2].inspect + " endpoint_ids=" + endpoint_ids.inspect
     post :batch_query, id: @ids[2], endpoint_ids: endpoint_ids, notification: false
     #query = assigns(:query)

@@ -14,7 +14,7 @@ class ScheduledJobsController < ActionController::Base
   #   an endpoint must have a name.
   # Query titles and descriptions do not have to be unique; A combination
   # of title, description and username is more likely to be unique but for
-  # convenience only description is currently implemented.
+  # convenience only description and username are currently implemented.
   def batch_query
     render nothing: true
 
@@ -59,18 +59,21 @@ class ScheduledJobsController < ActionController::Base
     # Select query using array of query descriptions;
     # Unfortunately, they are not necessarily unique
     #query_titles = params[:query_titles]
-    #user_username = params[:user_username]
-    query_descriptions = params[:query_descriptions]
-    logger.info 'param query_descriptions:' + query_descriptions.inspect
-    selected_queries = []
-    if query_descriptions
-      parse_array(query_descriptions).each do |query_desc|
-        match_query = Query.find_by_description(query_desc)
-        if match_query
-          logger.info query_desc + ' matches: ' + match_query.inspect
-          selected_queries.push(match_query)
-        else
-          logger.info 'WARNING: ' + query_desc + ' has no match!'
+    username = params[:username]
+    current_user = User.find_by_username(username)
+    if current_user
+      query_descriptions = params[:query_descriptions]
+      logger.info 'param query_descriptions:' + query_descriptions.inspect
+      selected_queries = []
+      if query_descriptions
+        parse_array(query_descriptions).each do |query_desc|
+          match_query = current_user.queries.find_by_description(query_desc)
+          if match_query
+            logger.info query_desc + ' matches: ' + match_query.inspect
+            selected_queries.push(match_query)
+          else
+            logger.info 'WARNING: ' + query_desc + ' has no match!'
+          end
         end
       end
     end

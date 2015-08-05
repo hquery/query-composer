@@ -2,7 +2,7 @@ __author__ = 'rrusk'
 import httplib, urllib
 
 params = urllib.urlencode({'@number': 12524, '@type': 'issue', '@action': 'show'})
-params = urllib.urlencode({"endpoint_names":["ep1","ep2", "ep3"],"query_descriptions":["desc1","desc2"]})
+params = urllib.urlencode({"endpoint_names":["ep1","ep2", "ep3"],"query_descriptions":["desc1","desc2"],"username":"stoppuser"})
 headers = {"Content-type": "application/x-www-form-urlencoded",
            "Accept": "text/plain"}
 conn = httplib.HTTPSConnection("localhost", 3002)
