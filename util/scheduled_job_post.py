@@ -1,12 +1,20 @@
+#!/usr/bin/env python
 __author__ = 'rrusk'
-import httplib, urllib
-
-params = urllib.urlencode({'@number': 12524, '@type': 'issue', '@action': 'show'})
-params = urllib.urlencode({"endpoint_names":["ep1","ep2", "ep3"],"query_descriptions":["desc1","desc2"],"username":"stoppuser"})
+import sys
+import httplib
+import urllib
+import json
+if len(sys.argv) != 2:
+    print "The batch job parameter file must be specified as the sole argument"
+    print 'Usage: scheduled_job_post.py "job_params_file.json"'
+    exit(1)
+with open(sys.argv[1], "r") as params_file:
+    params_json = json.load(params_file)
+query_params = urllib.urlencode(params_json)
 headers = {"Content-type": "application/x-www-form-urlencoded",
            "Accept": "text/plain"}
 conn = httplib.HTTPSConnection("localhost", 3002)
-conn.request("POST", "/scheduled_jobs/batch_query", params, headers)
+conn.request("POST", "/scheduled_jobs/batch_query", query_params, headers)
 response = conn.getresponse()
 print response.status, response.reason
 data = response.read()

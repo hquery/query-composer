@@ -1,0 +1,12 @@
+{
+    "username": "stoppuser",
+    "endpoint_names": [
+        "ep1",
+        "ep2",
+        "ep3"
+    ],
+    "query_descriptions": [
+        "desc1",
+        "desc2"
+    ]
+}
