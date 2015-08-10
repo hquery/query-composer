@@ -4,13 +4,24 @@ import sys
 import httplib
 import urllib
 import json
+
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key):byteify(value) for key,value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
+
 if len(sys.argv) != 2:
     print "The batch job parameter file must be specified as the sole argument"
     print 'Usage: scheduled_job_post.py "job_params_file.json"'
     exit(1)
 with open(sys.argv[1], "r") as params_file:
     params_json = json.load(params_file)
-query_params = urllib.urlencode(params_json)
+query_params = urllib.urlencode(byteify(params_json))
 headers = {"Content-type": "application/x-www-form-urlencoded",
            "Accept": "text/plain"}
 conn = httplib.HTTPSConnection("localhost", 3002)

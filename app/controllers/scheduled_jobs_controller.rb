@@ -5,7 +5,11 @@ class ScheduledJobsController < ActionController::Base
   creates_updates_destroys :query
 
   def parse_array(string)
-    string[1..-2].gsub!(/[^0-9A-Za-z,-]/, '').split(',')
+    parray = string[1..-2].gsub!(/[^0-9A-Za-z(), -]/, '').split(',')
+    parray.each do |element|
+      element.strip!
+    end
+    return parray
   end
 
   # Model constraints:
@@ -35,14 +39,14 @@ class ScheduledJobsController < ActionController::Base
       parse_array(endpoint_names).each do |endpoint_name|
         match_ep = Endpoint.find_by_name(endpoint_name)
         if match_ep
-          logger.info endpoint_name + ' matches: ' + match_ep.inspect
+          logger.info endpoint_name.to_s + ' matches: ' + match_ep[:name].inspect
           selected_endpoints.push(match_ep)
         else
-          logger.info 'WARNING: ' + endpoint_name + ' has no match!'
+          logger.info 'WARNING: ' + endpoint_name.to_s + ' has no match!'
         end
       end
     end
-    logger.info 'selected endpoings: ' + selected_endpoints.inspect
+    # logger.info 'selected endpoings: ' + selected_endpoints.inspect
 
 
     # users = User.all
@@ -63,13 +67,13 @@ class ScheduledJobsController < ActionController::Base
     current_user = User.find_by_username(username)
     if current_user
       query_descriptions = params[:query_descriptions]
-      logger.info 'param query_descriptions:' + query_descriptions.inspect
+      # logger.info 'param query_descriptions:' + query_descriptions.inspect
       selected_queries = []
       if query_descriptions
         parse_array(query_descriptions).each do |query_desc|
           match_query = current_user.queries.find_by_description(query_desc)
           if match_query
-            logger.info query_desc + ' matches: ' + match_query.inspect
+            logger.info query_desc + ' matches: ' + match_query[:description].inspect
             selected_queries.push(match_query)
           else
             logger.info 'WARNING: ' + query_desc + ' has no match!'
@@ -77,7 +81,7 @@ class ScheduledJobsController < ActionController::Base
         end
       end
     end
-    logger.info 'selected queries: ' + selected_queries.inspect
+    # logger.info 'selected queries: ' + selected_queries.inspect
 
     if selected_endpoints && !selected_endpoints.empty? &&
         selected_queries && !selected_queries.empty?
