@@ -1,5 +1,5 @@
 require 'cud_actions'
-require 'parallel'
+#require 'parallel'
 
 class ScheduledJobsController < ActionController::Base
   include CudActions
@@ -88,8 +88,8 @@ class ScheduledJobsController < ActionController::Base
     if selected_endpoints && !selected_endpoints.empty? &&
         selected_queries && !selected_queries.empty?
       notify = params[:notification]
-      #selected_queries.each do |eachQuery|
-      Parallel.each(selected_queries, :in_threads=>15) do |eachQuery|
+      selected_queries.each do |eachQuery|
+      #Parallel.each(selected_queries, :in_threads=>15) do |eachQuery|
         # execute the query, and pass in the endpoints and if the user should be notified by email when execution completes
         # logger.info 'title: ' + eachQuery[:title].inspect
         # logger.info 'desc:  ' + eachQuery[:description].inspect
