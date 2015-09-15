@@ -1,7 +1,7 @@
 #!/bin/bash
 # Expect two lines of output from call to web server
 URL="http://localhost:ep_port/sysinfo/ep_check"
-TMPFILE=`/bin/tempfile`
+TMPFILE=`/bin/tempfile -p_PDC_`
 CMD=`/usr/bin/curl -sSf $URL > $TMPFILE 2>&1`
 STATUS=$?
 if [ $STATUS -ne 0 ]; then
