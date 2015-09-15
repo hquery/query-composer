@@ -23,8 +23,10 @@ generate_alive_command() {
   echo command[check_tunnel_"pdc$ep_name"]=/usr/lib/nagios/plugins/check_http -H localhost -p $ep_port
 }
 
-ep_ids="0 1 2 3 4 5 6 7 8 9 11"
-ep_checks="diskspace import load processes swap tomcat users"
+ep_ids_oscar="0 1 2 3 4 5 6 7 8 9 11"
+ep_checks_oscar="diskspace import load processes swap tomcat users"
+ep_ids_osler="50"
+ep_checks_osler="diskspace load processes swap users"
 
 cp ./nrpe_local_cfg.template ./nrpe_local.cfg
 
@@ -34,10 +36,21 @@ echo "NRPE commands written into ./nrpe_local.cfg.  Use this to replace"
 echo "/etc/nagios/nrpe_local.cfg after carefully checking correctness."
 echo "Reload nrpe plugins using 'sudo service nagios-nrpe-server reload'"
 
-for id in $ep_ids
+# generate oscar configuration files
+for id in $ep_ids_oscar
 do
   generate_alive_command $id >> ./nrpe_local.cfg
-  for check in $ep_checks
+  for check in $ep_checks_oscar
+  do
+    generate_service_host_plugin $id $check
+    generate_nrpe_command $id $check >> ./nrpe_local.cfg
+  done
+done
+# generate osler configuration files
+for id in $ep_ids_osler
+do
+  generate_alive_command $id >> ./nrpe_local.cfg
+  for check in $ep_checks_osler
   do
     generate_service_host_plugin $id $check
     generate_nrpe_command $id $check >> ./nrpe_local.cfg
