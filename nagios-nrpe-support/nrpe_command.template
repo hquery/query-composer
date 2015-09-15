@@ -1,0 +1,9 @@
+# pdc_epid checks
+command[check_alive_pdc_epid]=/usr/lib/nagios/plugins/check_http -I 127.0.0.1 -p ep_port
+command[check_diskspace_pdc_epid]=/usr/local/lib/nagios/check_diskspace_pdc_epid.sh
+command[check_import_pdc_epid]=/usr/local/lib/nagios/check_import_pdc_epid.sh
+command[check_load_pdc_epid]=/usr/local/lib/nagios/check_load_pdc_epid.sh
+command[check_processes_pdc_epid]=/usr/local/lib/nagios/check_processes_pdc_epid.sh
+command[check_swap_pdc_epid]=/usr/local/lib/nagios/check_swap_pdc_epid.sh
+command[check_tomcat_pdc_epid]=/usr/local/lib/nagios/check_tomcat_pdc_epid.sh
+command[check_users_pdc_epid]=/usr/local/lib/nagios/check_users_pdc_epid.sh

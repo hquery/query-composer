@@ -1,0 +1,42 @@
+######################################
+# Do any local nrpe configuration here
+######################################
+#
+# ALLOWED HOST ADDRESSES
+# This is an optional comma-delimited list of IP address or hostnames 
+# that are allowed to talk to the NRPE daemon. Network addresses with a bit mask
+# (i.e. 192.168.1.0/24) are also supported. Hostname wildcards are not currently 
+# supported.
+#
+# Note: The daemon only does rudimentary checking of the client's IP
+# address.  I would highly recommend adding entries in your /etc/hosts.allow
+# file to allow only the specified host to connect to the port
+# you are running this daemon on.
+#
+# NOTE: This option is ignored if NRPE is running under either inetd or xinetd
+
+allowed_hosts=127.0.0.1,142.104.90.77
+
+# COMMAND DEFINITIONS
+# Command definitions that this daemon will run.  Definitions
+# are in the following format:
+#
+# command[<command_name>]=<command_line>
+#
+# When the daemon receives a request to return the results of <command_name>
+# it will execute the command specified by the <command_line> argument.
+#
+# Unlike Nagios, the command line cannot contain macros - it must be
+# typed exactly as it should be executed.
+#
+# Note: Any plugins that are used in the command lines must reside
+# on the machine that this daemon is running on!  The examples below
+# assume that you have plugins installed in a /usr/local/lib/nagios
+# directory.  Also note that you will have to modify the definitions below
+# to match the argument format the plugins expect.  Remember, these are
+# examples only!
+
+# The following commands use hardcoded arguments...
+
+command[check_all_disks]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -e
+

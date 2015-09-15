@@ -10,3 +10,4 @@ spec/javascripts/generated/*
 log/
 spec/generated
 .idea
+nagios-nrpe-support/tmp/

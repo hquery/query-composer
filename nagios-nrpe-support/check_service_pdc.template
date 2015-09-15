@@ -1,0 +1,37 @@
+#!/bin/bash
+# Expect two lines of output from call to web server
+URL="http://localhost:ep_port/sysinfo/ep_check"
+TMPFILE=`/bin/tempfile`
+CMD=`/usr/bin/curl -sSf $URL > $TMPFILE 2>&1`
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+  /bin/echo "UNKNOWN - For $URL got $(cat $TMPFILE)"
+  /bin/rm $TMPFILE
+  exit 3
+fi
+# first line should be Nagios message
+NAGIOSMSG=`/usr/bin/head -1 $TMPFILE`
+# second line should be Nagios status code
+STATUSSTR=`/bin/cat $TMPFILE | /usr/bin/head -2 | /usr/bin/tail -1`
+/bin/rm $TMPFILE
+NAGIOSSTATUS=-1
+if [ "$STATUSSTR" == "Status Code: 0" ]; then
+  NAGIOSSTATUS=0
+fi
+if [ "$STATUSSTR" == "Status Code: 1" ]; then
+  NAGIOSSTATUS=1
+fi
+if [ "$STATUSSTR" == "Status Code: 2" ]; then
+  NAGIOSSTATUS=2
+fi
+if [ "$STATUSSTR" == "Status Code: 3" ]; then
+  NAGIOSSTATUS=3
+fi
+if [ "$NAGIOSSTATUS" -ge 0 -a "$NAGIOSSTATUS" -le 3 ]; then
+  echo $NAGIOSMSG
+  exit $NAGIOSSTATUS
+else
+  # shouldn't get here unless there was a completely unexpected response
+  /bin/echo "UNKNOWN - Unexpected response from \"$URL\". Return status $STATUS"
+  exit 3
+fi
