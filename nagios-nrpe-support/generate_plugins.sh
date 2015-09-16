@@ -1,5 +1,13 @@
 #!/bin/sh
 # 
+print_info() {
+  echo "Plugins written into ./tmp.  Move to /usr/local/lib/nagios once they"
+  echo "have been checked for correctness."
+  echo "NRPE commands written into ./nrpe_local.cfg.  Use this to replace"
+  echo "/etc/nagios/nrpe_local.cfg after carefully checking correctness."
+  echo "Reload nrpe plugins using 'sudo service nagios-nrpe-server reload'"
+}
+
 generate_service_host_plugin() {
   if [ ! -d ./tmp ]; then
     /bin/mkdir tmp
@@ -30,13 +38,7 @@ ep_checks_osler="diskspace load processes swap users"
 
 cp ./nrpe_local_cfg.template ./nrpe_local.cfg
 
-echo "Plugins written into ./tmp.  Move to /usr/local/lib/nagios once they"
-echo "have been checked for correctness."
-echo "NRPE commands written into ./nrpe_local.cfg.  Use this to replace"
-echo "/etc/nagios/nrpe_local.cfg after carefully checking correctness."
-echo "Reload nrpe plugins using 'sudo service nagios-nrpe-server reload'"
-
-# generate oscar configuration files
+# generate oscar configuration and plugins
 for id in $ep_ids_oscar
 do
   generate_alive_command $id >> ./nrpe_local.cfg
@@ -46,7 +48,7 @@ do
     generate_nrpe_command $id $check >> ./nrpe_local.cfg
   done
 done
-# generate osler configuration files
+# generate osler configuration and plugins
 for id in $ep_ids_osler
 do
   generate_alive_command $id >> ./nrpe_local.cfg
@@ -56,3 +58,5 @@ do
     generate_nrpe_command $id $check >> ./nrpe_local.cfg
   done
 done
+
+print_info
