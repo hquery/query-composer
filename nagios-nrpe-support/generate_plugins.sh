@@ -36,7 +36,7 @@ ep_checks_oscar="diskspace import load processes swap tomcat users"
 ep_ids_osler="50"
 ep_checks_osler="diskspace load processes swap users"
 
-cp ./nrpe_local_cfg.template ./nrpe_local.cfg
+cp ./nrpe_local_cfg.prefix ./nrpe_local.cfg
 
 # generate oscar configuration and plugins
 for id in $ep_ids_oscar
