@@ -10,4 +10,6 @@ spec/javascripts/generated/*
 log/
 spec/generated
 .idea
-nagios-nrpe-support/tmp/
+monitoring/nagios-config/
+monitoring/nagios-nrpe-server-config/
+generate_nagios3_config.sh~
