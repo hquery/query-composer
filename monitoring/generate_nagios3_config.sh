@@ -1,7 +1,7 @@
 #!/bin/sh
 # 
 print_info() {
-  echo "Plugins written into ./tmp.  Move to /usr/local/lib/nagios once they"
+  echo "Plugins written into ./nagios-nrpe-server-config.  Move to /usr/local/lib/nagios once they"
   echo "have been checked for correctness."
   echo "NRPE commands written into ./nrpe_local.cfg.  Use this to replace"
   echo "/etc/nagios/nrpe_local.cfg after carefully checking correctness."
@@ -67,13 +67,13 @@ generate_nagios_command_definition() {
 }
 
 generate_service_host_plugin() {
-  if [ ! -d ./tmp ]; then
-    /bin/mkdir tmp
+  if [ ! -d ./nagios-nrpe-server-config ]; then
+    /bin/mkdir nagios-nrpe-server-config
   fi
   ep_name=`/usr/bin/expr 1000 + $1 | cut -d1 -f2-`
   ep_port=`/usr/bin/expr 10300 + $1`
-  /bin/sed "s/ep_port/$ep_port/;s/ep_check/$2/" ./check_service_pdc.template > ./tmp/check_"$2"_"pdc$ep_name".sh
-  chmod +x ./tmp/check_"$2"_"pdc$ep_name".sh
+  /bin/sed "s/ep_port/$ep_port/;s/ep_check/$2/" ./check_service_pdc.template > ./nagios-nrpe-server-config/check_"$2"_"pdc$ep_name".sh
+  chmod +x ./nagios-nrpe-server-config/check_"$2"_"pdc$ep_name".sh
 }
 
 generate_nrpe_command() {
