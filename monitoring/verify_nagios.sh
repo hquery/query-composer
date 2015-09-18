@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 cd nagios-config
 echo "Differencing generated commands.cfg and /etc/nagios3/commands.cfg"
 echo "Begin diff..."

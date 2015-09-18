@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 cd nagios-nrpe-server-config
 echo "Differencing generated nrpe_local.cfg and /etc/nagios/nrpe_local.cfg"
 echo "Begin diff..."
