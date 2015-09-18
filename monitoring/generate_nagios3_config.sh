@@ -4,7 +4,7 @@
 ep_ids_oscar="0 1 2 3 4 5 6 7 8 9 11"
 ep_checks_oscar="diskspace import load processes swap tomcat users"
 # Endpoint ids and corresponding checks (Osler)
-ep_ids_osler="50"
+ep_ids_osler=""
 ep_checks_osler="diskspace load processes swap users"
 
 print_info() {
