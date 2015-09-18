@@ -18,6 +18,7 @@ print_info() {
   echo "Use this to replace /etc/nagios/nrpe_local.cfg after checking correctness."
   echo "The plugins are written into ./nagios-nrpe-server-config/plugins.  Move the"
   echo "plugins to /usr/local/lib/nagios once they have been checked for correctness."
+  echo "The script verify_nrpe.sh will assist in checking the generated files."
   echo "Reload nrpe configuration on the hub using"
   echo "	'sudo service nagios-nrpe-server reload'"
   echo
@@ -29,6 +30,7 @@ print_info() {
   echo "Endpoint specific Nagios configuration files are in"
   echo "./nagios-config/conf.d/pdc-XXX.cfg.  They should be"
   echo "verifed carefully and then copied to /etc/nagios3/conf.d/."
+  echo "The script verify_nagios.sh will assist in checking the generated files."
   echo "The generated Nagios configuration should then be checked using"
   echo "	'/usr/sbin/nagios3 -v /etc/nagios3/nagios.cfg'"
   echo "If there are no errors or warnings, it should be safe to execute"
